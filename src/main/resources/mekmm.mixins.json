@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.jerry.mekmm.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "mekmm.refmap.json",
+  "mixins": [
+    "recipe.MixinMekanismRecipeType"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
