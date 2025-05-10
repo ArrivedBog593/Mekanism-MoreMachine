@@ -1,6 +1,7 @@
 package com.jerry.mekmm.common.tile.machine;
 
 import com.jerry.mekmm.api.recipes.basic.MMBasicItemStackChemicalToItemStackRecipe;
+import com.jerry.mekmm.api.recipes.cache.ReplicatorCachedRecipe;
 import com.jerry.mekmm.client.recipe_viewer.MMRecipeViewerRecipeType;
 import com.jerry.mekmm.common.config.MMConfig;
 import com.jerry.mekmm.common.recipe.impl.ReplicatorIRecipeSingle;
@@ -12,7 +13,6 @@ import mekanism.api.chemical.BasicChemicalTank;
 import mekanism.api.chemical.ChemicalStack;
 import mekanism.api.chemical.IChemicalTank;
 import mekanism.api.recipes.cache.CachedRecipe;
-import mekanism.api.recipes.cache.TwoInputCachedRecipe;
 import mekanism.api.recipes.ingredients.creator.IngredientCreatorAccess;
 import mekanism.api.recipes.inputs.IInputHandler;
 import mekanism.api.recipes.inputs.ILongInputHandler;
@@ -179,12 +179,12 @@ public class TileEntityReplicator extends TileEntityProgressMachine<MMBasicItemS
     }
 
     public static boolean isValidItemInput(ItemStack stack) {
-//        Item item = stack.getItem();
-//        if (customRecipeMap != null) {
-//            for (String resourceKey : customRecipeMap.keySet()) {
-//                return RegistryUtils.getName(item).toString().equals(resourceKey);
-//            }
-//        }
+        Item item = stack.getItem();
+        if (customRecipeMap != null) {
+            for (String resourceKey : customRecipeMap.keySet()) {
+                return RegistryUtils.getName(item.builtInRegistryHolder()).toString().equals(resourceKey);
+            }
+        }
         return true;
     }
 
@@ -264,7 +264,7 @@ public class TileEntityReplicator extends TileEntityProgressMachine<MMBasicItemS
 
     @Override
     public @NotNull CachedRecipe<MMBasicItemStackChemicalToItemStackRecipe> createNewCachedRecipe(@NotNull MMBasicItemStackChemicalToItemStackRecipe recipe, int cacheIndex) {
-        return TwoInputCachedRecipe.itemChemicalToItem(recipe, recheckAllRecipeErrors, itemInputHandler, chemicalInputHandler, outputHandler)
+        return ReplicatorCachedRecipe.createCache(recipe, recheckAllRecipeErrors, itemInputHandler, chemicalInputHandler, outputHandler)
                 .setErrorsChanged(this::onErrorsChanged)
                 .setCanHolderFunction(this::canFunction)
                 .setActive(this::setActive)
@@ -292,7 +292,7 @@ public class TileEntityReplicator extends TileEntityProgressMachine<MMBasicItemS
             return new ReplicatorIRecipeSingle(
                     IngredientCreatorAccess.item().from(item, 1),
                     IngredientCreatorAccess.chemicalStack().fromHolder(MMChemicals.UU_MATTER, amount),
-                    new ItemStack(item, 2)
+                    new ItemStack(item, 1)
             );
         }
         return null;

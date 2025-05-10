@@ -62,11 +62,6 @@ public class BasicPlantingRecipe extends PlantingRecipe {
         return Collections.singletonList(new PlantingStationRecipeOutput(mainOutput, secondaryOutput));
     }
 
-    @Override
-    public List<PlantingStationRecipeOutput> getSecondaryOutputDefinition() {
-        return Collections.singletonList(new PlantingStationRecipeOutput(mainOutput, secondaryOutput));
-    }
-
     public ItemStack getMainOutput() {
         return mainOutput;
     }

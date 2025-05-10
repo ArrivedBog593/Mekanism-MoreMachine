@@ -1,8 +1,8 @@
 package com.jerry.mekmm.common.tile.machine;
 
 import com.jerry.mekmm.api.recipes.PlantingRecipe;
-import com.jerry.mekmm.api.recipes.cache.PlantingStationCachedRecipe;
-import com.jerry.mekmm.api.recipes.cache.PlantingStationPerTickCachedRecipe;
+import com.jerry.mekmm.api.recipes.cache.MMTwoInputCachedRecipe;
+import com.jerry.mekmm.api.recipes.cache.MMItemStackConstantChemicalToObjectCachedRecipe;
 import com.jerry.mekmm.api.recipes.outputs.MMOutputHelper;
 import com.jerry.mekmm.client.recipe_viewer.MMRecipeViewerRecipeType;
 import com.jerry.mekmm.common.recipe.MMRecipeType;
@@ -180,10 +180,10 @@ public class TileEntityPlantingStation extends TileEntityProgressMachine<Plantin
     public @NotNull CachedRecipe<PlantingRecipe> createNewCachedRecipe(@NotNull PlantingRecipe recipe, int cacheIndex) {
         CachedRecipe<PlantingRecipe> cachedRecipe;
         if (recipe.perTickUsage()) {
-            cachedRecipe = new PlantingStationPerTickCachedRecipe(recipe, recheckAllRecipeErrors, itemInputHandler, chemicalInputHandler,
-                    injectUsageMultiplier, used -> usedSoFar = used, outputHandler, ConstantPredicates.alwaysFalse());
+            cachedRecipe = MMItemStackConstantChemicalToObjectCachedRecipe.planting(recipe, recheckAllRecipeErrors, itemInputHandler, chemicalInputHandler, injectUsageMultiplier,
+                    used -> usedSoFar = used, outputHandler);
         } else {
-            cachedRecipe = new PlantingStationCachedRecipe(recipe, recheckAllRecipeErrors, itemInputHandler, chemicalInputHandler, outputHandler, ConstantPredicates.alwaysFalse());
+            cachedRecipe = MMTwoInputCachedRecipe.planting(recipe, recheckAllRecipeErrors, itemInputHandler, chemicalInputHandler, outputHandler);
         }
         return cachedRecipe
                 //设置错误更改

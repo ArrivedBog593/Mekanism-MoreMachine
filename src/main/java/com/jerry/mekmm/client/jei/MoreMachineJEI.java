@@ -9,7 +9,6 @@ import com.jerry.mekmm.client.recipe_viewer.MMRecipeViewerUtils;
 import com.jerry.mekmm.common.recipe.MMRecipeType;
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.client.gui.GuiMekanism;
-import mekanism.client.recipe_viewer.jei.CatalystRegistryHelper;
 import mekanism.client.recipe_viewer.jei.JeiGuiElementHandler;
 import mekanism.client.recipe_viewer.jei.MekanismJEI;
 import mekanism.client.recipe_viewer.jei.RecipeRegistryHelper;
@@ -79,9 +78,13 @@ public class MoreMachineJEI implements IModPlugin {
         if (!MekanismJEI.shouldLoad()) {
             return;
         }
-        CatalystRegistryHelper.register(registry, MMRecipeViewerRecipeType.RECYCLER, MMRecipeViewerRecipeType.PLANTING_STATION, MMRecipeViewerRecipeType.REPLICATOR,
+        MMCatalystRegistryHelper.register(registry, true, MMRecipeViewerRecipeType.RECYCLER, MMRecipeViewerRecipeType.PLANTING_STATION, MMRecipeViewerRecipeType.REPLICATOR,
                 MMRecipeViewerRecipeType.STAMPING, MMRecipeViewerRecipeType.LATHE, MMRecipeViewerRecipeType.ROLLING_MILL);
 
-        CatalystRegistryHelper.register(registry, RecipeViewerRecipeType.CHEMICAL_CONVERSION);
+        /*
+          这里只是注册工厂图标，所以不需要注册最普通的机器。
+          这里是再注册一次mekanism的“CHEMICAL_CONVERSION”，所以不能注册最基础的机器。最基础的机器被mekanism注册，因为新的workstations由mixin添加。
+         */
+        MMCatalystRegistryHelper.register(registry, false, RecipeViewerRecipeType.CHEMICAL_CONVERSION);
     }
 }

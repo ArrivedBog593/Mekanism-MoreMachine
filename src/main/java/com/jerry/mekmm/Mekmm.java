@@ -28,8 +28,8 @@ public class Mekmm {
         //Set our version number to match the neoforge.mods.toml file, which matches the one in our build.gradle
         versionNumber = new Version(modContainer);
 
+        // MoreMachine相关的注册
         MMConfig.registerConfigs(modContainer);
-//        LMConfig.registerConfigs(modContainer);
         MMItems.MM_ITEMS.register(modEventBus);
         MMBlocks.MM_BLOCKS.register(modEventBus);
         MMTileEntityTypes.MM_TILE_ENTITY_TYPES.register(modEventBus);
@@ -37,7 +37,8 @@ public class Mekmm {
         MMRecipeSerializersInternal.MM_RECIPE_SERIALIZERS.register(modEventBus);
         MMChemicals.MM_CHEMICALS.register(modEventBus);
         MMCreativeTabs.MM_CREATIVE_TABS.register(modEventBus);
-//        conditionalRegistry(modEventBus);
+        // LargeMachine相关的注册
+//        LMConfig.registerConfigs(modContainer);
 
         packetHandler = new MMPacketHandler(modEventBus, versionNumber);
     }

@@ -5,9 +5,12 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "mekmm.refmap.json",
   "mixins": [
+    "MixinUpgrade",
+    "MixinUpgradeUtils",
     "recipe.MixinMekanismRecipeType"
   ],
   "client": [
+    "client.MixinRecipeViewerRecipeType"
   ],
   "injectors": {
     "defaultRequire": 1
