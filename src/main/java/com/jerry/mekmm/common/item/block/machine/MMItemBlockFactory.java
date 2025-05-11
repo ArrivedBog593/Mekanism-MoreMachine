@@ -26,7 +26,8 @@ public class MMItemBlockFactory extends ItemBlockTooltip<BlockTile<?, ?>> {
 //            case COMPRESSING, INFUSING -> AttachedSideConfig.ADVANCED_MACHINE;
 //            case COMBINING -> AttachedSideConfig.EXTRA_MACHINE;
 //            case PURIFYING, INJECTING -> AttachedSideConfig.ADVANCED_MACHINE_INPUT_ONLY;
-            case RECYCLING, CNC_STAMPING, CNC_LATHING, CNC_ROLLING_MILL -> AttachedSideConfig.ELECTRIC_MACHINE;
+            case CNC_STAMPING -> AttachedSideConfig.EXTRA_MACHINE;
+            case RECYCLING, CNC_LATHING, CNC_ROLLING_MILL -> AttachedSideConfig.ELECTRIC_MACHINE;
             case PLANTING_STATION -> AttachedSideConfig.ADVANCED_MACHINE_INPUT_ONLY;
         };
     }
