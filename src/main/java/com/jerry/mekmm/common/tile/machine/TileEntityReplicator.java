@@ -62,6 +62,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class TileEntityReplicator extends TileEntityProgressMachine<MMBasicItemStackChemicalToItemStackRecipe> {
 
@@ -181,11 +182,9 @@ public class TileEntityReplicator extends TileEntityProgressMachine<MMBasicItemS
     public static boolean isValidItemInput(ItemStack stack) {
         Item item = stack.getItem();
         if (customRecipeMap != null) {
-            for (String resourceKey : customRecipeMap.keySet()) {
-                return RegistryUtils.getName(item.builtInRegistryHolder()).toString().equals(resourceKey);
-            }
+            return customRecipeMap.containsKey(Objects.requireNonNull(RegistryUtils.getName(item.builtInRegistryHolder())).toString());
         }
-        return true;
+        return false;
     }
 
     @Override
