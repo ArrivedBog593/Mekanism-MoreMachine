@@ -1,0 +1,15 @@
+{
+  "type": "mekmm:stamper",
+  "mold_input": {
+    "count": 1,
+    "tag": "c:cobblestones/normal"
+  },
+  "main_input": {
+    "count": 1,
+    "tag": "c:cobblestones/normal"
+  },
+  "output": {
+    "count": 1,
+    "id": "minecraft:gravel"
+  }
+}

@@ -1,6 +1,7 @@
 package com.jerry.mekmm.api.recipes.cache;
 
 import com.jerry.mekmm.api.recipes.PlantingRecipe;
+import com.jerry.mekmm.api.recipes.StamperRecipe;
 import mekanism.api.chemical.ChemicalStack;
 import mekanism.api.functions.ConstantPredicates;
 import mekanism.api.recipes.MekanismRecipe;
@@ -39,5 +40,22 @@ public class MMTwoInputCachedRecipe<INPUT_A, INPUT_B, OUTPUT, RECIPE extends Mek
                                                                                                                                         IOutputHandler<PlantingRecipe.PlantingStationRecipeOutput> outputHandler) {
         return new MMTwoInputCachedRecipe<>(recipe, recheckAllErrors, itemInputHandler, chemicalInputHandler, outputHandler, recipe::getItemInput, recipe::getChemicalInput, recipe::getOutput,
                 ConstantPredicates.ITEM_EMPTY, ConstantPredicates.CHEMICAL_EMPTY, ConstantPredicates.alwaysFalse());
+    }
+
+    /**
+     * Base implementation for handling Combiner Recipes.
+     *
+     * @param recipe            Recipe.
+     * @param recheckAllErrors  Returns {@code true} if processing should be continued even if an error is hit in order to gather all the errors. It is recommended to not
+     *                          do this every tick or if there is no one viewing recipes.
+     * @param inputHandler      Main input handler.
+     * @param extraInputHandler Secondary/Extra input handler.
+     * @param outputHandler     Output handler.
+     */
+    public static MMTwoInputCachedRecipe<@NotNull ItemStack, @NotNull ItemStack, @NotNull ItemStack, StamperRecipe> stamper(StamperRecipe recipe,
+                                                                                                                            BooleanSupplier recheckAllErrors, IInputHandler<@NotNull ItemStack> inputHandler, IInputHandler<@NotNull ItemStack> extraInputHandler,
+                                                                                                                            IOutputHandler<@NotNull ItemStack> outputHandler) {
+        return new MMTwoInputCachedRecipe<>(recipe, recheckAllErrors, inputHandler, extraInputHandler, outputHandler, recipe::getMainInput, recipe::getExtraInput,
+                recipe::getOutput, ConstantPredicates.ITEM_EMPTY, ConstantPredicates.ITEM_EMPTY, ConstantPredicates.ITEM_EMPTY);
     }
 }

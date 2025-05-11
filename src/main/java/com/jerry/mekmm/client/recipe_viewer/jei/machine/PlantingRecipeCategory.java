@@ -1,4 +1,4 @@
-package com.jerry.mekmm.client.jei.machine;
+package com.jerry.mekmm.client.recipe_viewer.jei.machine;
 
 import com.jerry.mekmm.api.recipes.PlantingRecipe;
 import mekanism.api.annotations.NothingNullByDefault;

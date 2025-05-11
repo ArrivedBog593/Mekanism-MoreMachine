@@ -16,7 +16,7 @@ public class MMClientRegistration {
     public static void registerScreens(RegisterMenuScreensEvent event) {
         ClientRegistrationUtil.registerScreen(event, MMContainerTypes.RECYCLER, GuiRecycler::new);
         ClientRegistrationUtil.registerScreen(event, MMContainerTypes.PLANTING_STATION, GuiPlantingStation::new);
-        ClientRegistrationUtil.registerElectricScreen(event, MMContainerTypes.CNC_STAMPER);
+        ClientRegistrationUtil.registerScreen(event, MMContainerTypes.CNC_STAMPER, GuiStamper::new);
         ClientRegistrationUtil.registerElectricScreen(event, MMContainerTypes.CNC_LATHE);
         ClientRegistrationUtil.registerElectricScreen(event, MMContainerTypes.CNC_ROLLING_MILL);
         ClientRegistrationUtil.registerScreen(event, MMContainerTypes.REPLICATOR, GuiReplicator::new);

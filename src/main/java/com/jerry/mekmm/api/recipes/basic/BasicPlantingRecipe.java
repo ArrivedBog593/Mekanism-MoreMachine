@@ -1,6 +1,6 @@
 package com.jerry.mekmm.api.recipes.basic;
 
-import com.jerry.mekmm.api.recipes.MMRecipeSerializers;
+import com.jerry.mekmm.api.recipes.MoreMachineRecipeSerializers;
 import com.jerry.mekmm.api.recipes.PlantingRecipe;
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.chemical.ChemicalStack;
@@ -78,6 +78,6 @@ public class BasicPlantingRecipe extends PlantingRecipe {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return MMRecipeSerializers.PLANTING.get();
+        return MoreMachineRecipeSerializers.PLANTING.get();
     }
 }

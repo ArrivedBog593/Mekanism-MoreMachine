@@ -6,7 +6,7 @@ import com.jerry.mekmm.api.recipes.cache.MMTwoInputCachedRecipe;
 import com.jerry.mekmm.api.recipes.outputs.MMOutputHelper;
 import com.jerry.mekmm.client.recipe_viewer.MMRecipeViewerRecipeType;
 import com.jerry.mekmm.common.inventory.slot.MMFactoryInputInventorySlot;
-import com.jerry.mekmm.common.recipe.MMRecipeType;
+import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
 import com.jerry.mekmm.common.tile.machine.TileEntityPlantingStation;
 import mekanism.api.IContentsListener;
 import mekanism.api.SerializationConstants;
@@ -155,7 +155,7 @@ public class TileEntityPlantingFactory extends MMTileEntityFactory<PlantingRecip
 
     @Override
     public @NotNull IMekanismRecipeTypeProvider<?, PlantingRecipe, InputRecipeCache.ItemChemical<PlantingRecipe>> getRecipeType() {
-        return MMRecipeType.PLANTING_STATION;
+        return MoreMachineRecipeType.PLANTING_STATION;
     }
 
     @Override

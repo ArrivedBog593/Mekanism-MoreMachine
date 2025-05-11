@@ -1,8 +1,8 @@
 package com.jerry.mekmm.api.recipes.basic;
 
 import com.jerry.mekmm.Mekmm;
-import com.jerry.mekmm.api.recipes.MMRecipeSerializers;
-import com.jerry.mekmm.api.recipes.MMRecipeTypes;
+import com.jerry.mekmm.api.recipes.MoreMachineRecipeSerializers;
+import com.jerry.mekmm.api.recipes.MoreMachineRecipeTypes;
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.recipes.basic.BasicItemStackToItemStackRecipe;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
@@ -24,12 +24,12 @@ public class BasicLatheRecipe extends BasicItemStackToItemStackRecipe {
      * @param output     Output.
      */
     public BasicLatheRecipe(ItemStackIngredient input, ItemStack output) {
-        super(input, output, MMRecipeTypes.TYPE_LATHE.value());
+        super(input, output, MoreMachineRecipeTypes.TYPE_LATHING.value());
     }
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return MMRecipeSerializers.LATHE.value();
+        return MoreMachineRecipeSerializers.LATHING.value();
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.jerry.mekmm.client.jei;
+package com.jerry.mekmm.client.recipe_viewer.jei;
 
 import com.jerry.mekmm.common.block.attribute.MMAttributeFactoryType;
 import com.jerry.mekmm.common.registries.MMBlocks;

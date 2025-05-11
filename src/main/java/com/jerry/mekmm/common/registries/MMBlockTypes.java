@@ -31,7 +31,7 @@ public class MMBlockTypes {
 
     // Recycler
     public static final MMMachine.MMFactoryMachine<TileEntityRecycler> RECYCLER = MMMachine.MMMachineBuilder
-            .createMMFactoryMachine(() -> MMTileEntityTypes.RECYCLER, MekanismLang.DESCRIPTION_PRECISION_SAWMILL, MMFactoryType.RECYCLER)
+            .createMMFactoryMachine(() -> MMTileEntityTypes.RECYCLER, MekanismLang.DESCRIPTION_PRECISION_SAWMILL, MMFactoryType.RECYCLING)
             .withGui(() -> MMContainerTypes.RECYCLER)
             .withSound(MekanismSounds.PRECISION_SAWMILL)
             .withEnergyConfig(MekanismConfig.usage.precisionSawmill, MekanismConfig.storage.precisionSawmill)
@@ -51,8 +51,8 @@ public class MMBlockTypes {
             .build();
 
     // CNC Stamper
-    public static final MMMachine.MMFactoryMachine<TileEntityStamping> CNC_STAMPER = MMMachine.MMMachineBuilder
-            .createMMFactoryMachine(() -> MMTileEntityTypes.CNC_STAMPER, MekanismLang.DESCRIPTION_PRECISION_SAWMILL, MMFactoryType.CNC_STAMPER)
+    public static final MMMachine.MMFactoryMachine<TileEntityStamper> CNC_STAMPER = MMMachine.MMMachineBuilder
+            .createMMFactoryMachine(() -> MMTileEntityTypes.CNC_STAMPER, MekanismLang.DESCRIPTION_PRECISION_SAWMILL, MMFactoryType.CNC_STAMPING)
             .withGui(() -> MMContainerTypes.CNC_STAMPER)
             .withSound(MekanismSounds.PRECISION_SAWMILL)
             .withEnergyConfig(MekanismConfig.usage.precisionSawmill, MekanismConfig.storage.precisionSawmill)
@@ -62,7 +62,7 @@ public class MMBlockTypes {
 
     // CNC Lathe
     public static final MMMachine.MMFactoryMachine<TileEntityLathe> CNC_LATHE = MMMachine.MMMachineBuilder
-            .createMMFactoryMachine(() -> MMTileEntityTypes.CNC_LATHE, MekanismLang.DESCRIPTION_PRECISION_SAWMILL, MMFactoryType.CNC_LATHE)
+            .createMMFactoryMachine(() -> MMTileEntityTypes.CNC_LATHE, MekanismLang.DESCRIPTION_PRECISION_SAWMILL, MMFactoryType.CNC_LATHING)
             .withGui(() -> MMContainerTypes.CNC_LATHE)
             .withSound(MekanismSounds.PRECISION_SAWMILL)
             .withEnergyConfig(MekanismConfig.usage.precisionSawmill, MekanismConfig.storage.precisionSawmill)

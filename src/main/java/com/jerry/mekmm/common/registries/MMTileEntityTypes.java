@@ -7,10 +7,7 @@ import com.jerry.mekmm.common.block.prefab.MMBlockFactoryMachine;
 import com.jerry.mekmm.common.content.blocktype.MMFactoryType;
 import com.jerry.mekmm.common.item.block.machine.MMItemBlockFactory;
 import com.jerry.mekmm.common.tile.TileEntityDoll;
-import com.jerry.mekmm.common.tile.factory.MMTileEntityFactory;
-import com.jerry.mekmm.common.tile.factory.MMTileEntityItemStackToItemStackFactory;
-import com.jerry.mekmm.common.tile.factory.TileEntityPlantingFactory;
-import com.jerry.mekmm.common.tile.factory.TileEntityRecyclerFactory;
+import com.jerry.mekmm.common.tile.factory.*;
 import com.jerry.mekmm.common.tile.machine.*;
 import mekanism.common.capabilities.Capabilities;
 import mekanism.common.registration.impl.BlockRegistryObject;
@@ -36,10 +33,10 @@ public class MMTileEntityTypes {
 
     static {
         for (FactoryTier tier : EnumUtils.FACTORY_TIERS) {
-            registerFactory(tier, MMFactoryType.RECYCLER, TileEntityRecyclerFactory::new);
+            registerFactory(tier, MMFactoryType.RECYCLING, TileEntityRecyclerFactory::new);
             registerFactory(tier, MMFactoryType.PLANTING_STATION, TileEntityPlantingFactory::new);
-            registerFactory(tier, MMFactoryType.CNC_STAMPER, MMTileEntityItemStackToItemStackFactory::new);
-            registerFactory(tier, MMFactoryType.CNC_LATHE, MMTileEntityItemStackToItemStackFactory::new);
+            registerFactory(tier, MMFactoryType.CNC_STAMPING, TileEntityStampingFactory::new);
+            registerFactory(tier, MMFactoryType.CNC_LATHING, MMTileEntityItemStackToItemStackFactory::new);
             registerFactory(tier, MMFactoryType.CNC_ROLLING_MILL, MMTileEntityItemStackToItemStackFactory::new);
 //            registerFactory(tier, FactoryType.COMBINING, TileEntityCombiningFactory::new);
 //            registerFactory(tier, FactoryType.COMPRESSING, TileEntityItemStackChemicalToItemStackFactory::new);
@@ -75,7 +72,7 @@ public class MMTileEntityTypes {
             .withSimple(Capabilities.CONFIG_CARD)
             .build();
 
-    public static final TileEntityTypeRegistryObject<TileEntityStamping> CNC_STAMPER = MM_TILE_ENTITY_TYPES.mekBuilder(MMBlocks.CNC_STAMPER, TileEntityStamping::new)
+    public static final TileEntityTypeRegistryObject<TileEntityStamper> CNC_STAMPER = MM_TILE_ENTITY_TYPES.mekBuilder(MMBlocks.CNC_STAMPER, TileEntityStamper::new)
             .clientTicker(TileEntityMekanism::tickClient)
             .serverTicker(TileEntityMekanism::tickServer)
             .withSimple(Capabilities.CONFIG_CARD)

@@ -1,9 +1,10 @@
 package com.jerry.mekmm.mixin.recipe;
 
-import com.jerry.mekmm.api.recipes.MMRecipeTypes;
+import com.jerry.mekmm.api.recipes.MoreMachineRecipeTypes;
 import com.jerry.mekmm.api.recipes.PlantingRecipe;
 import com.jerry.mekmm.api.recipes.RecyclerRecipe;
-import com.jerry.mekmm.common.recipe.MMRecipeType;
+import com.jerry.mekmm.api.recipes.StamperRecipe;
+import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
 import mekanism.api.recipes.ItemStackToItemStackRecipe;
 import mekanism.api.recipes.MekanismRecipe;
 import mekanism.common.recipe.MekanismRecipeType;
@@ -33,14 +34,14 @@ public class MixinMekanismRecipeType {
 
     @Inject(method = "<clinit>", at= @At("TAIL"))
     private static void mekmm$initRecipe(CallbackInfo ci){
-        MMRecipeType.RECYCLER = register(MMRecipeTypes.NAME_RECYCLER, recipeType -> new InputRecipeCache.SingleItem<>(recipeType, RecyclerRecipe::getInput));
+        MoreMachineRecipeType.RECYCLING = register(MoreMachineRecipeTypes.NAME_RECYCLING, recipeType -> new InputRecipeCache.SingleItem<>(recipeType, RecyclerRecipe::getInput));
 
-        MMRecipeType.PLANTING_STATION = register(MMRecipeTypes.NAME_PLANTING, recipeType -> new InputRecipeCache.ItemChemical<>(recipeType, PlantingRecipe::getItemInput, PlantingRecipe::getChemicalInput));
+        MoreMachineRecipeType.PLANTING_STATION = register(MoreMachineRecipeTypes.NAME_PLANTING, recipeType -> new InputRecipeCache.ItemChemical<>(recipeType, PlantingRecipe::getItemInput, PlantingRecipe::getChemicalInput));
 
-        MMRecipeType.STAMPING = register(MMRecipeTypes.NAME_STAMPING, recipeType -> new InputRecipeCache.SingleItem<>(recipeType, ItemStackToItemStackRecipe::getInput));
+        MoreMachineRecipeType.STAMPING = register(MoreMachineRecipeTypes.NAME_STAMPING, recipeType -> new InputRecipeCache.DoubleItem<>(recipeType, StamperRecipe::getMainInput, StamperRecipe::getExtraInput));
 
-        MMRecipeType.LATHE = register(MMRecipeTypes.NAME_LATHE, recipeType -> new InputRecipeCache.SingleItem<>(recipeType, ItemStackToItemStackRecipe::getInput));
+        MoreMachineRecipeType.LATHING = register(MoreMachineRecipeTypes.NAME_LATHING, recipeType -> new InputRecipeCache.SingleItem<>(recipeType, ItemStackToItemStackRecipe::getInput));
 
-        MMRecipeType.ROLLING_MILL = register(MMRecipeTypes.NAME_ROLLING_MILL, recipeType -> new InputRecipeCache.SingleItem<>(recipeType, ItemStackToItemStackRecipe::getInput));
+        MoreMachineRecipeType.ROLLING_MILL = register(MoreMachineRecipeTypes.NAME_ROLLING_MILL, recipeType -> new InputRecipeCache.SingleItem<>(recipeType, ItemStackToItemStackRecipe::getInput));
     }
 }

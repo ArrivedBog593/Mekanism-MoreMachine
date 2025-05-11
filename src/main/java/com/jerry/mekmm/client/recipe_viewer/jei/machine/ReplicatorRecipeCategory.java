@@ -1,4 +1,4 @@
-package com.jerry.mekmm.client.jei.machine;
+package com.jerry.mekmm.client.recipe_viewer.jei.machine;
 
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.api.recipes.basic.MMBasicItemStackChemicalToItemStackRecipe;

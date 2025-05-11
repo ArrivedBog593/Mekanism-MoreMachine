@@ -59,7 +59,7 @@ public class MMFactory<TILE extends MMTileEntityFactory<?>> extends MMMachine.MM
             builder.with(switch (type) {
 //                case SMELTING, ENRICHING, CRUSHING, COMBINING, SAWING -> AttributeSideConfig.ELECTRIC_MACHINE;
 //                case COMPRESSING, INJECTING, PURIFYING, INFUSING -> AttributeSideConfig.ADVANCED_ELECTRIC_MACHINE;
-                case RECYCLER, CNC_STAMPER, CNC_LATHE, CNC_ROLLING_MILL -> AttributeSideConfig.ELECTRIC_MACHINE;
+                case RECYCLING, CNC_STAMPING, CNC_LATHING, CNC_ROLLING_MILL -> AttributeSideConfig.ELECTRIC_MACHINE;
                 case PLANTING_STATION -> AttributeSideConfig.ADVANCED_ELECTRIC_MACHINE;
             });
             builder.replace(new AttributeParticleFX().addDense(ParticleTypes.SMOKE, 5, rand -> new Pos3D(

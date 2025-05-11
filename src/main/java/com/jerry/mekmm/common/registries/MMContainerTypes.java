@@ -18,7 +18,7 @@ public class MMContainerTypes {
 
     public static final ContainerTypeRegistryObject<MekanismTileContainer<TileEntityRecycler>> RECYCLER = MM_CONTAINER_TYPES.register(MMBlocks.RECYCLER, TileEntityRecycler.class);
     public static final ContainerTypeRegistryObject<MekanismTileContainer<TileEntityPlantingStation>> PLANTING_STATION = MM_CONTAINER_TYPES.register(MMBlocks.PLANTING_STATION, TileEntityPlantingStation.class);
-    public static final ContainerTypeRegistryObject<MekanismTileContainer<TileEntityStamping>> CNC_STAMPER = MM_CONTAINER_TYPES.register(MMBlocks.CNC_STAMPER, TileEntityStamping.class);
+    public static final ContainerTypeRegistryObject<MekanismTileContainer<TileEntityStamper>> CNC_STAMPER = MM_CONTAINER_TYPES.register(MMBlocks.CNC_STAMPER, TileEntityStamper.class);
     public static final ContainerTypeRegistryObject<MekanismTileContainer<TileEntityLathe>> CNC_LATHE = MM_CONTAINER_TYPES.register(MMBlocks.CNC_LATHE, TileEntityLathe.class);
     public static final ContainerTypeRegistryObject<MekanismTileContainer<TileEntityRollingMill>> CNC_ROLLING_MILL = MM_CONTAINER_TYPES.register(MMBlocks.CNC_ROLLING_MILL, TileEntityRollingMill.class);
     public static final ContainerTypeRegistryObject<MekanismTileContainer<TileEntityReplicator>> REPLICATOR = MM_CONTAINER_TYPES.register(MMBlocks.REPLICATOR, TileEntityReplicator.class);

@@ -1,7 +1,7 @@
 package com.jerry.mekmm.common.tile.machine;
 
 import com.jerry.mekmm.client.recipe_viewer.MMRecipeViewerRecipeType;
-import com.jerry.mekmm.common.recipe.MMRecipeType;
+import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
 import com.jerry.mekmm.common.registries.MMBlocks;
 import mekanism.api.recipes.ItemStackToItemStackRecipe;
 import mekanism.client.recipe_viewer.type.IRecipeViewerRecipeType;
@@ -21,7 +21,7 @@ public class TileEntityLathe extends TileEntityElectricMachine {
 
     @Override
     public @NotNull IMekanismRecipeTypeProvider<?, ItemStackToItemStackRecipe, InputRecipeCache.SingleItem<ItemStackToItemStackRecipe>> getRecipeType() {
-        return MMRecipeType.LATHE;
+        return MoreMachineRecipeType.LATHING;
     }
 
     @Override

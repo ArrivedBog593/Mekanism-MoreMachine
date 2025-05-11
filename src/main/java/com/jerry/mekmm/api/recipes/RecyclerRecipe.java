@@ -73,7 +73,7 @@ public abstract class RecyclerRecipe extends MekanismRecipe<SingleRecipeInput> i
 
     @Override
     public final RecipeType<RecyclerRecipe> getType() {
-        return MMRecipeTypes.TYPE_RECYCLER.value();
+        return MoreMachineRecipeTypes.TYPE_RECYCLER.value();
     }
 
     @Override

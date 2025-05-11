@@ -26,7 +26,7 @@ public abstract class PlantingRecipe extends ItemStackChemicalToObjectRecipe<Pla
 
     @Override
     public RecipeType<?> getType() {
-        return MMRecipeTypes.TYPE_PLANTING.value();
+        return MoreMachineRecipeTypes.TYPE_PLANTING.value();
     }
 
     @Override

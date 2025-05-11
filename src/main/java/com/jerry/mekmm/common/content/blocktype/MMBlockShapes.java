@@ -43,7 +43,7 @@ public class MMBlockShapes {
 
     public static VoxelShape[] getShape(FactoryTier tier, MMFactoryType type) {
         return switch (type) {
-            case RECYCLER, PLANTING_STATION, CNC_STAMPER, CNC_LATHE, CNC_ROLLING_MILL -> RECYCLER_FACTORY;
+            case RECYCLING, PLANTING_STATION, CNC_STAMPING, CNC_LATHING, CNC_ROLLING_MILL -> RECYCLER_FACTORY;
         };
     }
 }

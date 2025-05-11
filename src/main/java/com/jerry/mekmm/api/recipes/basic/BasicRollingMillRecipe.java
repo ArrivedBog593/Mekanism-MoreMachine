@@ -1,8 +1,8 @@
 package com.jerry.mekmm.api.recipes.basic;
 
 import com.jerry.mekmm.Mekmm;
-import com.jerry.mekmm.api.recipes.MMRecipeSerializers;
-import com.jerry.mekmm.api.recipes.MMRecipeTypes;
+import com.jerry.mekmm.api.recipes.MoreMachineRecipeSerializers;
+import com.jerry.mekmm.api.recipes.MoreMachineRecipeTypes;
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.recipes.basic.BasicItemStackToItemStackRecipe;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
@@ -24,12 +24,12 @@ public class BasicRollingMillRecipe extends BasicItemStackToItemStackRecipe {
      * @param output     Output.
      */
     public BasicRollingMillRecipe(ItemStackIngredient input, ItemStack output) {
-        super(input, output, MMRecipeTypes.TYPE_ROLLING_MILL.value());
+        super(input, output, MoreMachineRecipeTypes.TYPE_ROLLING_MILL.value());
     }
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return MMRecipeSerializers.ROLLING_MILL.value();
+        return MoreMachineRecipeSerializers.ROLLING_MILL.value();
     }
 
     @Override

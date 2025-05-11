@@ -5,7 +5,7 @@ import com.jerry.mekmm.api.recipes.cache.MMTwoInputCachedRecipe;
 import com.jerry.mekmm.api.recipes.cache.MMItemStackConstantChemicalToObjectCachedRecipe;
 import com.jerry.mekmm.api.recipes.outputs.MMOutputHelper;
 import com.jerry.mekmm.client.recipe_viewer.MMRecipeViewerRecipeType;
-import com.jerry.mekmm.common.recipe.MMRecipeType;
+import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
 import com.jerry.mekmm.common.registries.MMBlocks;
 import mekanism.api.IContentsListener;
 import mekanism.api.SerializationConstants;
@@ -163,7 +163,7 @@ public class TileEntityPlantingStation extends TileEntityProgressMachine<Plantin
 
     @Override
     public @NotNull IMekanismRecipeTypeProvider<?, PlantingRecipe, InputRecipeCache.ItemChemical<PlantingRecipe>> getRecipeType() {
-        return MMRecipeType.PLANTING_STATION;
+        return MoreMachineRecipeType.PLANTING_STATION;
     }
 
     @Override

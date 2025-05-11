@@ -1,8 +1,7 @@
 package com.jerry.mekmm.common.tile.factory;
 
 import com.jerry.mekmm.client.recipe_viewer.MMRecipeViewerRecipeType;
-import com.jerry.mekmm.common.content.blocktype.MMFactoryType;
-import com.jerry.mekmm.common.recipe.MMRecipeType;
+import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
 import mekanism.api.inventory.IInventorySlot;
 import mekanism.api.math.MathUtils;
 import mekanism.api.recipes.ItemStackToItemStackRecipe;
@@ -29,7 +28,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Set;
 
-//Stamping, Lathe, Rolling_Mill
+//Lathe, Rolling_Mill
 public class MMTileEntityItemStackToItemStackFactory extends MMTileEntityItemToItemFactory<ItemStackToItemStackRecipe> implements
         ISingleRecipeLookupHandler.ItemRecipeLookupHandler<ItemStackToItemStackRecipe> {
 
@@ -78,18 +77,16 @@ public class MMTileEntityItemStackToItemStackFactory extends MMTileEntityItemToI
     @Override
     public IMekanismRecipeTypeProvider<SingleRecipeInput, ItemStackToItemStackRecipe, InputRecipeCache.SingleItem<ItemStackToItemStackRecipe>> getRecipeType() {
         return switch (type) {
-            case CNC_STAMPER -> MMRecipeType.STAMPING;
-            case CNC_LATHE -> MMRecipeType.LATHE;
+            case CNC_LATHING -> MoreMachineRecipeType.LATHING;
             //TODO: Make it so that it throws an error if it is not one of the three types
-            default -> MMRecipeType.ROLLING_MILL;
+            default -> MoreMachineRecipeType.ROLLING_MILL;
         };
     }
 
     @Override
     public IRecipeViewerRecipeType<ItemStackToItemStackRecipe> recipeViewerType() {
         return switch (type) {
-            case CNC_STAMPER -> MMRecipeViewerRecipeType.STAMPING;
-            case CNC_LATHE -> MMRecipeViewerRecipeType.LATHE;
+            case CNC_LATHING -> MMRecipeViewerRecipeType.LATHE;
             //TODO: Make it so that it throws an error if it is not one of the three types
             default -> MMRecipeViewerRecipeType.ROLLING_MILL;
         };

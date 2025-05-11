@@ -1,6 +1,6 @@
 package com.jerry.mekmm.api.recipes.basic;
 
-import com.jerry.mekmm.api.recipes.MMRecipeSerializers;
+import com.jerry.mekmm.api.recipes.MoreMachineRecipeSerializers;
 import com.jerry.mekmm.api.recipes.RecyclerRecipe;
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
@@ -68,7 +68,7 @@ public class BasicRecyclerRecipe extends RecyclerRecipe {
 
     @Override
     public RecipeSerializer<BasicRecyclerRecipe> getSerializer() {
-        return MMRecipeSerializers.RECYCLER.get();
+        return MoreMachineRecipeSerializers.RECYCLER.get();
     }
 
     /**

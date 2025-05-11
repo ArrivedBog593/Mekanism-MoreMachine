@@ -13,10 +13,10 @@ import java.util.function.Supplier;
 
 @NothingNullByDefault
 public enum MMFactoryType implements IHasTranslationKey.IHasEnumNameTranslationKey {
-    RECYCLER("recycling", MMLang.RECYCLING, () -> MMBlockTypes.RECYCLER, () -> MMBlocks.RECYCLER),
+    RECYCLING("recycling", MMLang.RECYCLING, () -> MMBlockTypes.RECYCLER, () -> MMBlocks.RECYCLER),
     PLANTING_STATION("planting", MMLang.PLANTING, () -> MMBlockTypes.PLANTING_STATION, () -> MMBlocks.PLANTING_STATION),
-    CNC_STAMPER("stamping", MMLang.STAMPING, () -> MMBlockTypes.CNC_STAMPER, () -> MMBlocks.CNC_STAMPER),
-    CNC_LATHE("lathing", MMLang.LATHING, () -> MMBlockTypes.CNC_LATHE, () -> MMBlocks.CNC_LATHE),
+    CNC_STAMPING("stamping", MMLang.STAMPING, () -> MMBlockTypes.CNC_STAMPER, () -> MMBlocks.CNC_STAMPER),
+    CNC_LATHING("lathing", MMLang.LATHING, () -> MMBlockTypes.CNC_LATHE, () -> MMBlocks.CNC_LATHE),
     CNC_ROLLING_MILL("rolling_mill", MMLang.ROLLING_MILL, () -> MMBlockTypes.CNC_ROLLING_MILL, () -> MMBlocks.CNC_ROLLING_MILL);
 
     private final String registryNameComponent;
