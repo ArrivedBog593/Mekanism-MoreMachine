@@ -3,6 +3,7 @@ package com.jerry.mekmm.client.gui.machine;
 import com.jerry.mekmm.client.gui.element.tab.MMGuiSortingTab;
 import com.jerry.mekmm.common.tile.factory.MMTileEntityFactory;
 import com.jerry.mekmm.common.tile.factory.TileEntityPlantingFactory;
+import com.jerry.mekmm.common.tile.factory.TileEntityReplicatingFactory;
 import mekanism.api.recipes.cache.CachedRecipe;
 import mekanism.client.gui.GuiConfigurableTile;
 import mekanism.client.gui.element.GuiDumpButton;
@@ -61,6 +62,12 @@ public class GuiMMFactory extends GuiConfigurableTile<MMTileEntityFactory<?>, Me
                         tile.tier == FactoryTier.ULTIMATE ? 172 : 138, 4, true))
                         .warning(WarningTracker.WarningType.NO_MATCHING_RECIPE, tile.getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_SECONDARY_INPUT, 0));
                 dumpButton = addRenderableWidget(new GuiDumpButton<>(this, (MMTileEntityFactory<?> & IHasDumpButton) tile, tile.tier == FactoryTier.ULTIMATE ? 182 : 148, 96));
+            }
+            if (tile instanceof TileEntityReplicatingFactory factory) {
+                addRenderableWidget(new GuiChemicalBar(this, GuiChemicalBar.getProvider(factory.getChemicalTank(), tile.getChemicalTanks(null)), 7, 76,
+                        tile.tier == FactoryTier.ULTIMATE ? 172 : 138, 4, true))
+                        .warning(WarningTracker.WarningType.NO_MATCHING_RECIPE, tile.getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_SECONDARY_INPUT, 0));
+                dumpButton = addRenderableWidget(new GuiDumpButton<>(this, (MMTileEntityFactory<?> & IHasDumpButton) tile, tile.tier == FactoryTier.ULTIMATE ? 182 : 148, 76));
             }
         }
 

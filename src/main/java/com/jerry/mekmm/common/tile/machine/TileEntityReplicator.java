@@ -8,7 +8,6 @@ import com.jerry.mekmm.common.recipe.impl.ReplicatorIRecipeSingle;
 import com.jerry.mekmm.common.registries.MMBlocks;
 import com.jerry.mekmm.common.registries.MMChemicals;
 import mekanism.api.IContentsListener;
-import mekanism.api.SerializationConstants;
 import mekanism.api.chemical.BasicChemicalTank;
 import mekanism.api.chemical.ChemicalStack;
 import mekanism.api.chemical.IChemicalTank;
@@ -27,12 +26,7 @@ import mekanism.common.capabilities.holder.energy.EnergyContainerHelper;
 import mekanism.common.capabilities.holder.energy.IEnergyContainerHolder;
 import mekanism.common.capabilities.holder.slot.IInventorySlotHolder;
 import mekanism.common.capabilities.holder.slot.InventorySlotHelper;
-import mekanism.common.integration.computer.annotation.ComputerMethod;
-import mekanism.common.integration.computer.computercraft.ComputerConstants;
-import mekanism.common.inventory.container.MekanismContainer;
 import mekanism.common.inventory.container.slot.SlotOverlay;
-import mekanism.common.inventory.container.sync.SyncableLong;
-import mekanism.common.inventory.container.sync.SyncableRegistryEntry;
 import mekanism.common.inventory.slot.EnergyInventorySlot;
 import mekanism.common.inventory.slot.InputInventorySlot;
 import mekanism.common.inventory.slot.OutputInventorySlot;
@@ -40,20 +34,13 @@ import mekanism.common.inventory.slot.chemical.ChemicalInventorySlot;
 import mekanism.common.inventory.warning.WarningTracker;
 import mekanism.common.lib.transmitter.TransmissionType;
 import mekanism.common.recipe.IMekanismRecipeTypeProvider;
-import mekanism.common.registries.MekanismDataComponents;
 import mekanism.common.tile.component.TileComponentEjector;
 import mekanism.common.tile.prefab.TileEntityProgressMachine;
-import mekanism.common.util.NBTUtils;
 import mekanism.common.util.RegistryUtils;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.component.DataComponentMap;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.NotNull;
@@ -93,9 +80,6 @@ public class TileEntityReplicator extends TileEntityProgressMachine<MMBasicItemS
     //气罐槽
     ChemicalInventorySlot chemicalSlot;
     EnergyInventorySlot energySlot;
-
-    private long clientEnergyUsed = 0L;
-    private Item inverseReplaceTarget = Items.AIR;
 
     public TileEntityReplicator(BlockPos pos, BlockState state) {
         super(MMBlocks.REPLICATOR, pos, state, TRACKED_ERROR_TYPES, BASE_TICKS_REQUIRED);
@@ -166,15 +150,6 @@ public class TileEntityReplicator extends TileEntityProgressMachine<MMBasicItemS
         return builder.build();
     }
 
-    public double getProcessRate() {
-        return (double) clientEnergyUsed / energyContainer.getEnergyPerTick();
-    }
-
-    @ComputerMethod(nameOverride = "getEnergyUsage", methodDescription = ComputerConstants.DESCRIPTION_GET_ENERGY_USAGE)
-    public long getEnergyUsed() {
-        return clientEnergyUsed;
-    }
-
     public static boolean isValidChemicalInput(ChemicalStack stack) {
         return stack.is(MMChemicals.UU_MATTER);
     }
@@ -192,59 +167,8 @@ public class TileEntityReplicator extends TileEntityProgressMachine<MMBasicItemS
         boolean sendUpdatePacket = super.onUpdateServer();
         energySlot.fillContainerOrConvert();
         chemicalSlot.fillTankOrConvert();
-        clientEnergyUsed = recipeCacheLookupMonitor.updateAndProcess(energyContainer);
+        recipeCacheLookupMonitor.updateAndProcess();
         return sendUpdatePacket;
-    }
-
-    public Item getInverseReplaceTarget() {
-        return inverseReplaceTarget;
-    }
-
-    public void setInverseReplaceTarget(Item target) {
-        if (target != inverseReplaceTarget) {
-            inverseReplaceTarget = target;
-            markForSave();
-        }
-    }
-
-    private boolean inverseReplaceTargetMatches(Item target) {
-        return inverseReplaceTarget != Items.AIR && inverseReplaceTarget == target;
-    }
-
-    @Override
-    public void writeSustainedData(HolderLookup.Provider provider, CompoundTag data) {
-        super.writeSustainedData(provider, data);
-        if (inverseReplaceTarget != Items.AIR) {
-            NBTUtils.writeRegistryEntry(data, SerializationConstants.REPLACE_TARGET, BuiltInRegistries.ITEM, inverseReplaceTarget);
-        }
-    }
-
-    @Override
-    public void readSustainedData(HolderLookup.Provider provider, CompoundTag data) {
-        super.readSustainedData(provider, data);
-        inverseReplaceTarget = NBTUtils.readRegistryEntry(data, SerializationConstants.REPLACE_TARGET, BuiltInRegistries.ITEM, Items.AIR);
-    }
-
-    @Override
-    protected void collectImplicitComponents(DataComponentMap.@NotNull Builder builder) {
-        super.collectImplicitComponents(builder);
-        builder.set(MekanismDataComponents.REPLACE_STACK, inverseReplaceTarget);
-    }
-
-    @Override
-    protected void applyImplicitComponents(@NotNull DataComponentInput input) {
-        super.applyImplicitComponents(input);
-        inverseReplaceTarget = input.getOrDefault(MekanismDataComponents.REPLACE_STACK, inverseReplaceTarget);
-    }
-
-    @Override
-    public void saveAdditional(@NotNull CompoundTag nbtTags, HolderLookup.@NotNull Provider provider) {
-        super.saveAdditional(nbtTags, provider);
-    }
-
-    @Override
-    public void loadAdditional(@NotNull CompoundTag nbt, HolderLookup.@NotNull Provider provider) {
-        super.loadAdditional(nbt, provider);
     }
 
     public @Nullable MachineEnergyContainer<TileEntityReplicator> getEnergyContainer() {
@@ -270,7 +194,8 @@ public class TileEntityReplicator extends TileEntityProgressMachine<MMBasicItemS
                 .setEnergyRequirements(energyContainer::getEnergyPerTick, energyContainer)
                 .setRequiredTicks(this::getTicksRequired)
                 .setOnFinish(this::markForSave)
-                .setOperatingTicksChanged(this::setOperatingTicks);
+                .setOperatingTicksChanged(this::setOperatingTicks)
+                .setBaselineMaxOperations(this::getOperationsPerTick);
     }
 
     @Override
@@ -295,12 +220,5 @@ public class TileEntityReplicator extends TileEntityProgressMachine<MMBasicItemS
             );
         }
         return null;
-    }
-
-    @Override
-    public void addContainerTrackers(MekanismContainer container) {
-        super.addContainerTrackers(container);
-        container.track(SyncableLong.create(this::getEnergyUsed, value -> clientEnergyUsed = value));
-        container.track(SyncableRegistryEntry.create(BuiltInRegistries.ITEM, this::getInverseReplaceTarget, value -> inverseReplaceTarget = value));
     }
 }

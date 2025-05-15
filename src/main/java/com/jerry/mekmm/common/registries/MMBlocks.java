@@ -12,6 +12,7 @@ import com.jerry.mekmm.common.item.block.ItemBlockDoll;
 import com.jerry.mekmm.common.item.block.machine.MMItemBlockFactory;
 import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
 import com.jerry.mekmm.common.tile.factory.MMTileEntityFactory;
+import com.jerry.mekmm.common.tile.factory.TileEntityReplicatingFactory;
 import com.jerry.mekmm.common.tile.machine.*;
 import com.jerry.mekmm.common.util.MMEnumUtils;
 import mekanism.api.tier.ITier;
@@ -32,7 +33,6 @@ import mekanism.common.registration.impl.BlockRegistryObject;
 import mekanism.common.registries.MekanismDataComponents;
 import mekanism.common.resource.BlockResourceInfo;
 import mekanism.common.tier.FactoryTier;
-import mekanism.common.tile.prefab.TileEntityAdvancedElectricMachine;
 import mekanism.common.util.EnumUtils;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -136,8 +136,8 @@ public class MMBlocks {
                     .build()
             ));
 
-    public static final BlockRegistryObject<BlockTile.BlockTileModel<TileEntityReplicator, Machine<TileEntityReplicator>>, ItemBlockTooltip<BlockTile.BlockTileModel<TileEntityReplicator, Machine<TileEntityReplicator>>>> REPLICATOR =
-            MM_BLOCKS.register("replicator", () -> new BlockTile.BlockTileModel<>(MMBlockTypes.REPLICATOR, properties -> properties.mapColor(MapColor.METAL)),
+    public static final BlockRegistryObject<MMBlockFactoryMachine<TileEntityReplicator, MMMachine.MMFactoryMachine<TileEntityReplicator>>, ItemBlockTooltip<MMBlockFactoryMachine<TileEntityReplicator, MMMachine.MMFactoryMachine<TileEntityReplicator>>>> REPLICATOR =
+            MM_BLOCKS.register("replicator", () -> new MMBlockFactoryMachine<>(MMBlockTypes.REPLICATOR, properties -> properties.mapColor(MapColor.METAL)),
                     (block, properties) -> new ItemBlockTooltip<>(block, true, properties
                             .component(MekanismDataComponents.EJECTOR, AttachedEjector.DEFAULT)
                             .component(MekanismDataComponents.SIDE_CONFIG, AttachedSideConfig.ADVANCED_MACHINE_INPUT_ONLY)
@@ -166,6 +166,7 @@ public class MMBlocks {
                 case CNC_STAMPING -> s -> MoreMachineRecipeType.STAMPING.getInputCache().containsInputA(null, s);
                 case CNC_LATHING -> s -> MoreMachineRecipeType.LATHING.getInputCache().containsInput(null, s);
                 case CNC_ROLLING_MILL -> s -> MoreMachineRecipeType.ROLLING_MILL.getInputCache().containsInput(null, s);
+                case REPLICATOR -> TileEntityReplicator::isValidItemInput;
             };
             switch (type.getMMFactoryType()) {
                 case CNC_STAMPING -> holder.addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
@@ -180,13 +181,13 @@ public class MMBlocks {
                         .build()
                 );
                 case RECYCLING -> holder.addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
-                        .addBasicFactorySlots(processes, recipeInputPredicate, true)
+                        .addBasicFactorySlots(processes, recipeInputPredicate)
                         .addEnergy()
                         .build()
                 );
                 case PLANTING_STATION -> holder
                         .addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> ChemicalTanksBuilder.builder()
-                                .addBasic(TileEntityAdvancedElectricMachine.MAX_GAS * processes, switch (type.getMMFactoryType()) {
+                                .addBasic(TileEntityPlantingStation.MAX_GAS * processes, switch (type.getMMFactoryType()) {
                                     case PLANTING_STATION -> MoreMachineRecipeType.PLANTING_STATION;
                                     default -> throw new IllegalStateException("Factory type doesn't have a known gas recipe.");
                                 }, InputRecipeCache.ItemChemical::containsInputB)
@@ -196,7 +197,16 @@ public class MMBlocks {
                                 .addChemicalFillOrConvertSlot(0)
                                 .addEnergy()
                                 .build()
-                        );
+                );
+                case REPLICATOR -> holder
+                        .addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> ChemicalTanksBuilder.builder()
+                                .addBasic(TileEntityPlantingStation.MAX_GAS * processes, TileEntityReplicatingFactory::isValidChemicalInput)
+                                .build()
+                        ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
+                                .addBasicFactorySlots(processes, recipeInputPredicate)
+                                .addEnergy()
+                                .build()
+                    );
             }
         });
         return factory;

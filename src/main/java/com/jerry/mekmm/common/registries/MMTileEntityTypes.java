@@ -33,11 +33,12 @@ public class MMTileEntityTypes {
 
     static {
         for (FactoryTier tier : EnumUtils.FACTORY_TIERS) {
-            registerFactory(tier, MMFactoryType.RECYCLING, TileEntityRecyclerFactory::new);
+            registerFactory(tier, MMFactoryType.RECYCLING, TileEntityRecyclingFactory::new);
             registerFactory(tier, MMFactoryType.PLANTING_STATION, TileEntityPlantingFactory::new);
             registerFactory(tier, MMFactoryType.CNC_STAMPING, TileEntityStampingFactory::new);
             registerFactory(tier, MMFactoryType.CNC_LATHING, MMTileEntityItemStackToItemStackFactory::new);
             registerFactory(tier, MMFactoryType.CNC_ROLLING_MILL, MMTileEntityItemStackToItemStackFactory::new);
+            registerFactory(tier, MMFactoryType.REPLICATOR, TileEntityReplicatingFactory::new);
 //            registerFactory(tier, FactoryType.COMBINING, TileEntityCombiningFactory::new);
 //            registerFactory(tier, FactoryType.COMPRESSING, TileEntityItemStackChemicalToItemStackFactory::new);
 //            registerFactory(tier, FactoryType.CRUSHING, TileEntityItemStackToItemStackFactory::new);
@@ -99,8 +100,8 @@ public class MMTileEntityTypes {
 
     public static final TileEntityTypeRegistryObject<TileEntityAmbientGasCollector> AMBIENT_GAS_COLLECTOR = MM_TILE_ENTITY_TYPES
             .mekBuilder(MMBlocks.AMBIENT_GAS_COLLECTOR, TileEntityAmbientGasCollector::new)
+            .clientTicker(TileEntityMekanism::tickClient)
             .serverTicker(TileEntityMekanism::tickServer)
-            .withSimple(Capabilities.CONFIG_CARD)
             .withSimple(Capabilities.CONFIGURABLE)
             .build();
 

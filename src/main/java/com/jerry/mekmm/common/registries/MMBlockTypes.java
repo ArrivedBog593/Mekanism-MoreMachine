@@ -81,8 +81,8 @@ public class MMBlockTypes {
             .build();
 
     // Replicator
-    public static final Machine<TileEntityReplicator> REPLICATOR = Machine.MachineBuilder
-            .createMachine(() -> MMTileEntityTypes.REPLICATOR, MekanismLang.DESCRIPTION_ANTIPROTONIC_NUCLEOSYNTHESIZER)
+    public static final MMMachine.MMFactoryMachine<TileEntityReplicator> REPLICATOR = MMMachine.MMMachineBuilder
+            .createMMFactoryMachine(() -> MMTileEntityTypes.REPLICATOR, MekanismLang.DESCRIPTION_ANTIPROTONIC_NUCLEOSYNTHESIZER, MMFactoryType.REPLICATOR)
             .withGui(() -> MMContainerTypes.REPLICATOR)
             .withEnergyConfig(MekanismConfig.usage.antiprotonicNucleosynthesizer, MekanismConfig.storage.antiprotonicNucleosynthesizer)
             .withSound(MekanismSounds.ANTIPROTONIC_NUCLEOSYNTHESIZER)

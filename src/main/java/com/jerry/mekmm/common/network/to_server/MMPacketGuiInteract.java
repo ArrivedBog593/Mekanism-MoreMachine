@@ -130,7 +130,7 @@ public class MMPacketGuiInteract implements IMekanismPacket {
     public enum MMGuiInteractionItem {
         DUPLICATOR_INVERSE_REPLACE_ITEM((tile, player, stack) -> {
             if (tile instanceof TileEntityReplicator duplicator) {
-                duplicator.setInverseReplaceTarget(stack.getItem());
+//                duplicator.setInverseReplaceTarget(stack.getItem());
             }
         });
 
