@@ -21,7 +21,7 @@ public class BasicRecyclerRecipe extends RecyclerRecipe {
 
     public BasicRecyclerRecipe(ItemStackIngredient input, ItemStack chanceOutput, double chance) {
         this.input = Objects.requireNonNull(input, "Input cannot be null.");
-        Objects.requireNonNull(chanceOutput, "Main output cannot be null.");
+        Objects.requireNonNull(chanceOutput, "Output cannot be null.");
         if (chanceOutput.isEmpty()) {
             throw new IllegalArgumentException("Output cannot be null.");
         }else if (chance < 0 || chance > 1) {
