@@ -7,6 +7,7 @@ import com.jerry.mekmm.api.recipes.outputs.MMOutputHelper;
 import com.jerry.mekmm.client.recipe_viewer.MMRecipeViewerRecipeType;
 import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
 import com.jerry.mekmm.common.registries.MMBlocks;
+import com.jerry.mekmm.common.upgrade.PlantingUpgradeData;
 import mekanism.api.IContentsListener;
 import mekanism.api.SerializationConstants;
 import mekanism.api.Upgrade;
@@ -40,9 +41,7 @@ import mekanism.common.recipe.lookup.IRecipeLookupHandler;
 import mekanism.common.recipe.lookup.cache.InputRecipeCache;
 import mekanism.common.tile.component.TileComponentEjector;
 import mekanism.common.tile.prefab.TileEntityProgressMachine;
-import mekanism.common.upgrade.IUpgradeData;
 import mekanism.common.util.MekanismUtils;
-import mekanism.common.util.StatUtils;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -74,13 +73,11 @@ public class TileEntityPlantingStation extends TileEntityProgressMachine<Plantin
 
     public static final long MAX_GAS = 210;
 
-    private long baseTotalUsage;
-
     //化学品存储槽
     public IChemicalTank chemicalTank;
 
-    private final ItemStackConstantChemicalToObjectCachedRecipe.ChemicalUsageMultiplier injectUsageMultiplier;
-    private double injectUsage = 1;
+    private final ItemStackConstantChemicalToObjectCachedRecipe.ChemicalUsageMultiplier chemicalUsageMultiplier;
+    private long baseTotalUsage;
     private long usedSoFar;
 
     private final IOutputHandler<PlantingRecipe.PlantingStationRecipeOutput> outputHandler;
@@ -112,7 +109,7 @@ public class TileEntityPlantingStation extends TileEntityProgressMachine<Plantin
         outputHandler = MMOutputHelper.getOutputHandler(mainOutputSlot, CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE, secondaryOutputSlot, NOT_ENOUGH_SPACE_SECONDARY_OUTPUT_ERROR);
 
         baseTotalUsage = baseTicksRequired;
-        injectUsageMultiplier = (usedSoFar, operatingTicks) -> StatUtils.inversePoisson(injectUsage);
+        chemicalUsageMultiplier = ItemStackConstantChemicalToObjectCachedRecipe.ChemicalUsageMultiplier.constantUse(() -> baseTotalUsage, this::getTicksRequired);
     }
 
     @NotNull
@@ -180,7 +177,7 @@ public class TileEntityPlantingStation extends TileEntityProgressMachine<Plantin
     public @NotNull CachedRecipe<PlantingRecipe> createNewCachedRecipe(@NotNull PlantingRecipe recipe, int cacheIndex) {
         CachedRecipe<PlantingRecipe> cachedRecipe;
         if (recipe.perTickUsage()) {
-            cachedRecipe = MMItemStackConstantChemicalToObjectCachedRecipe.planting(recipe, recheckAllRecipeErrors, itemInputHandler, chemicalInputHandler, injectUsageMultiplier,
+            cachedRecipe = MMItemStackConstantChemicalToObjectCachedRecipe.planting(recipe, recheckAllRecipeErrors, itemInputHandler, chemicalInputHandler, chemicalUsageMultiplier,
                     used -> usedSoFar = used, outputHandler);
         } else {
             cachedRecipe = MMTwoInputCachedRecipe.planting(recipe, recheckAllRecipeErrors, itemInputHandler, chemicalInputHandler, outputHandler);
@@ -199,16 +196,15 @@ public class TileEntityPlantingStation extends TileEntityProgressMachine<Plantin
     @Override
     public void recalculateUpgrades(Upgrade upgrade) {
         super.recalculateUpgrades(upgrade);
-        if (upgrade == Upgrade.CHEMICAL || upgrade == Upgrade.SPEED) {
-            injectUsage = MekanismUtils.getGasPerTickMeanMultiplier(this);
-        } else {
+        if (upgrade == Upgrade.SPEED || (upgrade == Upgrade.CHEMICAL && supportsUpgrade(Upgrade.CHEMICAL))) {
             baseTotalUsage = MekanismUtils.getBaseUsage(this, baseTicksRequired);
         }
     }
 
     @Override
-    public @Nullable IUpgradeData getUpgradeData(HolderLookup.Provider provider) {
-        return super.getUpgradeData(provider);
+    public @NotNull PlantingUpgradeData getUpgradeData(HolderLookup.Provider provider) {
+        return new PlantingUpgradeData(provider, redstone, getControlType(), getEnergyContainer(), getOperatingTicks(), usedSoFar, chemicalTank, energySlot, chemicalSlot, inputSlot,
+                mainOutputSlot, secondaryOutputSlot, getComponents());
     }
 
     public MachineEnergyContainer<TileEntityPlantingStation> getEnergyContainer() {

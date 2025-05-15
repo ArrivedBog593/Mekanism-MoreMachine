@@ -8,6 +8,7 @@ import com.jerry.mekmm.client.recipe_viewer.MMRecipeViewerRecipeType;
 import com.jerry.mekmm.common.inventory.slot.MMFactoryInputInventorySlot;
 import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
 import com.jerry.mekmm.common.tile.machine.TileEntityPlantingStation;
+import com.jerry.mekmm.common.upgrade.PlantingUpgradeData;
 import mekanism.api.IContentsListener;
 import mekanism.api.SerializationConstants;
 import mekanism.api.Upgrade;
@@ -39,12 +40,9 @@ import mekanism.common.recipe.lookup.cache.InputRecipeCache;
 import mekanism.common.recipe.lookup.monitor.FactoryRecipeCacheLookupMonitor;
 import mekanism.common.tier.FactoryTier;
 import mekanism.common.tile.interfaces.IHasDumpButton;
-import mekanism.common.tile.prefab.TileEntityAdvancedElectricMachine;
-import mekanism.common.upgrade.AdvancedMachineUpgradeData;
 import mekanism.common.upgrade.IUpgradeData;
 import mekanism.common.util.InventoryUtils;
 import mekanism.common.util.MekanismUtils;
-import mekanism.common.util.StatUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -83,14 +81,13 @@ public class TileEntityPlantingFactory extends MMTileEntityFactory<PlantingRecip
     private final ILongInputHandler<@NotNull ChemicalStack> chemicalInputHandler;
     private IOutputHandler<PlantingRecipe.PlantingStationRecipeOutput>[] outputHandlers;
 
-    ChemicalInventorySlot extraSlot;
+    ChemicalInventorySlot chemicalSlot;
 
     IChemicalTank chemicalTank;
 
     private final ItemStackConstantChemicalToObjectCachedRecipe.ChemicalUsageMultiplier chemicalUsageMultiplier;
+    private long baseTotalUsage;
     private final long[] usedSoFar;
-    private double chemicalPerTickMeanMultiplier = 1;
-//    private long baseTotalUsage;
 
     public TileEntityPlantingFactory(Holder<Block> blockProvider, BlockPos pos, BlockState state) {
         super(blockProvider, pos, state, TRACKED_ERROR_TYPES, GLOBAL_ERROR_TYPES);
@@ -98,16 +95,15 @@ public class TileEntityPlantingFactory extends MMTileEntityFactory<PlantingRecip
 
         chemicalInputHandler = InputHelper.getConstantInputHandler(chemicalTank);
 
-//        baseTotalUsage = BASE_TICKS_REQUIRED;
+        baseTotalUsage = BASE_TICKS_REQUIRED;
         usedSoFar = new long[tier.processes];
-
-        chemicalUsageMultiplier = (usedSoFar, operatingTicks) -> StatUtils.inversePoisson(chemicalPerTickMeanMultiplier);
+        chemicalUsageMultiplier = ItemStackConstantChemicalToObjectCachedRecipe.ChemicalUsageMultiplier.constantUse(() -> baseTotalUsage, this::getTicksRequired);
     }
 
     @Override
     public @Nullable IChemicalTankHolder getInitialChemicalTanks(IContentsListener listener) {
         ChemicalTankHelper builder = ChemicalTankHelper.forSideWithConfig(this);
-        chemicalTank = BasicChemicalTank.createModern(TileEntityAdvancedElectricMachine.MAX_GAS * tier.processes, this::containsRecipeB, markAllMonitorsChanged(listener));
+        chemicalTank = BasicChemicalTank.createModern(TileEntityPlantingStation.MAX_GAS * tier.processes, this::containsRecipeB, markAllMonitorsChanged(listener));
         builder.addTank(chemicalTank);
         return builder.build();
     }
@@ -140,17 +136,17 @@ public class TileEntityPlantingFactory extends MMTileEntityFactory<PlantingRecip
                     TileEntityPlantingStation.NOT_ENOUGH_SPACE_SECONDARY_OUTPUT_ERROR);
             processInfoSlots[i] = new ProcessInfo(i, inputSlot, outputSlot, secondaryOutputSlot);
         }
-        builder.addSlot(extraSlot = ChemicalInventorySlot.fillOrConvert(chemicalTank, this::getLevel, listener, 7, 77));
+        builder.addSlot(chemicalSlot = ChemicalInventorySlot.fillOrConvert(chemicalTank, this::getLevel, listener, 7, 77));
     }
 
     public IChemicalTank getChemicalTank() {
         return chemicalTank;
     }
 
-    @Override
     @Nullable
+    @Override
     public ChemicalInventorySlot getExtraSlot() {
-        return extraSlot;
+        return chemicalSlot;
     }
 
     @Override
@@ -205,7 +201,7 @@ public class TileEntityPlantingFactory extends MMTileEntityFactory<PlantingRecip
 
     @Override
     protected void handleSecondaryFuel() {
-        extraSlot.fillTankOrConvert();
+        chemicalSlot.fillTankOrConvert();
     }
 
     @Override
@@ -259,18 +255,18 @@ public class TileEntityPlantingFactory extends MMTileEntityFactory<PlantingRecip
     public void recalculateUpgrades(Upgrade upgrade) {
         super.recalculateUpgrades(upgrade);
         if (upgrade == Upgrade.SPEED || upgrade == Upgrade.CHEMICAL && supportsUpgrade(Upgrade.CHEMICAL)) {
-            chemicalPerTickMeanMultiplier = MekanismUtils.getGasPerTickMeanMultiplier(this);
+            baseTotalUsage = MekanismUtils.getBaseUsage(this, BASE_TICKS_REQUIRED);
         }
     }
 
     @Override
     public void parseUpgradeData(HolderLookup.Provider provider, @NotNull IUpgradeData upgradeData) {
-        if (upgradeData instanceof AdvancedMachineUpgradeData data) {
+        if (upgradeData instanceof PlantingUpgradeData data) {
             //Generic factory upgrade data handling
             super.parseUpgradeData(provider, upgradeData);
             //Copy the contents using NBT so that if it is not actually valid due to a reload we don't crash
             chemicalTank.deserializeNBT(provider, data.stored.serializeNBT(provider));
-            extraSlot.deserializeNBT(provider, data.chemicalSlot.serializeNBT(provider));
+            chemicalSlot.deserializeNBT(provider, data.chemicalSlot.serializeNBT(provider));
             System.arraycopy(data.usedSoFar, 0, usedSoFar, 0, data.usedSoFar.length);
         } else {
             Mekanism.logger.warn("Unhandled upgrade data.", new Throwable());
@@ -279,8 +275,8 @@ public class TileEntityPlantingFactory extends MMTileEntityFactory<PlantingRecip
 
     @NotNull
     @Override
-    public AdvancedMachineUpgradeData getUpgradeData(HolderLookup.Provider provider) {
-        return new AdvancedMachineUpgradeData(provider, redstone, getControlType(), getEnergyContainer(), progress, usedSoFar, chemicalTank, extraSlot, energySlot,
+    public PlantingUpgradeData getUpgradeData(HolderLookup.Provider provider) {
+        return new PlantingUpgradeData(provider, redstone, getControlType(), getEnergyContainer(), progress, usedSoFar, chemicalTank, energySlot, chemicalSlot,
                 inputSlots, outputSlots, isSorting(), getComponents());
     }
 

@@ -1,6 +1,7 @@
 package com.jerry.mekmm.client.recipe_viewer.jei.machine;
 
 import com.jerry.mekmm.api.recipes.PlantingRecipe;
+import com.jerry.mekmm.common.tile.machine.TileEntityPlantingStation;
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.chemical.ChemicalStack;
 import mekanism.api.functions.ConstantPredicates;
@@ -14,7 +15,6 @@ import mekanism.client.recipe_viewer.RecipeViewerUtils;
 import mekanism.client.recipe_viewer.jei.HolderRecipeCategory;
 import mekanism.client.recipe_viewer.type.IRecipeViewerRecipeType;
 import mekanism.common.inventory.container.slot.SlotOverlay;
-import mekanism.common.tile.prefab.TileEntityAdvancedElectricMachine;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
@@ -51,7 +51,7 @@ public class PlantingRecipeCategory extends HolderRecipeCategory<PlantingRecipe>
         List<ChemicalStack> scaledChemicals = recipe.getChemicalInput().getRepresentations();
         if (recipe.perTickUsage()) {
             scaledChemicals = scaledChemicals.stream()
-                    .map(chemical -> chemical.copyWithAmount(chemical.getAmount() * TileEntityAdvancedElectricMachine.BASE_TICKS_REQUIRED))
+                    .map(chemical -> chemical.copyWithAmount(chemical.getAmount() * TileEntityPlantingStation.BASE_TICKS_REQUIRED))
                     .toList();
         }
         initChemical(builder, RecipeIngredientRole.INPUT, chemicalInput, scaledChemicals);
