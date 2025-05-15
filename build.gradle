@@ -11,6 +11,12 @@ group = mod_group_id
 repositories {
     mavenLocal()
     maven { url 'https://modmaven.dev/' }
+    maven {
+        url "https://maven.squiddev.cc"
+        content {
+            includeGroup("cc.tweaked")
+        }
+    }
 }
 
 base {
@@ -103,6 +109,8 @@ dependencies {
     runtimeOnly "mekanism:Mekanism:${mekanism_version}:additions"
     implementation "mekanism:Mekanism:${mekanism_version}:generators"
     runtimeOnly "mekanism:Mekanism:${mekanism_version}:tools"
+
+    compileOnly("cc.tweaked:cc-tweaked-${minecraft_version}-forge-api:${cc_tweaked_version}")
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
