@@ -7,6 +7,7 @@ import com.jerry.mekmm.common.config.MMConfig;
 import com.jerry.mekmm.common.recipe.impl.ReplicatorIRecipeSingle;
 import com.jerry.mekmm.common.registries.MMBlocks;
 import com.jerry.mekmm.common.registries.MMChemicals;
+import com.jerry.mekmm.common.util.MMUtils;
 import mekanism.api.IContentsListener;
 import mekanism.api.chemical.BasicChemicalTank;
 import mekanism.api.chemical.ChemicalStack;
@@ -41,6 +42,7 @@ import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.NotNull;
@@ -220,5 +222,10 @@ public class TileEntityReplicator extends TileEntityProgressMachine<MMBasicItemS
             );
         }
         return null;
+    }
+
+    @Override
+    public boolean isConfigurationDataCompatible(Block type) {
+        return super.isConfigurationDataCompatible(type) || MMUtils.isSameMMTypeFactory(getBlockHolder(), type);
     }
 }

@@ -11,6 +11,7 @@ import mekanism.api.chemical.BasicChemicalTank;
 import mekanism.api.chemical.ChemicalStack;
 import mekanism.api.chemical.IChemicalTank;
 import mekanism.api.inventory.IInventorySlot;
+import mekanism.api.math.MathUtils;
 import mekanism.api.recipes.cache.CachedRecipe;
 import mekanism.api.recipes.ingredients.creator.IngredientCreatorAccess;
 import mekanism.api.recipes.inputs.ILongInputHandler;
@@ -125,7 +126,7 @@ public class TileEntityReplicatingFactory extends MMTileEntityItemToItemFactory<
 
     @Override
     protected boolean isCachedRecipeValid(@Nullable CachedRecipe<MMBasicItemStackChemicalToItemStackRecipe> cached, @NotNull ItemStack stack) {
-        return isValidChemicalInput(chemicalTank.getStack());
+        return cached != null && isValidChemicalInput(chemicalTank.getStack());
     }
 
     @Override
@@ -140,13 +141,7 @@ public class TileEntityReplicatingFactory extends MMTileEntityItemToItemFactory<
 
     @Override
     protected int getNeededInput(MMBasicItemStackChemicalToItemStackRecipe recipe, ItemStack inputStack) {
-        if (inputStack.isEmpty()) {
-            return 0;
-        }
-        if (customRecipeMap != null) {
-            return customRecipeMap.getOrDefault(RegistryUtils.getName(inputStack.getItemHolder()).toString(), 0);
-        }
-        return 0;
+        return MathUtils.clampToInt(recipe.getItemInput().getNeededAmount(inputStack));
     }
 
     @Override

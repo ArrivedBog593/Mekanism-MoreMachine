@@ -6,7 +6,6 @@ import com.jerry.mekmm.common.inventory.slot.MMFactoryInputInventorySlot;
 import com.jerry.mekmm.common.util.MMUtils;
 import it.unimi.dsi.fastutil.ints.IntArraySet;
 import it.unimi.dsi.fastutil.ints.IntSet;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenCustomHashMap;
 import mekanism.api.Action;
 import mekanism.api.IContentsListener;
 import mekanism.api.SerializationConstants;
@@ -58,10 +57,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemStackLinkedSet;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.common.util.ItemStackMap;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -523,39 +522,57 @@ public abstract class MMTileEntityFactory<RECIPE extends MekanismRecipe<?>> exte
     //End methods IComputerTile
 
     private void sortInventory() {
-        Map<ItemStack, RecipeProcessInfo<RECIPE>> processes = new Object2ObjectOpenCustomHashMap<>(ItemStackLinkedSet.TYPE_AND_TAG);
+        Map<ItemStack, RecipeProcessInfo<RECIPE>> processes = ItemStackMap.createTypeAndTagMap();
         List<ProcessInfo> emptyProcesses = new ArrayList<>();
+        // 遍历processInfoSlots
         for (ProcessInfo processInfo : processInfoSlots) {
+            // 获取每个输入槽
             IInventorySlot inputSlot = processInfo.inputSlot();
+            // 如果输入槽为空
             if (inputSlot.isEmpty()) {
+                // 则添加到emptyProcesses
                 emptyProcesses.add(processInfo);
             } else {
+                // 如果不为空，获取该输入槽内的物品
                 ItemStack inputStack = inputSlot.getStack();
+                // 如果processes中没有这个物品记录（第一个被记录有物品的槽位，或多个不同的物品），则添加这个物品的键和默认值
                 RecipeProcessInfo<RECIPE> recipeProcessInfo = processes.computeIfAbsent(inputStack, i -> new RecipeProcessInfo<>());
+                // 将不为空的processInfoSlots[i]添加到RecipeProcessInfo.processes中
                 recipeProcessInfo.processes.add(processInfo);
+                // 计算该堆栈的物品总数
                 recipeProcessInfo.totalCount += inputStack.getCount();
+                // 如果lazyMinPerSlot尚未初始化，并且配方缓存未被刷新，则尝试从缓存中获取配方。
                 if (recipeProcessInfo.lazyMinPerSlot == null && !CommonWorldTickHandler.flushTagAndRecipeCaches) {
-                    //If we don't have a lazily initialized min per slot calculation set for it yet
+                    // If we don't have a lazily initialized min per slot calculation set for it yet
                     // and our cache is not invalid/out of date due to a reload
+                    // 获得每个线程的cachedRecipe
                     CachedRecipe<RECIPE> cachedRecipe = getCachedRecipe(processInfo.process());
+                    // 验证配方是否正确
                     if (isCachedRecipeValid(cachedRecipe, inputStack)) {
+                        // 赋值
                         recipeProcessInfo.item = inputStack;
                         recipeProcessInfo.recipe = cachedRecipe.getRecipe();
                         // And our current process has a cached recipe then set the lazily initialized per slot value
                         // Note: If something goes wrong, and we end up with zero as how much we need as an input
                         // we just bump the value up to one to make sure we properly handle it
+                        // 这是一个延迟初始化的函数，用于计算每槽所需的最小输入数量（参考HDPE的富集）
                         recipeProcessInfo.lazyMinPerSlot = (info, factory) -> factory.getNeededInput(info.recipe, (ItemStack) info.item);
                     }
                 }
             }
         }
+        // 如果所有槽位为空，则返回不做处理
         if (processes.isEmpty()) {
             //If all input slots are empty, just exit
             return;
         }
+        // 遍历每个键值对
         for (Entry<ItemStack, RecipeProcessInfo<RECIPE>> entry : processes.entrySet()) {
+            // 获取值
             RecipeProcessInfo<RECIPE> recipeProcessInfo = entry.getValue();
+            // 如果lazyMinPerSlot为空
             if (recipeProcessInfo.lazyMinPerSlot == null) {
+                // 则获取对应键
                 recipeProcessInfo.item = entry.getKey();
                 //If we don't have a lazy initializer for our minPerSlot setup, that means that there is
                 // no valid cached recipe for any of the slots of this type currently, so we want to try and
@@ -576,10 +593,12 @@ public abstract class MMTileEntityFactory<RECIPE extends MekanismRecipe<?>> exte
                 };
             }
         }
+        // 如果记录空槽位的List不为空
         if (!emptyProcesses.isEmpty()) {
-            //If we have any empty slots, we need to factor them in as valid slots for items to transferred to
+            // If we have any empty slots, we need to factor them in as valid slots for items to transferred to
+            // 如果我们有任何空槽，我们需要将它们作为要转移到的项目的有效槽
             addEmptySlotsAsTargets(processes, emptyProcesses);
-            //Note: Any remaining empty slots are "ignored" as we don't have any
+            // Note: Any remaining empty slots are "ignored" as we don't have any
             // spare items to distribute to them
         }
         //Distribute items among the slots
@@ -588,21 +607,28 @@ public abstract class MMTileEntityFactory<RECIPE extends MekanismRecipe<?>> exte
 
     private void addEmptySlotsAsTargets(Map<ItemStack, RecipeProcessInfo<RECIPE>> processes, List<ProcessInfo> emptyProcesses) {
         for (Entry<ItemStack, RecipeProcessInfo<RECIPE>> entry : processes.entrySet()) {
+            // 获取有物品槽位的物品数量
             RecipeProcessInfo<RECIPE> recipeProcessInfo = entry.getValue();
+            // 获取minPerSlot（一般为1，富集聚聚乙烯为3）
             int minPerSlot = recipeProcessInfo.getMinPerSlot(this);
+            // 需要的最大槽数
             int maxSlots = recipeProcessInfo.totalCount / minPerSlot;
+            // 如果一份都做不来了
             if (maxSlots <= 1) {
                 //If we don't have enough to even fill the input for a slot for a single recipe; skip
                 continue;
             }
             //Otherwise, if we have at least enough items for two slots see how many we already have with items in them
+            // 获取工厂非空槽的数量
             int processCount = recipeProcessInfo.processes.size();
+            // 如果需要的最大槽数小于工厂非空槽的数量
             if (maxSlots <= processCount) {
                 //If we don't have enough extra to fill another slot skip
                 continue;
             }
             //Note: This is some arbitrary input stack one of the stacks contained
             ItemStack sourceStack = entry.getKey();
+            // 有多少需要被添加到到空槽位
             int emptyToAdd = maxSlots - processCount;
             int added = 0;
             List<ProcessInfo> toRemove = new ArrayList<>();
@@ -645,8 +671,11 @@ public abstract class MMTileEntityFactory<RECIPE extends MekanismRecipe<?>> exte
                 //If all the slots are already maxed out; short-circuit, no balancing is needed
                 continue;
             }
+            // 平分后剩余多少
             int remainder = recipeProcessInfo.totalCount % processCount;
+            // 执行配方的最小所需物品数
             int minPerSlot = recipeProcessInfo.getMinPerSlot(this);
+            // 针对聚乙烯等配方进行二次平分
             if (minPerSlot > 1) {
                 int perSlotRemainder = numberPerSlot % minPerSlot;
                 if (perSlotRemainder > 0) {
