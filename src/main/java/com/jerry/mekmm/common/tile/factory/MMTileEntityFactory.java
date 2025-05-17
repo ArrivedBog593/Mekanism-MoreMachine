@@ -208,7 +208,7 @@ public abstract class MMTileEntityFactory<RECIPE extends MekanismRecipe<?>> exte
         return null;
     }
 
-    public MMFactoryType getFactoryType() {
+    public MMFactoryType getMMFactoryType() {
         return type;
     }
 

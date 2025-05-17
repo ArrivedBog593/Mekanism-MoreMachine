@@ -1,5 +1,6 @@
 package com.jerry.mekmm.common.content.blocktype;
 
+import com.jerry.mekaf.common.content.blocktype.AdvancedFactoryType;
 import mekanism.common.tier.FactoryTier;
 import mekanism.common.util.EnumUtils;
 import mekanism.common.util.VoxelShapeUtils;
@@ -44,6 +45,12 @@ public class MMBlockShapes {
     public static VoxelShape[] getShape(FactoryTier tier, MMFactoryType type) {
         return switch (type) {
             case RECYCLING, PLANTING_STATION, CNC_STAMPING, CNC_LATHING, CNC_ROLLING_MILL, REPLICATOR -> RECYCLER_FACTORY;
+        };
+    }
+
+    public static VoxelShape[] getShape(FactoryTier tier, AdvancedFactoryType type) {
+        return switch (type) {
+            case OXIDIZING -> RECYCLER_FACTORY;
         };
     }
 }

@@ -1,5 +1,8 @@
 package com.jerry.mekmm.common.content.blocktype;
 
+import com.jerry.mekaf.common.content.blocktype.AdvancedFactoryType;
+import com.jerry.mekaf.common.block.attribute.AdvancedAttributeFactoryType;
+import com.jerry.mekaf.common.registries.AFBlocks;
 import com.jerry.mekmm.common.block.attribute.MMAttributeFactoryType;
 import com.jerry.mekmm.common.registries.MMBlocks;
 import mekanism.api.text.ILangEntry;
@@ -33,8 +36,17 @@ public class MMMachine<TILE extends TileEntityMekanism> extends BlockTypeTile<TI
             add(new MMAttributeFactoryType(factoryType), new AttributeUpgradeable(() -> MMBlocks.getFactory(FactoryTier.BASIC, getMMFactoryType())));
         }
 
+        public MMFactoryMachine(Supplier<TileEntityTypeRegistryObject<TILE>> tileEntitySupplier, ILangEntry description, AdvancedFactoryType factoryType) {
+            super(tileEntitySupplier, description);
+            add(new AdvancedAttributeFactoryType(factoryType), new AttributeUpgradeable(() -> AFBlocks.getAdvancedFactory(FactoryTier.BASIC, getAdvancedFactoryType())));
+        }
+
         public MMFactoryType getMMFactoryType() {
             return Objects.requireNonNull(get(MMAttributeFactoryType.class)).getMMFactoryType();
+        }
+
+        public AdvancedFactoryType getAdvancedFactoryType() {
+            return Objects.requireNonNull(get(AdvancedAttributeFactoryType.class)).getAdvancedFactoryType();
         }
     }
 
@@ -51,6 +63,11 @@ public class MMMachine<TILE extends TileEntityMekanism> extends BlockTypeTile<TI
 
         public static <TILE extends TileEntityMekanism> MMMachineBuilder<MMFactoryMachine<TILE>, TILE, ?> createMMFactoryMachine(Supplier<TileEntityTypeRegistryObject<TILE>> tileEntityRegistrar,
                                                                                                                                            ILangEntry description, MMFactoryType factoryType) {
+            return new MMMachineBuilder<>(new MMFactoryMachine<>(tileEntityRegistrar, description, factoryType));
+        }
+
+        public static <TILE extends TileEntityMekanism> MMMachineBuilder<MMFactoryMachine<TILE>, TILE, ?> createAdvancedFactoryMachine(Supplier<TileEntityTypeRegistryObject<TILE>> tileEntityRegistrar,
+                                                                                                                                 ILangEntry description, AdvancedFactoryType factoryType) {
             return new MMMachineBuilder<>(new MMFactoryMachine<>(tileEntityRegistrar, description, factoryType));
         }
     }

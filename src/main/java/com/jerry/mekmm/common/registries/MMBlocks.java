@@ -170,21 +170,21 @@ public class MMBlocks {
             };
             switch (type.getMMFactoryType()) {
                 case CNC_STAMPING -> holder.addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
-                        .addBasicFactorySlots(processes, recipeInputPredicate)
-                        .addInput(MekanismRecipeType.COMBINING, InputRecipeCache.DoubleItem::containsInputB)
-                        .addEnergy()
-                        .build()
-                );
+                                .addBasicFactorySlots(processes, recipeInputPredicate)
+                                .addInput(MekanismRecipeType.COMBINING, InputRecipeCache.DoubleItem::containsInputB)
+                                .addEnergy()
+                                .build()
+                        );
                 case CNC_LATHING, CNC_ROLLING_MILL -> holder.addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
-                        .addBasicFactorySlots(processes, recipeInputPredicate)
-                        .addEnergy()
-                        .build()
-                );
+                                .addBasicFactorySlots(processes, recipeInputPredicate)
+                                .addEnergy()
+                                .build()
+                        );
                 case RECYCLING -> holder.addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
-                        .addBasicFactorySlots(processes, recipeInputPredicate)
-                        .addEnergy()
-                        .build()
-                );
+                                .addBasicFactorySlots(processes, recipeInputPredicate)
+                                .addEnergy()
+                                .build()
+                        );
                 case PLANTING_STATION -> holder
                         .addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> ChemicalTanksBuilder.builder()
                                 .addBasic(TileEntityPlantingStation.MAX_GAS * processes, switch (type.getMMFactoryType()) {
@@ -198,15 +198,14 @@ public class MMBlocks {
                                 .addEnergy()
                                 .build()
                 );
-                case REPLICATOR -> holder
-                        .addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> ChemicalTanksBuilder.builder()
+                case REPLICATOR -> holder.addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> ChemicalTanksBuilder.builder()
                                 .addBasic(TileEntityPlantingStation.MAX_GAS * processes, TileEntityReplicatingFactory::isValidChemicalInput)
                                 .build()
                         ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
                                 .addBasicFactorySlots(processes, recipeInputPredicate)
                                 .addEnergy()
                                 .build()
-                    );
+                        );
             }
         });
         return factory;

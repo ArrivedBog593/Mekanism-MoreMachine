@@ -1,0 +1,23 @@
+package com.jerry.mekmm.common.inventory.slot;
+
+import com.jerry.mekaf.common.tile.factory.TileEntityOxidizingFactory;
+import mekanism.api.IContentsListener;
+import mekanism.api.chemical.IChemicalTank;
+import mekanism.common.inventory.slot.InputInventorySlot;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Objects;
+
+public class AdvancedFactoryInputInventorySlot extends InputInventorySlot {
+
+    public static AdvancedFactoryInputInventorySlot create(TileEntityOxidizingFactory factory, int process, IChemicalTank outputTank, @Nullable IContentsListener listener, int x, int y) {
+        Objects.requireNonNull(factory, "Factory cannot be null");
+        Objects.requireNonNull(outputTank, "Primary output slot cannot be null");
+        return new AdvancedFactoryInputInventorySlot(factory, process, outputTank, listener, x, y);
+    }
+
+    private AdvancedFactoryInputInventorySlot(TileEntityOxidizingFactory factory, int process, IChemicalTank outputTank, @Nullable IContentsListener listener, int x, int y) {
+        super(stack -> factory.isItemValidForSlot(stack) && factory.inputProducesOutput(process, stack, outputTank, false),
+                factory::isValidInputItem, listener, x, y);
+    }
+}

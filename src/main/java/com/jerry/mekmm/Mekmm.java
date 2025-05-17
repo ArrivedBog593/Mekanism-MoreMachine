@@ -1,5 +1,8 @@
 package com.jerry.mekmm;
 
+import com.jerry.mekaf.common.registries.AFBlocks;
+import com.jerry.mekaf.common.registries.AFContainerTypes;
+import com.jerry.mekaf.common.registries.AFTileEntityTypes;
 import com.jerry.mekmm.common.config.MMConfig;
 import com.jerry.mekmm.common.network.MMPacketHandler;
 import com.jerry.mekmm.common.registries.*;
@@ -39,6 +42,7 @@ public class Mekmm {
         MMCreativeTabs.MM_CREATIVE_TABS.register(modEventBus);
         // LargeMachine相关的注册
 //        LMConfig.registerConfigs(modContainer);
+        registerAdvancedFactory(modEventBus);
 
         packetHandler = new MMPacketHandler(modEventBus, versionNumber);
     }
@@ -49,5 +53,11 @@ public class Mekmm {
 
     public static ResourceLocation rl(String path) {
         return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
+    }
+
+    private void registerAdvancedFactory(IEventBus modEventBus) {
+        AFBlocks.AF_BLOCKS.register(modEventBus);
+        AFTileEntityTypes.AF_TILE_ENTITY_TYPES.register(modEventBus);
+        AFContainerTypes.AF_CONTAINER_TYPES.register(modEventBus);
     }
 }

@@ -1,5 +1,7 @@
 package com.jerry.mekmm.client;
 
+import com.jerry.mekaf.client.gui.machine.GuiAdvancedFactory;
+import com.jerry.mekaf.common.registries.AFContainerTypes;
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.client.gui.machine.*;
 import com.jerry.mekmm.common.registries.MMContainerTypes;
@@ -23,5 +25,6 @@ public class MMClientRegistration {
         ClientRegistrationUtil.registerScreen(event, MMContainerTypes.AMBIENT_GAS_COLLECTOR, GuiAmbientGasCollector::new);
 
         ClientRegistrationUtil.registerScreen(event, MMContainerTypes.MM_FACTORY, GuiMMFactory::new);
+        ClientRegistrationUtil.registerScreen(event, AFContainerTypes.ADVANCED_FACTORY, GuiAdvancedFactory::new);
     }
 }
