@@ -8,12 +8,14 @@ import com.jerry.mekmm.common.content.blocktype.MMMachine;
 import com.jerry.mekmm.common.util.MMEnumUtils;
 import mekanism.common.MekanismLang;
 import mekanism.common.block.attribute.AttributeSideConfig;
+import mekanism.common.block.attribute.AttributeUpgradeSupport;
 import mekanism.common.config.MekanismConfig;
 import mekanism.common.content.blocktype.BlockShapes;
 import mekanism.common.registries.MekanismContainerTypes;
 import mekanism.common.registries.MekanismSounds;
 import mekanism.common.registries.MekanismTileEntityTypes;
 import mekanism.common.tier.FactoryTier;
+import mekanism.common.tile.machine.TileEntityChemicalDissolutionChamber;
 import mekanism.common.tile.machine.TileEntityChemicalOxidizer;
 import mekanism.common.util.EnumUtils;
 
@@ -33,6 +35,18 @@ public class AFBlockTypes {
             .with(AttributeSideConfig.ADVANCED_ELECTRIC_MACHINE)
             .withCustomShape(BlockShapes.CHEMICAL_OXIDIZER)
             .withComputerSupport("chemicalOxidizer")
+            .build();
+
+    // Chemical Dissolution Chamber
+    public static final MMMachine.MMFactoryMachine<TileEntityChemicalDissolutionChamber> CHEMICAL_DISSOLUTION_CHAMBER = MMMachine.MMMachineBuilder
+            .createAdvancedFactoryMachine(() -> MekanismTileEntityTypes.CHEMICAL_DISSOLUTION_CHAMBER, MekanismLang.DESCRIPTION_CHEMICAL_DISSOLUTION_CHAMBER, AdvancedFactoryType.DISSOLVING)
+            .withGui(() -> MekanismContainerTypes.CHEMICAL_DISSOLUTION_CHAMBER)
+            .withSound(MekanismSounds.CHEMICAL_DISSOLUTION_CHAMBER)
+            .withEnergyConfig(MekanismConfig.usage.chemicalDissolutionChamber, MekanismConfig.storage.chemicalDissolutionChamber)
+            .with(AttributeUpgradeSupport.DEFAULT_ADVANCED_MACHINE_UPGRADES)
+            .with(AttributeSideConfig.ADVANCED_ELECTRIC_MACHINE)
+            .withCustomShape(BlockShapes.CHEMICAL_DISSOLUTION_CHAMBER)
+            .withComputerSupport("chemicalDissolutionChamber")
             .build();
 
     static {

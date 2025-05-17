@@ -27,6 +27,7 @@ public class AdvancedItemBlockFactory extends ItemBlockTooltip<BlockTile<?, ?>> 
 //            case COMBINING -> AttachedSideConfig.EXTRA_MACHINE;
 //            case PURIFYING, INJECTING -> AttachedSideConfig.ADVANCED_MACHINE_INPUT_ONLY;
             case OXIDIZING -> AttachedSideConfig.CHEMICAL_OUT_MACHINE;
+            case DISSOLVING -> AttachedSideConfig.DISSOLUTION;
         };
     }
 

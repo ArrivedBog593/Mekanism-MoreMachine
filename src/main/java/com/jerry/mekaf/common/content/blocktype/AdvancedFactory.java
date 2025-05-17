@@ -59,7 +59,7 @@ public class AdvancedFactory<TILE extends TileEntityAdvancedFactoryBase<?>> exte
             builder.withComputerSupport(tier, type.getRegistryNameComponentCapitalized() + "Factory");
             builder.withCustomShape(MMBlockShapes.getShape(tier, type));
             builder.with(switch (type) {
-                case OXIDIZING -> AttributeSideConfig.ADVANCED_ELECTRIC_MACHINE;
+                case OXIDIZING, DISSOLVING -> AttributeSideConfig.ADVANCED_ELECTRIC_MACHINE;
             });
             builder.replace(new AttributeParticleFX().addDense(ParticleTypes.SMOKE, 5, rand -> new Pos3D(
                   rand.nextFloat() * 0.7F - 0.3F,

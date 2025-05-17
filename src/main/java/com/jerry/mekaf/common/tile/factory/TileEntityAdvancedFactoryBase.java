@@ -9,6 +9,7 @@ import mekanism.api.IContentsListener;
 import mekanism.api.SerializationConstants;
 import mekanism.api.Upgrade;
 import mekanism.api.chemical.ChemicalStack;
+import mekanism.api.chemical.IChemicalTank;
 import mekanism.api.inventory.IInventorySlot;
 import mekanism.api.recipes.MekanismRecipe;
 import mekanism.api.recipes.cache.CachedRecipe;
@@ -151,7 +152,7 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
 
     @Override
     public @Nullable IChemicalTankHolder getInitialChemicalTanks(IContentsListener listener) {
-        ChemicalTankHelper builder = getChemicalSide();
+        ChemicalTankHelper builder = ChemicalTankHelper.forSideWithConfig(this);
         addTanks(builder, listener, () -> {
             listener.onContentsChanged();
             //Mark sorting as being needed again
@@ -199,9 +200,7 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
         return baseX + (index * baseXMult);
     }
 
-    protected ChemicalTankHelper getChemicalSide() {
-        return ChemicalTankHelper.forSideWithConfig(this);
-    }
+    public abstract IChemicalTank getChemicalTankBar();
 
     @Nullable
     protected IInventorySlot getExtraSlot() {

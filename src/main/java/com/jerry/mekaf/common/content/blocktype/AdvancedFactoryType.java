@@ -14,7 +14,8 @@ import java.util.function.Supplier;
 
 @NothingNullByDefault
 public enum AdvancedFactoryType implements IHasTranslationKey.IHasEnumNameTranslationKey {
-    OXIDIZING("oxidizing", MMLang.AUTHOR_DOLL, () -> AFBlockTypes.CHEMICAL_OXIDIZER, () -> MekanismBlocks.CHEMICAL_OXIDIZER);
+    OXIDIZING("oxidizing", MMLang.AUTHOR_DOLL, () -> AFBlockTypes.CHEMICAL_OXIDIZER, () -> MekanismBlocks.CHEMICAL_OXIDIZER),
+    DISSOLVING("dissolving", MMLang.AUTHOR_DOLL, () -> AFBlockTypes.CHEMICAL_DISSOLUTION_CHAMBER, () -> MekanismBlocks.CHEMICAL_DISSOLUTION_CHAMBER);
 
     private final String registryNameComponent;
     private final ILangEntry langEntry;

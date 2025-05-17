@@ -15,9 +15,11 @@ import mekanism.common.attachments.containers.chemical.ChemicalTanksBuilder;
 import mekanism.common.attachments.containers.item.ItemSlotsBuilder;
 import mekanism.common.block.attribute.AttributeTier;
 import mekanism.common.recipe.MekanismRecipeType;
+import mekanism.common.recipe.lookup.cache.InputRecipeCache;
 import mekanism.common.registration.impl.BlockDeferredRegister;
 import mekanism.common.registration.impl.BlockRegistryObject;
 import mekanism.common.tier.FactoryTier;
+import mekanism.common.tile.machine.TileEntityChemicalDissolutionChamber;
 import mekanism.common.util.EnumUtils;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -55,14 +57,25 @@ public class AFBlocks {
             int processes = tier.processes;
             Predicate<ItemStack> recipeInputPredicate = switch (type.getAdvancedFactoryType()) {
                 case OXIDIZING -> s -> MekanismRecipeType.OXIDIZING.getInputCache().containsInput(null, s);
+                case DISSOLVING -> s -> MekanismRecipeType.DISSOLUTION.getInputCache().containsInputA(null, s);
             };
             switch (type.getAdvancedFactoryType()) {
-                case OXIDIZING -> holder
-                        .addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> ChemicalTanksBuilder.builder()
+                case OXIDIZING -> holder.addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> ChemicalTanksBuilder.builder()
 //                                .addBasic(TileEntityPlantingStation.MAX_GAS * processes)
                                 .build()
                         ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
 //                                .addBasicFactorySlots(processes, recipeInputPredicate)
+                                .addEnergy()
+                                .build()
+                        );
+                case DISSOLVING -> holder.addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> ChemicalTanksBuilder.builder()
+                                .addBasic(TileEntityChemicalDissolutionChamber.MAX_CHEMICAL, MekanismRecipeType.DISSOLUTION, InputRecipeCache.ItemChemical::containsInputB)
+                                .addBasic(() -> TileEntityChemicalDissolutionChamber.MAX_CHEMICAL)
+                                .build()
+                        ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
+                                .addChemicalFillOrConvertSlot(0)
+                                .addInput(MekanismRecipeType.DISSOLUTION, InputRecipeCache.ItemChemical::containsInputA)
+                                .addChemicalDrainSlot(1)
                                 .addEnergy()
                                 .build()
                         );
