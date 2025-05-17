@@ -1,5 +1,6 @@
 package com.jerry.mekmm.common.network.to_server;
 
+import com.jerry.mekaf.common.tile.factory.TileEntityAdvancedFactoryBase;
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.common.tile.factory.MMTileEntityFactory;
 import com.jerry.mekmm.common.tile.machine.TileEntityReplicator;
@@ -152,6 +153,9 @@ public class MMPacketGuiInteract implements IMekanismPacket {
         AUTO_SORT_BUTTON((tile, player, extra) -> {
             if (tile instanceof MMTileEntityFactory<?> factory) {
                 factory.toggleSorting();
+            }
+            if (tile instanceof TileEntityAdvancedFactoryBase<?> advancedFactory) {
+                advancedFactory.toggleSorting();
             }
         });
 

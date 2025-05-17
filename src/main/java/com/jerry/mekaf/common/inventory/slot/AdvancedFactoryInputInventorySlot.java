@@ -1,4 +1,4 @@
-package com.jerry.mekmm.common.inventory.slot;
+package com.jerry.mekaf.common.inventory.slot;
 
 import com.jerry.mekaf.common.tile.factory.TileEntityOxidizingFactory;
 import mekanism.api.IContentsListener;

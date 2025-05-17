@@ -1,5 +1,6 @@
 package com.jerry.mekaf.client.gui.machine;
 
+import com.jerry.mekaf.client.gui.element.tab.AFGuiSortingTab;
 import com.jerry.mekaf.common.tile.factory.TileEntityAdvancedFactoryBase;
 import com.jerry.mekaf.common.tile.factory.TileEntityOxidizingFactory;
 import mekanism.api.recipes.cache.CachedRecipe;
@@ -46,6 +47,7 @@ public class GuiAdvancedFactory extends GuiConfigurableTile<TileEntityAdvancedFa
     @Override
     protected void addGuiElements() {
         super.addGuiElements();
+        addRenderableWidget(new AFGuiSortingTab(this, tile));
         addRenderableWidget(new GuiVerticalPowerBar(this, tile.getEnergyContainer(), imageWidth - 12, 16, 52))
                 .warning(WarningTracker.WarningType.NOT_ENOUGH_ENERGY, tile.getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_ENERGY, 0));
 

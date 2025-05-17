@@ -103,8 +103,10 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
 
     @WrappingComputerMethod(wrapper = ComputerIInventorySlotWrapper.class, methodNames = "getEnergyItem", docPlaceholder = "energy slot")
     EnergyInventorySlot energySlot;
-    protected IOutputHandler<@NotNull ChemicalStack>[] outputHandlers;
+    protected IInputHandler<@NotNull ChemicalStack>[] chemicalInputHandlers;
+    protected IOutputHandler<@NotNull ChemicalStack>[] chemicalOutputHandlers;
     protected IInputHandler<@NotNull ItemStack>[] inputHandlers;
+    protected IOutputHandler<@NotNull ItemStack>[] outputHandlers;
 
     protected TileEntityAdvancedFactoryBase(Holder<Block> blockProvider, BlockPos pos, BlockState state, List<RecipeError> errorTypes, Set<RecipeError> globalErrorTypes) {
         super(blockProvider, pos, state);
