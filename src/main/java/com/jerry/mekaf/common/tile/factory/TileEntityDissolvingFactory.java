@@ -26,9 +26,10 @@ import mekanism.common.recipe.lookup.IDoubleRecipeLookupHandler;
 import mekanism.common.recipe.lookup.IRecipeLookupHandler;
 import mekanism.common.recipe.lookup.cache.DoubleInputRecipeCache;
 import mekanism.common.recipe.lookup.cache.InputRecipeCache;
-import mekanism.common.tile.component.TileComponentConfig;
 import mekanism.common.tile.component.TileComponentEjector;
+import mekanism.common.tile.component.config.ConfigInfo;
 import mekanism.common.tile.component.config.DataType;
+import mekanism.common.tile.component.config.slot.ChemicalSlotInfo;
 import mekanism.common.tile.component.config.slot.InventorySlotInfo;
 import mekanism.common.tile.interfaces.IHasDumpButton;
 import mekanism.common.util.MekanismUtils;
@@ -43,7 +44,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -59,7 +59,10 @@ public class TileEntityDissolvingFactory extends TileEntityItemToChemicalAdvance
             CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE,
             CachedRecipe.OperationTracker.RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT
     );
-    private static final Set<CachedRecipe.OperationTracker.RecipeError> GLOBAL_ERROR_TYPES = Set.of(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_ENERGY);
+    private static final Set<CachedRecipe.OperationTracker.RecipeError> GLOBAL_ERROR_TYPES = Set.of(
+            CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_ENERGY,
+            CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_SECONDARY_INPUT
+    );
 
     private final ILongInputHandler<@NotNull ChemicalStack> chemicalInputHandler;
 
@@ -69,19 +72,24 @@ public class TileEntityDissolvingFactory extends TileEntityItemToChemicalAdvance
 
     public IChemicalTank injectTank;
 
-    ChemicalInventorySlot gasInputSlot;
+    ChemicalInventorySlot chemicalInputSlot;
 
     public TileEntityDissolvingFactory(Holder<Block> blockProvider, BlockPos pos, BlockState state) {
         super(blockProvider, pos, state, TRACKED_ERROR_TYPES, GLOBAL_ERROR_TYPES);
         chemicalInputHandler = InputHelper.getConstantInputHandler(injectTank);
         configComponent.setupIOConfig(TransmissionType.CHEMICAL, injectTank, RelativeSide.LEFT);
-        configComponent.setupItemIOConfig(inputSlots, Collections.emptyList(), energySlot, false);
-        configComponent.getConfig(TransmissionType.ITEM).addSlotInfo(DataType.EXTRA, new InventorySlotInfo(true, true, gasInputSlot));
-        configComponent.getConfig(TransmissionType.CHEMICAL).addSlotInfo(DataType.OUTPUT, TileComponentConfig.createInfo(TransmissionType.CHEMICAL, false, true, chemicalTanks));
+        ConfigInfo itemConfig = configComponent.getConfig(TransmissionType.ITEM);
+        if (itemConfig != null) {
+            itemConfig.addSlotInfo(DataType.EXTRA, new InventorySlotInfo(true, true, chemicalInputSlot));
+        }
+        ConfigInfo chemicalConfig = configComponent.getConfig(TransmissionType.CHEMICAL);
+        if (chemicalConfig != null) {
+            chemicalConfig.addSlotInfo(DataType.OUTPUT, new ChemicalSlotInfo(false, true, chemicalTanks));
+        }
 
         ejectorComponent = new TileComponentEjector(this);
         ejectorComponent.setOutputData(configComponent, TransmissionType.ITEM, TransmissionType.CHEMICAL)
-                // 有多个储罐时可以使用该方法指定某个罐可以输入
+                // 有多个储罐时可以使用该方法指定某个罐是否可以弹出
                 .setCanTankEject(tank -> tank != injectTank);
 
         injectUsageMultiplier = (usedSoFar, operatingTicks) -> StatUtils.inversePoisson(injectUsage);
@@ -96,7 +104,7 @@ public class TileEntityDissolvingFactory extends TileEntityItemToChemicalAdvance
     @Override
     protected void addSlots(InventorySlotHelper builder, IContentsListener listener, IContentsListener updateSortingListener) {
         super.addSlots(builder, listener, updateSortingListener);
-        builder.addSlot(gasInputSlot = ChemicalInventorySlot.fillOrConvert(injectTank, this::getLevel, listener, 7, 70));
+        builder.addSlot(chemicalInputSlot = ChemicalInventorySlot.fillOrConvert(injectTank, this::getLevel, listener, 7, 70));
     }
 
     public IChemicalTank getChemicalTankBar() {
@@ -165,6 +173,11 @@ public class TileEntityDissolvingFactory extends TileEntityItemToChemicalAdvance
                 .setOnFinish(this::markForSave)
                 .setOperatingTicksChanged(operatingTicks -> progress[cacheIndex] = operatingTicks)
                 .setBaselineMaxOperations(this::getOperationsPerTick);
+    }
+
+    @Override
+    protected void handleSecondaryFuel() {
+        chemicalInputSlot.fillTankOrConvert();
     }
 
     @Override

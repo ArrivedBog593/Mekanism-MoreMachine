@@ -28,6 +28,8 @@ public class AdvancedItemBlockFactory extends ItemBlockTooltip<BlockTile<?, ?>> 
 //            case PURIFYING, INJECTING -> AttachedSideConfig.ADVANCED_MACHINE_INPUT_ONLY;
             case OXIDIZING -> AttachedSideConfig.CHEMICAL_OUT_MACHINE;
             case DISSOLVING -> AttachedSideConfig.DISSOLUTION;
+            case CHEMICAL_INFUSING -> AttachedSideConfig.CHEMICAL_INFUSING;
+            case WASHING -> AttachedSideConfig.WASHER;
         };
     }
 

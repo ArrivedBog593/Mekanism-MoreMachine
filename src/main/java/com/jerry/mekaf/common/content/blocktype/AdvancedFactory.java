@@ -11,6 +11,7 @@ import mekanism.common.MekanismLang;
 import mekanism.common.block.attribute.*;
 import mekanism.common.inventory.container.MekanismContainer;
 import mekanism.common.lib.math.Pos3D;
+import mekanism.common.lib.transmitter.TransmissionType;
 import mekanism.common.registration.impl.ContainerTypeRegistryObject;
 import mekanism.common.registration.impl.TileEntityTypeRegistryObject;
 import mekanism.common.tier.FactoryTier;
@@ -59,7 +60,8 @@ public class AdvancedFactory<TILE extends TileEntityAdvancedFactoryBase<?>> exte
             builder.withComputerSupport(tier, type.getRegistryNameComponentCapitalized() + "Factory");
             builder.withCustomShape(MMBlockShapes.getShape(tier, type));
             builder.with(switch (type) {
-                case OXIDIZING, DISSOLVING -> AttributeSideConfig.ADVANCED_ELECTRIC_MACHINE;
+                case OXIDIZING, DISSOLVING, CHEMICAL_INFUSING -> AttributeSideConfig.ADVANCED_ELECTRIC_MACHINE;
+                case WASHING -> AttributeSideConfig.create(TransmissionType.ITEM, TransmissionType.CHEMICAL, TransmissionType.FLUID, TransmissionType.ENERGY);
             });
             builder.replace(new AttributeParticleFX().addDense(ParticleTypes.SMOKE, 5, rand -> new Pos3D(
                   rand.nextFloat() * 0.7F - 0.3F,

@@ -5,10 +5,8 @@ import com.google.common.collect.Table;
 import com.jerry.mekaf.common.block.prefab.AdvancedBlockFactoryMachine;
 import com.jerry.mekaf.common.content.blocktype.AdvancedFactoryType;
 import com.jerry.mekaf.common.item.block.machine.AdvancedItemBlockFactory;
-import com.jerry.mekaf.common.tile.factory.TileEntityDissolvingFactory;
+import com.jerry.mekaf.common.tile.factory.*;
 import com.jerry.mekmm.Mekmm;
-import com.jerry.mekaf.common.tile.factory.TileEntityAdvancedFactoryBase;
-import com.jerry.mekaf.common.tile.factory.TileEntityOxidizingFactory;
 import mekanism.common.capabilities.Capabilities;
 import mekanism.common.registration.impl.BlockRegistryObject;
 import mekanism.common.registration.impl.TileEntityTypeDeferredRegister;
@@ -35,6 +33,8 @@ public class AFTileEntityTypes {
         for (FactoryTier tier : EnumUtils.FACTORY_TIERS) {
             registerFactory(tier, AdvancedFactoryType.OXIDIZING, TileEntityOxidizingFactory::new);
             registerFactory(tier, AdvancedFactoryType.DISSOLVING, TileEntityDissolvingFactory::new);
+            registerFactory(tier, AdvancedFactoryType.CHEMICAL_INFUSING, TileEntityChemicalInfusingFactory::new);
+            registerFactory(tier, AdvancedFactoryType.WASHING, TileEntityWashingFactory::new);
         }
     }
 

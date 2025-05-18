@@ -9,9 +9,11 @@ import com.jerry.mekaf.common.item.block.machine.AdvancedItemBlockFactory;
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekaf.common.tile.factory.TileEntityAdvancedFactoryBase;
 import com.jerry.mekmm.common.util.MMEnumUtils;
+import mekanism.api.chemical.ChemicalStack;
 import mekanism.api.tier.ITier;
 import mekanism.common.attachments.containers.ContainerType;
 import mekanism.common.attachments.containers.chemical.ChemicalTanksBuilder;
+import mekanism.common.attachments.containers.fluid.FluidTanksBuilder;
 import mekanism.common.attachments.containers.item.ItemSlotsBuilder;
 import mekanism.common.block.attribute.AttributeTier;
 import mekanism.common.recipe.MekanismRecipeType;
@@ -20,6 +22,8 @@ import mekanism.common.registration.impl.BlockDeferredRegister;
 import mekanism.common.registration.impl.BlockRegistryObject;
 import mekanism.common.tier.FactoryTier;
 import mekanism.common.tile.machine.TileEntityChemicalDissolutionChamber;
+import mekanism.common.tile.machine.TileEntityChemicalInfuser;
+import mekanism.common.tile.machine.TileEntityChemicalWasher;
 import mekanism.common.util.EnumUtils;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -55,12 +59,20 @@ public class AFBlocks {
         BlockRegistryObject<AdvancedBlockFactoryMachine.AdvancedBlockFactory<?>, AdvancedItemBlockFactory> factory = registerTieredBlock(tier, "_" + type.getAdvancedFactoryType().getRegistryNameComponent() + "_factory", () -> new AdvancedBlockFactoryMachine.AdvancedBlockFactory<>(type), AdvancedItemBlockFactory::new);
         factory.forItemHolder(holder -> {
             int processes = tier.processes;
-            Predicate<ItemStack> recipeInputPredicate = switch (type.getAdvancedFactoryType()) {
+            Predicate<ItemStack> recipeItemInputPredicate = switch (type.getAdvancedFactoryType()) {
                 case OXIDIZING -> s -> MekanismRecipeType.OXIDIZING.getInputCache().containsInput(null, s);
                 case DISSOLVING -> s -> MekanismRecipeType.DISSOLUTION.getInputCache().containsInputA(null, s);
+                default -> null;
+            };
+            Predicate<ChemicalStack> recipeChemicalInputPredicate = switch (type.getAdvancedFactoryType()) {
+                case CHEMICAL_INFUSING ->
+                        s -> MekanismRecipeType.CHEMICAL_INFUSING.getInputCache().containsInput(null, s);
+                case WASHING -> s -> MekanismRecipeType.WASHING.getInputCache().containsInputB(null, s);
+                default -> null;
             };
             switch (type.getAdvancedFactoryType()) {
-                case OXIDIZING -> holder.addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> ChemicalTanksBuilder.builder()
+                case OXIDIZING ->
+                        holder.addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> ChemicalTanksBuilder.builder()
 //                                .addBasic(TileEntityPlantingStation.MAX_GAS * processes)
                                 .build()
                         ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
@@ -68,13 +80,38 @@ public class AFBlocks {
                                 .addEnergy()
                                 .build()
                         );
-                case DISSOLVING -> holder.addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> ChemicalTanksBuilder.builder()
+                case DISSOLVING ->
+                        holder.addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> ChemicalTanksBuilder.builder()
                                 .addBasic(TileEntityChemicalDissolutionChamber.MAX_CHEMICAL, MekanismRecipeType.DISSOLUTION, InputRecipeCache.ItemChemical::containsInputB)
                                 .addBasic(() -> TileEntityChemicalDissolutionChamber.MAX_CHEMICAL)
                                 .build()
                         ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
                                 .addChemicalFillOrConvertSlot(0)
                                 .addInput(MekanismRecipeType.DISSOLUTION, InputRecipeCache.ItemChemical::containsInputA)
+                                .addChemicalDrainSlot(1)
+                                .addEnergy()
+                                .build()
+                        );
+                case CHEMICAL_INFUSING ->
+                        holder.addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> ChemicalTanksBuilder.builder()
+                                .addBasic(TileEntityChemicalInfuser.MAX_GAS, MekanismRecipeType.CHEMICAL_INFUSING, InputRecipeCache.EitherSideChemical::containsInput)
+                                .addBasic(TileEntityChemicalInfuser.MAX_GAS, MekanismRecipeType.CHEMICAL_INFUSING, InputRecipeCache.EitherSideChemical::containsInput)
+                                .addBasic(TileEntityChemicalInfuser.MAX_GAS)
+                                .build()
+                        ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
+                                .addEnergy()
+                                .build()
+                        );
+                case WASHING -> holder
+                        .addAttachmentOnlyContainers(ContainerType.FLUID, () -> FluidTanksBuilder.builder()
+                                .addBasic(TileEntityChemicalWasher.MAX_FLUID, MekanismRecipeType.WASHING, InputRecipeCache.FluidChemical::containsInputA)
+                                .build()
+                        ).addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> ChemicalTanksBuilder.builder()
+                                .addBasic(TileEntityChemicalWasher.MAX_SLURRY, MekanismRecipeType.WASHING, InputRecipeCache.FluidChemical::containsInputB)
+                                .addBasic(TileEntityChemicalWasher.MAX_SLURRY)
+                                .build()
+                        ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
+                                .addFluidFillSlot(0)
                                 .addChemicalDrainSlot(1)
                                 .addEnergy()
                                 .build()

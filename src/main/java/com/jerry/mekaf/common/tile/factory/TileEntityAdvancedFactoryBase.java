@@ -285,13 +285,6 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
     protected void handleSecondaryFuel() {
     }
 
-    public abstract boolean isItemValidForSlot(@NotNull ItemStack stack);
-
-    /**
-     * Like isItemValidForSlot makes no assumptions about current stored types
-     */
-    public abstract boolean isValidInputItem(@NotNull ItemStack stack);
-
     public int getProgress(int cacheIndex) {
         return progress[cacheIndex];
     }

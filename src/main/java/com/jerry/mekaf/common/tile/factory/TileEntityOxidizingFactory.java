@@ -13,9 +13,10 @@ import mekanism.common.recipe.IMekanismRecipeTypeProvider;
 import mekanism.common.recipe.MekanismRecipeType;
 import mekanism.common.recipe.lookup.ISingleRecipeLookupHandler;
 import mekanism.common.recipe.lookup.cache.InputRecipeCache;
-import mekanism.common.tile.component.TileComponentConfig;
 import mekanism.common.tile.component.TileComponentEjector;
+import mekanism.common.tile.component.config.ConfigInfo;
 import mekanism.common.tile.component.config.DataType;
+import mekanism.common.tile.component.config.slot.ChemicalSlotInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.world.item.ItemStack;
@@ -43,8 +44,10 @@ public class TileEntityOxidizingFactory extends TileEntityItemToChemicalAdvanced
     public TileEntityOxidizingFactory(Holder<Block> blockProvider, BlockPos pos, BlockState state) {
         super(blockProvider, pos, state, TRACKED_ERROR_TYPES, GLOBAL_ERROR_TYPES);
 
-        configComponent.setupItemIOConfig(inputSlots, Collections.emptyList(), energySlot, false);
-        configComponent.getConfig(TransmissionType.CHEMICAL).addSlotInfo(DataType.OUTPUT, TileComponentConfig.createInfo(TransmissionType.CHEMICAL, false, true, chemicalTanks));
+        ConfigInfo chemicalConfig = configComponent.getConfig(TransmissionType.CHEMICAL);
+        if (chemicalConfig != null) {
+            chemicalConfig.addSlotInfo(DataType.OUTPUT, new ChemicalSlotInfo(false, true, chemicalTanks));
+        }
 
         ejectorComponent = new TileComponentEjector(this);
         ejectorComponent.setOutputData(configComponent, TransmissionType.CHEMICAL);
@@ -77,37 +80,10 @@ public class TileEntityOxidizingFactory extends TileEntityItemToChemicalAdvanced
                 .setOperatingTicksChanged(operatingTicks -> progress[cacheIndex] = operatingTicks);
     }
 
-    public boolean inputProducesOutput(int process, @NotNull ItemStack fallbackInput, @NotNull IChemicalTank outputSlot, boolean updateCache) {
-        return outputSlot.isEmpty() || getRecipeForInput(process, fallbackInput, outputSlot, updateCache) != null;
-    }
-
     @Contract("null, _ -> false")
     protected boolean isCachedRecipeValid(@Nullable CachedRecipe<ItemStackToChemicalRecipe> cached, @NotNull ItemStack stack) {
         return cached != null && cached.getRecipe().getInput().testType(stack);
     }
-
-//    @Nullable
-//    protected ItemStackToChemicalRecipe getRecipeForInput(int process, @NotNull ItemStack fallbackInput, @NotNull IChemicalTank outputSlot, boolean updateCache) {
-//        if (!CommonWorldTickHandler.flushTagAndRecipeCaches) {
-//            //If our recipe caches are valid, grab our cached recipe and see if it is still valid
-//            CachedRecipe<ItemStackToChemicalRecipe> cached = getCachedRecipe(process);
-//            if (isCachedRecipeValid(cached, fallbackInput)) {
-//                //Our input matches the recipe we have cached for this slot
-//                return cached.getRecipe();
-//            }
-//        }
-//        //If there is no cached item input, or it doesn't match our fallback then it is an out of date cache, so we ignore the fact that we have a cache
-//        ItemStackToChemicalRecipe foundRecipe = findRecipe(process, fallbackInput, outputSlot);
-//        if (foundRecipe == null) {
-//            //We could not find any valid recipe for the given item that matches the items in the current output slots
-//            return null;
-//        }
-//        if (updateCache) {
-//            //If we want to update the cache, then create a new cache with the recipe we found and update the cache
-//            recipeCacheLookupMonitors[process].updateCachedRecipe(foundRecipe);
-//        }
-//        return foundRecipe;
-//    }
 
     @Nullable
     protected ItemStackToChemicalRecipe findRecipe(int process, @NotNull ItemStack fallbackInput, @NotNull IChemicalTank outputSlot) {

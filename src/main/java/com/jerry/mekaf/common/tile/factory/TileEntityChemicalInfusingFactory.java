@@ -1,0 +1,202 @@
+package com.jerry.mekaf.common.tile.factory;
+
+import mekanism.api.IContentsListener;
+import mekanism.api.Upgrade;
+import mekanism.api.chemical.BasicChemicalTank;
+import mekanism.api.chemical.ChemicalStack;
+import mekanism.api.chemical.IChemicalTank;
+import mekanism.api.math.MathUtils;
+import mekanism.api.recipes.ChemicalChemicalToChemicalRecipe;
+import mekanism.api.recipes.cache.CachedRecipe;
+import mekanism.api.recipes.cache.ChemicalChemicalToChemicalCachedRecipe;
+import mekanism.api.recipes.inputs.IInputHandler;
+import mekanism.api.recipes.inputs.InputHelper;
+import mekanism.client.recipe_viewer.type.IRecipeViewerRecipeType;
+import mekanism.client.recipe_viewer.type.RecipeViewerRecipeType;
+import mekanism.common.capabilities.holder.chemical.ChemicalTankHelper;
+import mekanism.common.capabilities.holder.slot.InventorySlotHelper;
+import mekanism.common.inventory.container.MekanismContainer;
+import mekanism.common.inventory.container.slot.ContainerSlotType;
+import mekanism.common.inventory.container.slot.SlotOverlay;
+import mekanism.common.inventory.container.sync.SyncableLong;
+import mekanism.common.inventory.slot.chemical.ChemicalInventorySlot;
+import mekanism.common.lib.transmitter.TransmissionType;
+import mekanism.common.recipe.IMekanismRecipeTypeProvider;
+import mekanism.common.recipe.MekanismRecipeType;
+import mekanism.common.recipe.lookup.IEitherSideRecipeLookupHandler;
+import mekanism.common.recipe.lookup.cache.InputRecipeCache;
+import mekanism.common.tile.component.TileComponentEjector;
+import mekanism.common.tile.component.config.ConfigInfo;
+import mekanism.common.tile.component.config.DataType;
+import mekanism.common.tile.component.config.slot.ChemicalSlotInfo;
+import mekanism.common.tile.component.config.slot.InventorySlotInfo;
+import mekanism.common.tile.interfaces.IHasDumpButton;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+import java.util.Set;
+
+public class TileEntityChemicalInfusingFactory extends TileEntityChemicalToChemicalAdvancedFactory<ChemicalChemicalToChemicalRecipe> implements IHasDumpButton, IEitherSideRecipeLookupHandler.EitherSideChemicalRecipeLookupHandler<ChemicalChemicalToChemicalRecipe> {
+
+    private static final List<CachedRecipe.OperationTracker.RecipeError> TRACKED_ERROR_TYPES = List.of(
+            CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_ENERGY,
+            CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_ENERGY_REDUCED_RATE,
+            CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_LEFT_INPUT,
+            CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_RIGHT_INPUT,
+            CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE,
+            CachedRecipe.OperationTracker.RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT
+    );
+    private static final Set<CachedRecipe.OperationTracker.RecipeError> GLOBAL_ERROR_TYPES = Set.of(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_ENERGY);
+
+    //原右侧储罐
+    public IChemicalTank rightTank;
+
+    private long[] clientEnergyUsed;
+    private int baselineMaxOperations = 1;
+
+    private final IInputHandler<@NotNull ChemicalStack> rightInputHandler;
+
+    ChemicalInventorySlot rightInputSlot;
+
+    public TileEntityChemicalInfusingFactory(Holder<Block> blockProvider, BlockPos pos, BlockState state) {
+        super(blockProvider, pos, state, TRACKED_ERROR_TYPES, GLOBAL_ERROR_TYPES);
+        ConfigInfo itemConfig = configComponent.getConfig(TransmissionType.ITEM);
+        if (itemConfig != null) {
+            itemConfig.addSlotInfo(DataType.INPUT_2, new InventorySlotInfo(true, true, rightInputSlot));
+            itemConfig.addSlotInfo(DataType.INPUT_OUTPUT, new InventorySlotInfo(true, true, rightInputSlot));
+        }
+        ConfigInfo gasConfig = configComponent.getConfig(TransmissionType.CHEMICAL);
+        if (gasConfig != null) {
+            gasConfig.addSlotInfo(DataType.INPUT_2, new ChemicalSlotInfo(true, false, rightTank));
+            gasConfig.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo(true, true, rightTank));
+            gasConfig.addSlotInfo(DataType.INPUT_1, new ChemicalSlotInfo(true, false, inputChemicalTanks));
+            gasConfig.addSlotInfo(DataType.OUTPUT, new ChemicalSlotInfo(false, true, outputChemicalTanks));
+        }
+
+        ejectorComponent = new TileComponentEjector(this);
+        ejectorComponent.setOutputData(configComponent, TransmissionType.ITEM, TransmissionType.CHEMICAL)
+                .setCanTankEject(tank -> outputChemicalTanks.contains(tank));
+        rightInputHandler = InputHelper.getInputHandler(rightTank, CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_RIGHT_INPUT);
+
+        clientEnergyUsed = new long[tier.processes];
+    }
+
+    @Override
+    protected boolean isCachedRecipeValid(@Nullable CachedRecipe<ChemicalChemicalToChemicalRecipe> cached, @NotNull ChemicalStack stack) {
+        if (cached != null) {
+            ChemicalChemicalToChemicalRecipe cachedRecipe = cached.getRecipe();
+            return cachedRecipe.getLeftInput().testType(stack) && (rightTank.isEmpty() || cachedRecipe.getRightInput().testType(rightTank.getTypeHolder()));
+        }
+        return false;
+    }
+
+    @Override
+    protected @Nullable ChemicalChemicalToChemicalRecipe findRecipe(int process, @NotNull ChemicalStack fallbackInput, @NotNull IChemicalTank outputSlot) {
+        return getRecipeType().getInputCache().findFirstRecipe(level, fallbackInput, outputSlot.getStack());
+    }
+
+    @Override
+    public boolean isChemicalValidForTank(@NotNull ChemicalStack stack) {
+        return containsRecipe(stack, rightTank.getStack()) || containsRecipe(rightTank.getStack(), stack);
+    }
+
+    @Override
+    public boolean isValidInputChemical(@NotNull ChemicalStack stack) {
+        return false;
+    }
+
+    @Override
+    protected int getNeededInput(ChemicalChemicalToChemicalRecipe recipe, ChemicalStack inputStack) {
+        return MathUtils.clampToInt(recipe.getLeftInput().getNeededAmount(inputStack));
+    }
+
+    @Override
+    protected void addTanks(ChemicalTankHelper builder, IContentsListener listener, IContentsListener updateSortingListener) {
+        super.addTanks(builder, listener, updateSortingListener);
+        builder.addTank(rightTank = BasicChemicalTank.inputModern(MAX_GAS, this::containsRecipe, markAllMonitorsChanged(listener)));
+    }
+
+    @Override
+    protected void addSlots(InventorySlotHelper builder, IContentsListener listener, IContentsListener updateSortingListener) {
+        builder.addSlot(rightInputSlot = ChemicalInventorySlot.fill(rightTank, listener, 7, 83));
+        rightInputSlot.setSlotType(ContainerSlotType.INPUT);
+        rightInputSlot.setSlotOverlay(SlotOverlay.MINUS);
+    }
+
+    @Override
+    protected boolean onUpdateServer() {
+        boolean sendUpdatePacket = super.onUpdateServer();
+        rightInputSlot.fillTank();
+        for (int i = 0; i < recipeCacheLookupMonitors.length; i++) {
+            clientEnergyUsed[i] = recipeCacheLookupMonitors[i].updateAndProcess(energyContainer);
+        }
+        return sendUpdatePacket;
+    }
+
+    public long[] getEnergyUsed() {
+        return clientEnergyUsed;
+    }
+
+    @Override
+    public boolean hasSecondaryResourceBar() {
+        return true;
+    }
+
+    @Override
+    public IChemicalTank getChemicalTankBar() {
+        return rightTank;
+    }
+
+    @Override
+    public @NotNull IMekanismRecipeTypeProvider<?, ChemicalChemicalToChemicalRecipe, InputRecipeCache.EitherSideChemical<ChemicalChemicalToChemicalRecipe>> getRecipeType() {
+        return MekanismRecipeType.CHEMICAL_INFUSING;
+    }
+
+    @Override
+    public @Nullable IRecipeViewerRecipeType<ChemicalChemicalToChemicalRecipe> recipeViewerType() {
+        return RecipeViewerRecipeType.CHEMICAL_INFUSING;
+    }
+
+    @Override
+    public @Nullable ChemicalChemicalToChemicalRecipe getRecipe(int cacheIndex) {
+        return findFirstRecipe(chemicalInputHandlers[cacheIndex], rightInputHandler);
+    }
+
+    @Override
+    public @NotNull CachedRecipe<ChemicalChemicalToChemicalRecipe> createNewCachedRecipe(@NotNull ChemicalChemicalToChemicalRecipe recipe, int cacheIndex) {
+        return new ChemicalChemicalToChemicalCachedRecipe<>(recipe, recheckAllRecipeErrors[cacheIndex], chemicalInputHandlers[cacheIndex], rightInputHandler, chemicalOutputHandlers[cacheIndex])
+                .setErrorsChanged(errors -> errorTracker.onErrorsChanged(errors, cacheIndex))
+                .setCanHolderFunction(this::canFunction)
+                .setActive(this::setActive)
+                .setEnergyRequirements(energyContainer::getEnergyPerTick, energyContainer)
+                .setBaselineMaxOperations(() -> baselineMaxOperations)
+                .setOnFinish(this::markForSave);
+    }
+
+    @Override
+    public void recalculateUpgrades(Upgrade upgrade) {
+        super.recalculateUpgrades(upgrade);
+        if (upgrade == Upgrade.SPEED) {
+            baselineMaxOperations = (int) Math.pow(2, upgradeComponent.getUpgrades(Upgrade.SPEED));
+        }
+    }
+
+    @Override
+    public void addContainerTrackers(MekanismContainer container) {
+        super.addContainerTrackers(container);
+        for (int i = 0; i < tier.processes; i++) {
+            int index = i;
+            container.track(SyncableLong.create(() -> clientEnergyUsed[index], value -> clientEnergyUsed[index] = value));
+        }
+    }
+
+    @Override
+    public void dump() {
+        rightTank.setEmpty();
+    }
+}

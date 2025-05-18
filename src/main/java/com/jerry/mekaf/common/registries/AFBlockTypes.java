@@ -11,12 +11,15 @@ import mekanism.common.block.attribute.AttributeSideConfig;
 import mekanism.common.block.attribute.AttributeUpgradeSupport;
 import mekanism.common.config.MekanismConfig;
 import mekanism.common.content.blocktype.BlockShapes;
+import mekanism.common.lib.transmitter.TransmissionType;
 import mekanism.common.registries.MekanismContainerTypes;
 import mekanism.common.registries.MekanismSounds;
 import mekanism.common.registries.MekanismTileEntityTypes;
 import mekanism.common.tier.FactoryTier;
 import mekanism.common.tile.machine.TileEntityChemicalDissolutionChamber;
+import mekanism.common.tile.machine.TileEntityChemicalInfuser;
 import mekanism.common.tile.machine.TileEntityChemicalOxidizer;
+import mekanism.common.tile.machine.TileEntityChemicalWasher;
 import mekanism.common.util.EnumUtils;
 
 public class AFBlockTypes {
@@ -47,6 +50,28 @@ public class AFBlockTypes {
             .with(AttributeSideConfig.ADVANCED_ELECTRIC_MACHINE)
             .withCustomShape(BlockShapes.CHEMICAL_DISSOLUTION_CHAMBER)
             .withComputerSupport("chemicalDissolutionChamber")
+            .build();
+
+    // Chemical Infuser
+    public static final MMMachine.MMFactoryMachine<TileEntityChemicalInfuser> CHEMICAL_INFUSER = MMMachine.MMMachineBuilder
+            .createAdvancedFactoryMachine(() -> MekanismTileEntityTypes.CHEMICAL_INFUSER, MekanismLang.DESCRIPTION_CHEMICAL_INFUSER, AdvancedFactoryType.CHEMICAL_INFUSING)
+            .withGui(() -> MekanismContainerTypes.CHEMICAL_INFUSER)
+            .withSound(MekanismSounds.CHEMICAL_INFUSER)
+            .withEnergyConfig(MekanismConfig.usage.chemicalInfuser, MekanismConfig.storage.chemicalInfuser)
+            .withSideConfig(TransmissionType.CHEMICAL, TransmissionType.ITEM, TransmissionType.ENERGY)
+            .withCustomShape(BlockShapes.CHEMICAL_INFUSER)
+            .withComputerSupport("chemicalInfuser")
+            .build();
+
+    // Chemical Washer
+    public static final MMMachine.MMFactoryMachine<TileEntityChemicalWasher> CHEMICAL_WASHER = MMMachine.MMMachineBuilder
+            .createAdvancedFactoryMachine(() -> MekanismTileEntityTypes.CHEMICAL_WASHER, MekanismLang.DESCRIPTION_CHEMICAL_WASHER, AdvancedFactoryType.WASHING)
+            .withGui(() -> MekanismContainerTypes.CHEMICAL_WASHER)
+            .withSound(MekanismSounds.CHEMICAL_WASHER)
+            .withEnergyConfig(MekanismConfig.usage.chemicalWasher, MekanismConfig.storage.chemicalWasher)
+            .withSideConfig(TransmissionType.CHEMICAL, TransmissionType.FLUID, TransmissionType.ITEM, TransmissionType.ENERGY)
+            .withCustomShape(BlockShapes.CHEMICAL_WASHER)
+            .withComputerSupport("chemicalWasher")
             .build();
 
     static {
