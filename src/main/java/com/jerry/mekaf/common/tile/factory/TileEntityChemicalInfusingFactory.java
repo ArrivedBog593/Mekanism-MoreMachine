@@ -25,6 +25,7 @@ import mekanism.common.recipe.IMekanismRecipeTypeProvider;
 import mekanism.common.recipe.MekanismRecipeType;
 import mekanism.common.recipe.lookup.IEitherSideRecipeLookupHandler;
 import mekanism.common.recipe.lookup.cache.InputRecipeCache;
+import mekanism.common.recipe.lookup.monitor.FactoryRecipeCacheLookupMonitor;
 import mekanism.common.tile.component.TileComponentEjector;
 import mekanism.common.tile.component.config.ConfigInfo;
 import mekanism.common.tile.component.config.DataType;
@@ -51,12 +52,15 @@ public class TileEntityChemicalInfusingFactory extends TileEntityChemicalToChemi
             CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE,
             CachedRecipe.OperationTracker.RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT
     );
-    private static final Set<CachedRecipe.OperationTracker.RecipeError> GLOBAL_ERROR_TYPES = Set.of(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_ENERGY);
+    private static final Set<CachedRecipe.OperationTracker.RecipeError> GLOBAL_ERROR_TYPES = Set.of(
+            CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_ENERGY,
+            CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_RIGHT_INPUT
+    );
 
     //原右侧储罐
     public IChemicalTank rightTank;
 
-    private long[] clientEnergyUsed;
+    private long clientEnergyUsed;
     private int baselineMaxOperations = 1;
 
     private final IInputHandler<@NotNull ChemicalStack> rightInputHandler;
@@ -82,8 +86,6 @@ public class TileEntityChemicalInfusingFactory extends TileEntityChemicalToChemi
         ejectorComponent.setOutputData(configComponent, TransmissionType.ITEM, TransmissionType.CHEMICAL)
                 .setCanTankEject(tank -> outputChemicalTanks.contains(tank));
         rightInputHandler = InputHelper.getInputHandler(rightTank, CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_RIGHT_INPUT);
-
-        clientEnergyUsed = new long[tier.processes];
     }
 
     @Override
@@ -131,14 +133,15 @@ public class TileEntityChemicalInfusingFactory extends TileEntityChemicalToChemi
     @Override
     protected boolean onUpdateServer() {
         boolean sendUpdatePacket = super.onUpdateServer();
+        //已经重写了这个方法，所以不用handleSecondaryFuel()实现这个
         rightInputSlot.fillTank();
-        for (int i = 0; i < recipeCacheLookupMonitors.length; i++) {
-            clientEnergyUsed[i] = recipeCacheLookupMonitors[i].updateAndProcess(energyContainer);
+        for (FactoryRecipeCacheLookupMonitor<ChemicalChemicalToChemicalRecipe> recipeCacheLookupMonitor : recipeCacheLookupMonitors) {
+            clientEnergyUsed += recipeCacheLookupMonitor.updateAndProcess(energyContainer);
         }
         return sendUpdatePacket;
     }
 
-    public long[] getEnergyUsed() {
+    public long getEnergyUsed() {
         return clientEnergyUsed;
     }
 
@@ -189,10 +192,7 @@ public class TileEntityChemicalInfusingFactory extends TileEntityChemicalToChemi
     @Override
     public void addContainerTrackers(MekanismContainer container) {
         super.addContainerTrackers(container);
-        for (int i = 0; i < tier.processes; i++) {
-            int index = i;
-            container.track(SyncableLong.create(() -> clientEnergyUsed[index], value -> clientEnergyUsed[index] = value));
-        }
+        container.track(SyncableLong.create(this::getEnergyUsed, value -> clientEnergyUsed = value));
     }
 
     @Override

@@ -65,12 +65,12 @@ public class TileEntityOxidizingFactory extends TileEntityItemToChemicalAdvanced
 
     @Override
     public @Nullable ItemStackToChemicalRecipe getRecipe(int cacheIndex) {
-        return findFirstRecipe(inputHandlers[cacheIndex]);
+        return findFirstRecipe(itemInputHandlers[cacheIndex]);
     }
 
     @Override
     public @NotNull CachedRecipe<ItemStackToChemicalRecipe> createNewCachedRecipe(@NotNull ItemStackToChemicalRecipe recipe, int cacheIndex) {
-        return OneInputCachedRecipe.itemToChemical(recipe, recheckAllRecipeErrors[cacheIndex], inputHandlers[cacheIndex], chemicalOutputHandlers[cacheIndex])
+        return OneInputCachedRecipe.itemToChemical(recipe, recheckAllRecipeErrors[cacheIndex], itemInputHandlers[cacheIndex], chemicalOutputHandlers[cacheIndex])
                 .setErrorsChanged(errors -> errorTracker.onErrorsChanged(errors, cacheIndex))
                 .setCanHolderFunction(this::canFunction)
                 .setActive(this::setActive)

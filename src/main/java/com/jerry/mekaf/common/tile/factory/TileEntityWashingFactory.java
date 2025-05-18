@@ -58,7 +58,10 @@ public class TileEntityWashingFactory extends TileEntityChemicalToChemicalAdvanc
             CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE,
             CachedRecipe.OperationTracker.RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT
     );
-    private static final Set<CachedRecipe.OperationTracker.RecipeError> GLOBAL_ERROR_TYPES = Set.of(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_ENERGY);
+    private static final Set<CachedRecipe.OperationTracker.RecipeError> GLOBAL_ERROR_TYPES = Set.of(
+            CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_ENERGY,
+            CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_SECONDARY_INPUT
+    );
 
     public static final long MAX_SLURRY = 10L * FluidType.BUCKET_VOLUME;
     public static final int MAX_FLUID = 10 * FluidType.BUCKET_VOLUME;
@@ -141,6 +144,7 @@ public class TileEntityWashingFactory extends TileEntityChemicalToChemicalAdvanc
     @Override
     protected boolean onUpdateServer() {
         boolean sendUpdatePacket = super.onUpdateServer();
+        //已经重写了这个方法，所以不用handleSecondaryFuel()实现这个
         fluidSlot.fillTank(fluidOutputSlot);
         for (FactoryRecipeCacheLookupMonitor<FluidChemicalToChemicalRecipe> recipeCacheLookupMonitor : recipeCacheLookupMonitors) {
             clientEnergyUsed += recipeCacheLookupMonitor.updateAndProcess(energyContainer);

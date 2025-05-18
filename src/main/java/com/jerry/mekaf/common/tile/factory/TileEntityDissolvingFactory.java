@@ -38,12 +38,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -68,7 +70,7 @@ public class TileEntityDissolvingFactory extends TileEntityItemToChemicalAdvance
 
     private final ItemStackConstantChemicalToObjectCachedRecipe.ChemicalUsageMultiplier injectUsageMultiplier;
     private double injectUsage = 1;
-    private long usedSoFar;
+    private final long[] usedSoFar;
 
     public IChemicalTank injectTank;
 
@@ -91,7 +93,7 @@ public class TileEntityDissolvingFactory extends TileEntityItemToChemicalAdvance
         ejectorComponent.setOutputData(configComponent, TransmissionType.ITEM, TransmissionType.CHEMICAL)
                 // 有多个储罐时可以使用该方法指定某个罐是否可以弹出
                 .setCanTankEject(tank -> tank != injectTank);
-
+        usedSoFar = new long[tier.processes];
         injectUsageMultiplier = (usedSoFar, operatingTicks) -> StatUtils.inversePoisson(injectUsage);
     }
 
@@ -152,17 +154,17 @@ public class TileEntityDissolvingFactory extends TileEntityItemToChemicalAdvance
 
     @Override
     public @Nullable ChemicalDissolutionRecipe getRecipe(int cacheIndex) {
-        return findFirstRecipe(inputHandlers[cacheIndex], chemicalInputHandler);
+        return findFirstRecipe(itemInputHandlers[cacheIndex], chemicalInputHandler);
     }
 
     @Override
     public @NotNull CachedRecipe<ChemicalDissolutionRecipe> createNewCachedRecipe(@NotNull ChemicalDissolutionRecipe recipe, int cacheIndex) {
         CachedRecipe<ChemicalDissolutionRecipe> cachedRecipe;
         if (recipe.perTickUsage()) {
-            cachedRecipe = ItemStackConstantChemicalToObjectCachedRecipe.dissolution(recipe, recheckAllRecipeErrors[cacheIndex], inputHandlers[cacheIndex], chemicalInputHandler,
-                    injectUsageMultiplier, used -> usedSoFar = used, chemicalOutputHandlers[cacheIndex]);
+            cachedRecipe = ItemStackConstantChemicalToObjectCachedRecipe.dissolution(recipe, recheckAllRecipeErrors[cacheIndex], itemInputHandlers[cacheIndex], chemicalInputHandler,
+                    injectUsageMultiplier, used -> usedSoFar[cacheIndex] = used, chemicalOutputHandlers[cacheIndex]);
         } else {
-            cachedRecipe = TwoInputCachedRecipe.itemChemicalToChemical(recipe, recheckAllRecipeErrors[cacheIndex], inputHandlers[cacheIndex], chemicalInputHandler, chemicalOutputHandlers[cacheIndex]);
+            cachedRecipe = TwoInputCachedRecipe.itemChemicalToChemical(recipe, recheckAllRecipeErrors[cacheIndex], itemInputHandlers[cacheIndex], chemicalInputHandler, chemicalOutputHandlers[cacheIndex]);
         }
         return cachedRecipe
                 .setErrorsChanged(errors -> errorTracker.onErrorsChanged(errors, cacheIndex))
@@ -195,19 +197,29 @@ public class TileEntityDissolvingFactory extends TileEntityItemToChemicalAdvance
 
     @Override
     public long getSavedUsedSoFar(int cacheIndex) {
-        return usedSoFar;
+        return usedSoFar[cacheIndex];
     }
 
     @Override
     public void loadAdditional(@NotNull CompoundTag nbt, @NotNull HolderLookup.Provider provider) {
         super.loadAdditional(nbt, provider);
-        usedSoFar = nbt.getLong(SerializationConstants.USED_SO_FAR);
+        if (nbt.contains(SerializationConstants.USED_SO_FAR, Tag.TAG_LONG_ARRAY)) {
+            long[] savedUsed = nbt.getLongArray(SerializationConstants.USED_SO_FAR);
+            if (tier.processes != savedUsed.length) {
+                Arrays.fill(usedSoFar, 0);
+            }
+            for (int i = 0; i < tier.processes && i < savedUsed.length; i++) {
+                usedSoFar[i] = savedUsed[i];
+            }
+        } else {
+            Arrays.fill(usedSoFar, 0);
+        }
     }
 
     @Override
     public void saveAdditional(@NotNull CompoundTag nbtTags, @NotNull HolderLookup.Provider provider) {
         super.saveAdditional(nbtTags, provider);
-        nbtTags.putLong(SerializationConstants.USED_SO_FAR, usedSoFar);
+        nbtTags.putLongArray(SerializationConstants.USED_SO_FAR, Arrays.copyOf(usedSoFar, usedSoFar.length));
     }
 
     @Override

@@ -81,12 +81,12 @@ public abstract class TileEntityItemToChemicalAdvancedFactory<RECIPE extends Mek
     @Override
     protected void addSlots(InventorySlotHelper builder, IContentsListener listener, IContentsListener updateSortingListener) {
         inputSlot = new AdvancedFactoryInputInventorySlot[tier.processes];
-        inputHandlers = new IInputHandler[tier.processes];
+        itemInputHandlers = new IInputHandler[tier.processes];
         for (int i = 0; i < tier.processes; i++) {
             inputSlot[i] = AdvancedFactoryInputInventorySlot.create(this, i, outputTank[i], recipeCacheLookupMonitors[i], getXPos(i), 13);
             int index = i;
             builder.addSlot(inputSlot[i]).tracksWarnings(slot -> slot.warning(WarningTracker.WarningType.NO_MATCHING_RECIPE, getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT, index)));
-            inputHandlers[i] = InputHelper.getInputHandler(inputSlot[i], CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT);
+            itemInputHandlers[i] = InputHelper.getInputHandler(inputSlot[i], CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT);
         }
     }
 

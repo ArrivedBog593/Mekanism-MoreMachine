@@ -12,6 +12,7 @@ import mekanism.api.chemical.ChemicalStack;
 import mekanism.api.chemical.IChemicalTank;
 import mekanism.api.inventory.IInventorySlot;
 import mekanism.api.recipes.MekanismRecipe;
+import mekanism.api.recipes.PressurizedReactionRecipe;
 import mekanism.api.recipes.cache.CachedRecipe;
 import mekanism.api.recipes.cache.CachedRecipe.OperationTracker.RecipeError;
 import mekanism.api.recipes.inputs.IInputHandler;
@@ -106,8 +107,9 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
     EnergyInventorySlot energySlot;
     protected IInputHandler<@NotNull ChemicalStack>[] chemicalInputHandlers;
     protected IOutputHandler<@NotNull ChemicalStack>[] chemicalOutputHandlers;
-    protected IInputHandler<@NotNull ItemStack>[] inputHandlers;
-    protected IOutputHandler<@NotNull ItemStack>[] outputHandlers;
+    protected IInputHandler<@NotNull ItemStack>[] itemInputHandlers;
+    protected IOutputHandler<@NotNull ItemStack>[] itemOutputHandlers;
+    protected IOutputHandler<PressurizedReactionRecipe.@NotNull PressurizedReactionRecipeOutput>[] reactionOutputHandlers;
 
     protected TileEntityAdvancedFactoryBase(Holder<Block> blockProvider, BlockPos pos, BlockState state, List<RecipeError> errorTypes, Set<RecipeError> globalErrorTypes) {
         super(blockProvider, pos, state);
