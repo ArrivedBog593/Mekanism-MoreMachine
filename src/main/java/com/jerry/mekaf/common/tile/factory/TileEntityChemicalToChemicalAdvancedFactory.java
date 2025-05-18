@@ -68,7 +68,7 @@ public abstract class TileEntityChemicalToChemicalAdvancedFactory<RECIPE extends
             };
             int index = i;
             outputTank[i] = BasicChemicalTank.output(MAX_GAS, updateSortingAndUnpause);
-            inputTank[i] = BasicChemicalTank.inputModern(MAX_GAS, stack -> isChemicalValidForTank(stack) && inputProducesOutput(index, stack, outputTank[index], false), recipeCacheLookupMonitors[index]);
+            inputTank[i] = BasicChemicalTank.inputModern(MAX_GAS, this::isValidInputChemical, stack -> isChemicalValidForTank(stack) && inputProducesOutput(index, stack, outputTank[index], false), recipeCacheLookupMonitors[index]);
             builder.addTank(inputTank[i]);
             builder.addTank(outputTank[i]);
             chemicalInputHandlers[i] = InputHelper.getInputHandler(inputTank[i], CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT);

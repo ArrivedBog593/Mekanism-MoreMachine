@@ -109,7 +109,7 @@ public class TileEntityChemicalInfusingFactory extends TileEntityChemicalToChemi
 
     @Override
     public boolean isValidInputChemical(@NotNull ChemicalStack stack) {
-        return false;
+        return containsRecipe(stack);
     }
 
     @Override

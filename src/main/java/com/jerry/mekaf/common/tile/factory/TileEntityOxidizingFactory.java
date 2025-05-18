@@ -102,7 +102,7 @@ public class TileEntityOxidizingFactory extends TileEntityItemToChemicalAdvanced
     //物品能否放进槽位
     @Override
     public boolean isItemValidForSlot(@NotNull ItemStack stack) {
-        return true;
+        return containsRecipe(stack);
     }
 
     @Override
