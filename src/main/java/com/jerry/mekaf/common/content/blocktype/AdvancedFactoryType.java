@@ -14,7 +14,7 @@ import java.util.function.Supplier;
 
 @NothingNullByDefault
 public enum AdvancedFactoryType implements IHasTranslationKey.IHasEnumNameTranslationKey {
-    //回旋应该加在这
+    //回旋应该加在这，如果会加的话
     OXIDIZING("oxidizing", MMLang.AUTHOR_DOLL, () -> AFBlockTypes.CHEMICAL_OXIDIZER, () -> MekanismBlocks.CHEMICAL_OXIDIZER),
     CHEMICAL_INFUSING("chemical_infusing", MMLang.AUTHOR_DOLL, () -> AFBlockTypes.CHEMICAL_INFUSER, () -> MekanismBlocks.CHEMICAL_INFUSER),
     //电解分离机
@@ -22,9 +22,7 @@ public enum AdvancedFactoryType implements IHasTranslationKey.IHasEnumNameTransl
     WASHING("washing", MMLang.AUTHOR_DOLL, () -> AFBlockTypes.CHEMICAL_WASHER, () -> MekanismBlocks.CHEMICAL_WASHER),
     CRYSTALLIZING("crystallizing", MMLang.AUTHOR_DOLL, () -> AFBlockTypes.CHEMICAL_CRYSTALLIZER, () -> MekanismBlocks.CHEMICAL_CRYSTALLIZER),
     PRESSURISED_REACTING("pressurised_reacting", MMLang.AUTHOR_DOLL, () -> AFBlockTypes.PRESSURIZED_REACTION_CHAMBER, () -> MekanismBlocks.PRESSURIZED_REACTION_CHAMBER),
-    CENTRIFUGING("centrifuging", MMLang.AUTHOR_DOLL, () -> AFBlockTypes.ISOTOPIC_CENTRIFUGE, () -> MekanismBlocks.ISOTOPIC_CENTRIFUGE),
-//    SOLAR_NEUTRON_ACTIVATING("solar_neutron_activating", MMLang.AUTHOR_DOLL, () -> AFBlockTypes.SOLAR_NEUTRON_ACTIVATOR, () -> MekanismBlocks.SOLAR_NEUTRON_ACTIVATOR)
-    ;
+    CENTRIFUGING("centrifuging", MMLang.AUTHOR_DOLL, () -> AFBlockTypes.ISOTOPIC_CENTRIFUGE, () -> MekanismBlocks.ISOTOPIC_CENTRIFUGE);
 
     private final String registryNameComponent;
     private final ILangEntry langEntry;

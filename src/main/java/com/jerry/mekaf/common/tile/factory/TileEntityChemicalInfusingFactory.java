@@ -89,7 +89,7 @@ public class TileEntityChemicalInfusingFactory extends TileEntityChemicalToChemi
     @Override
     protected void addTanks(ChemicalTankHelper builder, IContentsListener listener, IContentsListener updateSortingListener) {
         super.addTanks(builder, listener, updateSortingListener);
-        builder.addTank(rightTank = BasicChemicalTank.inputModern(MAX_GAS * (tier.ordinal() + 1), this::containsRecipe, markAllMonitorsChanged(listener)));
+        builder.addTank(rightTank = BasicChemicalTank.inputModern(MAX_CHEMICAL * tier.processes, this::containsRecipe, markAllMonitorsChanged(listener)));
     }
 
     @Override

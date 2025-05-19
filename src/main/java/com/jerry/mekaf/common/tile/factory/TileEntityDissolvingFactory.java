@@ -95,7 +95,7 @@ public class TileEntityDissolvingFactory extends TileEntityItemToChemicalAdvance
     @Override
     protected void addTanks(ChemicalTankHelper builder, IContentsListener listener, IContentsListener updateSortingListener) {
         super.addTanks(builder, listener, updateSortingListener);
-        builder.addTank(injectTank = BasicChemicalTank.inputModern(MAX_GAS * tier.processes, this::containsRecipeB, markAllMonitorsChanged(listener)));
+        builder.addTank(injectTank = BasicChemicalTank.inputModern(MAX_CHEMICAL * tier.processes, this::containsRecipeB, markAllMonitorsChanged(listener)));
     }
 
     @Override

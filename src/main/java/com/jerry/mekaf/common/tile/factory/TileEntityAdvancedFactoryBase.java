@@ -74,7 +74,7 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
      * How many ticks it takes, by default, to run an operation.
      */
     protected static final int BASE_TICKS_REQUIRED = 10 * SharedConstants.TICKS_PER_SECOND;
-    public static final long MAX_GAS = 10L * FluidType.BUCKET_VOLUME;
+    public static final long MAX_CHEMICAL = 10L * FluidType.BUCKET_VOLUME;
     public static final int MAX_FLUID = 10 * FluidType.BUCKET_VOLUME;
 
     protected FactoryRecipeCacheLookupMonitor<RECIPE>[] recipeCacheLookupMonitors;

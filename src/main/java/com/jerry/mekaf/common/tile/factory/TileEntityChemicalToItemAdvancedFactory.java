@@ -71,7 +71,7 @@ public abstract class TileEntityChemicalToItemAdvancedFactory<RECIPE extends Mek
         chemicalInputHandlers = new IInputHandler[tier.processes];
         for (int i = 0; i < tier.processes; i++) {
             int index = i;
-            inputTank[i] = BasicChemicalTank.inputModern(MAX_GAS * (tier.ordinal() + 1), this::isValidInputChemical, stack -> isChemicalValidForTank(stack) && inputProducesOutput(index, stack, outputSlot[index], false), recipeCacheLookupMonitors[index]);
+            inputTank[i] = BasicChemicalTank.inputModern(MAX_CHEMICAL * tier.processes, this::isValidInputChemical, stack -> isChemicalValidForTank(stack) && inputProducesOutput(index, stack, outputSlot[index], false), recipeCacheLookupMonitors[index]);
             builder.addTank(inputTank[i]);
             chemicalInputHandlers[i] = InputHelper.getInputHandler(inputTank[i], CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT);
         }
@@ -178,7 +178,7 @@ public abstract class TileEntityChemicalToItemAdvancedFactory<RECIPE extends Mek
                     // until it is needed. That way if we have no empty slots and all our input slots are filled
                     // we don't do any extra processing here, and can properly short circuit
                     ChemicalStack item = (ChemicalStack) info.item;
-                    ChemicalStack largerInput = item.copyWithAmount(Math.min(MAX_GAS, info.totalCount));
+                    ChemicalStack largerInput = item.copyWithAmount(Math.min(MAX_CHEMICAL, info.totalCount));
                     CIProcessInfo processInfo = info.processes.getFirst();
                     //Try getting a recipe for our input with a larger size, and update the cache if we find one
                     info.recipe = factory.getRecipeForInput(processInfo.process(), largerInput, processInfo.outputSlot(), true);
@@ -252,7 +252,7 @@ public abstract class TileEntityChemicalToItemAdvancedFactory<RECIPE extends Mek
             }
             ChemicalStack item = entry.getKey();
             //Note: This isn't based on any limits the slot may have (but we currently don't have any reduced ones here, so it doesn't matter)
-            long maxStackSize = MAX_GAS;
+            long maxStackSize = MAX_CHEMICAL;
             long numberPerSlot = recipeProcessInfo.totalCount / processCount;
             if (numberPerSlot == maxStackSize) {
                 //If all the slots are already maxed out; short-circuit, no balancing is needed

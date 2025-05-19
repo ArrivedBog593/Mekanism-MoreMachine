@@ -78,7 +78,7 @@ public abstract class TileEntityItemToChemicalAdvancedFactory<RECIPE extends Mek
                 updateSortingListener.onContentsChanged();
                 lookupMonitor.unpause();
             };
-            outputTank[i] = BasicChemicalTank.output(MAX_GAS * (tier.ordinal() + 1), updateSortingAndUnpause);
+            outputTank[i] = BasicChemicalTank.output(MAX_CHEMICAL * tier.processes, updateSortingAndUnpause);
             builder.addTank(outputTank[i]);
             chemicalOutputHandlers[i] = OutputHelper.getOutputHandler(outputTank[i], CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE);
         }

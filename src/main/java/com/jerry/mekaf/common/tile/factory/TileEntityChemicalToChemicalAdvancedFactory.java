@@ -72,8 +72,8 @@ public abstract class TileEntityChemicalToChemicalAdvancedFactory<RECIPE extends
                 lookupMonitor.unpause();
             };
             int index = i;
-            outputTank[i] = BasicChemicalTank.output(MAX_GAS * (tier.ordinal() + 1), updateSortingAndUnpause);
-            inputTank[i] = BasicChemicalTank.inputModern(MAX_GAS * (tier.ordinal() + 1), this::isValidInputChemical, stack -> isChemicalValidForTank(stack) && inputProducesOutput(index, stack, outputTank[index], false), recipeCacheLookupMonitors[index]);
+            outputTank[i] = BasicChemicalTank.output(MAX_CHEMICAL * tier.processes, updateSortingAndUnpause);
+            inputTank[i] = BasicChemicalTank.inputModern(MAX_CHEMICAL * tier.processes, this::isValidInputChemical, stack -> isChemicalValidForTank(stack) && inputProducesOutput(index, stack, outputTank[index], false), recipeCacheLookupMonitors[index]);
             builder.addTank(inputTank[i]);
             builder.addTank(outputTank[i]);
             chemicalInputHandlers[i] = InputHelper.getInputHandler(inputTank[i], CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT);
@@ -167,7 +167,7 @@ public abstract class TileEntityChemicalToChemicalAdvancedFactory<RECIPE extends
                     // until it is needed. That way if we have no empty slots and all our input slots are filled
                     // we don't do any extra processing here, and can properly short circuit
                     ChemicalStack item = (ChemicalStack) info.item;
-                    ChemicalStack largerInput = item.copyWithAmount(Math.min(MAX_GAS, info.totalCount));
+                    ChemicalStack largerInput = item.copyWithAmount(Math.min(MAX_CHEMICAL, info.totalCount));
                     CCProcessInfo processInfo = info.processes.getFirst();
                     //Try getting a recipe for our input with a larger size, and update the cache if we find one
                     info.recipe = factory.getRecipeForInput(processInfo.process(), largerInput, processInfo.outputTank(), true);
@@ -241,7 +241,7 @@ public abstract class TileEntityChemicalToChemicalAdvancedFactory<RECIPE extends
             }
             ChemicalStack item = entry.getKey();
             //Note: This isn't based on any limits the slot may have (but we currently don't have any reduced ones here, so it doesn't matter)
-            long maxStackSize = MAX_GAS;
+            long maxStackSize = MAX_CHEMICAL;
             long numberPerSlot = recipeProcessInfo.totalCount / processCount;
             if (numberPerSlot == maxStackSize) {
                 //If all the slots are already maxed out; short-circuit, no balancing is needed

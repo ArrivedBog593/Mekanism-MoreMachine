@@ -101,7 +101,7 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
 
         for (PRCProcessInfo info : processInfoSlots) {
             inputSlots.add(info.inputSlot());
-            outputSlots.add(info.outputItem());
+            outputSlots.add(info.outputSlot());
         }
 
         configComponent.setupItemIOConfig(inputSlots, outputSlots, energySlot, false);
@@ -119,9 +119,9 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
 
     @Override
     protected void addTanks(ChemicalTankHelper builder, IContentsListener listener, IContentsListener updateSortingListener) {
-        builder.addTank(inputChemicalTank = BasicChemicalTank.createModern(MAX_GAS * tier.processes, ChemicalTankHelper.radioactiveInputTankPredicate(() -> outputChemicalTank),
+        builder.addTank(inputChemicalTank = BasicChemicalTank.createModern(MAX_CHEMICAL * tier.processes, ChemicalTankHelper.radioactiveInputTankPredicate(() -> outputChemicalTank),
                 ConstantPredicates.alwaysTrueBi(), this::containsRecipeC, ChemicalAttributeValidator.ALWAYS_ALLOW, markAllMonitorsChanged(listener)));
-        builder.addTank(outputChemicalTank = BasicChemicalTank.output(MAX_GAS * tier.processes, markAllMonitorsChanged(listener)));
+        builder.addTank(outputChemicalTank = BasicChemicalTank.output(MAX_CHEMICAL * tier.processes, markAllMonitorsChanged(listener)));
     }
 
     @Override
@@ -332,7 +332,7 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
                     ItemStack largerInput = item.copyWithCount(Math.min(item.getMaxStackSize(), info.totalCount));
                     PRCProcessInfo processInfo = info.processes.getFirst();
                     //Try getting a recipe for our input with a larger size, and update the cache if we find one
-                    info.recipe = factory.getRecipeForInput(processInfo.process(), largerInput, processInfo.outputItem(), outputChemicalTank, true);
+                    info.recipe = factory.getRecipeForInput(processInfo.process(), largerInput, processInfo.outputSlot(), outputChemicalTank, true);
                     if (info.recipe != null) {
                         return factory.getNeededInput(info.recipe, largerInput);
                     }
@@ -371,7 +371,7 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
             int added = 0;
             List<PRCProcessInfo> toRemove = new ArrayList<>();
             for (PRCProcessInfo emptyProcess : emptyProcesses) {
-                if (inputProducesOutput(emptyProcess.process(), sourceStack, emptyProcess.outputItem(), outputChemicalTank, true)) {
+                if (inputProducesOutput(emptyProcess.process(), sourceStack, emptyProcess.outputSlot(), outputChemicalTank, true)) {
                     //If the input is valid for the stuff in the empty process' output slot
                     // then add our empty process to our recipeProcessInfo, and mark
                     // the empty process as accounted for
@@ -492,7 +492,7 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
     }
 
     public record PRCProcessInfo(int process, @NotNull AdvancedFactoryInputInventorySlot inputSlot,
-                                 @NotNull IInventorySlot outputItem) {
+                                 @NotNull IInventorySlot outputSlot) {
     }
 
     protected static class PRCRecipeProcessInfo {

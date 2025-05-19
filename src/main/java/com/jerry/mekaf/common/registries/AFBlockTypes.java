@@ -104,19 +104,6 @@ public class AFBlockTypes {
             .withComputerSupport("isotopicCentrifuge")
             .build();
 
-    // Solar Neutron Activator
-//    public static final MMMachine.MMFactoryMachine<TileEntitySolarNeutronActivator> SOLAR_NEUTRON_ACTIVATOR = MMMachine.MMMachineBuilder
-//            .createAdvancedFactoryMachine(() -> MekanismTileEntityTypes.SOLAR_NEUTRON_ACTIVATOR, MekanismLang.DESCRIPTION_SOLAR_NEUTRON_ACTIVATOR, AdvancedFactoryType.SOLAR_NEUTRON_ACTIVATING)
-//            .withGui(() -> MekanismContainerTypes.SOLAR_NEUTRON_ACTIVATOR)
-//            .without(AttributeParticleFX.class, AttributeUpgradeSupport.class)
-//            .withCustomShape(BlockShapes.SOLAR_NEUTRON_ACTIVATOR)
-//            .with(AttributeCustomSelectionBox.JSON)
-//            .withSideConfig(TransmissionType.CHEMICAL, TransmissionType.ITEM)
-//            .with(AttributeHasBounding.ABOVE_ONLY)
-//            .withComputerSupport("solarNeutronActivator")
-//            .replace(Attributes.ACTIVE)
-//            .build();
-
     static {
         for (FactoryTier tier : EnumUtils.FACTORY_TIERS) {
             for (AdvancedFactoryType type : MMEnumUtils.ADVANCED_FACTORY_TYPES) {

@@ -62,9 +62,10 @@ public class AdvancedFactory<TILE extends TileEntityAdvancedFactoryBase<?>> exte
             builder.withComputerSupport(tier, type.getRegistryNameComponentCapitalized() + "Factory");
             builder.withCustomShape(MMBlockShapes.getShape(tier, type));
             builder.with(switch (type) {
-                case OXIDIZING, DISSOLVING, CHEMICAL_INFUSING, CRYSTALLIZING -> AttributeSideConfig.ADVANCED_ELECTRIC_MACHINE;
-                case WASHING, PRESSURISED_REACTING -> AttributeSideConfig.create(TransmissionType.ITEM, TransmissionType.CHEMICAL, TransmissionType.FLUID, TransmissionType.ENERGY);
-                case CENTRIFUGING -> AttributeSideConfig.create(TransmissionType.CHEMICAL, TransmissionType.ENERGY);
+                case OXIDIZING, DISSOLVING, CRYSTALLIZING -> AttributeSideConfig.ADVANCED_ELECTRIC_MACHINE;
+                case CHEMICAL_INFUSING, CENTRIFUGING -> AttributeSideConfig.create(TransmissionType.CHEMICAL, TransmissionType.ITEM, TransmissionType.ENERGY);
+                case WASHING -> AttributeSideConfig.create(TransmissionType.CHEMICAL, TransmissionType.FLUID, TransmissionType.ITEM, TransmissionType.ENERGY);
+                case PRESSURISED_REACTING -> AttributeSideConfig.create(TransmissionType.ITEM, TransmissionType.CHEMICAL, TransmissionType.FLUID, TransmissionType.ENERGY);
             });
             builder.replace(new AttributeParticleFX().addDense(ParticleTypes.SMOKE, 5, rand -> new Pos3D(
                   rand.nextFloat() * 0.7F - 0.3F,

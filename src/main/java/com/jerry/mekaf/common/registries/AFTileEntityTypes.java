@@ -38,7 +38,6 @@ public class AFTileEntityTypes {
             registerFactory(tier, AdvancedFactoryType.PRESSURISED_REACTING, TileEntityPressurizedReactingFactory::new);
             registerFactory(tier, AdvancedFactoryType.CRYSTALLIZING, TileEntityCrystallizingFactory::new);
             registerFactory(tier, AdvancedFactoryType.CENTRIFUGING, TileEntityCentrifugingFactory::new);
-//            registerFactory(tier, AdvancedFactoryType.SOLAR_NEUTRON_ACTIVATING, TileEntitySolarNeutronActivatingFactory::new);
         }
     }
 
