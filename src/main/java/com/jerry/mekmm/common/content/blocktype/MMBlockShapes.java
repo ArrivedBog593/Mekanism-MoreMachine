@@ -50,7 +50,7 @@ public class MMBlockShapes {
 
     public static VoxelShape[] getShape(FactoryTier tier, AdvancedFactoryType type) {
         return switch (type) {
-            case OXIDIZING, DISSOLVING, CHEMICAL_INFUSING, WASHING -> RECYCLER_FACTORY;
+            case OXIDIZING, DISSOLVING, CHEMICAL_INFUSING, WASHING, PRESSURISED_REACTING -> RECYCLER_FACTORY;
         };
     }
 }

@@ -1,10 +1,7 @@
 package com.jerry.mekaf.client.gui.machine;
 
 import com.jerry.mekaf.client.gui.element.tab.AFGuiSortingTab;
-import com.jerry.mekaf.common.tile.factory.TileEntityAdvancedFactoryBase;
-import com.jerry.mekaf.common.tile.factory.TileEntityChemicalToChemicalAdvancedFactory;
-import com.jerry.mekaf.common.tile.factory.TileEntityItemToChemicalAdvancedFactory;
-import com.jerry.mekaf.common.tile.factory.TileEntityWashingFactory;
+import com.jerry.mekaf.common.tile.factory.*;
 import mekanism.api.recipes.cache.CachedRecipe;
 import mekanism.client.SpecialColors;
 import mekanism.client.gui.GuiConfigurableTile;
@@ -22,6 +19,7 @@ import mekanism.common.inventory.container.tile.MekanismTileContainer;
 import mekanism.common.inventory.warning.WarningTracker;
 import mekanism.common.tier.FactoryTier;
 import mekanism.common.tile.interfaces.IHasDumpButton;
+import mekanism.common.tile.machine.TileEntityPressurizedReactionChamber;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -35,11 +33,11 @@ public class GuiAdvancedFactory extends GuiConfigurableTile<TileEntityAdvancedFa
 
     public GuiAdvancedFactory(MekanismTileContainer<TileEntityAdvancedFactoryBase<?>> container, Inventory inv, Component title) {
         super(container, inv, title);
-        imageHeight += 13;
+        imageHeight += tile instanceof TileEntityPressurizedReactingFactory ? 8 : 13;
         if (tile instanceof TileEntityChemicalToChemicalAdvancedFactory<?>) imageHeight += 13;
         if (tile.hasSecondaryResourceBar()) {
             imageHeight += 11;
-            inventoryLabelY = tile instanceof TileEntityChemicalToChemicalAdvancedFactory<?> ? 111 : 98;
+            inventoryLabelY = tile instanceof TileEntityChemicalToChemicalAdvancedFactory<?> ? 111 : tile instanceof TileEntityPressurizedReactingFactory ? 93 : 98;
         } else {
             inventoryLabelY = 88;
         }
@@ -64,20 +62,36 @@ public class GuiAdvancedFactory extends GuiConfigurableTile<TileEntityAdvancedFa
         addRenderableWidget(new GuiEnergyTab(this, tile.getEnergyContainer(), tile::getLastUsage));
 
         if (tile.hasSecondaryResourceBar()) {
-            if (tile instanceof TileEntityWashingFactory) {
-                addRenderableWidget(new GuiFluidBar(this, GuiFluidBar.getProvider(((TileEntityWashingFactory) tile).getFluidTankBar(), tile.getFluidTanks(null)), 7, 102,
+            if (tile instanceof TileEntityWashingFactory factory) {
+                addRenderableWidget(new GuiFluidBar(this, GuiFluidBar.getProvider(factory.getFluidTankBar(), tile.getFluidTanks(null)), 7, 102,
                         tile.tier == FactoryTier.ULTIMATE ? 172 : 138, 4, true))
                         .warning(WarningTracker.WarningType.NO_MATCHING_RECIPE, tile.getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_SECONDARY_INPUT, 0));
                 dumpButton = addRenderableWidget(new GuiDumpButton<>(this, (TileEntityAdvancedFactoryBase<?> & IHasDumpButton) tile, tile.tier == FactoryTier.ULTIMATE ? 182 : 148, 102));
+            } else if (tile instanceof TileEntityPressurizedReactingFactory factory) {
+                // 出输出化学储罐
+                addRenderableWidget(new GuiChemicalGauge(() -> factory.outputChemicalTank, () -> tile.getChemicalTanks(null), GaugeType.SMALL, this, 6, 44))
+                        .warning(WarningTracker.WarningType.NO_SPACE_IN_OUTPUT, factory.getWarningCheck(TileEntityPressurizedReactionChamber.NOT_ENOUGH_SPACE_GAS_OUTPUT_ERROR, 0));
+                // 化学储罐条
+                addRenderableWidget(new GuiChemicalBar(this, GuiChemicalBar.getProvider(factory.getChemicalTankBar(), tile.getChemicalTanks(null)), 7, 76,
+                        tile.tier == FactoryTier.ULTIMATE ? 172 : 138, 4, true))
+                        .warning(WarningTracker.WarningType.NO_MATCHING_RECIPE, tile.getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_SECONDARY_INPUT, 0));
+                // 流体储罐条
+                addRenderableWidget(new GuiFluidBar(this, GuiFluidBar.getProvider(factory.getFluidTankBar(), tile.getFluidTanks(null)), 7, 84,
+                        tile.tier == FactoryTier.ULTIMATE ? 172 : 138, 4, true))
+                        .warning(WarningTracker.WarningType.NO_MATCHING_RECIPE, tile.getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_SECONDARY_INPUT, 0));
+                // dump按钮
+                dumpButton = addRenderableWidget(new GuiDumpButton<>(this, (TileEntityAdvancedFactoryBase<?> & IHasDumpButton) tile, tile.tier == FactoryTier.ULTIMATE ? 182 : 148, 76));
             } else {
                 addRenderableWidget(new GuiChemicalBar(this, GuiChemicalBar.getProvider(tile.getChemicalTankBar(), tile.getChemicalTanks(null)),
                         7, tile instanceof TileEntityChemicalToChemicalAdvancedFactory<?> ? 102 : 89,
                         tile.tier == FactoryTier.ULTIMATE ? 172 : 138, 4, true))
                         .warning(WarningTracker.WarningType.NO_MATCHING_RECIPE, tile.getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_SECONDARY_INPUT, 0));
-                dumpButton = addRenderableWidget(new GuiDumpButton<>(this, (TileEntityAdvancedFactoryBase<?> & IHasDumpButton) tile, tile.tier == FactoryTier.ULTIMATE ? 182 : 148, tile instanceof TileEntityChemicalToChemicalAdvancedFactory<?> ? 102 : 89));
+                dumpButton = addRenderableWidget(new GuiDumpButton<>(this, (TileEntityAdvancedFactoryBase<?> & IHasDumpButton) tile, tile.tier == FactoryTier.ULTIMATE ? 182 : 148,
+                        tile instanceof TileEntityChemicalToChemicalAdvancedFactory<?> ? 102 : 89));
             }
         }
 
+        // 物品到气体的工厂只需要一排储罐，物品槽位在TileEntity中被添加
         if (tile instanceof TileEntityItemToChemicalAdvancedFactory<?> factory) {
             for (int i = 0; i < tile.tier.processes; i++) {
                 int index = i;
@@ -86,6 +100,7 @@ public class GuiAdvancedFactory extends GuiConfigurableTile<TileEntityAdvancedFa
             }
         }
 
+        // 气体生产气体的工厂需要两排储罐
         if (tile instanceof TileEntityChemicalToChemicalAdvancedFactory<?> factory) {
             for (int i = 0; i < tile.tier.processes; i++) {
                 int index = i;
@@ -96,6 +111,7 @@ public class GuiAdvancedFactory extends GuiConfigurableTile<TileEntityAdvancedFa
             }
         }
 
+        // 所有工厂都有的进度条
         for (int i = 0; i < tile.tier.processes; i++) {
             int cacheIndex = i;
             addRenderableWidget(new GuiProgress(() -> tile.getScaledProgress(1, cacheIndex), ProgressType.DOWN, this, 4 + tile.getXPos(i), tile instanceof TileEntityChemicalToChemicalAdvancedFactory<?> ? 46 : 33))

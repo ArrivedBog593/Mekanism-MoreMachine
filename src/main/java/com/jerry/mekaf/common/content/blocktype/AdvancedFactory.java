@@ -61,7 +61,7 @@ public class AdvancedFactory<TILE extends TileEntityAdvancedFactoryBase<?>> exte
             builder.withCustomShape(MMBlockShapes.getShape(tier, type));
             builder.with(switch (type) {
                 case OXIDIZING, DISSOLVING, CHEMICAL_INFUSING -> AttributeSideConfig.ADVANCED_ELECTRIC_MACHINE;
-                case WASHING -> AttributeSideConfig.create(TransmissionType.ITEM, TransmissionType.CHEMICAL, TransmissionType.FLUID, TransmissionType.ENERGY);
+                case WASHING, PRESSURISED_REACTING -> AttributeSideConfig.create(TransmissionType.ITEM, TransmissionType.CHEMICAL, TransmissionType.FLUID, TransmissionType.ENERGY);
             });
             builder.replace(new AttributeParticleFX().addDense(ParticleTypes.SMOKE, 5, rand -> new Pos3D(
                   rand.nextFloat() * 0.7F - 0.3F,

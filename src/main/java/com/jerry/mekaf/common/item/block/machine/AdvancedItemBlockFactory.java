@@ -30,6 +30,7 @@ public class AdvancedItemBlockFactory extends ItemBlockTooltip<BlockTile<?, ?>> 
             case DISSOLVING -> AttachedSideConfig.DISSOLUTION;
             case CHEMICAL_INFUSING -> AttachedSideConfig.CHEMICAL_INFUSING;
             case WASHING -> AttachedSideConfig.WASHER;
+            case PRESSURISED_REACTING -> AttachedSideConfig.REACTION;
         };
     }
 

@@ -24,6 +24,7 @@ import mekanism.common.tier.FactoryTier;
 import mekanism.common.tile.machine.TileEntityChemicalDissolutionChamber;
 import mekanism.common.tile.machine.TileEntityChemicalInfuser;
 import mekanism.common.tile.machine.TileEntityChemicalWasher;
+import mekanism.common.tile.machine.TileEntityPressurizedReactionChamber;
 import mekanism.common.util.EnumUtils;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -62,6 +63,7 @@ public class AFBlocks {
             Predicate<ItemStack> recipeItemInputPredicate = switch (type.getAdvancedFactoryType()) {
                 case OXIDIZING -> s -> MekanismRecipeType.OXIDIZING.getInputCache().containsInput(null, s);
                 case DISSOLVING -> s -> MekanismRecipeType.DISSOLUTION.getInputCache().containsInputA(null, s);
+                case PRESSURISED_REACTING -> s -> MekanismRecipeType.REACTION.getInputCache().containsInputA(null, s);
                 default -> null;
             };
             Predicate<ChemicalStack> recipeChemicalInputPredicate = switch (type.getAdvancedFactoryType()) {
@@ -113,6 +115,21 @@ public class AFBlocks {
                         ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
                                 .addFluidFillSlot(0)
                                 .addChemicalDrainSlot(1)
+                                .addEnergy()
+                                .build()
+                        );
+                case PRESSURISED_REACTING -> holder
+                        .addAttachmentOnlyContainers(ContainerType.FLUID, () -> FluidTanksBuilder.builder()
+                                .addBasic(TileEntityPressurizedReactionChamber.MAX_FLUID, MekanismRecipeType.REACTION, InputRecipeCache.ItemFluidChemical::containsInputB)
+                                .build()
+                        ).addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> ChemicalTanksBuilder.builder()
+                                .addBasic(TileEntityPressurizedReactionChamber.MAX_GAS, MekanismRecipeType.REACTION, InputRecipeCache.ItemFluidChemical::containsInputC)
+                                .addBasic(TileEntityPressurizedReactionChamber.MAX_GAS)
+                                .build()
+                        ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
+                                .addBasicFactorySlots(processes, recipeItemInputPredicate)
+//                                .addInput(MekanismRecipeType.REACTION, InputRecipeCache.ItemFluidChemical::containsInputA)
+//                                .addOutput()
                                 .addEnergy()
                                 .build()
                         );

@@ -16,10 +16,7 @@ import mekanism.common.registries.MekanismContainerTypes;
 import mekanism.common.registries.MekanismSounds;
 import mekanism.common.registries.MekanismTileEntityTypes;
 import mekanism.common.tier.FactoryTier;
-import mekanism.common.tile.machine.TileEntityChemicalDissolutionChamber;
-import mekanism.common.tile.machine.TileEntityChemicalInfuser;
-import mekanism.common.tile.machine.TileEntityChemicalOxidizer;
-import mekanism.common.tile.machine.TileEntityChemicalWasher;
+import mekanism.common.tile.machine.*;
 import mekanism.common.util.EnumUtils;
 
 public class AFBlockTypes {
@@ -72,6 +69,17 @@ public class AFBlockTypes {
             .withSideConfig(TransmissionType.CHEMICAL, TransmissionType.FLUID, TransmissionType.ITEM, TransmissionType.ENERGY)
             .withCustomShape(BlockShapes.CHEMICAL_WASHER)
             .withComputerSupport("chemicalWasher")
+            .build();
+
+    // Pressurized Reaction Chamber
+    public static final MMMachine.MMFactoryMachine<TileEntityPressurizedReactionChamber> PRESSURIZED_REACTION_CHAMBER = MMMachine.MMMachineBuilder
+            .createAdvancedFactoryMachine(() -> MekanismTileEntityTypes.PRESSURIZED_REACTION_CHAMBER, MekanismLang.DESCRIPTION_PRESSURIZED_REACTION_CHAMBER, AdvancedFactoryType.PRESSURISED_REACTING)
+            .withGui(() -> MekanismContainerTypes.PRESSURIZED_REACTION_CHAMBER)
+            .withSound(MekanismSounds.PRESSURIZED_REACTION_CHAMBER)
+            .withEnergyConfig(MekanismConfig.usage.pressurizedReactionBase, MekanismConfig.storage.pressurizedReactionBase)
+            .withSideConfig(TransmissionType.ITEM, TransmissionType.CHEMICAL, TransmissionType.FLUID, TransmissionType.ENERGY)
+            .withCustomShape(BlockShapes.PRESSURIZED_REACTION_CHAMBER)
+            .withComputerSupport("pressurizedReactionChamber")
             .build();
 
     static {

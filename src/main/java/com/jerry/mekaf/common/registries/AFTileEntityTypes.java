@@ -35,6 +35,7 @@ public class AFTileEntityTypes {
             registerFactory(tier, AdvancedFactoryType.DISSOLVING, TileEntityDissolvingFactory::new);
             registerFactory(tier, AdvancedFactoryType.CHEMICAL_INFUSING, TileEntityChemicalInfusingFactory::new);
             registerFactory(tier, AdvancedFactoryType.WASHING, TileEntityWashingFactory::new);
+            registerFactory(tier, AdvancedFactoryType.PRESSURISED_REACTING, TileEntityPressurizedReactingFactory::new);
         }
     }
 
