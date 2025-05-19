@@ -31,7 +31,6 @@ import mekanism.common.tier.FactoryTier;
 import mekanism.common.tile.component.TileComponentEjector;
 import mekanism.common.tile.component.config.ConfigInfo;
 import mekanism.common.tile.component.config.DataType;
-import mekanism.common.tile.component.config.slot.ChemicalSlotInfo;
 import mekanism.common.tile.component.config.slot.InventorySlotInfo;
 import mekanism.common.tile.interfaces.IHasDumpButton;
 import net.minecraft.core.BlockPos;
@@ -84,11 +83,7 @@ public class TileEntityWashingFactory extends TileEntityChemicalToChemicalAdvanc
             itemConfig.addSlotInfo(DataType.OUTPUT, new InventorySlotInfo(true, true, fluidOutputSlot));
             itemConfig.addSlotInfo(DataType.INPUT_OUTPUT, new InventorySlotInfo(true, true, fluidSlot, fluidOutputSlot));
         }
-        ConfigInfo config = configComponent.getConfig(TransmissionType.CHEMICAL);
-        if (config != null) {
-            config.addSlotInfo(DataType.INPUT, new ChemicalSlotInfo(true, false, inputChemicalTanks));
-            config.addSlotInfo(DataType.OUTPUT, new ChemicalSlotInfo(false, true, outputChemicalTanks));
-        }
+
         configComponent.setupInputConfig(TransmissionType.FLUID, fluidTank);
 
         ejectorComponent = new TileComponentEjector(this);
@@ -150,12 +145,6 @@ public class TileEntityWashingFactory extends TileEntityChemicalToChemicalAdvanc
             clientEnergyUsed += recipeCacheLookupMonitor.updateAndProcess(energyContainer);
         }
         return sendUpdatePacket;
-    }
-
-    //没有化学品的下边栏
-    @Override
-    public IChemicalTank getChemicalTankBar() {
-        return null;
     }
 
     public BasicFluidTank getFluidTankBar() {

@@ -78,8 +78,6 @@ public class TileEntityChemicalInfusingFactory extends TileEntityChemicalToChemi
         if (gasConfig != null) {
             gasConfig.addSlotInfo(DataType.INPUT_2, new ChemicalSlotInfo(true, false, rightTank));
             gasConfig.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo(true, true, rightTank));
-            gasConfig.addSlotInfo(DataType.INPUT_1, new ChemicalSlotInfo(true, false, inputChemicalTanks));
-            gasConfig.addSlotInfo(DataType.OUTPUT, new ChemicalSlotInfo(false, true, outputChemicalTanks));
         }
 
         ejectorComponent = new TileComponentEjector(this);

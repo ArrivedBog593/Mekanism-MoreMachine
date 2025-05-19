@@ -94,11 +94,6 @@ public class TileEntityOxidizingFactory extends TileEntityItemToChemicalAdvanced
         return MathUtils.clampToInt(recipe.getInput().getNeededAmount(inputStack));
     }
 
-    @Override
-    public IChemicalTank getChemicalTankBar() {
-        return null;
-    }
-
     //物品能否放进槽位
     @Override
     public boolean isItemValidForSlot(@NotNull ItemStack stack) {

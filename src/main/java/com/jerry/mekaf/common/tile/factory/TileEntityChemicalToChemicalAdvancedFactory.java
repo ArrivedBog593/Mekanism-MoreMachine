@@ -14,7 +14,11 @@ import mekanism.api.recipes.outputs.IOutputHandler;
 import mekanism.api.recipes.outputs.OutputHelper;
 import mekanism.common.CommonWorldTickHandler;
 import mekanism.common.capabilities.holder.chemical.ChemicalTankHelper;
+import mekanism.common.lib.transmitter.TransmissionType;
 import mekanism.common.recipe.lookup.monitor.FactoryRecipeCacheLookupMonitor;
+import mekanism.common.tile.component.config.ConfigInfo;
+import mekanism.common.tile.component.config.DataType;
+import mekanism.common.tile.component.config.slot.ChemicalSlotInfo;
 import mekanism.common.util.MekanismUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -50,6 +54,12 @@ public abstract class TileEntityChemicalToChemicalAdvancedFactory<RECIPE extends
         for (CCProcessInfo info : processInfoSlots) {
             inputChemicalTanks.add(info.inputTank());
             outputChemicalTanks.add(info.outputTank());
+        }
+
+        ConfigInfo config = configComponent.getConfig(TransmissionType.CHEMICAL);
+        if (config != null) {
+            config.addSlotInfo(DataType.INPUT, new ChemicalSlotInfo(true, false, inputChemicalTanks));
+            config.addSlotInfo(DataType.OUTPUT, new ChemicalSlotInfo(false, true, outputChemicalTanks));
         }
     }
 
