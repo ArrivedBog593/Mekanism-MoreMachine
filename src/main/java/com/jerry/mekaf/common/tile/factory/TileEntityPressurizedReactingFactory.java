@@ -3,6 +3,7 @@ package com.jerry.mekaf.common.tile.factory;
 import com.jerry.mekaf.common.inventory.slot.AdvancedFactoryInputInventorySlot;
 import mekanism.api.Action;
 import mekanism.api.IContentsListener;
+import mekanism.api.Upgrade;
 import mekanism.api.chemical.BasicChemicalTank;
 import mekanism.api.chemical.ChemicalStack;
 import mekanism.api.chemical.IChemicalTank;
@@ -44,7 +45,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.util.ItemStackMap;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -80,8 +80,6 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
     );
 
     private static final int BASE_DURATION = 5 * SharedConstants.TICKS_PER_SECOND;
-    public static final int MAX_FLUID = 10 * FluidType.BUCKET_VOLUME;
-    public static final long MAX_GAS = 10L * FluidType.BUCKET_VOLUME;
 
     private PRCProcessInfo[] processInfoSlots;
 
@@ -121,15 +119,15 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
 
     @Override
     protected void addTanks(ChemicalTankHelper builder, IContentsListener listener, IContentsListener updateSortingListener) {
-        builder.addTank(inputChemicalTank = BasicChemicalTank.createModern(MAX_GAS, ChemicalTankHelper.radioactiveInputTankPredicate(() -> outputChemicalTank),
+        builder.addTank(inputChemicalTank = BasicChemicalTank.createModern(MAX_GAS * tier.processes, ChemicalTankHelper.radioactiveInputTankPredicate(() -> outputChemicalTank),
                 ConstantPredicates.alwaysTrueBi(), this::containsRecipeC, ChemicalAttributeValidator.ALWAYS_ALLOW, markAllMonitorsChanged(listener)));
-        builder.addTank(outputChemicalTank = BasicChemicalTank.output(MAX_GAS, markAllMonitorsChanged(listener)));
+        builder.addTank(outputChemicalTank = BasicChemicalTank.output(MAX_GAS * tier.processes, markAllMonitorsChanged(listener)));
     }
 
     @Override
     protected @Nullable IFluidTankHolder getInitialFluidTanks(IContentsListener listener) {
         FluidTankHelper builder = FluidTankHelper.forSideWithConfig(this);
-        builder.addTank(inputFluidTank = BasicFluidTank.input(MAX_FLUID, ConstantPredicates.alwaysTrue(),
+        builder.addTank(inputFluidTank = BasicFluidTank.input(MAX_FLUID * tier.processes, ConstantPredicates.alwaysTrue(),
                 this::containsRecipeB, markAllMonitorsChanged(listener)));
         return builder.build();
     }
@@ -158,12 +156,42 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
     }
 
     @Override
+    public void onCachedRecipeChanged(@Nullable CachedRecipe<PressurizedReactionRecipe> cachedRecipe, int cacheIndex) {
+        super.onCachedRecipeChanged(cachedRecipe, cacheIndex);
+        int recipeDuration;
+        if (cachedRecipe == null) {
+            recipeDuration = BASE_DURATION;
+            recipeEnergyRequired = 0L;
+        } else {
+            PressurizedReactionRecipe recipe = cachedRecipe.getRecipe();
+            recipeDuration = recipe.getDuration();
+            recipeEnergyRequired = recipe.getEnergyRequired();
+        }
+        boolean update = getTicksRequired() != recipeDuration;
+        setTicksRequired(recipeDuration);
+        if (update) {
+            recalculateUpgrades(Upgrade.SPEED);
+        }
+        //Ensure we take our recipe's energy per tick into account
+        energyContainer.updateEnergyPerTick();
+    }
+
+    public long getRecipeEnergyRequired() {
+        return recipeEnergyRequired;
+    }
+
+    @Override
     public IChemicalTank getChemicalTankBar() {
         return inputChemicalTank;
     }
 
     public BasicFluidTank getFluidTankBar() {
         return inputFluidTank;
+    }
+
+    @Override
+    public boolean hasSecondaryResourceBar() {
+        return true;
     }
 
     @Override
@@ -242,17 +270,13 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
     }
 
     public boolean isItemValidForSlot(@NotNull ItemStack stack) {
-        return containsRecipeABC(stack, inputFluidTank.getFluid(), inputChemicalTank.getStack());
+//        return containsRecipeABC(stack, inputFluidTank.getFluid(), inputChemicalTank.getStack());
+        return containsRecipeB(inputFluidTank.getFluid()) || containsRecipeC(inputChemicalTank.getStack());
     }
 
     // 判断输入物品是否符合配方
     public boolean isValidInputItem(@NotNull ItemStack stack) {
         return containsRecipeA(stack);
-    }
-
-    @Override
-    public boolean hasSecondaryResourceBar() {
-        return true;
     }
 
     @Override

@@ -16,7 +16,11 @@ import mekanism.common.CommonWorldTickHandler;
 import mekanism.common.capabilities.holder.chemical.ChemicalTankHelper;
 import mekanism.common.capabilities.holder.slot.InventorySlotHelper;
 import mekanism.common.inventory.warning.WarningTracker;
+import mekanism.common.lib.transmitter.TransmissionType;
 import mekanism.common.recipe.lookup.monitor.FactoryRecipeCacheLookupMonitor;
+import mekanism.common.tile.component.config.ConfigInfo;
+import mekanism.common.tile.component.config.DataType;
+import mekanism.common.tile.component.config.slot.ChemicalSlotInfo;
 import mekanism.common.util.MekanismUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -24,7 +28,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.util.ItemStackMap;
-import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -34,19 +37,17 @@ import java.util.function.ToIntBiFunction;
 
 public abstract class TileEntityItemToChemicalAdvancedFactory<RECIPE extends MekanismRecipe<?>> extends TileEntityAdvancedFactoryBase<RECIPE>{
 
-    public static final long MAX_GAS = 10L * FluidType.BUCKET_VOLUME;
-
     protected ICProcessInfo[] processInfoSlots;
     public IChemicalTank[] outputTank;
     AdvancedFactoryInputInventorySlot[] inputSlot;
 
-    final List<IInventorySlot> inputSlots;
-    public List<IChemicalTank> chemicalTanks;
+    final List<IInventorySlot> inputItemSlots;
+    public List<IChemicalTank> outputChemicalTanks;
 
     protected TileEntityItemToChemicalAdvancedFactory(Holder<Block> blockProvider, BlockPos pos, BlockState state, List<CachedRecipe.OperationTracker.RecipeError> errorTypes, Set<CachedRecipe.OperationTracker.RecipeError> globalErrorTypes) {
         super(blockProvider, pos, state, errorTypes, globalErrorTypes);
-        inputSlots = new ArrayList<>();
-        chemicalTanks = new ArrayList<>();
+        inputItemSlots = new ArrayList<>();
+        outputChemicalTanks = new ArrayList<>();
 
         //初始化COProcessInfo
         processInfoSlots = new ICProcessInfo[tier.processes];
@@ -55,11 +56,16 @@ public abstract class TileEntityItemToChemicalAdvancedFactory<RECIPE extends Mek
         }
 
         for (ICProcessInfo info : processInfoSlots) {
-            inputSlots.add(info.inputSlot());
-            chemicalTanks.add(info.outputTank());
+            inputItemSlots.add(info.inputSlot());
+            outputChemicalTanks.add(info.outputTank());
         }
 
-        configComponent.setupItemIOConfig(inputSlots, Collections.emptyList(), energySlot, false);
+        ConfigInfo chemicalConfig = configComponent.getConfig(TransmissionType.CHEMICAL);
+        if (chemicalConfig != null) {
+            chemicalConfig.addSlotInfo(DataType.OUTPUT, new ChemicalSlotInfo(false, true, outputChemicalTanks));
+        }
+
+        configComponent.setupItemIOConfig(inputItemSlots, Collections.emptyList(), energySlot, false);
     }
 
     @Override
@@ -72,7 +78,7 @@ public abstract class TileEntityItemToChemicalAdvancedFactory<RECIPE extends Mek
                 updateSortingListener.onContentsChanged();
                 lookupMonitor.unpause();
             };
-            outputTank[i] = BasicChemicalTank.output(MAX_GAS, updateSortingAndUnpause);
+            outputTank[i] = BasicChemicalTank.output(MAX_GAS * (tier.ordinal() + 1), updateSortingAndUnpause);
             builder.addTank(outputTank[i]);
             chemicalOutputHandlers[i] = OutputHelper.getOutputHandler(outputTank[i], CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE);
         }

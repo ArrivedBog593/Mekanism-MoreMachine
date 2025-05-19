@@ -38,7 +38,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -61,9 +60,6 @@ public class TileEntityWashingFactory extends TileEntityChemicalToChemicalAdvanc
             CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_ENERGY,
             CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_SECONDARY_INPUT
     );
-
-    public static final long MAX_SLURRY = 10L * FluidType.BUCKET_VOLUME;
-    public static final int MAX_FLUID = 10 * FluidType.BUCKET_VOLUME;
 
     public BasicFluidTank fluidTank;
 
@@ -91,6 +87,49 @@ public class TileEntityWashingFactory extends TileEntityChemicalToChemicalAdvanc
                 .setCanTankEject(tank -> !inputChemicalTanks.contains(tank));
 
         fluidInputHandler = InputHelper.getInputHandler(fluidTank, CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_SECONDARY_INPUT);
+    }
+
+    @NotNull
+    @Override
+    protected IFluidTankHolder getInitialFluidTanks(IContentsListener listener) {
+        FluidTankHelper builder = FluidTankHelper.forSideWithConfig(this);
+        builder.addTank(fluidTank = BasicFluidTank.input(MAX_FLUID * tier.processes, this::containsRecipeA, markAllMonitorsChanged(listener)));
+        return builder.build();
+    }
+
+    @Override
+    protected void addSlots(InventorySlotHelper builder, IContentsListener listener, IContentsListener updateSortingListener) {
+        builder.addSlot(fluidSlot = FluidInventorySlot.fill(fluidTank, listener, tier == FactoryTier.ULTIMATE ? 214 : 180, 71));
+        builder.addSlot(fluidOutputSlot = OutputInventorySlot.at(listener, tier == FactoryTier.ULTIMATE ? 214 : 180, 102));
+    }
+
+    @Override
+    protected boolean onUpdateServer() {
+        boolean sendUpdatePacket = super.onUpdateServer();
+        //已经重写了onUpdateServer()，所以不用handleSecondaryFuel()实现这个
+        fluidSlot.fillTank(fluidOutputSlot);
+        for (FactoryRecipeCacheLookupMonitor<FluidChemicalToChemicalRecipe> recipeCacheLookupMonitor : recipeCacheLookupMonitors) {
+            clientEnergyUsed += recipeCacheLookupMonitor.updateAndProcess(energyContainer);
+        }
+        return sendUpdatePacket;
+    }
+
+    public BasicFluidTank getFluidTankBar() {
+        return fluidTank;
+    }
+
+    public long getEnergyUsed() {
+        return clientEnergyUsed;
+    }
+
+    @Override
+    public boolean hasSecondaryResourceBar() {
+        return true;
+    }
+
+    @Override
+    protected void handleSecondaryFuel() {
+        fluidSlot.fillTank(fluidOutputSlot);
     }
 
     @Override
@@ -122,35 +161,6 @@ public class TileEntityWashingFactory extends TileEntityChemicalToChemicalAdvanc
         return MathUtils.clampToInt(recipe.getChemicalInput().getNeededAmount(inputStack));
     }
 
-    @NotNull
-    @Override
-    protected IFluidTankHolder getInitialFluidTanks(IContentsListener listener) {
-        FluidTankHelper builder = FluidTankHelper.forSideWithConfig(this);
-        builder.addTank(fluidTank = BasicFluidTank.input(MAX_FLUID, this::containsRecipeA, markAllMonitorsChanged(listener)));
-        return builder.build();
-    }
-
-    @Override
-    protected void addSlots(InventorySlotHelper builder, IContentsListener listener, IContentsListener updateSortingListener) {
-        builder.addSlot(fluidSlot = FluidInventorySlot.fill(fluidTank, listener, tier == FactoryTier.ULTIMATE ? 214 : 180, 71));
-        builder.addSlot(fluidOutputSlot = OutputInventorySlot.at(listener, tier == FactoryTier.ULTIMATE ? 214 : 180, 102));
-    }
-
-    @Override
-    protected boolean onUpdateServer() {
-        boolean sendUpdatePacket = super.onUpdateServer();
-        //已经重写了这个方法，所以不用handleSecondaryFuel()实现这个
-        fluidSlot.fillTank(fluidOutputSlot);
-        for (FactoryRecipeCacheLookupMonitor<FluidChemicalToChemicalRecipe> recipeCacheLookupMonitor : recipeCacheLookupMonitors) {
-            clientEnergyUsed += recipeCacheLookupMonitor.updateAndProcess(energyContainer);
-        }
-        return sendUpdatePacket;
-    }
-
-    public BasicFluidTank getFluidTankBar() {
-        return fluidTank;
-    }
-
     @Override
     public @NotNull IMekanismRecipeTypeProvider<?, FluidChemicalToChemicalRecipe, InputRecipeCache.FluidChemical<FluidChemicalToChemicalRecipe>> getRecipeType() {
         return MekanismRecipeType.WASHING;
@@ -175,20 +185,6 @@ public class TileEntityWashingFactory extends TileEntityChemicalToChemicalAdvanc
                 .setEnergyRequirements(energyContainer::getEnergyPerTick, energyContainer)
                 .setBaselineMaxOperations(() -> baselineMaxOperations)
                 .setOnFinish(this::markForSave);
-    }
-
-    public long getEnergyUsed() {
-        return clientEnergyUsed;
-    }
-
-    @Override
-    public boolean hasSecondaryResourceBar() {
-        return true;
-    }
-
-    @Override
-    protected void handleSecondaryFuel() {
-        fluidSlot.fillTank(fluidOutputSlot);
     }
 
     @Override

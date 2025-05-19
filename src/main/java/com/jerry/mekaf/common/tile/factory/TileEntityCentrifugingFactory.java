@@ -57,6 +57,24 @@ public class TileEntityCentrifugingFactory extends TileEntityChemicalToChemicalA
     }
 
     @Override
+    protected void addSlots(InventorySlotHelper builder, IContentsListener listener, IContentsListener updateSortingListener) {
+
+    }
+
+    @Override
+    protected boolean onUpdateServer() {
+        boolean sendUpdatePacket = super.onUpdateServer();
+        for (FactoryRecipeCacheLookupMonitor<ChemicalToChemicalRecipe> recipeCacheLookupMonitor : recipeCacheLookupMonitors) {
+            clientEnergyUsed += recipeCacheLookupMonitor.updateAndProcess(energyContainer);
+        }
+        return sendUpdatePacket;
+    }
+
+    public long getEnergyUsed() {
+        return clientEnergyUsed;
+    }
+
+    @Override
     protected boolean isCachedRecipeValid(@Nullable CachedRecipe<ChemicalToChemicalRecipe> cached, @NotNull ChemicalStack stack) {
         return cached != null && cached.getRecipe().getInput().testType(stack);
     }
@@ -79,24 +97,6 @@ public class TileEntityCentrifugingFactory extends TileEntityChemicalToChemicalA
     @Override
     protected int getNeededInput(ChemicalToChemicalRecipe recipe, ChemicalStack inputStack) {
         return MathUtils.clampToInt(recipe.getInput().getNeededAmount(inputStack));
-    }
-
-    @Override
-    protected void addSlots(InventorySlotHelper builder, IContentsListener listener, IContentsListener updateSortingListener) {
-
-    }
-
-    @Override
-    protected boolean onUpdateServer() {
-        boolean sendUpdatePacket = super.onUpdateServer();
-        for (FactoryRecipeCacheLookupMonitor<ChemicalToChemicalRecipe> recipeCacheLookupMonitor : recipeCacheLookupMonitors) {
-            clientEnergyUsed += recipeCacheLookupMonitor.updateAndProcess(energyContainer);
-        }
-        return sendUpdatePacket;
-    }
-
-    public long getEnergyUsed() {
-        return clientEnergyUsed;
     }
 
     @Override

@@ -87,38 +87,9 @@ public class TileEntityChemicalInfusingFactory extends TileEntityChemicalToChemi
     }
 
     @Override
-    protected boolean isCachedRecipeValid(@Nullable CachedRecipe<ChemicalChemicalToChemicalRecipe> cached, @NotNull ChemicalStack stack) {
-        if (cached != null) {
-            ChemicalChemicalToChemicalRecipe cachedRecipe = cached.getRecipe();
-            return cachedRecipe.getLeftInput().testType(stack) && (rightTank.isEmpty() || cachedRecipe.getRightInput().testType(rightTank.getTypeHolder()));
-        }
-        return false;
-    }
-
-    @Override
-    protected @Nullable ChemicalChemicalToChemicalRecipe findRecipe(int process, @NotNull ChemicalStack fallbackInput, @NotNull IChemicalTank outputSlot) {
-        return getRecipeType().getInputCache().findFirstRecipe(level, fallbackInput, outputSlot.getStack());
-    }
-
-    @Override
-    public boolean isChemicalValidForTank(@NotNull ChemicalStack stack) {
-        return containsRecipe(stack, rightTank.getStack()) || containsRecipe(rightTank.getStack(), stack);
-    }
-
-    @Override
-    public boolean isValidInputChemical(@NotNull ChemicalStack stack) {
-        return containsRecipe(stack);
-    }
-
-    @Override
-    protected int getNeededInput(ChemicalChemicalToChemicalRecipe recipe, ChemicalStack inputStack) {
-        return MathUtils.clampToInt(recipe.getLeftInput().getNeededAmount(inputStack));
-    }
-
-    @Override
     protected void addTanks(ChemicalTankHelper builder, IContentsListener listener, IContentsListener updateSortingListener) {
         super.addTanks(builder, listener, updateSortingListener);
-        builder.addTank(rightTank = BasicChemicalTank.inputModern(MAX_GAS, this::containsRecipe, markAllMonitorsChanged(listener)));
+        builder.addTank(rightTank = BasicChemicalTank.inputModern(MAX_GAS * (tier.ordinal() + 1), this::containsRecipe, markAllMonitorsChanged(listener)));
     }
 
     @Override
@@ -151,6 +122,35 @@ public class TileEntityChemicalInfusingFactory extends TileEntityChemicalToChemi
     @Override
     public IChemicalTank getChemicalTankBar() {
         return rightTank;
+    }
+
+    @Override
+    protected boolean isCachedRecipeValid(@Nullable CachedRecipe<ChemicalChemicalToChemicalRecipe> cached, @NotNull ChemicalStack stack) {
+        if (cached != null) {
+            ChemicalChemicalToChemicalRecipe cachedRecipe = cached.getRecipe();
+            return cachedRecipe.getLeftInput().testType(stack) && (rightTank.isEmpty() || cachedRecipe.getRightInput().testType(rightTank.getTypeHolder()));
+        }
+        return false;
+    }
+
+    @Override
+    protected @Nullable ChemicalChemicalToChemicalRecipe findRecipe(int process, @NotNull ChemicalStack fallbackInput, @NotNull IChemicalTank outputSlot) {
+        return getRecipeType().getInputCache().findFirstRecipe(level, fallbackInput, outputSlot.getStack());
+    }
+
+    @Override
+    public boolean isChemicalValidForTank(@NotNull ChemicalStack stack) {
+        return containsRecipe(stack, rightTank.getStack()) || containsRecipe(rightTank.getStack(), stack);
+    }
+
+    @Override
+    public boolean isValidInputChemical(@NotNull ChemicalStack stack) {
+        return containsRecipe(stack);
+    }
+
+    @Override
+    protected int getNeededInput(ChemicalChemicalToChemicalRecipe recipe, ChemicalStack inputStack) {
+        return MathUtils.clampToInt(recipe.getLeftInput().getNeededAmount(inputStack));
     }
 
     @Override

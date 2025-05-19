@@ -24,20 +24,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.ToIntBiFunction;
 
-public abstract class TileEntityChemicalToChemicalAdvancedFactory<RECIPE extends MekanismRecipe<?>> extends TileEntityAdvancedFactoryBase<RECIPE>{
-
-    public static final long MAX_GAS = 10L * FluidType.BUCKET_VOLUME;
+public abstract class TileEntityChemicalToChemicalAdvancedFactory<RECIPE extends MekanismRecipe<?>> extends TileEntityAdvancedFactoryBase<RECIPE> {
 
     protected CCProcessInfo[] processInfoSlots;
     public IChemicalTank[] outputTank;
@@ -56,6 +50,7 @@ public abstract class TileEntityChemicalToChemicalAdvancedFactory<RECIPE extends
             outputChemicalTanks.add(info.outputTank());
         }
 
+        configComponent.setupItemIOConfig(Collections.emptyList(), Collections.emptyList(), energySlot, false);
         ConfigInfo config = configComponent.getConfig(TransmissionType.CHEMICAL);
         if (config != null) {
             config.addSlotInfo(DataType.INPUT, new ChemicalSlotInfo(true, false, inputChemicalTanks));
@@ -77,8 +72,8 @@ public abstract class TileEntityChemicalToChemicalAdvancedFactory<RECIPE extends
                 lookupMonitor.unpause();
             };
             int index = i;
-            outputTank[i] = BasicChemicalTank.output(MAX_GAS, updateSortingAndUnpause);
-            inputTank[i] = BasicChemicalTank.inputModern(MAX_GAS, this::isValidInputChemical, stack -> isChemicalValidForTank(stack) && inputProducesOutput(index, stack, outputTank[index], false), recipeCacheLookupMonitors[index]);
+            outputTank[i] = BasicChemicalTank.output(MAX_GAS * (tier.ordinal() + 1), updateSortingAndUnpause);
+            inputTank[i] = BasicChemicalTank.inputModern(MAX_GAS * (tier.ordinal() + 1), this::isValidInputChemical, stack -> isChemicalValidForTank(stack) && inputProducesOutput(index, stack, outputTank[index], false), recipeCacheLookupMonitors[index]);
             builder.addTank(inputTank[i]);
             builder.addTank(outputTank[i]);
             chemicalInputHandlers[i] = InputHelper.getInputHandler(inputTank[i], CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT);

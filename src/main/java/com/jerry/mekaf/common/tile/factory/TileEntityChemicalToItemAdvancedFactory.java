@@ -27,7 +27,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -36,8 +35,6 @@ import java.util.*;
 import java.util.function.ToIntBiFunction;
 
 public abstract class TileEntityChemicalToItemAdvancedFactory<RECIPE extends MekanismRecipe<?>> extends TileEntityAdvancedFactoryBase<RECIPE>{
-
-    public static final long MAX_GAS = 10L * FluidType.BUCKET_VOLUME;
 
     protected CIProcessInfo[] processInfoSlots;
     public IInventorySlot[] outputSlot;
@@ -74,7 +71,7 @@ public abstract class TileEntityChemicalToItemAdvancedFactory<RECIPE extends Mek
         chemicalInputHandlers = new IInputHandler[tier.processes];
         for (int i = 0; i < tier.processes; i++) {
             int index = i;
-            inputTank[i] = BasicChemicalTank.inputModern(MAX_GAS, this::isValidInputChemical, stack -> isChemicalValidForTank(stack) && inputProducesOutput(index, stack, outputSlot[index], false), recipeCacheLookupMonitors[index]);
+            inputTank[i] = BasicChemicalTank.inputModern(MAX_GAS * (tier.ordinal() + 1), this::isValidInputChemical, stack -> isChemicalValidForTank(stack) && inputProducesOutput(index, stack, outputSlot[index], false), recipeCacheLookupMonitors[index]);
             builder.addTank(inputTank[i]);
             chemicalInputHandlers[i] = InputHelper.getInputHandler(inputTank[i], CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT);
         }

@@ -61,6 +61,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -73,6 +74,8 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
      * How many ticks it takes, by default, to run an operation.
      */
     protected static final int BASE_TICKS_REQUIRED = 10 * SharedConstants.TICKS_PER_SECOND;
+    public static final long MAX_GAS = 10L * FluidType.BUCKET_VOLUME;
+    public static final int MAX_FLUID = 10 * FluidType.BUCKET_VOLUME;
 
     protected FactoryRecipeCacheLookupMonitor<RECIPE>[] recipeCacheLookupMonitors;
     protected BooleanSupplier[] recheckAllRecipeErrors;
@@ -331,6 +334,10 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
 
     public int getOperationsPerTick() {
         return this.operationsPerTick;
+    }
+
+    public void setTicksRequired(int value) {
+        ticksRequired = value;
     }
 
     @Override
