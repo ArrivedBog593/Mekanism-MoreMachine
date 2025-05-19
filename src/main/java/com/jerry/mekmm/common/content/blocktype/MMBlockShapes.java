@@ -1,6 +1,7 @@
 package com.jerry.mekmm.common.content.blocktype;
 
 import com.jerry.mekaf.common.content.blocktype.AdvancedFactoryType;
+import mekanism.common.content.blocktype.BlockShapes;
 import mekanism.common.tier.FactoryTier;
 import mekanism.common.util.EnumUtils;
 import mekanism.common.util.VoxelShapeUtils;
@@ -50,7 +51,9 @@ public class MMBlockShapes {
 
     public static VoxelShape[] getShape(FactoryTier tier, AdvancedFactoryType type) {
         return switch (type) {
-            case OXIDIZING, DISSOLVING, CHEMICAL_INFUSING, WASHING, PRESSURISED_REACTING -> RECYCLER_FACTORY;
+            case OXIDIZING, DISSOLVING, CHEMICAL_INFUSING, WASHING, PRESSURISED_REACTING, CRYSTALLIZING -> RECYCLER_FACTORY;
+            case CENTRIFUGING -> BlockShapes.ISOTOPIC_CENTRIFUGE;
+//            case SOLAR_NEUTRON_ACTIVATING -> BlockShapes.SOLAR_NEUTRON_ACTIVATOR;
         };
     }
 }

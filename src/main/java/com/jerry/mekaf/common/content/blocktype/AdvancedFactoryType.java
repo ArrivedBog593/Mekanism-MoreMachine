@@ -14,11 +14,17 @@ import java.util.function.Supplier;
 
 @NothingNullByDefault
 public enum AdvancedFactoryType implements IHasTranslationKey.IHasEnumNameTranslationKey {
+    //回旋应该加在这
     OXIDIZING("oxidizing", MMLang.AUTHOR_DOLL, () -> AFBlockTypes.CHEMICAL_OXIDIZER, () -> MekanismBlocks.CHEMICAL_OXIDIZER),
-    DISSOLVING("dissolving", MMLang.AUTHOR_DOLL, () -> AFBlockTypes.CHEMICAL_DISSOLUTION_CHAMBER, () -> MekanismBlocks.CHEMICAL_DISSOLUTION_CHAMBER),
     CHEMICAL_INFUSING("chemical_infusing", MMLang.AUTHOR_DOLL, () -> AFBlockTypes.CHEMICAL_INFUSER, () -> MekanismBlocks.CHEMICAL_INFUSER),
+    //电解分离机
+    DISSOLVING("dissolving", MMLang.AUTHOR_DOLL, () -> AFBlockTypes.CHEMICAL_DISSOLUTION_CHAMBER, () -> MekanismBlocks.CHEMICAL_DISSOLUTION_CHAMBER),
     WASHING("washing", MMLang.AUTHOR_DOLL, () -> AFBlockTypes.CHEMICAL_WASHER, () -> MekanismBlocks.CHEMICAL_WASHER),
-    PRESSURISED_REACTING("pressurised_reacting", MMLang.AUTHOR_DOLL, () -> AFBlockTypes.PRESSURIZED_REACTION_CHAMBER, () -> MekanismBlocks.PRESSURIZED_REACTION_CHAMBER);
+    CRYSTALLIZING("crystallizing", MMLang.AUTHOR_DOLL, () -> AFBlockTypes.CHEMICAL_CRYSTALLIZER, () -> MekanismBlocks.CHEMICAL_CRYSTALLIZER),
+    PRESSURISED_REACTING("pressurised_reacting", MMLang.AUTHOR_DOLL, () -> AFBlockTypes.PRESSURIZED_REACTION_CHAMBER, () -> MekanismBlocks.PRESSURIZED_REACTION_CHAMBER),
+    CENTRIFUGING("centrifuging", MMLang.AUTHOR_DOLL, () -> AFBlockTypes.ISOTOPIC_CENTRIFUGE, () -> MekanismBlocks.ISOTOPIC_CENTRIFUGE),
+//    SOLAR_NEUTRON_ACTIVATING("solar_neutron_activating", MMLang.AUTHOR_DOLL, () -> AFBlockTypes.SOLAR_NEUTRON_ACTIVATOR, () -> MekanismBlocks.SOLAR_NEUTRON_ACTIVATOR)
+    ;
 
     private final String registryNameComponent;
     private final ILangEntry langEntry;

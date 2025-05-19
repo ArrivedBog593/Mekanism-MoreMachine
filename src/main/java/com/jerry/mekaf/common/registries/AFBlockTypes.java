@@ -7,8 +7,7 @@ import com.jerry.mekaf.common.content.blocktype.AdvancedFactoryType;
 import com.jerry.mekmm.common.content.blocktype.MMMachine;
 import com.jerry.mekmm.common.util.MMEnumUtils;
 import mekanism.common.MekanismLang;
-import mekanism.common.block.attribute.AttributeSideConfig;
-import mekanism.common.block.attribute.AttributeUpgradeSupport;
+import mekanism.common.block.attribute.*;
 import mekanism.common.config.MekanismConfig;
 import mekanism.common.content.blocktype.BlockShapes;
 import mekanism.common.lib.transmitter.TransmissionType;
@@ -81,6 +80,42 @@ public class AFBlockTypes {
             .withCustomShape(BlockShapes.PRESSURIZED_REACTION_CHAMBER)
             .withComputerSupport("pressurizedReactionChamber")
             .build();
+
+    // Chemical Crystallizer
+    public static final MMMachine.MMFactoryMachine<TileEntityChemicalCrystallizer> CHEMICAL_CRYSTALLIZER = MMMachine.MMMachineBuilder
+            .createAdvancedFactoryMachine(() -> MekanismTileEntityTypes.CHEMICAL_CRYSTALLIZER, MekanismLang.DESCRIPTION_CHEMICAL_CRYSTALLIZER, AdvancedFactoryType.CRYSTALLIZING)
+            .withGui(() -> MekanismContainerTypes.CHEMICAL_CRYSTALLIZER)
+            .withSound(MekanismSounds.CHEMICAL_CRYSTALLIZER)
+            .withEnergyConfig(MekanismConfig.usage.chemicalCrystallizer, MekanismConfig.storage.chemicalCrystallizer)
+            .with(AttributeSideConfig.ADVANCED_ELECTRIC_MACHINE)
+            .withCustomShape(BlockShapes.CHEMICAL_CRYSTALLIZER)
+            .withComputerSupport("chemicalCrystallizer")
+            .build();
+
+    // Isotopic Centrifuge
+    public static final MMMachine.MMFactoryMachine<TileEntityIsotopicCentrifuge> ISOTOPIC_CENTRIFUGE = MMMachine.MMMachineBuilder
+            .createAdvancedFactoryMachine(() -> MekanismTileEntityTypes.ISOTOPIC_CENTRIFUGE, MekanismLang.DESCRIPTION_ISOTOPIC_CENTRIFUGE, AdvancedFactoryType.CENTRIFUGING)
+            .withGui(() -> MekanismContainerTypes.ISOTOPIC_CENTRIFUGE)
+            .withEnergyConfig(MekanismConfig.usage.isotopicCentrifuge, MekanismConfig.storage.isotopicCentrifuge)
+            .withSideConfig(TransmissionType.CHEMICAL, TransmissionType.ITEM, TransmissionType.ENERGY)
+            .withSound(MekanismSounds.ISOTOPIC_CENTRIFUGE)
+            .withCustomShape(BlockShapes.ISOTOPIC_CENTRIFUGE)
+            .with(AttributeHasBounding.ABOVE_ONLY)
+            .withComputerSupport("isotopicCentrifuge")
+            .build();
+
+    // Solar Neutron Activator
+//    public static final MMMachine.MMFactoryMachine<TileEntitySolarNeutronActivator> SOLAR_NEUTRON_ACTIVATOR = MMMachine.MMMachineBuilder
+//            .createAdvancedFactoryMachine(() -> MekanismTileEntityTypes.SOLAR_NEUTRON_ACTIVATOR, MekanismLang.DESCRIPTION_SOLAR_NEUTRON_ACTIVATOR, AdvancedFactoryType.SOLAR_NEUTRON_ACTIVATING)
+//            .withGui(() -> MekanismContainerTypes.SOLAR_NEUTRON_ACTIVATOR)
+//            .without(AttributeParticleFX.class, AttributeUpgradeSupport.class)
+//            .withCustomShape(BlockShapes.SOLAR_NEUTRON_ACTIVATOR)
+//            .with(AttributeCustomSelectionBox.JSON)
+//            .withSideConfig(TransmissionType.CHEMICAL, TransmissionType.ITEM)
+//            .with(AttributeHasBounding.ABOVE_ONLY)
+//            .withComputerSupport("solarNeutronActivator")
+//            .replace(Attributes.ACTIVE)
+//            .build();
 
     static {
         for (FactoryTier tier : EnumUtils.FACTORY_TIERS) {

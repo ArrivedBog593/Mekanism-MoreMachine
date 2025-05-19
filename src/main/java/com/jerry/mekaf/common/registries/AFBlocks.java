@@ -21,10 +21,7 @@ import mekanism.common.recipe.lookup.cache.InputRecipeCache;
 import mekanism.common.registration.impl.BlockDeferredRegister;
 import mekanism.common.registration.impl.BlockRegistryObject;
 import mekanism.common.tier.FactoryTier;
-import mekanism.common.tile.machine.TileEntityChemicalDissolutionChamber;
-import mekanism.common.tile.machine.TileEntityChemicalInfuser;
-import mekanism.common.tile.machine.TileEntityChemicalWasher;
-import mekanism.common.tile.machine.TileEntityPressurizedReactionChamber;
+import mekanism.common.tile.machine.*;
 import mekanism.common.util.EnumUtils;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -70,6 +67,9 @@ public class AFBlocks {
                 case CHEMICAL_INFUSING ->
                         s -> MekanismRecipeType.CHEMICAL_INFUSING.getInputCache().containsInput(null, s);
                 case WASHING -> s -> MekanismRecipeType.WASHING.getInputCache().containsInputB(null, s);
+                case CRYSTALLIZING -> s -> MekanismRecipeType.CRYSTALLIZING.getInputCache().containsInput(null, s);
+                case CENTRIFUGING -> s -> MekanismRecipeType.CENTRIFUGING.getInputCache().containsInput(null, s);
+//                case SOLAR_NEUTRON_ACTIVATING -> s -> MekanismRecipeType.ACTIVATING.getInputCache().containsInput(null, s);
                 default -> null;
             };
             switch (type.getAdvancedFactoryType()) {
@@ -133,6 +133,27 @@ public class AFBlocks {
                                 .addEnergy()
                                 .build()
                         );
+                case CRYSTALLIZING ->
+                        holder.addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> ChemicalTanksBuilder.builder()
+                                .addBasic(TileEntityChemicalCrystallizer.MAX_CHEMICAL, MekanismRecipeType.CRYSTALLIZING, InputRecipeCache.SingleChemical::containsInput)
+                                .build()
+                        ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
+                                .addChemicalFillSlot(0)
+                                .addOutput()
+                                .addEnergy()
+                                .build()
+                        );
+                case CENTRIFUGING -> holder
+                        .addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> ChemicalTanksBuilder.builder()
+                                .addBasic(TileEntityIsotopicCentrifuge.MAX_GAS, MekanismRecipeType.CENTRIFUGING, InputRecipeCache.SingleChemical::containsInput)
+                                .addBasic(TileEntityIsotopicCentrifuge.MAX_GAS)
+                                .build()
+                        );
+//                case SOLAR_NEUTRON_ACTIVATING -> holder.addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> ChemicalTanksBuilder.builder()
+//                        .addBasic(TileEntitySolarNeutronActivator.MAX_GAS, MekanismRecipeType.ACTIVATING, InputRecipeCache.SingleChemical::containsInput)
+//                        .addBasic(TileEntitySolarNeutronActivator.MAX_GAS)
+//                        .build()
+//                );
             }
         });
         return factory;

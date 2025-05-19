@@ -39,7 +39,7 @@ public class GuiAdvancedFactory extends GuiConfigurableTile<TileEntityAdvancedFa
             imageHeight += 11;
             inventoryLabelY = tile instanceof TileEntityChemicalToChemicalAdvancedFactory<?> ? 111 : tile instanceof TileEntityPressurizedReactingFactory ? 93 : 98;
         } else {
-            inventoryLabelY = 88;
+            inventoryLabelY = tile instanceof TileEntityChemicalToChemicalAdvancedFactory<?> ? 103 : 88;
         }
 
         if (tile.tier == FactoryTier.ULTIMATE) {
@@ -100,6 +100,15 @@ public class GuiAdvancedFactory extends GuiConfigurableTile<TileEntityAdvancedFa
             }
         }
 
+        // 气体到物品的工厂只需要一排储罐，但储罐在上面
+        if (tile instanceof TileEntityChemicalToItemAdvancedFactory<?> factory) {
+            for (int i = 0; i < tile.tier.processes; i++) {
+                int index = i;
+                addRenderableWidget(new GuiChemicalGauge(() -> factory.inputChemicalTanks.get(index), () -> tile.getChemicalTanks(null), GaugeType.SMALL, this, factory.getXPos(index) - 1, 13))
+                        .warning(WarningTracker.WarningType.NO_SPACE_IN_OUTPUT, factory.getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE, index));
+            }
+        }
+
         // 气体生产气体的工厂需要两排储罐
         if (tile instanceof TileEntityChemicalToChemicalAdvancedFactory<?> factory) {
             for (int i = 0; i < tile.tier.processes; i++) {
@@ -114,7 +123,8 @@ public class GuiAdvancedFactory extends GuiConfigurableTile<TileEntityAdvancedFa
         // 所有工厂都有的进度条
         for (int i = 0; i < tile.tier.processes; i++) {
             int cacheIndex = i;
-            addRenderableWidget(new GuiProgress(() -> tile.getScaledProgress(1, cacheIndex), ProgressType.DOWN, this, 4 + tile.getXPos(i), tile instanceof TileEntityChemicalToChemicalAdvancedFactory<?> ? 46 : 33))
+            addRenderableWidget(new GuiProgress(() -> tile.getScaledProgress(1, cacheIndex), ProgressType.DOWN, this, 4 + tile.getXPos(i),
+                    tile instanceof TileEntityChemicalToChemicalAdvancedFactory<?> || tile instanceof TileEntityChemicalToItemAdvancedFactory<?> ? 46 : 33))
                     .recipeViewerCategory(tile)
                     //Only can happen if recipes change because inputs are sanitized in the factory based on the output
                     .warning(WarningTracker.WarningType.INPUT_DOESNT_PRODUCE_OUTPUT, tile.getWarningCheck(CachedRecipe.OperationTracker.RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT, cacheIndex));

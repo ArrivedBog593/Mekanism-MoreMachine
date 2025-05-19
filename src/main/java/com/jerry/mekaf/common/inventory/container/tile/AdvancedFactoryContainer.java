@@ -19,7 +19,7 @@ public class AdvancedFactoryContainer extends MekanismTileContainer<TileEntityAd
         if (tile.hasSecondaryResourceBar()) {
             return tile instanceof TileEntityChemicalToChemicalAdvancedFactory<?> ? 121 : tile instanceof TileEntityPressurizedReactingFactory ? 103 : 108;
         }
-        return 98;
+        return tile instanceof TileEntityChemicalToChemicalAdvancedFactory<?> ? 112 : 98;
     }
 
     @Override
