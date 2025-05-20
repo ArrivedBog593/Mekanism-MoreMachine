@@ -58,7 +58,7 @@ public class MMFactory<TILE extends MMTileEntityFactory<?>> extends MMMachine.MM
             builder.withCustomShape(MMBlockShapes.getShape(tier, type));
             builder.with(switch (type) {
                 case RECYCLING, CNC_STAMPING, CNC_LATHING, CNC_ROLLING_MILL -> AttributeSideConfig.ELECTRIC_MACHINE;
-                case PLANTING_STATION, REPLICATOR -> AttributeSideConfig.ADVANCED_ELECTRIC_MACHINE;
+                case PLANTING_STATION, REPLICATING -> AttributeSideConfig.ADVANCED_ELECTRIC_MACHINE;
             });
             builder.replace(new AttributeParticleFX().addDense(ParticleTypes.SMOKE, 5, rand -> new Pos3D(
                   rand.nextFloat() * 0.7F - 0.3F,

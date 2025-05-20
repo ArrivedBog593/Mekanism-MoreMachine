@@ -38,7 +38,7 @@ public class MMTileEntityTypes {
             registerFactory(tier, MMFactoryType.CNC_STAMPING, TileEntityStampingFactory::new);
             registerFactory(tier, MMFactoryType.CNC_LATHING, MMTileEntityItemStackToItemStackFactory::new);
             registerFactory(tier, MMFactoryType.CNC_ROLLING_MILL, MMTileEntityItemStackToItemStackFactory::new);
-            registerFactory(tier, MMFactoryType.REPLICATOR, TileEntityReplicatingFactory::new);
+            registerFactory(tier, MMFactoryType.REPLICATING, TileEntityReplicatingFactory::new);
 //            registerFactory(tier, FactoryType.COMBINING, TileEntityCombiningFactory::new);
 //            registerFactory(tier, FactoryType.COMPRESSING, TileEntityItemStackChemicalToItemStackFactory::new);
 //            registerFactory(tier, FactoryType.CRUSHING, TileEntityItemStackToItemStackFactory::new);

@@ -420,23 +420,6 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
         container.track(SyncableInt.create(this::getTicksRequired, value -> ticksRequired = value));
     }
 
-//    @Override
-//    public void parseUpgradeData(HolderLookup.Provider provider, @NotNull IUpgradeData upgradeData) {
-//        if (upgradeData instanceof MachineUpgradeData data) {
-//            redstone = data.redstone;
-//            setControlType(data.controlType);
-//            getEnergyContainer().setEnergy(data.energyContainer.getEnergy());
-//            sorting = data.sorting;
-//            energySlot.deserializeNBT(provider, data.energySlot.serializeNBT(provider));
-//            System.arraycopy(data.progress, 0, progress, 0, data.progress.length);
-//            for (ITileComponent component : getComponents()) {
-//                component.read(data.components, provider);
-//            }
-//        } else {
-//            super.parseUpgradeData(provider, upgradeData);
-//        }
-//    }
-
     //Methods relating to IComputerTile
     protected void validateValidProcess(int process) throws ComputerException {
         if (process < 0 || process >= progress.length) {

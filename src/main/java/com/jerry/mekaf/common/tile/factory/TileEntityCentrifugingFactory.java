@@ -2,6 +2,7 @@ package com.jerry.mekaf.common.tile.factory;
 
 import com.jerry.mekaf.common.upgrade.ChemicalToChemicalUpgradeData;
 import mekanism.api.IContentsListener;
+import mekanism.api.RelativeSide;
 import mekanism.api.Upgrade;
 import mekanism.api.chemical.ChemicalStack;
 import mekanism.api.chemical.IChemicalTank;
@@ -21,6 +22,9 @@ import mekanism.common.recipe.lookup.ISingleRecipeLookupHandler;
 import mekanism.common.recipe.lookup.cache.InputRecipeCache;
 import mekanism.common.recipe.lookup.monitor.FactoryRecipeCacheLookupMonitor;
 import mekanism.common.tile.component.TileComponentEjector;
+import mekanism.common.tile.component.config.ConfigInfo;
+import mekanism.common.tile.component.config.DataType;
+import mekanism.common.tile.component.config.slot.ChemicalSlotInfo;
 import mekanism.common.tile.interfaces.IBoundingBlock;
 import mekanism.common.upgrade.IUpgradeData;
 import net.minecraft.core.BlockPos;
@@ -53,6 +57,12 @@ public class TileEntityCentrifugingFactory extends TileEntityChemicalToChemicalA
 
     public TileEntityCentrifugingFactory(Holder<Block> blockProvider, BlockPos pos, BlockState state) {
         super(blockProvider, pos, state, TRACKED_ERROR_TYPES, GLOBAL_ERROR_TYPES);
+        ConfigInfo config = configComponent.getConfig(TransmissionType.CHEMICAL);
+        if (config != null) {
+            config.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo(true, true, inputChemicalTanks));
+            config.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo(true, true, outputChemicalTanks));
+        }
+        configComponent.addDisabledSides(RelativeSide.TOP);
 
         ejectorComponent = new TileComponentEjector(this);
         ejectorComponent.setOutputData(configComponent, TransmissionType.ITEM, TransmissionType.CHEMICAL)

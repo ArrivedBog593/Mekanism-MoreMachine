@@ -166,7 +166,7 @@ public class MMBlocks {
                 case CNC_STAMPING -> s -> MoreMachineRecipeType.STAMPING.getInputCache().containsInputA(null, s);
                 case CNC_LATHING -> s -> MoreMachineRecipeType.LATHING.getInputCache().containsInput(null, s);
                 case CNC_ROLLING_MILL -> s -> MoreMachineRecipeType.ROLLING_MILL.getInputCache().containsInput(null, s);
-                case REPLICATOR -> TileEntityReplicator::isValidItemInput;
+                case REPLICATING -> TileEntityReplicator::isValidItemInput;
             };
             switch (type.getMMFactoryType()) {
                 case CNC_STAMPING -> holder.addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
@@ -198,7 +198,7 @@ public class MMBlocks {
                                 .addEnergy()
                                 .build()
                 );
-                case REPLICATOR -> holder.addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> ChemicalTanksBuilder.builder()
+                case REPLICATING -> holder.addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> ChemicalTanksBuilder.builder()
                                 .addBasic(TileEntityPlantingStation.MAX_GAS * processes, TileEntityReplicatingFactory::isValidChemicalInput)
                                 .build()
                         ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
