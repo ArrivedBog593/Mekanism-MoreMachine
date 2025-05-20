@@ -142,7 +142,7 @@ public class TileEntityReplicator extends TileEntityProgressMachine<MMBasicItemS
         ).tracksWarnings(slot -> slot.warning(WarningTracker.WarningType.NO_MATCHING_RECIPE, getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT)));
         //输出槽位置
         //recipeCacheUnpauseListener，输出检测需要使用recipeCacheUnpauseListener，不然满了之后拿走物品不会更新状态
-        builder.addSlot(outputSlot = OutputInventorySlot.at(recipeCacheUnpauseListener,131, 32))
+        builder.addSlot(outputSlot = OutputInventorySlot.at(recipeCacheUnpauseListener, 131, 32))
                 .tracksWarnings(slot -> slot.warning(WarningTracker.WarningType.NO_SPACE_IN_OUTPUT, getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE)));
         //化学品罐槽位置
         builder.addSlot(chemicalSlot = ChemicalInventorySlot.fillOrConvert(chemicalTank, this::getLevel, listener, 8, 65));
