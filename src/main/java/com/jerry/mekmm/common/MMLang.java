@@ -16,6 +16,15 @@ public enum MMLang implements ILangEntry {
     STAMPING("factory", "stamping"),
     LATHING("factory", "lathing"),
     ROLLING_MILL("factory", "rolling_mill"),
+    REPLICATING("factory", "replicating"),
+    //Advanced Factory Type
+    OXIDIZING("factory", "oxidizing"),
+    CHEMICAL_INFUSING("factory", "chemical_infusing"),
+    DISSOLVING("factory", "dissolving"),
+    WASHING("factory", "washing"),
+    CRYSTALLIZING("factory", "crystallizing"),
+    PRESSURISED_REACTING("factory", "pressurised_reacting"),
+    CENTRIFUGING("factory", "centrifuging"),
 
     //Doll
     AUTHOR_DOLL("description", "author_doll"),

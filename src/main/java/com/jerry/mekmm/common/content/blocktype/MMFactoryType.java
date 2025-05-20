@@ -18,7 +18,7 @@ public enum MMFactoryType implements IHasTranslationKey.IHasEnumNameTranslationK
     CNC_STAMPING("stamping", MMLang.STAMPING, () -> MMBlockTypes.CNC_STAMPER, () -> MMBlocks.CNC_STAMPER),
     CNC_LATHING("lathing", MMLang.LATHING, () -> MMBlockTypes.CNC_LATHE, () -> MMBlocks.CNC_LATHE),
     CNC_ROLLING_MILL("rolling_mill", MMLang.ROLLING_MILL, () -> MMBlockTypes.CNC_ROLLING_MILL, () -> MMBlocks.CNC_ROLLING_MILL),
-    REPLICATOR("replicating", MMLang.AUTHOR_DOLL, () -> MMBlockTypes.REPLICATOR, () -> MMBlocks.REPLICATOR);
+    REPLICATING("replicating", MMLang.REPLICATING, () -> MMBlockTypes.REPLICATOR, () -> MMBlocks.REPLICATOR);
 
     private final String registryNameComponent;
     private final ILangEntry langEntry;

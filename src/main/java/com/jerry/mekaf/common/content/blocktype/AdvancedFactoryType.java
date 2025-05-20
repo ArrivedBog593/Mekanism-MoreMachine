@@ -15,14 +15,14 @@ import java.util.function.Supplier;
 @NothingNullByDefault
 public enum AdvancedFactoryType implements IHasTranslationKey.IHasEnumNameTranslationKey {
     //回旋应该加在这，如果会加的话
-    OXIDIZING("oxidizing", MMLang.AUTHOR_DOLL, () -> AFBlockTypes.CHEMICAL_OXIDIZER, () -> MekanismBlocks.CHEMICAL_OXIDIZER),
-    CHEMICAL_INFUSING("chemical_infusing", MMLang.AUTHOR_DOLL, () -> AFBlockTypes.CHEMICAL_INFUSER, () -> MekanismBlocks.CHEMICAL_INFUSER),
+    OXIDIZING("oxidizing", MMLang.OXIDIZING, () -> AFBlockTypes.CHEMICAL_OXIDIZER, () -> MekanismBlocks.CHEMICAL_OXIDIZER),
+    CHEMICAL_INFUSING("chemical_infusing", MMLang.CHEMICAL_INFUSING, () -> AFBlockTypes.CHEMICAL_INFUSER, () -> MekanismBlocks.CHEMICAL_INFUSER),
     //电解分离机
-    DISSOLVING("dissolving", MMLang.AUTHOR_DOLL, () -> AFBlockTypes.CHEMICAL_DISSOLUTION_CHAMBER, () -> MekanismBlocks.CHEMICAL_DISSOLUTION_CHAMBER),
-    WASHING("washing", MMLang.AUTHOR_DOLL, () -> AFBlockTypes.CHEMICAL_WASHER, () -> MekanismBlocks.CHEMICAL_WASHER),
-    CRYSTALLIZING("crystallizing", MMLang.AUTHOR_DOLL, () -> AFBlockTypes.CHEMICAL_CRYSTALLIZER, () -> MekanismBlocks.CHEMICAL_CRYSTALLIZER),
-    PRESSURISED_REACTING("pressurised_reacting", MMLang.AUTHOR_DOLL, () -> AFBlockTypes.PRESSURIZED_REACTION_CHAMBER, () -> MekanismBlocks.PRESSURIZED_REACTION_CHAMBER),
-    CENTRIFUGING("centrifuging", MMLang.AUTHOR_DOLL, () -> AFBlockTypes.ISOTOPIC_CENTRIFUGE, () -> MekanismBlocks.ISOTOPIC_CENTRIFUGE);
+    DISSOLVING("dissolving", MMLang.DISSOLVING, () -> AFBlockTypes.CHEMICAL_DISSOLUTION_CHAMBER, () -> MekanismBlocks.CHEMICAL_DISSOLUTION_CHAMBER),
+    WASHING("washing", MMLang.WASHING, () -> AFBlockTypes.CHEMICAL_WASHER, () -> MekanismBlocks.CHEMICAL_WASHER),
+    CRYSTALLIZING("crystallizing", MMLang.CRYSTALLIZING, () -> AFBlockTypes.CHEMICAL_CRYSTALLIZER, () -> MekanismBlocks.CHEMICAL_CRYSTALLIZER),
+    PRESSURISED_REACTING("pressurised_reacting", MMLang.PRESSURISED_REACTING, () -> AFBlockTypes.PRESSURIZED_REACTION_CHAMBER, () -> MekanismBlocks.PRESSURIZED_REACTION_CHAMBER),
+    CENTRIFUGING("centrifuging", MMLang.CENTRIFUGING, () -> AFBlockTypes.ISOTOPIC_CENTRIFUGE, () -> MekanismBlocks.ISOTOPIC_CENTRIFUGE);
 
     private final String registryNameComponent;
     private final ILangEntry langEntry;
