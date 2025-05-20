@@ -37,6 +37,9 @@ import mekanism.common.recipe.lookup.cache.InputRecipeCache;
 import mekanism.common.recipe.lookup.monitor.FactoryRecipeCacheLookupMonitor;
 import mekanism.common.tile.component.ITileComponent;
 import mekanism.common.tile.component.TileComponentEjector;
+import mekanism.common.tile.component.config.ConfigInfo;
+import mekanism.common.tile.component.config.DataType;
+import mekanism.common.tile.component.config.slot.ChemicalSlotInfo;
 import mekanism.common.tile.interfaces.IHasDumpButton;
 import mekanism.common.upgrade.IUpgradeData;
 import mekanism.common.util.MekanismUtils;
@@ -110,8 +113,13 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
 
         configComponent.setupItemIOConfig(inputItemSlots, outputItemSlots, energySlot, false);
         configComponent.setupInputConfig(TransmissionType.FLUID, inputFluidTank);
-        configComponent.setupInputConfig(TransmissionType.CHEMICAL, inputChemicalTank);
-        configComponent.setupOutputConfig(TransmissionType.CHEMICAL, outputChemicalTank);
+        ConfigInfo config = configComponent.getConfig(TransmissionType.CHEMICAL);
+        if (config != null) {
+            config.addSlotInfo(DataType.INPUT, new ChemicalSlotInfo(true, false, inputChemicalTank));
+            config.addSlotInfo(DataType.OUTPUT, new ChemicalSlotInfo(true, true, outputChemicalTank));
+            config.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo(true, true, inputChemicalTank));
+            config.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo(true, true, outputChemicalTank));
+        }
 
         ejectorComponent = new TileComponentEjector(this);
         ejectorComponent.setOutputData(configComponent, TransmissionType.ITEM, TransmissionType.CHEMICAL)
@@ -218,7 +226,7 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
         return new PressurizedReactionCachedRecipe(recipe, recheckAllRecipeErrors[cacheIndex], itemInputHandlers[cacheIndex], fluidInputHandler, chemicalInputHandler, reactionOutputHandlers[cacheIndex])
                 .setErrorsChanged(errors -> errorTracker.onErrorsChanged(errors, cacheIndex))
                 .setCanHolderFunction(this::canFunction)
-                .setActive(this::setActive)
+                .setActive(active -> setActiveState(active, cacheIndex))
                 .setEnergyRequirements(energyContainer::getEnergyPerTick, energyContainer)
                 .setRequiredTicks(this::getTicksRequired)
                 .setOnFinish(this::markForSave)

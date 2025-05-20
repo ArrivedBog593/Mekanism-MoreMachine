@@ -103,10 +103,10 @@ public class AFBlocks {
                 case CHEMICAL_INFUSING ->
                         holder.addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> AFChemicalTanksBuilder.builder()
                                 //Left
-                                .addInputFactoryTank(tier.processes,TileEntityAdvancedFactoryBase.MAX_CHEMICAL * tier.processes, recipeChemicalInputPredicate)
+                                .addInputFactoryTank(tier.processes, TileEntityAdvancedFactoryBase.MAX_CHEMICAL * tier.processes, recipeChemicalInputPredicate)
                                 //Right
                                 .addBasic(TileEntityAdvancedFactoryBase.MAX_CHEMICAL * tier.processes, recipeChemicalInputPredicate)
-                                .addOutputFactoryTank(tier.processes,TileEntityAdvancedFactoryBase.MAX_CHEMICAL * tier.processes)
+                                .addOutputFactoryTank(tier.processes, TileEntityAdvancedFactoryBase.MAX_CHEMICAL * tier.processes)
                                 .build()
                         ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
                                 .addOutput()

@@ -21,6 +21,7 @@ import mekanism.common.tile.component.ITileComponent;
 import mekanism.common.tile.component.config.ConfigInfo;
 import mekanism.common.tile.component.config.DataType;
 import mekanism.common.tile.component.config.slot.ChemicalSlotInfo;
+import mekanism.common.tile.component.config.slot.InventorySlotInfo;
 import mekanism.common.upgrade.IUpgradeData;
 import mekanism.common.util.MekanismUtils;
 import net.minecraft.core.BlockPos;
@@ -38,8 +39,10 @@ import java.util.function.ToIntBiFunction;
 public abstract class TileEntityChemicalToChemicalAdvancedFactory<RECIPE extends MekanismRecipe<?>> extends TileEntityAdvancedFactoryBase<RECIPE> {
 
     protected CCProcessInfo[] processInfoSlots;
-    public IChemicalTank[] outputTank;
-    IChemicalTank[] inputTank;
+    protected IChemicalTank[] outputTank;
+    protected IChemicalTank[] inputTank;
+
+    protected int baselineMaxOperations = 1;
 
     public List<IChemicalTank> inputChemicalTanks;
     public List<IChemicalTank> outputChemicalTanks;
@@ -54,11 +57,13 @@ public abstract class TileEntityChemicalToChemicalAdvancedFactory<RECIPE extends
             outputChemicalTanks.add(info.outputTank());
         }
 
-        configComponent.setupItemIOConfig(Collections.emptyList(), Collections.emptyList(), energySlot, false);
         ConfigInfo config = configComponent.getConfig(TransmissionType.CHEMICAL);
         if (config != null) {
-            config.addSlotInfo(DataType.INPUT, new ChemicalSlotInfo(true, false, inputChemicalTanks));
             config.addSlotInfo(DataType.OUTPUT, new ChemicalSlotInfo(false, true, outputChemicalTanks));
+        }
+        ConfigInfo itemConfig = configComponent.getConfig(TransmissionType.ITEM);
+        if (itemConfig != null) {
+            itemConfig.addSlotInfo(DataType.ENERGY, new InventorySlotInfo(true, true, energySlot));
         }
     }
 
@@ -77,7 +82,8 @@ public abstract class TileEntityChemicalToChemicalAdvancedFactory<RECIPE extends
             };
             int index = i;
             outputTank[i] = BasicChemicalTank.output(MAX_CHEMICAL * tier.processes, updateSortingAndUnpause);
-            inputTank[i] = BasicChemicalTank.inputModern(MAX_CHEMICAL * tier.processes, this::isValidInputChemical, stack -> isChemicalValidForTank(stack) && inputProducesOutput(index, stack, outputTank[index], false), recipeCacheLookupMonitors[index]);
+            inputTank[i] = BasicChemicalTank.inputModern(MAX_CHEMICAL * tier.processes, this::isValidInputChemical,
+                    stack -> isChemicalValidForTank(stack) && inputProducesOutput(index, stack, outputTank[index], false), recipeCacheLookupMonitors[index]);
             builder.addTank(inputTank[i]);
             builder.addTank(outputTank[i]);
             chemicalInputHandlers[i] = InputHelper.getInputHandler(inputTank[i], CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT);

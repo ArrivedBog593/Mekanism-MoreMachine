@@ -13,14 +13,11 @@ import mekanism.api.recipes.cache.OneInputCachedRecipe;
 import mekanism.client.recipe_viewer.type.IRecipeViewerRecipeType;
 import mekanism.client.recipe_viewer.type.RecipeViewerRecipeType;
 import mekanism.common.capabilities.holder.slot.InventorySlotHelper;
-import mekanism.common.inventory.container.MekanismContainer;
-import mekanism.common.inventory.container.sync.SyncableLong;
 import mekanism.common.lib.transmitter.TransmissionType;
 import mekanism.common.recipe.IMekanismRecipeTypeProvider;
 import mekanism.common.recipe.MekanismRecipeType;
 import mekanism.common.recipe.lookup.ISingleRecipeLookupHandler;
 import mekanism.common.recipe.lookup.cache.InputRecipeCache;
-import mekanism.common.recipe.lookup.monitor.FactoryRecipeCacheLookupMonitor;
 import mekanism.common.tile.component.TileComponentEjector;
 import mekanism.common.tile.component.config.ConfigInfo;
 import mekanism.common.tile.component.config.DataType;
@@ -52,13 +49,11 @@ public class TileEntityCentrifugingFactory extends TileEntityChemicalToChemicalA
     );
     private static final Set<CachedRecipe.OperationTracker.RecipeError> GLOBAL_ERROR_TYPES = Set.of(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_ENERGY);
 
-    private long clientEnergyUsed = 0L;
-    private int baselineMaxOperations = 1;
-
     public TileEntityCentrifugingFactory(Holder<Block> blockProvider, BlockPos pos, BlockState state) {
         super(blockProvider, pos, state, TRACKED_ERROR_TYPES, GLOBAL_ERROR_TYPES);
         ConfigInfo config = configComponent.getConfig(TransmissionType.CHEMICAL);
         if (config != null) {
+            config.addSlotInfo(DataType.INPUT, new ChemicalSlotInfo(true, false, inputChemicalTanks));
             config.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo(true, true, inputChemicalTanks));
             config.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo(true, true, outputChemicalTanks));
         }
@@ -72,19 +67,6 @@ public class TileEntityCentrifugingFactory extends TileEntityChemicalToChemicalA
     @Override
     protected void addSlots(InventorySlotHelper builder, IContentsListener listener, IContentsListener updateSortingListener) {
 
-    }
-
-    @Override
-    protected boolean onUpdateServer() {
-        boolean sendUpdatePacket = super.onUpdateServer();
-        for (FactoryRecipeCacheLookupMonitor<ChemicalToChemicalRecipe> recipeCacheLookupMonitor : recipeCacheLookupMonitors) {
-            clientEnergyUsed += recipeCacheLookupMonitor.updateAndProcess(energyContainer);
-        }
-        return sendUpdatePacket;
-    }
-
-    public long getEnergyUsed() {
-        return clientEnergyUsed;
     }
 
     @Override
@@ -132,7 +114,8 @@ public class TileEntityCentrifugingFactory extends TileEntityChemicalToChemicalA
         return OneInputCachedRecipe.chemicalToChemical(recipe, recheckAllRecipeErrors[cacheIndex], chemicalInputHandlers[cacheIndex], chemicalOutputHandlers[cacheIndex])
                 .setErrorsChanged(errors -> errorTracker.onErrorsChanged(errors, cacheIndex))
                 .setCanHolderFunction(this::canFunction)
-                .setActive(this::setActive)
+                // 一定要更改这里，不然会导致能量显示错误
+                .setActive(active -> setActiveState(active, cacheIndex))
                 .setOnFinish(this::markForSave)
                 .setEnergyRequirements(energyContainer::getEnergyPerTick, energyContainer)
                 .setBaselineMaxOperations(() -> baselineMaxOperations);
@@ -144,12 +127,6 @@ public class TileEntityCentrifugingFactory extends TileEntityChemicalToChemicalA
         if (upgrade == Upgrade.SPEED) {
             baselineMaxOperations = (int) Math.pow(2, upgradeComponent.getUpgrades(Upgrade.SPEED));
         }
-    }
-
-    @Override
-    public void addContainerTrackers(MekanismContainer container) {
-        super.addContainerTrackers(container);
-        container.track(SyncableLong.create(this::getEnergyUsed, value -> clientEnergyUsed = value));
     }
 
     @Override

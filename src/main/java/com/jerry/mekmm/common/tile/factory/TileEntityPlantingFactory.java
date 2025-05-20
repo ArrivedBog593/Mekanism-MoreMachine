@@ -177,7 +177,7 @@ public class TileEntityPlantingFactory extends MMTileEntityFactory<PlantingRecip
                 //设置错误更改
                 .setErrorsChanged(errors -> errorTracker.onErrorsChanged(errors, cacheIndex))
                 .setCanHolderFunction(this::canFunction)
-                .setActive(this::setActive)
+                .setActive(active -> setActiveState(active, cacheIndex))
                 .setEnergyRequirements(energyContainer::getEnergyPerTick, energyContainer)
                 .setRequiredTicks(this::getTicksRequired)
                 .setOnFinish(this::markForSave)

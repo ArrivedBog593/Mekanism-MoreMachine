@@ -5,6 +5,7 @@ import com.jerry.mekaf.common.tile.factory.*;
 import mekanism.api.recipes.cache.CachedRecipe;
 import mekanism.client.SpecialColors;
 import mekanism.client.gui.GuiConfigurableTile;
+import mekanism.client.gui.element.GuiDownArrow;
 import mekanism.client.gui.element.GuiDumpButton;
 import mekanism.client.gui.element.GuiSideHolder;
 import mekanism.client.gui.element.bar.GuiChemicalBar;
@@ -56,8 +57,10 @@ public class GuiAdvancedFactory extends GuiConfigurableTile<TileEntityAdvancedFa
             addRenderableWidget(GuiSideHolder.create(this, imageWidth, 66, 57, false, true, SpecialColors.TAB_CHEMICAL_WASHER));
         }
         super.addGuiElements();
+        addRenderableWidget(new GuiDownArrow(this, imageWidth + 8, 90));
         addRenderableWidget(new AFGuiSortingTab(this, tile));
-        addRenderableWidget(new GuiVerticalPowerBar(this, tile.getEnergyContainer(), imageWidth - 12, 16, 52))
+        addRenderableWidget(new GuiVerticalPowerBar(this, tile.getEnergyContainer(), imageWidth - 12, 16,
+                tile instanceof TileEntityItemToChemicalAdvancedFactory<?> || tile instanceof TileEntityChemicalToItemAdvancedFactory<?> ? 65 : tile instanceof TileEntityChemicalToChemicalAdvancedFactory<?> ? 78 : 52))
                 .warning(WarningTracker.WarningType.NOT_ENOUGH_ENERGY, tile.getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_ENERGY, 0));
         addRenderableWidget(new GuiEnergyTab(this, tile.getEnergyContainer(), tile::getLastUsage));
 

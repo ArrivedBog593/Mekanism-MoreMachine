@@ -18,8 +18,6 @@ import mekanism.common.capabilities.fluid.BasicFluidTank;
 import mekanism.common.capabilities.holder.fluid.FluidTankHelper;
 import mekanism.common.capabilities.holder.fluid.IFluidTankHolder;
 import mekanism.common.capabilities.holder.slot.InventorySlotHelper;
-import mekanism.common.inventory.container.MekanismContainer;
-import mekanism.common.inventory.container.sync.SyncableLong;
 import mekanism.common.inventory.slot.FluidInventorySlot;
 import mekanism.common.inventory.slot.OutputInventorySlot;
 import mekanism.common.lib.transmitter.TransmissionType;
@@ -28,11 +26,11 @@ import mekanism.common.recipe.MekanismRecipeType;
 import mekanism.common.recipe.lookup.IDoubleRecipeLookupHandler;
 import mekanism.common.recipe.lookup.cache.DoubleInputRecipeCache;
 import mekanism.common.recipe.lookup.cache.InputRecipeCache;
-import mekanism.common.recipe.lookup.monitor.FactoryRecipeCacheLookupMonitor;
 import mekanism.common.tier.FactoryTier;
 import mekanism.common.tile.component.TileComponentEjector;
 import mekanism.common.tile.component.config.ConfigInfo;
 import mekanism.common.tile.component.config.DataType;
+import mekanism.common.tile.component.config.slot.ChemicalSlotInfo;
 import mekanism.common.tile.component.config.slot.InventorySlotInfo;
 import mekanism.common.tile.interfaces.IHasDumpButton;
 import mekanism.common.upgrade.IUpgradeData;
@@ -67,9 +65,6 @@ public class TileEntityWashingFactory extends TileEntityChemicalToChemicalAdvanc
 
     public BasicFluidTank fluidTank;
 
-    private long clientEnergyUsed = 0L;
-    private int baselineMaxOperations = 1;
-
     private final IInputHandler<@NotNull FluidStack> fluidInputHandler;
 
     FluidInventorySlot fluidSlot;
@@ -82,6 +77,12 @@ public class TileEntityWashingFactory extends TileEntityChemicalToChemicalAdvanc
             itemConfig.addSlotInfo(DataType.INPUT, new InventorySlotInfo(true, true, fluidSlot));
             itemConfig.addSlotInfo(DataType.OUTPUT, new InventorySlotInfo(true, true, fluidOutputSlot));
             itemConfig.addSlotInfo(DataType.INPUT_OUTPUT, new InventorySlotInfo(true, true, fluidSlot, fluidOutputSlot));
+        }
+        ConfigInfo config = configComponent.getConfig(TransmissionType.CHEMICAL);
+        if (config != null) {
+            config.addSlotInfo(DataType.INPUT, new ChemicalSlotInfo(true, false, inputChemicalTanks));
+            config.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo(true, true, inputChemicalTanks));
+            config.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo(true, true, outputChemicalTanks));
         }
 
         configComponent.setupInputConfig(TransmissionType.FLUID, fluidTank);
@@ -107,23 +108,8 @@ public class TileEntityWashingFactory extends TileEntityChemicalToChemicalAdvanc
         builder.addSlot(fluidOutputSlot = OutputInventorySlot.at(listener, tier == FactoryTier.ULTIMATE ? 214 : 180, 102));
     }
 
-    @Override
-    protected boolean onUpdateServer() {
-        boolean sendUpdatePacket = super.onUpdateServer();
-        //已经重写了onUpdateServer()，所以不用handleSecondaryFuel()实现这个
-        fluidSlot.fillTank(fluidOutputSlot);
-        for (FactoryRecipeCacheLookupMonitor<FluidChemicalToChemicalRecipe> recipeCacheLookupMonitor : recipeCacheLookupMonitors) {
-            clientEnergyUsed += recipeCacheLookupMonitor.updateAndProcess(energyContainer);
-        }
-        return sendUpdatePacket;
-    }
-
     public BasicFluidTank getFluidTankBar() {
         return fluidTank;
-    }
-
-    public long getEnergyUsed() {
-        return clientEnergyUsed;
     }
 
     @Override
@@ -185,7 +171,7 @@ public class TileEntityWashingFactory extends TileEntityChemicalToChemicalAdvanc
         return TwoInputCachedRecipe.fluidChemicalToChemical(recipe, recheckAllRecipeErrors[cacheIndex], fluidInputHandler, chemicalInputHandlers[cacheIndex], chemicalOutputHandlers[cacheIndex])
                 .setErrorsChanged(errors -> errorTracker.onErrorsChanged(errors, cacheIndex))
                 .setCanHolderFunction(this::canFunction)
-                .setActive(this::setActive)
+                .setActive(active -> setActiveState(active, cacheIndex))
                 .setEnergyRequirements(energyContainer::getEnergyPerTick, energyContainer)
                 .setBaselineMaxOperations(() -> baselineMaxOperations)
                 .setOnFinish(this::markForSave);
@@ -197,12 +183,6 @@ public class TileEntityWashingFactory extends TileEntityChemicalToChemicalAdvanc
         if (upgrade == Upgrade.SPEED) {
             baselineMaxOperations = (int) Math.pow(2, upgradeComponent.getUpgrades(Upgrade.SPEED));
         }
-    }
-
-    @Override
-    public void addContainerTrackers(MekanismContainer container) {
-        super.addContainerTrackers(container);
-        container.track(SyncableLong.create(this::getEnergyUsed, value -> clientEnergyUsed = value));
     }
 
     @Override

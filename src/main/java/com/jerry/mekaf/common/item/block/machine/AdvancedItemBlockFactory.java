@@ -1,5 +1,6 @@
 package com.jerry.mekaf.common.item.block.machine;
 
+import com.jerry.mekaf.common.attachments.component.AFAttachedSideConfig;
 import com.jerry.mekaf.common.block.attribute.AdvancedAttributeFactoryType;
 import com.jerry.mekaf.common.block.prefab.AdvancedBlockFactoryMachine;
 import mekanism.api.text.EnumColor;
@@ -25,7 +26,7 @@ public class AdvancedItemBlockFactory extends ItemBlockTooltip<BlockTile<?, ?>> 
         return switch (Attribute.getOrThrow(block.builtInRegistryHolder(), AdvancedAttributeFactoryType.class).getAdvancedFactoryType()) {
             case OXIDIZING -> AttachedSideConfig.CHEMICAL_OUT_MACHINE;
             case DISSOLVING -> AttachedSideConfig.DISSOLUTION;
-            case CHEMICAL_INFUSING -> AttachedSideConfig.CHEMICAL_INFUSING;
+            case CHEMICAL_INFUSING -> AFAttachedSideConfig.CHEMICAL_INFUSING;
             case WASHING -> AttachedSideConfig.WASHER;
             case PRESSURISED_REACTING -> AttachedSideConfig.REACTION;
             case CRYSTALLIZING -> AttachedSideConfig.CRYSTALLIZER;

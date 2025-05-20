@@ -17,17 +17,14 @@ import mekanism.client.recipe_viewer.type.RecipeViewerRecipeType;
 import mekanism.common.Mekanism;
 import mekanism.common.capabilities.holder.chemical.ChemicalTankHelper;
 import mekanism.common.capabilities.holder.slot.InventorySlotHelper;
-import mekanism.common.inventory.container.MekanismContainer;
 import mekanism.common.inventory.container.slot.ContainerSlotType;
 import mekanism.common.inventory.container.slot.SlotOverlay;
-import mekanism.common.inventory.container.sync.SyncableLong;
 import mekanism.common.inventory.slot.chemical.ChemicalInventorySlot;
 import mekanism.common.lib.transmitter.TransmissionType;
 import mekanism.common.recipe.IMekanismRecipeTypeProvider;
 import mekanism.common.recipe.MekanismRecipeType;
 import mekanism.common.recipe.lookup.IEitherSideRecipeLookupHandler;
 import mekanism.common.recipe.lookup.cache.InputRecipeCache;
-import mekanism.common.recipe.lookup.monitor.FactoryRecipeCacheLookupMonitor;
 import mekanism.common.tile.component.TileComponentEjector;
 import mekanism.common.tile.component.config.ConfigInfo;
 import mekanism.common.tile.component.config.DataType;
@@ -64,9 +61,6 @@ public class TileEntityChemicalInfusingFactory extends TileEntityChemicalToChemi
     //原右侧储罐
     public IChemicalTank rightTank;
 
-    private long clientEnergyUsed;
-    private int baselineMaxOperations = 1;
-
     private final IInputHandler<@NotNull ChemicalStack> rightInputHandler;
 
     ChemicalInventorySlot rightInputSlot;
@@ -75,13 +69,15 @@ public class TileEntityChemicalInfusingFactory extends TileEntityChemicalToChemi
         super(blockProvider, pos, state, TRACKED_ERROR_TYPES, GLOBAL_ERROR_TYPES);
         ConfigInfo itemConfig = configComponent.getConfig(TransmissionType.ITEM);
         if (itemConfig != null) {
-            itemConfig.addSlotInfo(DataType.INPUT_2, new InventorySlotInfo(true, true, rightInputSlot));
+            itemConfig.addSlotInfo(DataType.INPUT_2, new InventorySlotInfo(true, false, rightInputSlot));
             itemConfig.addSlotInfo(DataType.INPUT_OUTPUT, new InventorySlotInfo(true, true, rightInputSlot));
         }
-        ConfigInfo gasConfig = configComponent.getConfig(TransmissionType.CHEMICAL);
-        if (gasConfig != null) {
-            gasConfig.addSlotInfo(DataType.INPUT_2, new ChemicalSlotInfo(true, false, rightTank));
-            gasConfig.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo(true, true, rightTank));
+        ConfigInfo chemicalConfig = configComponent.getConfig(TransmissionType.CHEMICAL);
+        if (chemicalConfig != null) {
+            chemicalConfig.addSlotInfo(DataType.INPUT_2, new ChemicalSlotInfo(true, false, rightTank));
+            chemicalConfig.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo(true, true, rightTank));
+            chemicalConfig.addSlotInfo(DataType.INPUT_1, new ChemicalSlotInfo(true, false, inputChemicalTanks));
+            chemicalConfig.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo(true, true, inputChemicalTanks));
         }
 
         ejectorComponent = new TileComponentEjector(this);
@@ -104,18 +100,8 @@ public class TileEntityChemicalInfusingFactory extends TileEntityChemicalToChemi
     }
 
     @Override
-    protected boolean onUpdateServer() {
-        boolean sendUpdatePacket = super.onUpdateServer();
-        //已经重写了这个方法，所以不用handleSecondaryFuel()实现这个
+    protected void handleSecondaryFuel() {
         rightInputSlot.fillTank();
-        for (FactoryRecipeCacheLookupMonitor<ChemicalChemicalToChemicalRecipe> recipeCacheLookupMonitor : recipeCacheLookupMonitors) {
-            clientEnergyUsed += recipeCacheLookupMonitor.updateAndProcess(energyContainer);
-        }
-        return sendUpdatePacket;
-    }
-
-    public long getEnergyUsed() {
-        return clientEnergyUsed;
     }
 
     @Override
@@ -177,7 +163,7 @@ public class TileEntityChemicalInfusingFactory extends TileEntityChemicalToChemi
         return new ChemicalChemicalToChemicalCachedRecipe<>(recipe, recheckAllRecipeErrors[cacheIndex], chemicalInputHandlers[cacheIndex], rightInputHandler, chemicalOutputHandlers[cacheIndex])
                 .setErrorsChanged(errors -> errorTracker.onErrorsChanged(errors, cacheIndex))
                 .setCanHolderFunction(this::canFunction)
-                .setActive(this::setActive)
+                .setActive(active -> setActiveState(active, cacheIndex))
                 .setEnergyRequirements(energyContainer::getEnergyPerTick, energyContainer)
                 .setBaselineMaxOperations(() -> baselineMaxOperations)
                 .setOnFinish(this::markForSave);
@@ -189,12 +175,6 @@ public class TileEntityChemicalInfusingFactory extends TileEntityChemicalToChemi
         if (upgrade == Upgrade.SPEED) {
             baselineMaxOperations = (int) Math.pow(2, upgradeComponent.getUpgrades(Upgrade.SPEED));
         }
-    }
-
-    @Override
-    public void addContainerTrackers(MekanismContainer container) {
-        super.addContainerTrackers(container);
-        container.track(SyncableLong.create(this::getEnergyUsed, value -> clientEnergyUsed = value));
     }
 
     @Override
