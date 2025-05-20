@@ -1,5 +1,6 @@
 package com.jerry.mekaf.common.tile.factory;
 
+import com.jerry.mekaf.common.upgrade.ChemicalChemicalToChemicalUpgradeData;
 import mekanism.api.IContentsListener;
 import mekanism.api.Upgrade;
 import mekanism.api.chemical.BasicChemicalTank;
@@ -13,6 +14,7 @@ import mekanism.api.recipes.inputs.IInputHandler;
 import mekanism.api.recipes.inputs.InputHelper;
 import mekanism.client.recipe_viewer.type.IRecipeViewerRecipeType;
 import mekanism.client.recipe_viewer.type.RecipeViewerRecipeType;
+import mekanism.common.Mekanism;
 import mekanism.common.capabilities.holder.chemical.ChemicalTankHelper;
 import mekanism.common.capabilities.holder.slot.InventorySlotHelper;
 import mekanism.common.inventory.container.MekanismContainer;
@@ -32,8 +34,10 @@ import mekanism.common.tile.component.config.DataType;
 import mekanism.common.tile.component.config.slot.ChemicalSlotInfo;
 import mekanism.common.tile.component.config.slot.InventorySlotInfo;
 import mekanism.common.tile.interfaces.IHasDumpButton;
+import mekanism.common.upgrade.IUpgradeData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
@@ -191,6 +195,23 @@ public class TileEntityChemicalInfusingFactory extends TileEntityChemicalToChemi
     public void addContainerTrackers(MekanismContainer container) {
         super.addContainerTrackers(container);
         container.track(SyncableLong.create(this::getEnergyUsed, value -> clientEnergyUsed = value));
+    }
+
+    @Override
+    public void parseUpgradeData(HolderLookup.Provider provider, @NotNull IUpgradeData upgradeData) {
+        if (upgradeData instanceof ChemicalChemicalToChemicalUpgradeData data) {
+            super.parseUpgradeData(provider, upgradeData);
+            rightTank.deserializeNBT(provider, data.inputTank.serializeNBT(provider));
+            rightInputSlot.deserializeNBT(provider, data.chemicalSlot.serializeNBT(provider));
+        } else {
+            Mekanism.logger.warn("Unhandled upgrade data.", new Throwable());
+        }
+    }
+
+    @Override
+    public @Nullable IUpgradeData getUpgradeData(HolderLookup.Provider provider) {
+        return new ChemicalChemicalToChemicalUpgradeData(provider, redstone, getControlType(), energyContainer, progress, null,
+                energySlot, rightInputSlot, inputChemicalTanks, rightTank, outputChemicalTanks, isSorting(), getComponents());
     }
 
     @Override

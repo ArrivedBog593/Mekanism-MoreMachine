@@ -41,11 +41,8 @@ import mekanism.common.recipe.lookup.IRecipeLookupHandler;
 import mekanism.common.recipe.lookup.monitor.FactoryRecipeCacheLookupMonitor;
 import mekanism.common.registries.MekanismDataComponents;
 import mekanism.common.tier.FactoryTier;
-import mekanism.common.tile.component.ITileComponent;
 import mekanism.common.tile.prefab.TileEntityConfigurableMachine;
 import mekanism.common.tile.prefab.TileEntityRecipeMachine;
-import mekanism.common.upgrade.IUpgradeData;
-import mekanism.common.upgrade.MachineUpgradeData;
 import mekanism.common.util.MekanismUtils;
 import mekanism.common.util.NBTUtils;
 import mekanism.common.util.UpgradeUtils;
@@ -94,7 +91,7 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
      */
     private int ticksRequired = BASE_TICKS_REQUIRED;
     private int operationsPerTick = 1;//will increase for modified upgrade multipliers
-    private boolean sorting;
+    protected boolean sorting;
     private boolean sortingNeeded = true;
     private long lastUsage = 0L;
 
@@ -423,22 +420,22 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
         container.track(SyncableInt.create(this::getTicksRequired, value -> ticksRequired = value));
     }
 
-    @Override
-    public void parseUpgradeData(HolderLookup.Provider provider, @NotNull IUpgradeData upgradeData) {
-        if (upgradeData instanceof MachineUpgradeData data) {
-            redstone = data.redstone;
-            setControlType(data.controlType);
-            getEnergyContainer().setEnergy(data.energyContainer.getEnergy());
-            sorting = data.sorting;
-            energySlot.deserializeNBT(provider, data.energySlot.serializeNBT(provider));
-            System.arraycopy(data.progress, 0, progress, 0, data.progress.length);
-            for (ITileComponent component : getComponents()) {
-                component.read(data.components, provider);
-            }
-        } else {
-            super.parseUpgradeData(provider, upgradeData);
-        }
-    }
+//    @Override
+//    public void parseUpgradeData(HolderLookup.Provider provider, @NotNull IUpgradeData upgradeData) {
+//        if (upgradeData instanceof MachineUpgradeData data) {
+//            redstone = data.redstone;
+//            setControlType(data.controlType);
+//            getEnergyContainer().setEnergy(data.energyContainer.getEnergy());
+//            sorting = data.sorting;
+//            energySlot.deserializeNBT(provider, data.energySlot.serializeNBT(provider));
+//            System.arraycopy(data.progress, 0, progress, 0, data.progress.length);
+//            for (ITileComponent component : getComponents()) {
+//                component.read(data.components, provider);
+//            }
+//        } else {
+//            super.parseUpgradeData(provider, upgradeData);
+//        }
+//    }
 
     //Methods relating to IComputerTile
     protected void validateValidProcess(int process) throws ComputerException {

@@ -1,5 +1,6 @@
 package com.jerry.mekaf.common.tile.factory;
 
+import com.jerry.mekaf.common.upgrade.ItemToChemicalUpgradeData;
 import mekanism.api.chemical.ChemicalStack;
 import mekanism.api.chemical.IChemicalTank;
 import mekanism.api.math.MathUtils;
@@ -14,8 +15,10 @@ import mekanism.common.recipe.MekanismRecipeType;
 import mekanism.common.recipe.lookup.ISingleRecipeLookupHandler;
 import mekanism.common.recipe.lookup.cache.InputRecipeCache;
 import mekanism.common.tile.component.TileComponentEjector;
+import mekanism.common.upgrade.IUpgradeData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -95,5 +98,11 @@ public class TileEntityOxidizingFactory extends TileEntityItemToChemicalAdvanced
     @Override
     public boolean isValidInputItem(@NotNull ItemStack stack) {
         return containsRecipe(stack);
+    }
+
+    @Override
+    public @Nullable IUpgradeData getUpgradeData(HolderLookup.Provider provider) {
+        return new ItemToChemicalUpgradeData(provider, redstone, getControlType(), getEnergyContainer(),
+                progress, energySlot, inputItemSlots, outputChemicalTanks, isSorting(), getComponents());
     }
 }

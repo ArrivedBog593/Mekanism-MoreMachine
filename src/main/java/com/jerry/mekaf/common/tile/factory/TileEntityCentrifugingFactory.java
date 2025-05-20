@@ -1,5 +1,6 @@
 package com.jerry.mekaf.common.tile.factory;
 
+import com.jerry.mekaf.common.upgrade.ChemicalToChemicalUpgradeData;
 import mekanism.api.IContentsListener;
 import mekanism.api.Upgrade;
 import mekanism.api.chemical.ChemicalStack;
@@ -21,8 +22,10 @@ import mekanism.common.recipe.lookup.cache.InputRecipeCache;
 import mekanism.common.recipe.lookup.monitor.FactoryRecipeCacheLookupMonitor;
 import mekanism.common.tile.component.TileComponentEjector;
 import mekanism.common.tile.interfaces.IBoundingBlock;
+import mekanism.common.upgrade.IUpgradeData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.util.TriPredicate;
@@ -137,5 +140,11 @@ public class TileEntityCentrifugingFactory extends TileEntityChemicalToChemicalA
     public void addContainerTrackers(MekanismContainer container) {
         super.addContainerTrackers(container);
         container.track(SyncableLong.create(this::getEnergyUsed, value -> clientEnergyUsed = value));
+    }
+
+    @Override
+    public @Nullable IUpgradeData getUpgradeData(HolderLookup.Provider provider) {
+        return new ChemicalToChemicalUpgradeData(provider, redstone, getControlType(), getEnergyContainer(),
+                progress, energySlot, inputChemicalTanks, outputChemicalTanks, isSorting(), getComponents());
     }
 }

@@ -1,6 +1,7 @@
 package com.jerry.mekaf.common.tile.factory;
 
 import com.jerry.mekaf.common.inventory.slot.AdvancedFactoryInputInventorySlot;
+import com.jerry.mekaf.common.upgrade.PRCUpgradeData;
 import mekanism.api.Action;
 import mekanism.api.IContentsListener;
 import mekanism.api.Upgrade;
@@ -34,12 +35,15 @@ import mekanism.common.recipe.MekanismRecipeType;
 import mekanism.common.recipe.lookup.ITripleRecipeLookupHandler;
 import mekanism.common.recipe.lookup.cache.InputRecipeCache;
 import mekanism.common.recipe.lookup.monitor.FactoryRecipeCacheLookupMonitor;
+import mekanism.common.tile.component.ITileComponent;
 import mekanism.common.tile.component.TileComponentEjector;
 import mekanism.common.tile.interfaces.IHasDumpButton;
+import mekanism.common.upgrade.IUpgradeData;
 import mekanism.common.util.MekanismUtils;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -91,20 +95,20 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
     private final IInputHandler<@NotNull FluidStack> fluidInputHandler;
     private final IInputHandler<@NotNull ChemicalStack> chemicalInputHandler;
 
-    protected final List<IInventorySlot> inputSlots;
-    protected final List<IInventorySlot> outputSlots;
+    protected final List<IInventorySlot> inputItemSlots;
+    protected final List<IInventorySlot> outputItemSlots;
 
     public TileEntityPressurizedReactingFactory(Holder<Block> blockProvider, BlockPos pos, BlockState state) {
         super(blockProvider, pos, state, TRACKED_ERROR_TYPES, GLOBAL_ERROR_TYPES);
-        inputSlots = new ArrayList<>();
-        outputSlots = new ArrayList<>();
+        inputItemSlots = new ArrayList<>();
+        outputItemSlots = new ArrayList<>();
 
         for (PRCProcessInfo info : processInfoSlots) {
-            inputSlots.add(info.inputSlot());
-            outputSlots.add(info.outputSlot());
+            inputItemSlots.add(info.inputSlot());
+            outputItemSlots.add(info.outputSlot());
         }
 
-        configComponent.setupItemIOConfig(inputSlots, outputSlots, energySlot, false);
+        configComponent.setupItemIOConfig(inputItemSlots, outputItemSlots, energySlot, false);
         configComponent.setupInputConfig(TransmissionType.FLUID, inputFluidTank);
         configComponent.setupInputConfig(TransmissionType.CHEMICAL, inputChemicalTank);
         configComponent.setupOutputConfig(TransmissionType.CHEMICAL, outputChemicalTank);
@@ -277,6 +281,39 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
     // 判断输入物品是否符合配方
     public boolean isValidInputItem(@NotNull ItemStack stack) {
         return containsRecipeA(stack);
+    }
+
+    @Override
+    public void parseUpgradeData(HolderLookup.Provider provider, @NotNull IUpgradeData upgradeData) {
+        if (upgradeData instanceof PRCUpgradeData data) {
+            redstone = data.redstone;
+            setControlType(data.controlType);
+            getEnergyContainer().setEnergy(data.energyContainer.getEnergy());
+            sorting = data.sorting;
+            energySlot.deserializeNBT(provider, data.energySlot.serializeNBT(provider));
+            System.arraycopy(data.progress, 0, progress, 0, data.progress.length);
+            for (int i = 0; i < data.inputSlots.size(); i++) {
+                //Copy the stack using NBT so that if it is not actually valid due to a reload we don't crash
+                inputItemSlots.get(i).deserializeNBT(provider, data.inputSlots.get(i).serializeNBT(provider));
+            }
+            for (int i = 0; i < data.outputSlots.size(); i++) {
+                outputItemSlots.get(i).setStack(data.outputSlots.get(i).getStack());
+            }
+            for (ITileComponent component : getComponents()) {
+                component.read(data.components, provider);
+            }
+            inputChemicalTank.deserializeNBT(provider, data.inputChemicalTank.serializeNBT(provider));
+            inputFluidTank.deserializeNBT(provider, data.inputFluidTank.serializeNBT(provider));
+            outputChemicalTank.deserializeNBT(provider, data.outputTank.serializeNBT(provider));
+        } else {
+            super.parseUpgradeData(provider, upgradeData);
+        }
+    }
+
+    @Override
+    public @Nullable IUpgradeData getUpgradeData(HolderLookup.Provider provider) {
+        return new PRCUpgradeData(provider, redstone, getControlType(), getEnergyContainer(), progress, energySlot,
+                inputChemicalTank, inputFluidTank, inputItemSlots, outputItemSlots, outputChemicalTank, isSorting(), getComponents());
     }
 
     @Override

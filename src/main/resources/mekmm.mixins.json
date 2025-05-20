@@ -5,7 +5,6 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "mekmm.refmap.json",
   "mixins": [
-    "MixinMachine",
     "MixinUpgrade",
     "MixinUpgradeUtils",
     "recipe.MixinMekanismRecipeType"

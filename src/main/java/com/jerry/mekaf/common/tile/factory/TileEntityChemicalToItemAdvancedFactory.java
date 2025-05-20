@@ -1,5 +1,6 @@
 package com.jerry.mekaf.common.tile.factory;
 
+import com.jerry.mekaf.common.upgrade.ChemicalToItemUpgradeData;
 import com.jerry.mekmm.common.util.ChemicalStackMap;
 import mekanism.api.Action;
 import mekanism.api.IContentsListener;
@@ -19,12 +20,15 @@ import mekanism.common.capabilities.holder.slot.InventorySlotHelper;
 import mekanism.common.inventory.slot.OutputInventorySlot;
 import mekanism.common.lib.transmitter.TransmissionType;
 import mekanism.common.recipe.lookup.monitor.FactoryRecipeCacheLookupMonitor;
+import mekanism.common.tile.component.ITileComponent;
 import mekanism.common.tile.component.config.ConfigInfo;
 import mekanism.common.tile.component.config.DataType;
 import mekanism.common.tile.component.config.slot.ChemicalSlotInfo;
+import mekanism.common.upgrade.IUpgradeData;
 import mekanism.common.util.MekanismUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Contract;
@@ -134,6 +138,30 @@ public abstract class TileEntityChemicalToItemAdvancedFactory<RECIPE extends Mek
     public abstract boolean isValidInputChemical(@NotNull ChemicalStack stack);
 
     protected abstract int getNeededInput(RECIPE recipe, ChemicalStack inputStack);
+
+    @Override
+    public void parseUpgradeData(HolderLookup.Provider provider, @NotNull IUpgradeData upgradeData) {
+        if (upgradeData instanceof ChemicalToItemUpgradeData data) {
+            redstone = data.redstone;
+            setControlType(data.controlType);
+            getEnergyContainer().setEnergy(data.energyContainer.getEnergy());
+            sorting = data.sorting;
+            energySlot.deserializeNBT(provider, data.energySlot.serializeNBT(provider));
+            System.arraycopy(data.progress, 0, progress, 0, data.progress.length);
+            for (int i = 0; i < data.inputTanks.size(); i++) {
+                //Copy the stack using NBT so that if it is not actually valid due to a reload we don't crash
+                inputChemicalTanks.get(i).deserializeNBT(provider, data.inputTanks.get(i).serializeNBT(provider));
+            }
+            for (int i = 0; i < data.outputSlots.size(); i++) {
+                outputItemSlots.get(i).setStack(data.outputSlots.get(i).getStack());
+            }
+            for (ITileComponent component : getComponents()) {
+                component.read(data.components, provider);
+            }
+        } else {
+            super.parseUpgradeData(provider, upgradeData);
+        }
+    }
 
     protected void sortInventoryOrTank() {
         Map<ChemicalStack, CIRecipeProcessInfo<RECIPE>> processes = ChemicalStackMap.createTypeAndComponentsMap();
