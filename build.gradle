@@ -17,6 +17,12 @@ repositories {
             includeGroup("cc.tweaked")
         }
     }
+    maven {
+        url "https://cursemaven.com"
+    }
+    maven {
+        url 'https://maven.blakesmods.com'
+    }
 }
 
 base {
@@ -113,6 +119,11 @@ dependencies {
     runtimeOnly "mekanism:Mekanism:${mekanism_version}:additions"
     implementation "mekanism:Mekanism:${mekanism_version}:generators"
     runtimeOnly "mekanism:Mekanism:${mekanism_version}:tools"
+
+    runtimeOnly "curse.maven:immersive-engineering-231951:6538942"
+
+    runtimeOnly "com.blakebr0.cucumber:Cucumber:${minecraft_version}-${cucumber_version}"
+    implementation "com.blakebr0.mysticalagriculture:MysticalAgriculture:${minecraft_version}-${mysticalagriculture_version}"
 
     compileOnly("cc.tweaked:cc-tweaked-${minecraft_version}-forge-api:${cc_tweaked_version}")
 }
