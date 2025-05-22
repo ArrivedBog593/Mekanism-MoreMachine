@@ -12,6 +12,7 @@ import mekanism.api.chemical.attribute.ChemicalAttributeValidator;
 import mekanism.api.functions.ConstantPredicates;
 import mekanism.api.inventory.IInventorySlot;
 import mekanism.api.math.MathUtils;
+import mekanism.api.radiation.IRadiationManager;
 import mekanism.api.recipes.PressurizedReactionRecipe;
 import mekanism.api.recipes.cache.CachedRecipe;
 import mekanism.api.recipes.cache.PressurizedReactionCachedRecipe;
@@ -327,6 +328,12 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
     @Override
     public void dump() {
         inputFluidTank.setStack(FluidStack.EMPTY);
+//        inputChemicalTank.setEmpty();
+        if (!isRemote() && IRadiationManager.INSTANCE.isRadiationEnabled() && shouldDumpRadiation()) {
+            //If we are on a server and radiation is enabled dump all gas tanks with radioactive materials
+            // Note: we handle clearing radioactive contents later in drop calculation due to when things are written to NBT
+            IRadiationManager.INSTANCE.dumpRadiation(getTileGlobalPos(), List.of(inputChemicalTank), false);
+        }
         inputChemicalTank.setEmpty();
     }
 
