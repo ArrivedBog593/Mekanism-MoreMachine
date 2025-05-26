@@ -2,6 +2,8 @@ package com.jerry.datagen.recipe.imp;
 
 import com.jerry.datagen.recipe.BaseRecipeProvider;
 import com.jerry.datagen.recipe.ISubRecipeProvider;
+import com.jerry.datagen.recipe.compat.IERecipeProvider;
+import com.jerry.datagen.recipe.compat.MysticalRecipeProvider;
 import com.jerry.datagen.recipe.pattern.Pattern;
 import com.jerry.datagen.recipe.pattern.RecipePattern;
 import mekanism.api.annotations.NothingNullByDefault;
@@ -11,6 +13,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.SpecialRecipeBuilder;
+import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import java.util.*;
@@ -53,6 +56,8 @@ public class MoreMachineRecipeProvider extends BaseRecipeProvider {
         super(output, provider, existingFileHelper);
 
         //Mod Compat Recipe providers
+        checkCompat("mysticalagriculture", MysticalRecipeProvider::new);
+        checkCompat("immersiveengineering", IERecipeProvider::new);
 //        checkCompat("ae2", AE2RecipeProvider::new);
 //        checkCompat("biomesoplenty", BiomesOPlentyRecipeProvider::new);
 //        checkCompat("biomeswevegone", BWGRecipeProvider::new);
@@ -60,11 +65,11 @@ public class MoreMachineRecipeProvider extends BaseRecipeProvider {
     }
 
     private void checkCompat(String modid, Function<String, ISubRecipeProvider> providerCreator) {
-//        if (ModList.get().isLoaded(modid)) {
-//            compatProviders.add(providerCreator.apply(modid));
-//        } else {
-//            disabledCompats.add(modid);
-//        }
+        if (ModList.get().isLoaded(modid)) {
+            compatProviders.add(providerCreator.apply(modid));
+        } else {
+            disabledCompats.add(modid);
+        }
     }
 
     public Set<String> getDisabledCompats() {
@@ -84,7 +89,8 @@ public class MoreMachineRecipeProvider extends BaseRecipeProvider {
     @Override
     protected List<ISubRecipeProvider> getSubRecipeProviders() {
         return List.of(
-                new AdvancedFactoryRecipeProvider()
+                new AdvancedFactoryRecipeProvider(),
+                new PlantingRecipeProvider()
         );
     }
 

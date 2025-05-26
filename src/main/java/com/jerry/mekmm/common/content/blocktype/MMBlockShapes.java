@@ -45,15 +45,24 @@ public class MMBlockShapes {
 
     public static VoxelShape[] getShape(FactoryTier tier, MMFactoryType type) {
         return switch (type) {
-            case RECYCLING, PLANTING_STATION, CNC_STAMPING, CNC_LATHING, CNC_ROLLING_MILL, REPLICATING -> RECYCLER_FACTORY;
+            case RECYCLING  -> BlockShapes.SMELTING_FACTORY;
+            case PLANTING_STATION -> BlockShapes.ENRICHING_FACTORY;
+            case CNC_STAMPING -> BlockShapes.CRUSHING_FACTORY;
+            case CNC_LATHING -> BlockShapes.COMPRESSING_FACTORY;
+            case CNC_ROLLING_MILL -> BlockShapes.COMBINING_FACTORY;
+            case REPLICATING -> BlockShapes.PURIFYING_FACTORY;
         };
     }
 
     public static VoxelShape[] getShape(FactoryTier tier, AdvancedFactoryType type) {
         return switch (type) {
-            case OXIDIZING, DISSOLVING, CHEMICAL_INFUSING, WASHING, PRESSURISED_REACTING, CRYSTALLIZING -> RECYCLER_FACTORY;
+            case OXIDIZING -> RECYCLER_FACTORY;
+            case CHEMICAL_INFUSING -> BlockShapes.CHEMICAL_INFUSER;
+            case DISSOLVING -> BlockShapes.CHEMICAL_DISSOLUTION_CHAMBER;
+            case WASHING -> BlockShapes.CHEMICAL_WASHER;
+            case CRYSTALLIZING -> BlockShapes.CHEMICAL_CRYSTALLIZER;
+            case PRESSURISED_REACTING -> BlockShapes.PRESSURIZED_REACTION_CHAMBER;
             case CENTRIFUGING -> BlockShapes.ISOTOPIC_CENTRIFUGE;
-//            case SOLAR_NEUTRON_ACTIVATING -> BlockShapes.SOLAR_NEUTRON_ACTIVATOR;
         };
     }
 }

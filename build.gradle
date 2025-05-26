@@ -120,7 +120,7 @@ dependencies {
     implementation "mekanism:Mekanism:${mekanism_version}:generators"
     runtimeOnly "mekanism:Mekanism:${mekanism_version}:tools"
 
-    runtimeOnly "curse.maven:immersive-engineering-231951:6538942"
+    implementation "curse.maven:immersive-engineering-231951:6538942"
 
     runtimeOnly "com.blakebr0.cucumber:Cucumber:${minecraft_version}-${cucumber_version}"
     implementation "com.blakebr0.mysticalagriculture:MysticalAgriculture:${minecraft_version}-${mysticalagriculture_version}"

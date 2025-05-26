@@ -1,7 +1,7 @@
 package com.jerry.mekmm.common.tile.factory;
 
 import com.jerry.mekmm.api.recipes.StamperRecipe;
-import com.jerry.mekmm.api.recipes.cache.MMTwoInputCachedRecipe;
+import com.jerry.mekmm.api.recipes.cache.StamperCachedRecipe;
 import com.jerry.mekmm.client.recipe_viewer.MMRecipeViewerRecipeType;
 import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
 import com.jerry.mekmm.common.upgrade.StamperUpgradeData;
@@ -127,7 +127,7 @@ public class TileEntityStampingFactory extends MMTileEntityItemToItemFactory<Sta
     @NotNull
     @Override
     public CachedRecipe<StamperRecipe> createNewCachedRecipe(@NotNull StamperRecipe recipe, int cacheIndex) {
-        return MMTwoInputCachedRecipe.stamper(recipe, recheckAllRecipeErrors[cacheIndex], inputHandlers[cacheIndex], extraInputHandler, outputHandlers[cacheIndex])
+        return StamperCachedRecipe.createCache(recipe, recheckAllRecipeErrors[cacheIndex], inputHandlers[cacheIndex], extraInputHandler, outputHandlers[cacheIndex])
               .setErrorsChanged(errors -> errorTracker.onErrorsChanged(errors, cacheIndex))
               .setCanHolderFunction(this::canFunction)
               .setActive(active -> setActiveState(active, cacheIndex))

@@ -1,7 +1,7 @@
 package com.jerry.mekmm.common.tile.machine;
 
 import com.jerry.mekmm.api.recipes.StamperRecipe;
-import com.jerry.mekmm.api.recipes.cache.MMTwoInputCachedRecipe;
+import com.jerry.mekmm.api.recipes.cache.StamperCachedRecipe;
 import com.jerry.mekmm.client.recipe_viewer.MMRecipeViewerRecipeType;
 import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
 import com.jerry.mekmm.common.registries.MMBlocks;
@@ -135,7 +135,7 @@ public class TileEntityStamper extends TileEntityProgressMachine<StamperRecipe> 
     @NotNull
     @Override
     public CachedRecipe<StamperRecipe> createNewCachedRecipe(@NotNull StamperRecipe recipe, int cacheIndex) {
-        return MMTwoInputCachedRecipe.stamper(recipe, recheckAllRecipeErrors, inputHandler, extraInputHandler, outputHandler)
+        return StamperCachedRecipe.createCache(recipe, recheckAllRecipeErrors, inputHandler, extraInputHandler, outputHandler)
                 .setErrorsChanged(this::onErrorsChanged)
                 .setCanHolderFunction(this::canFunction)
                 .setActive(this::setActive)
