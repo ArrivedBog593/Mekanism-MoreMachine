@@ -12,11 +12,11 @@
   },
   "item_input": {
     "count": 1,
-    "item": "integrateddynamics:menril_saplin"
+    "item": "integrateddynamics:menril_sapling"
   },
   "main_output": {
     "count": 1,
-    "id": "integrateddynamics:menril_saplin"
+    "id": "integrateddynamics:menril_sapling"
   },
   "per_tick_usage": true,
   "secondary_output": {
