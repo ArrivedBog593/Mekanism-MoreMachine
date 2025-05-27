@@ -44,7 +44,7 @@ public class MMCatalystRegistryHelper {
                 MMAttributeFactoryType factoryType = Attribute.get(blockItem.getBlock(), MMAttributeFactoryType.class);
                 if (factoryType != null) {
                     for (FactoryTier tier : EnumUtils.FACTORY_TIERS) {
-                        registry.addRecipeCatalyst(MMBlocks.getFactory(tier, factoryType.getMMFactoryType()), recipeType);
+                        registry.addRecipeCatalyst(MMBlocks.getMMFactory(tier, factoryType.getMMFactoryType()), recipeType);
                     }
                 }
             }

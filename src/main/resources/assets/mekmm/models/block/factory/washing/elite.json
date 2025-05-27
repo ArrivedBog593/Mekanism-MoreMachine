@@ -1,0 +1,6 @@
+{
+  "parent":"mekmm:block/factory/washing/base",
+  "textures": {
+    "4": "mekmm:block/factory/washing/chemical_washer_elements_elite"
+  }
+}

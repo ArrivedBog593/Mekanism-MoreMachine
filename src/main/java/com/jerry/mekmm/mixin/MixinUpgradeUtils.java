@@ -1,6 +1,5 @@
 package com.jerry.mekmm.mixin;
 
-import com.jerry.mekmm.common.registries.MMItems;
 import mekanism.api.Upgrade;
 import mekanism.common.util.UpgradeUtils;
 import net.minecraft.core.Holder;
@@ -16,7 +15,7 @@ public abstract class MixinUpgradeUtils {
     @Inject(method = "getItem", at = @At(value = "HEAD"), cancellable = true)
     private static void getItem(Upgrade upgrade, CallbackInfoReturnable<Holder<Item>> cir) {
         switch (upgrade.toString()) {
-            case "THREAD" -> cir.setReturnValue(MMItems.THREAD_UPGRADE);
+//            case "THREAD" -> cir.setReturnValue(MMItems.THREAD_UPGRADE);
 //            default -> throw new IllegalStateException(String.valueOf(ExtraUpgrade.STACK.ordinal()));
         }
     }

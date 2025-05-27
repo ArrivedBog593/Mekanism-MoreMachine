@@ -1,7 +1,6 @@
 package com.jerry.datagen.recipe.compat;
 
 import blusunrize.immersiveengineering.api.EnumMetals;
-import blusunrize.immersiveengineering.api.IETags;
 import blusunrize.immersiveengineering.common.register.IEItems;
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.api.datagen.recipe.builder.PlantingStationRecipeBuilder;
@@ -68,8 +67,8 @@ public class IERecipeProvider extends CompatRecipeProvider{
         StamperRecipeBuilder.stamping(
                 IngredientCreatorAccess.item().from(Tags.Items.INGOTS_COPPER),
                 IngredientCreatorAccess.item().from(IEItems.Molds.MOLD_BULLET_CASING),
-                new ItemStack(IEItems.Ingredients.EMPTY_SHELL, 2)
-        ).addCondition(modLoaded).build(consumer, Mekmm.rl(basePath + "stamper/empty_shell"));
+                new ItemStack(IEItems.Ingredients.EMPTY_CASING, 2)
+        ).addCondition(modLoaded).build(consumer, Mekmm.rl(basePath + "stamper/empty_casing"));
 
 
         StamperRecipeBuilder.stamping(

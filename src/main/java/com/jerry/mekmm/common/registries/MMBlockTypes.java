@@ -11,7 +11,6 @@ import com.jerry.mekmm.common.tile.TileEntityDoll;
 import com.jerry.mekmm.common.tile.machine.*;
 import com.jerry.mekmm.common.util.MMEnumUtils;
 import mekanism.api.Upgrade;
-import mekanism.common.MekanismLang;
 import mekanism.common.block.attribute.*;
 import mekanism.common.config.MekanismConfig;
 import mekanism.common.content.blocktype.BlockShapes;
@@ -31,9 +30,9 @@ public class MMBlockTypes {
 
     // Recycler
     public static final MMMachine.MMFactoryMachine<TileEntityRecycler> RECYCLER = MMMachine.MMMachineBuilder
-            .createMMFactoryMachine(() -> MMTileEntityTypes.RECYCLER, MekanismLang.DESCRIPTION_PRECISION_SAWMILL, MMFactoryType.RECYCLING)
+            .createMMFactoryMachine(() -> MMTileEntityTypes.RECYCLER, MMLang.DESCRIPTION_RECYCLER, MMFactoryType.RECYCLING)
             .withGui(() -> MMContainerTypes.RECYCLER)
-            .withSound(MekanismSounds.PRECISION_SAWMILL)
+            .withSound(MekanismSounds.CRUSHER)
             .withEnergyConfig(MekanismConfig.usage.precisionSawmill, MekanismConfig.storage.precisionSawmill)
             .with(AttributeSideConfig.ELECTRIC_MACHINE)
             .withComputerSupport("recycler")
@@ -41,7 +40,7 @@ public class MMBlockTypes {
 
     // Planting Station
     public static final MMMachine.MMFactoryMachine<TileEntityPlantingStation> PLANTING_STATION = MMMachine.MMMachineBuilder
-            .createMMFactoryMachine(() -> MMTileEntityTypes.PLANTING_STATION, MekanismLang.DESCRIPTION_PRECISION_SAWMILL, MMFactoryType.PLANTING_STATION)
+            .createMMFactoryMachine(() -> MMTileEntityTypes.PLANTING_STATION, MMLang.DESCRIPTION_PLANTING_STATION, MMFactoryType.PLANTING_STATION)
             .withGui(() -> MMContainerTypes.PLANTING_STATION)
             .withSound(MekanismSounds.PRECISION_SAWMILL)
             .withEnergyConfig(MekanismConfig.usage.precisionSawmill, MekanismConfig.storage.precisionSawmill)
@@ -52,7 +51,7 @@ public class MMBlockTypes {
 
     // CNC Stamper
     public static final MMMachine.MMFactoryMachine<TileEntityStamper> CNC_STAMPER = MMMachine.MMMachineBuilder
-            .createMMFactoryMachine(() -> MMTileEntityTypes.CNC_STAMPER, MekanismLang.DESCRIPTION_PRECISION_SAWMILL, MMFactoryType.CNC_STAMPING)
+            .createMMFactoryMachine(() -> MMTileEntityTypes.CNC_STAMPER, MMLang.DESCRIPTION_CNC_STAMPER, MMFactoryType.CNC_STAMPING)
             .withGui(() -> MMContainerTypes.CNC_STAMPER)
             .withSound(MekanismSounds.PRECISION_SAWMILL)
             .withEnergyConfig(MekanismConfig.usage.precisionSawmill, MekanismConfig.storage.precisionSawmill)
@@ -62,7 +61,7 @@ public class MMBlockTypes {
 
     // CNC Lathe
     public static final MMMachine.MMFactoryMachine<TileEntityLathe> CNC_LATHE = MMMachine.MMMachineBuilder
-            .createMMFactoryMachine(() -> MMTileEntityTypes.CNC_LATHE, MekanismLang.DESCRIPTION_PRECISION_SAWMILL, MMFactoryType.CNC_LATHING)
+            .createMMFactoryMachine(() -> MMTileEntityTypes.CNC_LATHE, MMLang.DESCRIPTION_CNC_LATHE, MMFactoryType.CNC_LATHING)
             .withGui(() -> MMContainerTypes.CNC_LATHE)
             .withSound(MekanismSounds.PRECISION_SAWMILL)
             .withEnergyConfig(MekanismConfig.usage.precisionSawmill, MekanismConfig.storage.precisionSawmill)
@@ -72,7 +71,7 @@ public class MMBlockTypes {
 
     // CNC Rolling Mill
     public static final MMMachine.MMFactoryMachine<TileEntityRollingMill> CNC_ROLLING_MILL = MMMachine.MMMachineBuilder
-            .createMMFactoryMachine(() -> MMTileEntityTypes.CNC_ROLLING_MILL, MekanismLang.DESCRIPTION_PRECISION_SAWMILL, MMFactoryType.CNC_ROLLING_MILL)
+            .createMMFactoryMachine(() -> MMTileEntityTypes.CNC_ROLLING_MILL, MMLang.DESCRIPTION_CNC_ROLLING_MILL, MMFactoryType.CNC_ROLLING_MILL)
             .withGui(() -> MMContainerTypes.CNC_ROLLING_MILL)
             .withSound(MekanismSounds.PRECISION_SAWMILL)
             .withEnergyConfig(MekanismConfig.usage.precisionSawmill, MekanismConfig.storage.precisionSawmill)
@@ -82,7 +81,7 @@ public class MMBlockTypes {
 
     // Replicator
     public static final MMMachine.MMFactoryMachine<TileEntityReplicator> REPLICATOR = MMMachine.MMMachineBuilder
-            .createMMFactoryMachine(() -> MMTileEntityTypes.REPLICATOR, MekanismLang.DESCRIPTION_ANTIPROTONIC_NUCLEOSYNTHESIZER, MMFactoryType.REPLICATING)
+            .createMMFactoryMachine(() -> MMTileEntityTypes.REPLICATOR, MMLang.DESCRIPTION_REPLICATOR, MMFactoryType.REPLICATING)
             .withGui(() -> MMContainerTypes.REPLICATOR)
             .withEnergyConfig(MekanismConfig.usage.antiprotonicNucleosynthesizer, MekanismConfig.storage.antiprotonicNucleosynthesizer)
             .withSound(MekanismSounds.ANTIPROTONIC_NUCLEOSYNTHESIZER)
@@ -101,7 +100,7 @@ public class MMBlockTypes {
 
     // Ambient Gas Collector
     public static final Machine<TileEntityAmbientGasCollector> AMBIENT_GAS_COLLECTOR = Machine.MachineBuilder
-            .createMachine(() -> MMTileEntityTypes.AMBIENT_GAS_COLLECTOR, MekanismLang.DESCRIPTION_ELECTRIC_PUMP)
+            .createMachine(() -> MMTileEntityTypes.AMBIENT_GAS_COLLECTOR, MMLang.DESCRIPTION_AMBIENT_GAS_COLLECTOR)
             .withGui(() -> MMContainerTypes.AMBIENT_GAS_COLLECTOR)
             .withEnergyConfig(MekanismConfig.usage.electricPump, MekanismConfig.storage.electricPump)
             .withSupportedUpgrades(Upgrade.SPEED, Upgrade.ENERGY)

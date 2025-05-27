@@ -33,7 +33,7 @@ public class MMMachine<TILE extends TileEntityMekanism> extends BlockTypeTile<TI
 
         public MMFactoryMachine(Supplier<TileEntityTypeRegistryObject<TILE>> tileEntitySupplier, ILangEntry description, MMFactoryType factoryType) {
             super(tileEntitySupplier, description);
-            add(new MMAttributeFactoryType(factoryType), new AttributeUpgradeable(() -> MMBlocks.getFactory(FactoryTier.BASIC, getMMFactoryType())));
+            add(new MMAttributeFactoryType(factoryType), new AttributeUpgradeable(() -> MMBlocks.getMMFactory(FactoryTier.BASIC, getMMFactoryType())));
         }
 
         public MMFactoryMachine(Supplier<TileEntityTypeRegistryObject<TILE>> tileEntitySupplier, ILangEntry description, AdvancedFactoryType factoryType) {

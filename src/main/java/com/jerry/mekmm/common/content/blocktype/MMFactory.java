@@ -29,7 +29,7 @@ public class MMFactory<TILE extends MMTileEntityFactory<?>> extends MMMachine.MM
         add(new AttributeGui(containerRegistrar, null), new AttributeTier<>(tier));
 
         if (tier.ordinal() < EnumUtils.FACTORY_TIERS.length - 1) {
-            add(new AttributeUpgradeable(() -> MMBlocks.getFactory(EnumUtils.FACTORY_TIERS[tier.ordinal() + 1], origMachine.getMMFactoryType())));
+            add(new AttributeUpgradeable(() -> MMBlocks.getMMFactory(EnumUtils.FACTORY_TIERS[tier.ordinal() + 1], origMachine.getMMFactoryType())));
         }
     }
 

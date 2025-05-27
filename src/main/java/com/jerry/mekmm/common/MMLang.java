@@ -25,8 +25,14 @@ public enum MMLang implements ILangEntry {
     CRYSTALLIZING("factory", "crystallizing"),
     PRESSURISED_REACTING("factory", "pressurised_reacting"),
     CENTRIFUGING("factory", "centrifuging"),
-
-    //Doll
+    //Descriptions
+    DESCRIPTION_RECYCLER("description", "recycler"),
+    DESCRIPTION_PLANTING_STATION("description", "planting_station"),
+    DESCRIPTION_CNC_STAMPER("description", "cnc_stamper"),
+    DESCRIPTION_CNC_LATHE("description", "cnc_lathe"),
+    DESCRIPTION_CNC_ROLLING_MILL("description", "cnc_rolling_mill"),
+    DESCRIPTION_REPLICATOR("description", "replicator"),
+    DESCRIPTION_AMBIENT_GAS_COLLECTOR("description", "ambient_gas_collector"),
     AUTHOR_DOLL("description", "author_doll"),
 
     //Tooltip stuff

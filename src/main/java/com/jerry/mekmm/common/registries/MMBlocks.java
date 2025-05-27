@@ -240,12 +240,12 @@ public class MMBlocks {
      *
      * @return factory with defined tier and recipe type
      */
-    public static BlockRegistryObject<MMBlockFactoryMachine.MMBlockFactory<?>, MMItemBlockFactory> getFactory(@NotNull FactoryTier tier, @NotNull MMFactoryType type) {
+    public static BlockRegistryObject<MMBlockFactoryMachine.MMBlockFactory<?>, MMItemBlockFactory> getMMFactory(@NotNull FactoryTier tier, @NotNull MMFactoryType type) {
         return MM_FACTORIES.get(tier, type);
     }
 
     @SuppressWarnings("unchecked")
-    public static BlockRegistryObject<MMBlockFactoryMachine.MMBlockFactory<?>, MMItemBlockFactory>[] getFactoryBlocks() {
+    public static BlockRegistryObject<MMBlockFactoryMachine.MMBlockFactory<?>, MMItemBlockFactory>[] getMMFactoryBlocks() {
         return MM_FACTORIES.values().toArray(new BlockRegistryObject[0]);
     }
 }

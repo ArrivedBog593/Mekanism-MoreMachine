@@ -115,15 +115,15 @@ public class MekmmDataGenerator {
         DeferredWorkQueue enqueueIMC = new DeferredWorkQueue("IMC Bootstrap: Enqueue IMC");
         for (ModContainer mod : ModList.get().getSortedMods()) {
             //Handle all our modules
-            if (mod.getModId().startsWith(Mekanism.MODID)) {
+            if (mod.getModId().startsWith(Mekanism.MODID) || mod.getModId().startsWith(Mekmm.MOD_ID) ) {
                 mods.add(mod);
-                mod.getEventBus().post(new InterModEnqueueEvent(mod, enqueueIMC));
+                Objects.requireNonNull(mod.getEventBus()).post(new InterModEnqueueEvent(mod, enqueueIMC));
             }
         }
         enqueueIMC.runTasks();
         DeferredWorkQueue processIMC = new DeferredWorkQueue("IMC Bootstrap: Process IMC");
         for (ModContainer mod : mods) {
-            mod.getEventBus().post(new InterModProcessEvent(mod, processIMC));
+            Objects.requireNonNull(mod.getEventBus()).post(new InterModProcessEvent(mod, processIMC));
         }
         processIMC.runTasks();
     }

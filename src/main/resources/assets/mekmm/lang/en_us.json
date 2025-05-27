@@ -154,8 +154,16 @@
   "factory.mekmm.crystallizing": "Crystallizing",
   "factory.mekmm.pressurised_reacting": "Pressurised Reacting",
   "factory.mekmm.centrifuging": "Centrifuging",
+
+  "description.mekmm.recycler": "A machine that destroys things you don't need, if there are recipes.",
+  "description.mekmm.planting_station": "An advanced machine capable of growing crops.",
+  "description.mekmm.cnc_stamper": "A machine that relies on molds to process items.",
+  "description.mekmm.cnc_lathe": "A machine with many functions for processing materials.",
+  "description.mekmm.cnc_rolling_mill": "A machine that uses mechanical force to bend metal.",
+  "description.mekmm.replicator": "A machine that violates the laws of physics and can replicate objects using a certain substance.",
+  "description.mekmm.ambient_gas_collector": "A machine that extracts mysterious substances from the atmosphere.",
   "description.mekmm.author_doll": "A doll with the author's skin.",
 
-  "tooltip.mekmm.is_blocking": "Blocked above the machine.",
-  "tooltip.mekmm.no_blocking": "Not blocked above the machine."
+  "tooltip.mekmm.is_blocking": "Blocked above the machine",
+  "tooltip.mekmm.no_blocking": "Not blocked above the machine"
 }

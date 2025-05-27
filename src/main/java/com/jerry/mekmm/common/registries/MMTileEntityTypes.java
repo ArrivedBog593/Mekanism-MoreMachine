@@ -52,7 +52,7 @@ public class MMTileEntityTypes {
     }
 
     private static void registerFactory(FactoryTier tier, MMFactoryType type, MMBlockEntityFactory<? extends MMTileEntityFactory<?>> factoryConstructor) {
-        BlockRegistryObject<MMBlockFactoryMachine.MMBlockFactory<?>, MMItemBlockFactory> block = MMBlocks.getFactory(tier, type);
+        BlockRegistryObject<MMBlockFactoryMachine.MMBlockFactory<?>, MMItemBlockFactory> block = MMBlocks.getMMFactory(tier, type);
         TileEntityTypeRegistryObject<? extends MMTileEntityFactory<?>> tileRO = MM_TILE_ENTITY_TYPES.mekBuilder(block, (pos, state) -> factoryConstructor.create(block, pos, state))
                 .clientTicker(TileEntityMekanism::tickClient)
                 .serverTicker(TileEntityMekanism::tickServer)

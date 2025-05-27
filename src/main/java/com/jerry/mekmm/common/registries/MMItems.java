@@ -1,7 +1,6 @@
 package com.jerry.mekmm.common.registries;
 
 import com.jerry.mekmm.Mekmm;
-import com.jerry.mekmm.api.MMUpgrade;
 import mekanism.api.Upgrade;
 import mekanism.common.item.ItemUpgrade;
 import mekanism.common.registration.impl.ItemDeferredRegister;
@@ -18,7 +17,7 @@ public class MMItems {
     public static final ItemDeferredRegister MM_ITEMS = new ItemDeferredRegister(Mekmm.MOD_ID);
 
     // 得在mods.toml设置：在mekanism之后加载，不然会导致空指针
-    public static final ItemRegistryObject<ItemUpgrade> THREAD_UPGRADE = registerUpgrade(MMUpgrade.THREAD, Rarity.RARE);
+//    public static final ItemRegistryObject<ItemUpgrade> THREAD_UPGRADE = registerUpgrade(MMUpgrade.THREAD, Rarity.RARE);
 
     public static final ItemRegistryObject<Item> SCRAP = MM_ITEMS.register("scrap");
     public static final ItemRegistryObject<Item> SCRAP_BOX = MM_ITEMS.register("scrap_box", Rarity.UNCOMMON);
