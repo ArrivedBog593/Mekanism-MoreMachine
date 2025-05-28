@@ -40,6 +40,7 @@ public class Mekmm {
         MMRecipeSerializersInternal.MM_RECIPE_SERIALIZERS.register(modEventBus);
         MMChemicals.MM_CHEMICALS.register(modEventBus);
         MMCreativeTabs.MM_CREATIVE_TABS.register(modEventBus);
+        modEventBus.addListener(MMConfig::onConfigLoad);
         // LargeMachine相关的注册
 //        LMConfig.registerConfigs(modContainer);
         registerAdvancedFactory(modEventBus);
