@@ -32,7 +32,7 @@ public class MMBlockTypes {
     public static final MMMachine.MMFactoryMachine<TileEntityRecycler> RECYCLER = MMMachine.MMMachineBuilder
             .createMMFactoryMachine(() -> MMTileEntityTypes.RECYCLER, MMLang.DESCRIPTION_RECYCLER, MMFactoryType.RECYCLING)
             .withGui(() -> MMContainerTypes.RECYCLER)
-            .withSound(MekanismSounds.CRUSHER)
+            .withSound(MekanismSounds.PRECISION_SAWMILL)
             .withEnergyConfig(MMConfig.usage.recycler, MMConfig.storage.recycler)
             .with(AttributeSideConfig.ELECTRIC_MACHINE)
             .withComputerSupport("recycler")
@@ -42,7 +42,7 @@ public class MMBlockTypes {
     public static final MMMachine.MMFactoryMachine<TileEntityPlantingStation> PLANTING_STATION = MMMachine.MMMachineBuilder
             .createMMFactoryMachine(() -> MMTileEntityTypes.PLANTING_STATION, MMLang.DESCRIPTION_PLANTING_STATION, MMFactoryType.PLANTING_STATION)
             .withGui(() -> MMContainerTypes.PLANTING_STATION)
-            .withSound(MekanismSounds.PRECISION_SAWMILL)
+            .withSound(MekanismSounds.ENRICHMENT_CHAMBER)
             .withEnergyConfig(MMConfig.usage.plantingStation, MMConfig.storage.plantingStation)
             .with(AttributeUpgradeSupport.DEFAULT_ADVANCED_MACHINE_UPGRADES)
             .with(AttributeSideConfig.ADVANCED_ELECTRIC_MACHINE)
@@ -53,7 +53,7 @@ public class MMBlockTypes {
     public static final MMMachine.MMFactoryMachine<TileEntityStamper> CNC_STAMPER = MMMachine.MMMachineBuilder
             .createMMFactoryMachine(() -> MMTileEntityTypes.CNC_STAMPER, MMLang.DESCRIPTION_CNC_STAMPER, MMFactoryType.CNC_STAMPING)
             .withGui(() -> MMContainerTypes.CNC_STAMPER)
-            .withSound(MekanismSounds.PRECISION_SAWMILL)
+            .withSound(MekanismSounds.CRUSHER)
             .withEnergyConfig(MMConfig.usage.cnc_stamper, MMConfig.storage.cnc_stamper)
             .with(AttributeSideConfig.ELECTRIC_MACHINE)
             .withComputerSupport("cnc_stamper")
@@ -63,7 +63,7 @@ public class MMBlockTypes {
     public static final MMMachine.MMFactoryMachine<TileEntityLathe> CNC_LATHE = MMMachine.MMMachineBuilder
             .createMMFactoryMachine(() -> MMTileEntityTypes.CNC_LATHE, MMLang.DESCRIPTION_CNC_LATHE, MMFactoryType.CNC_LATHING)
             .withGui(() -> MMContainerTypes.CNC_LATHE)
-            .withSound(MekanismSounds.PRECISION_SAWMILL)
+            .withSound(MekanismSounds.OSMIUM_COMPRESSOR)
             .withEnergyConfig(MMConfig.usage.cnc_lathe, MMConfig.storage.cnc_lathe)
             .with(AttributeSideConfig.ELECTRIC_MACHINE)
             .withComputerSupport("cnc_lathe")
@@ -73,7 +73,7 @@ public class MMBlockTypes {
     public static final MMMachine.MMFactoryMachine<TileEntityRollingMill> CNC_ROLLING_MILL = MMMachine.MMMachineBuilder
             .createMMFactoryMachine(() -> MMTileEntityTypes.CNC_ROLLING_MILL, MMLang.DESCRIPTION_CNC_ROLLING_MILL, MMFactoryType.CNC_ROLLING_MILL)
             .withGui(() -> MMContainerTypes.CNC_ROLLING_MILL)
-            .withSound(MekanismSounds.PRECISION_SAWMILL)
+            .withSound(MekanismSounds.COMBINER)
             .withEnergyConfig(MMConfig.usage.cnc_rollingMill, MMConfig.storage.cnc_rollingMill)
             .with(AttributeSideConfig.ELECTRIC_MACHINE)
             .withComputerSupport("cnc_rolling_mill")
@@ -84,7 +84,7 @@ public class MMBlockTypes {
             .createMMFactoryMachine(() -> MMTileEntityTypes.REPLICATOR, MMLang.DESCRIPTION_REPLICATOR, MMFactoryType.REPLICATING)
             .withGui(() -> MMContainerTypes.REPLICATOR)
             .withEnergyConfig(MMConfig.usage.replicator, MMConfig.storage.replicator)
-            .withSound(MekanismSounds.ANTIPROTONIC_NUCLEOSYNTHESIZER)
+            .withSound(MekanismSounds.PURIFICATION_CHAMBER)
             .with(AttributeSideConfig.ADVANCED_ELECTRIC_MACHINE)
             .withCustomShape(BlockShapes.ANTIPROTONIC_NUCLEOSYNTHESIZER)
             .withComputerSupport("replicator")
