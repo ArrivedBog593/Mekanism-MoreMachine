@@ -94,7 +94,12 @@ public class AFBlocks {
                                 .addOutputFactoryTank(tier.processes, TileEntityAdvancedFactoryBase.MAX_CHEMICAL * tier.processes)
                                 .build()
                         ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> AFItemSlotsBuilder.builder()
-                                .addChemicalFillOrConvertSlot(9)
+                                .addChemicalFillOrConvertSlot(switch (tier) {
+                                    case BASIC -> 3;
+                                    case ADVANCED -> 5;
+                                    case ELITE -> 7;
+                                    case ULTIMATE -> 9;
+                                })
                                 .addInputFactorySlots(processes, recipeItemInputPredicate)
                                 .addOutput()
                                 .addEnergy()
@@ -109,6 +114,7 @@ public class AFBlocks {
                                 .addOutputFactoryTank(tier.processes, TileEntityAdvancedFactoryBase.MAX_CHEMICAL * tier.processes)
                                 .build()
                         ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
+                                .addChemicalFillOrConvertSlot(0)
                                 .addOutput()
                                 .addEnergy()
                                 .build()

@@ -45,8 +45,8 @@ public abstract class TileEntityItemToChemicalAdvancedFactory<RECIPE extends Mek
     public IChemicalTank[] outputTank;
     AdvancedFactoryInputInventorySlot[] inputSlot;
 
-    final List<IInventorySlot> inputItemSlots;
-    public List<IChemicalTank> outputChemicalTanks;
+    protected final List<IInventorySlot> inputItemSlots;
+    public final List<IChemicalTank> outputChemicalTanks;
 
     protected TileEntityItemToChemicalAdvancedFactory(Holder<Block> blockProvider, BlockPos pos, BlockState state, List<CachedRecipe.OperationTracker.RecipeError> errorTypes, Set<CachedRecipe.OperationTracker.RecipeError> globalErrorTypes) {
         super(blockProvider, pos, state, errorTypes, globalErrorTypes);

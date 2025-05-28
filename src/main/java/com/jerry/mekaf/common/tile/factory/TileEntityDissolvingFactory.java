@@ -2,7 +2,6 @@ package com.jerry.mekaf.common.tile.factory;
 
 import com.jerry.mekaf.common.upgrade.ItemChemicalToChemicalUpgradeData;
 import mekanism.api.IContentsListener;
-import mekanism.api.RelativeSide;
 import mekanism.api.SerializationConstants;
 import mekanism.api.Upgrade;
 import mekanism.api.chemical.BasicChemicalTank;
@@ -31,6 +30,7 @@ import mekanism.common.recipe.lookup.cache.InputRecipeCache;
 import mekanism.common.tile.component.TileComponentEjector;
 import mekanism.common.tile.component.config.ConfigInfo;
 import mekanism.common.tile.component.config.DataType;
+import mekanism.common.tile.component.config.slot.ChemicalSlotInfo;
 import mekanism.common.tile.component.config.slot.InventorySlotInfo;
 import mekanism.common.tile.interfaces.IHasDumpButton;
 import mekanism.common.upgrade.IUpgradeData;
@@ -80,11 +80,14 @@ public class TileEntityDissolvingFactory extends TileEntityItemToChemicalAdvance
 
     public TileEntityDissolvingFactory(Holder<Block> blockProvider, BlockPos pos, BlockState state) {
         super(blockProvider, pos, state, TRACKED_ERROR_TYPES, GLOBAL_ERROR_TYPES);
-        chemicalInputHandler = InputHelper.getConstantInputHandler(injectTank);
-        configComponent.setupIOConfig(TransmissionType.CHEMICAL, injectTank, RelativeSide.LEFT);
+
         ConfigInfo itemConfig = configComponent.getConfig(TransmissionType.ITEM);
         if (itemConfig != null) {
             itemConfig.addSlotInfo(DataType.EXTRA, new InventorySlotInfo(true, true, chemicalInputSlot));
+        }
+        ConfigInfo chemicalConfig = configComponent.getConfig(TransmissionType.CHEMICAL);
+        if (chemicalConfig != null) {
+            chemicalConfig.addSlotInfo(DataType.INPUT, new ChemicalSlotInfo(true, false, injectTank));
         }
 
         ejectorComponent = new TileComponentEjector(this);
@@ -92,6 +95,9 @@ public class TileEntityDissolvingFactory extends TileEntityItemToChemicalAdvance
                 // 有多个储罐时可以使用该方法指定某个罐是否可以弹出
                 .setCanTankEject(tank -> tank != injectTank);
         usedSoFar = new long[tier.processes];
+
+        chemicalInputHandler = InputHelper.getConstantInputHandler(injectTank);
+
         injectUsageMultiplier = (usedSoFar, operatingTicks) -> StatUtils.inversePoisson(injectUsage);
     }
 
