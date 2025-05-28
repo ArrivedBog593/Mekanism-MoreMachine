@@ -8,8 +8,8 @@
     "cutout": {
       "render_type": "minecraft:cutout",
       "textures": {
-        "0": "mekmm:block/factory/crystallizing/chemical_crystallizer_basic",
-        "1": "mekmm:block/factory/crystallizing/chemical_crystallizer_elements1_basic",
+        "0": "mekanism:block/models/chemical_crystallizer",
+        "1": "mekanism:block/models/chemical_crystallizer_elements1",
         "2": "mekanism:block/models/chemical_crystallizer_elements2",
         "3": "mekanism:block/models/ports",
         "4": "mekanism:block/models/ports_led"
