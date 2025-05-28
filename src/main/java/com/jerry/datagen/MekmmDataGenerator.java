@@ -3,19 +3,13 @@ package com.jerry.datagen;
 import com.electronwill.nightconfig.core.CommentedConfig;
 import com.electronwill.nightconfig.core.InMemoryCommentedFormat;
 import com.electronwill.nightconfig.core.concurrent.SynchronizedConfig;
-import com.google.common.hash.Hashing;
-import com.google.common.hash.HashingOutputStream;
-import com.google.gson.JsonElement;
 import com.jerry.datagen.common.loot.MoreMachineLootProvider;
 import com.jerry.datagen.recipe.imp.MoreMachineRecipeProvider;
 import com.jerry.mekmm.Mekmm;
 import mekanism.common.Mekanism;
 import mekanism.common.lib.FieldReflectionHelper;
-import net.minecraft.Util;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.DeferredWorkQueue;
@@ -31,9 +25,6 @@ import net.neoforged.fml.util.ObfuscationReflectionHelper;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.nio.file.Path;
@@ -41,6 +32,9 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
+/**
+ * 来自Mekanism的仓库，删去了大部分这个模组不需要的模块，如果需要参考还请参考Mekanism的仓库
+ */
 @EventBusSubscriber(modid = Mekmm.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class MekmmDataGenerator {
 
@@ -126,28 +120,5 @@ public class MekmmDataGenerator {
             Objects.requireNonNull(mod.getEventBus()).post(new InterModProcessEvent(mod, processIMC));
         }
         processIMC.runTasks();
-    }
-
-    /**
-     * Basically a copy of {@link DataProvider#saveStable(CachedOutput, JsonElement, Path)} but it takes a consumer of the output stream instead of serializes json using
-     * GSON. Use it to write arbitrary files.
-     */
-    @SuppressWarnings({"UnstableApiUsage", "deprecation"})
-    public static CompletableFuture<?> save(CachedOutput cache, IOConsumer<OutputStream> osConsumer, Path path) {
-        return CompletableFuture.runAsync(() -> {
-            try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                 HashingOutputStream hashingOutputStream = new HashingOutputStream(Hashing.sha1(), outputStream)) {
-                osConsumer.accept(hashingOutputStream);
-                cache.writeIfNeeded(path, outputStream.toByteArray(), hashingOutputStream.hash());
-            } catch (IOException ioexception) {
-                DataProvider.LOGGER.error("Failed to save file to {}", path, ioexception);
-            }
-        }, Util.backgroundExecutor());
-    }
-
-    @FunctionalInterface
-    public interface IOConsumer<T> {
-
-        void accept(T value) throws IOException;
     }
 }
