@@ -283,8 +283,7 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
     }
 
     public boolean isItemValidForSlot(@NotNull ItemStack stack) {
-//        return containsRecipeABC(stack, inputFluidTank.getFluid(), inputChemicalTank.getStack());
-        return containsRecipeB(inputFluidTank.getFluid()) || containsRecipeC(inputChemicalTank.getStack());
+        return containsRecipeBAC(stack, inputFluidTank.getFluid(), inputChemicalTank.getStack()) || containsRecipeCAB(stack, inputFluidTank.getFluid(), inputChemicalTank.getStack());
     }
 
     // 判断输入物品是否符合配方
