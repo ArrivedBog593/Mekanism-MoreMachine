@@ -8,7 +8,7 @@
   "type": "mekmm:stamper",
   "main_input": {
     "count": 1,
-    "tag": "'c:silicon'"
+    "tag": "c:silicon"
   },
   "mold": {
     "count": 1,
