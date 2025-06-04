@@ -9,6 +9,7 @@ import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
 import com.jerry.mekmm.common.registries.MMBlocks;
 import com.jerry.mekmm.common.upgrade.PlantingUpgradeData;
 import mekanism.api.IContentsListener;
+import mekanism.api.RelativeSide;
 import mekanism.api.SerializationConstants;
 import mekanism.api.Upgrade;
 import mekanism.api.chemical.BasicChemicalTank;
@@ -29,6 +30,7 @@ import mekanism.common.capabilities.holder.energy.EnergyContainerHelper;
 import mekanism.common.capabilities.holder.energy.IEnergyContainerHolder;
 import mekanism.common.capabilities.holder.slot.IInventorySlotHolder;
 import mekanism.common.capabilities.holder.slot.InventorySlotHelper;
+import mekanism.common.config.MekanismConfig;
 import mekanism.common.inventory.slot.EnergyInventorySlot;
 import mekanism.common.inventory.slot.InputInventorySlot;
 import mekanism.common.inventory.slot.OutputInventorySlot;
@@ -42,6 +44,7 @@ import mekanism.common.recipe.lookup.cache.InputRecipeCache;
 import mekanism.common.tile.component.TileComponentEjector;
 import mekanism.common.tile.prefab.TileEntityProgressMachine;
 import mekanism.common.util.MekanismUtils;
+import mekanism.common.util.StatUtils;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -77,6 +80,7 @@ public class TileEntityPlantingStation extends TileEntityProgressMachine<Plantin
     public IChemicalTank chemicalTank;
 
     private final ItemStackConstantChemicalToObjectCachedRecipe.ChemicalUsageMultiplier chemicalUsageMultiplier;
+    private double chemicalPerTickMeanMultiplier = 1;
     private long baseTotalUsage;
     private long usedSoFar;
 
@@ -98,7 +102,11 @@ public class TileEntityPlantingStation extends TileEntityProgressMachine<Plantin
         configComponent.setupItemIOExtraConfig(inputSlot, mainOutputSlot, chemicalSlot, energySlot);
         configComponent.setupItemIOConfig(Collections.singletonList(inputSlot), List.of(mainOutputSlot, secondaryOutputSlot), energySlot, false);
         configComponent.setupInputConfig(TransmissionType.ENERGY, energyContainer);
-        configComponent.setupInputConfig(TransmissionType.CHEMICAL, chemicalTank);
+        if (allowExtractingChemical()) {
+            configComponent.setupIOConfig(TransmissionType.CHEMICAL, chemicalTank, RelativeSide.RIGHT).setCanEject(false);
+        } else {
+            configComponent.setupInputConfig(TransmissionType.CHEMICAL, chemicalTank);
+        }
 
         ejectorComponent = new TileComponentEjector(this);
         ejectorComponent.setOutputData(configComponent, TransmissionType.ITEM)
@@ -109,7 +117,11 @@ public class TileEntityPlantingStation extends TileEntityProgressMachine<Plantin
         outputHandler = MMOutputHelper.getOutputHandler(mainOutputSlot, CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE, secondaryOutputSlot, NOT_ENOUGH_SPACE_SECONDARY_OUTPUT_ERROR);
 
         baseTotalUsage = baseTicksRequired;
-        chemicalUsageMultiplier = ItemStackConstantChemicalToObjectCachedRecipe.ChemicalUsageMultiplier.constantUse(() -> baseTotalUsage, this::getTicksRequired);
+        if (useStatisticalMechanics()) {
+            chemicalUsageMultiplier = (usedSoFar, operatingTicks) -> StatUtils.inversePoisson(chemicalPerTickMeanMultiplier);
+        } else {
+            chemicalUsageMultiplier = ItemStackConstantChemicalToObjectCachedRecipe.ChemicalUsageMultiplier.constantUse(() -> baseTotalUsage, this::getTicksRequired);
+        }
     }
 
     @NotNull
@@ -146,7 +158,7 @@ public class TileEntityPlantingStation extends TileEntityProgressMachine<Plantin
     }
 
     protected boolean useStatisticalMechanics() {
-        return false;
+        return MekanismConfig.usage.randomizedConsumption.get();
     }
 
     @Override
@@ -198,7 +210,11 @@ public class TileEntityPlantingStation extends TileEntityProgressMachine<Plantin
     public void recalculateUpgrades(Upgrade upgrade) {
         super.recalculateUpgrades(upgrade);
         if (upgrade == Upgrade.SPEED || (upgrade == Upgrade.CHEMICAL && supportsUpgrade(Upgrade.CHEMICAL))) {
-            baseTotalUsage = MekanismUtils.getBaseUsage(this, baseTicksRequired);
+            if (useStatisticalMechanics()) {
+                chemicalPerTickMeanMultiplier = MekanismUtils.getGasPerTickMeanMultiplier(this);
+            } else {
+                baseTotalUsage = MekanismUtils.getBaseUsage(this, baseTicksRequired);
+            }
         }
     }
 
