@@ -26,7 +26,7 @@ public class MMStorageConfig extends BaseMekanismConfig {
         cnc_lathe = CachedLongValue.definedMin(this, builder, MMConfigTranslations.ENERGY_STORAGE_CNC_LATHE, "cnc_lathe", 20_000L, 1);
         cnc_rollingMill = CachedLongValue.definedMin(this, builder, MMConfigTranslations.ENERGY_STORAGE_ROLLING_MILL, "cnc_rollingMill", 20_000L, 1);
         replicator = CachedLongValue.definedMin(this, builder, MMConfigTranslations.ENERGY_STORAGE_REPLICATOR, "replicator", 102_400_000L, 1);
-        ambientGasCollector = CachedLongValue.definedMin(this, builder, MMConfigTranslations.ENERGY_STORAGE_AMBIENT_GAS_COLLECTOR, "ambientGasCollector", 100L, 1);
+        ambientGasCollector = CachedLongValue.definedMin(this, builder, MMConfigTranslations.ENERGY_STORAGE_AMBIENT_GAS_COLLECTOR, "ambientGasCollector", 40_000L, 1);
 
         configSpec = builder.build();
     }
