@@ -116,10 +116,9 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
         configComponent.setupInputConfig(TransmissionType.FLUID, inputFluidTank);
         ConfigInfo config = configComponent.getConfig(TransmissionType.CHEMICAL);
         if (config != null) {
-            config.addSlotInfo(DataType.INPUT, new ChemicalSlotInfo(true, false, inputChemicalTank));
-            config.addSlotInfo(DataType.OUTPUT, new ChemicalSlotInfo(true, true, outputChemicalTank));
-            config.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo(true, true, inputChemicalTank));
-            config.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo(true, true, outputChemicalTank));
+            config.addSlotInfo(DataType.INPUT, new ChemicalSlotInfo(true, true, inputChemicalTank));
+            config.addSlotInfo(DataType.OUTPUT, new ChemicalSlotInfo(false, true, outputChemicalTank));
+            config.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo(true, true, List.of(inputChemicalTank, outputChemicalTank)));
         }
 
         ejectorComponent = new TileComponentEjector(this);
