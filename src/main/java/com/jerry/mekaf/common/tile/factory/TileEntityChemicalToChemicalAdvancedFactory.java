@@ -7,6 +7,7 @@ import mekanism.api.IContentsListener;
 import mekanism.api.chemical.BasicChemicalTank;
 import mekanism.api.chemical.ChemicalStack;
 import mekanism.api.chemical.IChemicalTank;
+import mekanism.api.chemical.attribute.ChemicalAttributeValidator;
 import mekanism.api.recipes.MekanismRecipe;
 import mekanism.api.recipes.cache.CachedRecipe;
 import mekanism.api.recipes.inputs.IInputHandler;
@@ -82,8 +83,11 @@ public abstract class TileEntityChemicalToChemicalAdvancedFactory<RECIPE extends
             };
             int index = i;
             outputTank[i] = BasicChemicalTank.output(MAX_CHEMICAL * tier.processes, updateSortingAndUnpause);
-            inputTank[i] = BasicChemicalTank.inputModern(MAX_CHEMICAL * tier.processes, this::isValidInputChemical,
-                    stack -> isChemicalValidForTank(stack) && inputProducesOutput(index, stack, outputTank[index], false), recipeCacheLookupMonitors[index]);
+            inputTank[i] = BasicChemicalTank.createModern(MAX_CHEMICAL * tier.processes,
+                    // 这个type似乎没什么用，就不增加isValidInputChemical的参数了
+                    ChemicalTankHelper.radioactiveInputTankPredicate(() -> outputTank[index]), (stack, type) -> isValidInputChemical(stack),
+                    stack -> isChemicalValidForTank(stack) && inputProducesOutput(index, stack, outputTank[index], false),
+                    ChemicalAttributeValidator.ALWAYS_ALLOW, recipeCacheLookupMonitors[index]);
             builder.addTank(inputTank[i]);
             builder.addTank(outputTank[i]);
             chemicalInputHandlers[i] = InputHelper.getInputHandler(inputTank[i], CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT);
