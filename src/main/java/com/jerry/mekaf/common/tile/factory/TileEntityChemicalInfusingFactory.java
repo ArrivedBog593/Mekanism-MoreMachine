@@ -89,7 +89,7 @@ public class TileEntityChemicalInfusingFactory extends TileEntityChemicalToChemi
     @Override
     protected void addTanks(ChemicalTankHelper builder, IContentsListener listener, IContentsListener updateSortingListener) {
         super.addTanks(builder, listener, updateSortingListener);
-        builder.addTank(rightTank = BasicChemicalTank.inputModern(MAX_CHEMICAL * tier.processes, this::containsRecipe, markAllMonitorsChanged(listener)));
+        builder.addTank(rightTank = BasicChemicalTank.inputModern(MAX_CHEMICAL * tier.processes, this::isValidInputChemical, markAllMonitorsChanged(listener)));
     }
 
     @Override
@@ -130,12 +130,12 @@ public class TileEntityChemicalInfusingFactory extends TileEntityChemicalToChemi
 
     @Override
     public boolean isChemicalValidForTank(@NotNull ChemicalStack stack) {
-        return containsRecipe(stack, rightTank.getStack()) || containsRecipe(rightTank.getStack(), stack);
+        return containsRecipe(rightTank.getStack(), stack);
     }
 
     @Override
     public boolean isValidInputChemical(@NotNull ChemicalStack stack) {
-        return containsRecipe(stack);
+        return containsRecipe(stack, rightTank.getStack()) || containsRecipe(rightTank.getStack(), stack);
     }
 
     @Override
