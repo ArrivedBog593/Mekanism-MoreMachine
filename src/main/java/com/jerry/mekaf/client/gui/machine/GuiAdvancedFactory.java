@@ -57,7 +57,9 @@ public class GuiAdvancedFactory extends GuiConfigurableTile<TileEntityAdvancedFa
             addRenderableWidget(GuiSideHolder.create(this, imageWidth, 66, 57, false, true, SpecialColors.TAB_CHEMICAL_WASHER));
         }
         super.addGuiElements();
-        addRenderableWidget(new GuiDownArrow(this, imageWidth + 8, 90));
+        if (tile instanceof TileEntityWashingFactory) {
+            addRenderableWidget(new GuiDownArrow(this, imageWidth + 8, 90));
+        }
         addRenderableWidget(new AFGuiSortingTab(this, tile));
         addRenderableWidget(new GuiVerticalPowerBar(this, tile.getEnergyContainer(), imageWidth - 12, 16,
                 tile instanceof TileEntityItemToChemicalAdvancedFactory<?> || tile instanceof TileEntityChemicalToItemAdvancedFactory<?> ? 65 : tile instanceof TileEntityChemicalToChemicalAdvancedFactory<?> ? 78 : 52))
