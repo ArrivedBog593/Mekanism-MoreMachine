@@ -1,14 +1,18 @@
 package com.jerry.mekmm.client.recipe_viewer;
 
 import com.jerry.mekmm.Mekmm;
+import com.jerry.mekmm.api.recipes.basic.BasicFluidChemicalToFluidRecipe;
 import com.jerry.mekmm.api.recipes.basic.MMBasicItemStackChemicalToItemStackRecipe;
 import com.jerry.mekmm.common.registries.MMChemicals;
+import com.jerry.mekmm.common.tile.machine.TileEntityFluidReplicator;
 import com.jerry.mekmm.common.tile.machine.TileEntityReplicator;
 import mekanism.client.recipe_viewer.RecipeViewerUtils;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.material.Fluid;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +23,7 @@ public class MMRecipeViewerUtils {
 
     }
 
-    public static Map<ResourceLocation, MMBasicItemStackChemicalToItemStackRecipe> getReplicatorRecipes() {
+    public static Map<ResourceLocation, MMBasicItemStackChemicalToItemStackRecipe> getItemReplicatorRecipes() {
         Map<ResourceLocation, MMBasicItemStackChemicalToItemStackRecipe> replicator = new HashMap<>();
         //TODO: Do we want to loop creative tabs or something instead?
         // In theory recipe loaders should init the creative tabs before we are called so we wouldn't need to call
@@ -28,6 +32,17 @@ public class MMRecipeViewerUtils {
         // names for the recipes as EMI requires they be unique. (Maybe index them?)
         for (Map.Entry<ResourceKey<Item>, Item> entry : BuiltInRegistries.ITEM.entrySet()) {
             MMBasicItemStackChemicalToItemStackRecipe recipe = TileEntityReplicator.getRecipe(entry.getValue().getDefaultInstance(), MMChemicals.UU_MATTER.asStack(1));
+            if (recipe != null) {
+                replicator.put(RecipeViewerUtils.synthetic(entry.getKey().location(), "replicator", Mekmm.MOD_ID), recipe);
+            }
+        }
+        return replicator;
+    }
+
+    public static Map<ResourceLocation, BasicFluidChemicalToFluidRecipe> getFluidReplicatorRecipes() {
+        Map<ResourceLocation, BasicFluidChemicalToFluidRecipe> replicator = new HashMap<>();
+        for (Map.Entry<ResourceKey<Fluid>, Fluid> entry : BuiltInRegistries.FLUID.entrySet()) {
+            BasicFluidChemicalToFluidRecipe recipe = TileEntityFluidReplicator.getRecipe(new FluidStack(entry.getValue(), 1), MMChemicals.UU_MATTER.asStack(1));
             if (recipe != null) {
                 replicator.put(RecipeViewerUtils.synthetic(entry.getKey().location(), "replicator", Mekmm.MOD_ID), recipe);
             }

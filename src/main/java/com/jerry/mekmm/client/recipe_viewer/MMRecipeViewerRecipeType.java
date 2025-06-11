@@ -3,6 +3,7 @@ package com.jerry.mekmm.client.recipe_viewer;
 import com.jerry.mekmm.api.recipes.PlantingRecipe;
 import com.jerry.mekmm.api.recipes.RecyclerRecipe;
 import com.jerry.mekmm.api.recipes.StamperRecipe;
+import com.jerry.mekmm.api.recipes.basic.BasicFluidChemicalToFluidRecipe;
 import com.jerry.mekmm.api.recipes.basic.MMBasicItemStackChemicalToItemStackRecipe;
 import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
 import com.jerry.mekmm.common.registries.MMBlocks;
@@ -27,5 +28,7 @@ public class MMRecipeViewerRecipeType {
     public static final RVRecipeTypeWrapper<?, ItemStackToItemStackRecipe, ?> ROLLING_MILL = new RVRecipeTypeWrapper<>(MoreMachineRecipeType.ROLLING_MILL, ItemStackToItemStackRecipe.class, -28, -16, 144, 54, MMBlocks.CNC_ROLLING_MILL);
 
     public static final FakeRVRecipeType<MMBasicItemStackChemicalToItemStackRecipe> REPLICATOR = new FakeRVRecipeType<>(MMBlocks.REPLICATOR, MMBasicItemStackChemicalToItemStackRecipe.class, -3, -3, 170, 79);
+
+    public static final FakeRVRecipeType<BasicFluidChemicalToFluidRecipe> FLUID_REPLICATOR = new FakeRVRecipeType<>(MMBlocks.FLUID_REPLICATOR, BasicFluidChemicalToFluidRecipe.class, -3, -3, 170, 79);
 
 }

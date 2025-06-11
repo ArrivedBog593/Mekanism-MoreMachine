@@ -81,7 +81,7 @@ public class TileEntityReplicatingFactory extends MMTileEntityItemToItemFactory<
 
     public static HashMap<String, Integer> getRecipeFromConfig() {
         HashMap<String, Integer> map = new HashMap<>();
-        List<?> pre = MMConfig.general.duplicatorRecipe.get();
+        List<?> pre = MMConfig.general.itemDuplicatorRecipe.get();
         List<String> recipes = new ArrayList<>();
         for (Object item : pre) {
             if (item instanceof String list) {
@@ -174,7 +174,7 @@ public class TileEntityReplicatingFactory extends MMTileEntityItemToItemFactory<
 
     @Override
     public @NotNull CachedRecipe<MMBasicItemStackChemicalToItemStackRecipe> createNewCachedRecipe(@NotNull MMBasicItemStackChemicalToItemStackRecipe recipe, int cacheIndex) {
-        return ReplicatorCachedRecipe.createCache(recipe, recheckAllRecipeErrors[cacheIndex], inputHandlers[cacheIndex], chemicalInputHandler, outputHandlers[cacheIndex])
+        return ReplicatorCachedRecipe.createItemReplicator(recipe, recheckAllRecipeErrors[cacheIndex], inputHandlers[cacheIndex], chemicalInputHandler, outputHandlers[cacheIndex])
                 .setErrorsChanged(errors -> errorTracker.onErrorsChanged(errors, cacheIndex))
                 .setCanHolderFunction(this::canFunction)
                 .setActive(active -> setActiveState(active, cacheIndex))

@@ -3,6 +3,7 @@ package com.jerry.mekmm.common.registries;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.jerry.mekmm.Mekmm;
+import com.jerry.mekmm.common.attachments.component.MMAttachedSideConfig;
 import com.jerry.mekmm.common.block.BlockDoll;
 import com.jerry.mekmm.common.block.prefab.MMBlockFactoryMachine;
 import com.jerry.mekmm.common.content.blocktype.MMFactory;
@@ -20,6 +21,7 @@ import mekanism.common.attachments.component.AttachedEjector;
 import mekanism.common.attachments.component.AttachedSideConfig;
 import mekanism.common.attachments.containers.ContainerType;
 import mekanism.common.attachments.containers.chemical.ChemicalTanksBuilder;
+import mekanism.common.attachments.containers.fluid.FluidTanksBuilder;
 import mekanism.common.attachments.containers.item.ItemSlotsBuilder;
 import mekanism.common.block.attribute.AttributeTier;
 import mekanism.common.block.prefab.BlockTile;
@@ -40,6 +42,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.MapColor;
+import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -150,6 +153,29 @@ public class MMBlocks {
                             .addChemicalFillOrConvertSlot(0)
                             .addInput(TileEntityReplicator::isValidItemInput)
                             .addOutput()
+                            .addEnergy()
+                            .build()
+                    )
+            );
+
+    public static final BlockRegistryObject<MMBlockFactoryMachine<TileEntityFluidReplicator, MMMachine.MMFactoryMachine<TileEntityFluidReplicator>>, ItemBlockTooltip<MMBlockFactoryMachine<TileEntityFluidReplicator, MMMachine.MMFactoryMachine<TileEntityFluidReplicator>>>> FLUID_REPLICATOR =
+            MM_BLOCKS.register("fluid_replicator", () -> new MMBlockFactoryMachine<>(MMBlockTypes.FLUID_REPLICATOR, properties -> properties.mapColor(MapColor.METAL)),
+                    (block, properties) -> new ItemBlockTooltip<>(block, true, properties
+                            .component(MekanismDataComponents.EJECTOR, AttachedEjector.DEFAULT)
+                            .component(MekanismDataComponents.SIDE_CONFIG, MMAttachedSideConfig.FLUID_REPLICATOR)
+                    )
+            ).forItemHolder(holder -> holder
+                    .addAttachmentOnlyContainers(ContainerType.FLUID, ()-> FluidTanksBuilder.builder()
+                            .addBasic(FluidType.BUCKET_VOLUME, TileEntityFluidReplicator::isValidFluidInput)
+                            .addBasic(TileEntityFluidReplicator.MAX_FLUID)
+                            .build()
+                    ).addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> ChemicalTanksBuilder.builder()
+                            .addBasic(() -> TileEntityReplicator.MAX_GAS, TileEntityFluidReplicator::isValidChemicalInput)
+                            .build()
+                    ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
+                            .addFluidFillSlot(0)
+                            .addOutput()
+                            .addChemicalFillOrConvertSlot(1)
                             .addEnergy()
                             .build()
                     )

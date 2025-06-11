@@ -16,19 +16,20 @@ public class MMGeneralConfig extends BaseMekanismConfig {
 
 //    public final CachedLongValue conversionMultiplier;
 
-    public final CachedConfigValue<List<? extends String>> duplicatorRecipe;
+    public final CachedConfigValue<List<? extends String>> itemDuplicatorRecipe;
+    public final CachedConfigValue<List<? extends String>> fluidDuplicatorRecipe;
+    public final CachedConfigValue<List<? extends String>> chemicalDuplicatorRecipe;
 
     MMGeneralConfig() {
         ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
 
-//        MMConfigTranslations.GENERAL_ENERGY_CONVERSION.applyToBuilder(builder).push("energy_conversion");
-//        conversionMultiplier = CachedLongValue.define(this, builder, MMConfigTranslations.GENERAL_ENERGY_CONVERSION_MULTIPLIER,
-//                "conversionMultiplier", 27, 1, Long.MAX_VALUE);
-//        builder.pop();
-
         MMConfigTranslations.GENERAL_REPLICATOR_RECIPES.applyToBuilder(builder).push("replicator_recipes");
-        duplicatorRecipe = CachedConfigValue.wrap(this, MMConfigTranslations.GENERAL_RECIPES.applyToBuilder(builder)
-                .defineListAllowEmpty("replicatorRecipe", ArrayList::new, () -> Mekmm.MOD_ID, e -> e instanceof String list && ValidatorUtils.validateList(list)));
+        itemDuplicatorRecipe = CachedConfigValue.wrap(this, MMConfigTranslations.GENERAL_RECIPES.applyToBuilder(builder)
+                .defineListAllowEmpty("itemDuplicatorRecipe", ArrayList::new, () -> Mekmm.MOD_ID, e -> e instanceof String list && ValidatorUtils.validateList(list)));
+        fluidDuplicatorRecipe = CachedConfigValue.wrap(this, MMConfigTranslations.GENERAL_RECIPES.applyToBuilder(builder)
+                .defineListAllowEmpty("fluidDuplicatorRecipe", ArrayList::new, () -> Mekmm.MOD_ID, e -> e instanceof String list && ValidatorUtils.validateList(list)));
+        chemicalDuplicatorRecipe = CachedConfigValue.wrap(this, MMConfigTranslations.GENERAL_RECIPES.applyToBuilder(builder)
+                .defineListAllowEmpty("chemicalDuplicatorRecipe", ArrayList::new, () -> Mekmm.MOD_ID, e -> e instanceof String list && ValidatorUtils.validateList(list)));
         builder.pop();
 
         configSpec = builder.build();

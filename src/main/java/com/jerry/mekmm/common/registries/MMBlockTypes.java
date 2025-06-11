@@ -16,6 +16,7 @@ import mekanism.common.block.attribute.*;
 import mekanism.common.content.blocktype.BlockShapes;
 import mekanism.common.content.blocktype.BlockTypeTile;
 import mekanism.common.content.blocktype.Machine;
+import mekanism.common.lib.transmitter.TransmissionType;
 import mekanism.common.registries.MekanismSounds;
 import mekanism.common.tier.FactoryTier;
 import mekanism.common.util.EnumUtils;
@@ -86,8 +87,16 @@ public class MMBlockTypes {
             .withEnergyConfig(MMConfig.usage.replicator, MMConfig.storage.replicator)
             .withSound(MekanismSounds.PURIFICATION_CHAMBER)
             .with(AttributeSideConfig.ADVANCED_ELECTRIC_MACHINE)
-            .withCustomShape(BlockShapes.ANTIPROTONIC_NUCLEOSYNTHESIZER)
             .withComputerSupport("replicator")
+            .build();
+
+    public static final MMMachine.MMFactoryMachine<TileEntityFluidReplicator> FLUID_REPLICATOR = MMMachine.MMMachineBuilder
+            .createMMFactoryMachine(() -> MMTileEntityTypes.FLUID_REPLICATOR, MMLang.DESCRIPTION_REPLICATOR, MMFactoryType.REPLICATING)
+            .withGui(() -> MMContainerTypes.FLUID_REPLICATOR)
+            .withEnergyConfig(MMConfig.usage.replicator, MMConfig.storage.replicator)
+            .withSound(MekanismSounds.PURIFICATION_CHAMBER)
+            .withSideConfig(TransmissionType.FLUID, TransmissionType.CHEMICAL, TransmissionType.ITEM, TransmissionType.ENERGY)
+            .withComputerSupport("fluidReplicator")
             .build();
 
     static {

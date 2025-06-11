@@ -1,12 +1,9 @@
 package com.jerry.mekmm.client.recipe_viewer.jei;
 
 import com.jerry.mekmm.Mekmm;
-import com.jerry.mekmm.client.recipe_viewer.jei.machine.PlantingRecipeCategory;
-import com.jerry.mekmm.client.recipe_viewer.jei.machine.RecyclerRecipeCategory;
-import com.jerry.mekmm.client.recipe_viewer.jei.machine.ReplicatorRecipeCategory;
+import com.jerry.mekmm.client.recipe_viewer.jei.machine.*;
 import com.jerry.mekmm.client.recipe_viewer.MMRecipeViewerRecipeType;
 import com.jerry.mekmm.client.recipe_viewer.MMRecipeViewerUtils;
-import com.jerry.mekmm.client.recipe_viewer.jei.machine.StamperRecipeCategory;
 import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.client.gui.GuiMekanism;
@@ -45,6 +42,7 @@ public class MoreMachineJEI implements IModPlugin {
         registry.addRecipeCategories(new PlantingRecipeCategory(guiHelper, MMRecipeViewerRecipeType.PLANTING_STATION));
 
         registry.addRecipeCategories(new ReplicatorRecipeCategory(guiHelper, MMRecipeViewerRecipeType.REPLICATOR));
+        registry.addRecipeCategories(new FluidReplicatorRecipeCategory(guiHelper, MMRecipeViewerRecipeType.FLUID_REPLICATOR));
 
         registry.addRecipeCategories(new StamperRecipeCategory(guiHelper, MMRecipeViewerRecipeType.STAMPING));
         registry.addRecipeCategories(new ItemStackToItemStackRecipeCategory(guiHelper, MMRecipeViewerRecipeType.LATHE));
@@ -67,7 +65,8 @@ public class MoreMachineJEI implements IModPlugin {
         RecipeRegistryHelper.register(registry, MMRecipeViewerRecipeType.RECYCLER, MoreMachineRecipeType.RECYCLING);
         RecipeRegistryHelper.register(registry, MMRecipeViewerRecipeType.PLANTING_STATION, MoreMachineRecipeType.PLANTING_STATION);
 
-        RecipeRegistryHelper.register(registry, MMRecipeViewerRecipeType.REPLICATOR, MMRecipeViewerUtils.getReplicatorRecipes());
+        RecipeRegistryHelper.register(registry, MMRecipeViewerRecipeType.REPLICATOR, MMRecipeViewerUtils.getItemReplicatorRecipes());
+        RecipeRegistryHelper.register(registry, MMRecipeViewerRecipeType.FLUID_REPLICATOR, MMRecipeViewerUtils.getFluidReplicatorRecipes());
 
         RecipeRegistryHelper.register(registry, MMRecipeViewerRecipeType.STAMPING, MoreMachineRecipeType.STAMPING);
         RecipeRegistryHelper.register(registry, MMRecipeViewerRecipeType.LATHE, MoreMachineRecipeType.LATHING);

@@ -22,6 +22,8 @@ public class MMContainerTypes {
     public static final ContainerTypeRegistryObject<MekanismTileContainer<TileEntityLathe>> CNC_LATHE = MM_CONTAINER_TYPES.register(MMBlocks.CNC_LATHE, TileEntityLathe.class);
     public static final ContainerTypeRegistryObject<MekanismTileContainer<TileEntityRollingMill>> CNC_ROLLING_MILL = MM_CONTAINER_TYPES.register(MMBlocks.CNC_ROLLING_MILL, TileEntityRollingMill.class);
     public static final ContainerTypeRegistryObject<MekanismTileContainer<TileEntityReplicator>> REPLICATOR = MM_CONTAINER_TYPES.register(MMBlocks.REPLICATOR, TileEntityReplicator.class);
+    public static final ContainerTypeRegistryObject<MekanismTileContainer<TileEntityFluidReplicator>> FLUID_REPLICATOR = MM_CONTAINER_TYPES.register(MMBlocks.FLUID_REPLICATOR, TileEntityFluidReplicator.class);
+
     public static final ContainerTypeRegistryObject<MekanismTileContainer<TileEntityAmbientGasCollector>> AMBIENT_GAS_COLLECTOR = MM_CONTAINER_TYPES.register(MMBlocks.AMBIENT_GAS_COLLECTOR, TileEntityAmbientGasCollector.class);
 
 
