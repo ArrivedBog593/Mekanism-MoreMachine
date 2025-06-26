@@ -34,7 +34,7 @@ public class AFChemicalTanksBuilder {
     }
 
     public <VANILLA_INPUT extends RecipeInput, RECIPE extends MekanismRecipe<VANILLA_INPUT>, INPUT_CACHE extends IInputRecipeCache> AFChemicalTanksBuilder addBasic(long capacity,
-                                                                                                                                                                  IMekanismRecipeTypeProvider<VANILLA_INPUT, RECIPE, INPUT_CACHE> recipeType, ContainsRecipe<INPUT_CACHE, ChemicalStack> containsRecipe) {
+                                                                                                                                                                    IMekanismRecipeTypeProvider<VANILLA_INPUT, RECIPE, INPUT_CACHE> recipeType, ContainsRecipe<INPUT_CACHE, ChemicalStack> containsRecipe) {
         return addBasic(capacity, chemical -> containsRecipe.check(recipeType.getInputCache(), null, chemical));
     }
 

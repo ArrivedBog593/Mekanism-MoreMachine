@@ -18,6 +18,13 @@ public class ChemicalChemicalToChemicalUpgradeData extends ChemicalToChemicalUpg
     public final long[] usedSoFar;
 
     public ChemicalChemicalToChemicalUpgradeData(HolderLookup.Provider provider, boolean redstone, IRedstoneControl.RedstoneControl controlType,
+                                                 IEnergyContainer energyContainer, int operatingTicks, EnergyInventorySlot energySlot,
+                                                 ChemicalInventorySlot chemicalSlot, IChemicalTank inputSlot, IChemicalTank inputTank, IChemicalTank outputTank,
+                                                 List<ITileComponent> components) {
+        this(provider, redstone, controlType, energyContainer, new int[]{operatingTicks}, null, energySlot, chemicalSlot, Collections.singletonList(inputSlot), inputTank, Collections.singletonList(outputTank), false, components);
+    }
+
+    public ChemicalChemicalToChemicalUpgradeData(HolderLookup.Provider provider, boolean redstone, IRedstoneControl.RedstoneControl controlType,
                                                  IEnergyContainer energyContainer, int operatingTicks, long usedSoFar, EnergyInventorySlot energySlot,
                                                  ChemicalInventorySlot chemicalSlot, IChemicalTank inputSlot, IChemicalTank inputTank, IChemicalTank outputTank,
                                                  List<ITileComponent> components) {
