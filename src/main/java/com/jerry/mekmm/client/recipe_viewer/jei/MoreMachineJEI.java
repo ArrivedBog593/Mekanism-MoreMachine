@@ -43,6 +43,7 @@ public class MoreMachineJEI implements IModPlugin {
 
         registry.addRecipeCategories(new ReplicatorRecipeCategory(guiHelper, MMRecipeViewerRecipeType.REPLICATOR));
         registry.addRecipeCategories(new FluidReplicatorRecipeCategory(guiHelper, MMRecipeViewerRecipeType.FLUID_REPLICATOR));
+        registry.addRecipeCategories(new ChemicalReplicatorRecipeCategory(guiHelper, MMRecipeViewerRecipeType.CHEMICAL_REPLICATOR));
 
         registry.addRecipeCategories(new StamperRecipeCategory(guiHelper, MMRecipeViewerRecipeType.STAMPING));
         registry.addRecipeCategories(new ItemStackToItemStackRecipeCategory(guiHelper, MMRecipeViewerRecipeType.LATHE));
@@ -67,6 +68,7 @@ public class MoreMachineJEI implements IModPlugin {
 
         RecipeRegistryHelper.register(registry, MMRecipeViewerRecipeType.REPLICATOR, MMRecipeViewerUtils.getItemReplicatorRecipes());
         RecipeRegistryHelper.register(registry, MMRecipeViewerRecipeType.FLUID_REPLICATOR, MMRecipeViewerUtils.getFluidReplicatorRecipes());
+        RecipeRegistryHelper.register(registry, MMRecipeViewerRecipeType.CHEMICAL_REPLICATOR, MMRecipeViewerUtils.getChemicalReplicatorRecipes());
 
         RecipeRegistryHelper.register(registry, MMRecipeViewerRecipeType.STAMPING, MoreMachineRecipeType.STAMPING);
         RecipeRegistryHelper.register(registry, MMRecipeViewerRecipeType.LATHE, MoreMachineRecipeType.LATHING);
@@ -79,7 +81,7 @@ public class MoreMachineJEI implements IModPlugin {
             return;
         }
         MMCatalystRegistryHelper.register(registry, true, MMRecipeViewerRecipeType.RECYCLER, MMRecipeViewerRecipeType.PLANTING_STATION, MMRecipeViewerRecipeType.REPLICATOR,
-                MMRecipeViewerRecipeType.STAMPING, MMRecipeViewerRecipeType.LATHE, MMRecipeViewerRecipeType.ROLLING_MILL);
+                MMRecipeViewerRecipeType.FLUID_REPLICATOR, MMRecipeViewerRecipeType.CHEMICAL_REPLICATOR, MMRecipeViewerRecipeType.STAMPING, MMRecipeViewerRecipeType.LATHE, MMRecipeViewerRecipeType.ROLLING_MILL);
         AFCatalystRegistryHelper.register(registry, false, RecipeViewerRecipeType.OXIDIZING, RecipeViewerRecipeType.CHEMICAL_INFUSING, RecipeViewerRecipeType.DISSOLUTION,
                 RecipeViewerRecipeType.WASHING, RecipeViewerRecipeType.CRYSTALLIZING, RecipeViewerRecipeType.REACTION, RecipeViewerRecipeType.CENTRIFUGING);
 

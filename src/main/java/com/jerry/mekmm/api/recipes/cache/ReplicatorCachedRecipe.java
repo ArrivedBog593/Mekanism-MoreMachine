@@ -1,6 +1,7 @@
 package com.jerry.mekmm.api.recipes.cache;
 
 import com.jerry.mekmm.api.recipes.basic.BasicFluidChemicalToFluidRecipe;
+import com.jerry.mekmm.api.recipes.basic.MMBasicChemicalChemicalToChemicalRecipe;
 import com.jerry.mekmm.api.recipes.basic.MMBasicItemStackChemicalToItemStackRecipe;
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.chemical.ChemicalStack;
@@ -80,6 +81,13 @@ public class ReplicatorCachedRecipe<TYPE, RECIPE extends MekanismRecipe<?> & BiP
                           IInputHandler<@NotNull ChemicalStack> chemicalInputHandler, IOutputHandler<@NotNull FluidStack> outputHandler) {
         return new ReplicatorCachedRecipe<>(recipe, recheckAllErrors, fluidInputHandler, chemicalInputHandler, outputHandler, recipe::getFluidInput, recipe::getChemicalInput,
                 recipe::getOutput, ConstantPredicates.FLUID_EMPTY, ConstantPredicates.CHEMICAL_EMPTY, ConstantPredicates.FLUID_EMPTY);
+    }
+
+    public static <RECIPE extends MMBasicChemicalChemicalToChemicalRecipe> ReplicatorCachedRecipe<ChemicalStack, RECIPE>
+    createChemicalReplicator(RECIPE recipe, BooleanSupplier recheckAllErrors, IInputHandler<@NotNull ChemicalStack> firstInputHandler,
+                          IInputHandler<@NotNull ChemicalStack> secondaryInputHandler, IOutputHandler<@NotNull ChemicalStack> outputHandler) {
+        return new ReplicatorCachedRecipe<>(recipe, recheckAllErrors, firstInputHandler, secondaryInputHandler, outputHandler, recipe::getLeftInput, recipe::getRightInput,
+                recipe::getOutput, ConstantPredicates.CHEMICAL_EMPTY, ConstantPredicates.CHEMICAL_EMPTY, ConstantPredicates.CHEMICAL_EMPTY);
     }
 
     @Override

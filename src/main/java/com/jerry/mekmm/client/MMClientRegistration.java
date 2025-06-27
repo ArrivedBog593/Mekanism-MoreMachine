@@ -23,6 +23,7 @@ public class MMClientRegistration {
         ClientRegistrationUtil.registerElectricScreen(event, MMContainerTypes.CNC_ROLLING_MILL);
         ClientRegistrationUtil.registerScreen(event, MMContainerTypes.REPLICATOR, GuiReplicator::new);
         ClientRegistrationUtil.registerScreen(event, MMContainerTypes.FLUID_REPLICATOR, GuiFluidReplicator::new);
+        ClientRegistrationUtil.registerScreen(event, MMContainerTypes.CHEMIcAL_REPLICATOR, GuiChemicalReplicator::new);
         ClientRegistrationUtil.registerScreen(event, MMContainerTypes.AMBIENT_GAS_COLLECTOR, GuiAmbientGasCollector::new);
 
         ClientRegistrationUtil.registerScreen(event, MMContainerTypes.MM_FACTORY, GuiMMFactory::new);

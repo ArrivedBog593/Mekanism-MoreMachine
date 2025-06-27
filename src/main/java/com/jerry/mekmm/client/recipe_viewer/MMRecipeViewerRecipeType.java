@@ -4,6 +4,7 @@ import com.jerry.mekmm.api.recipes.PlantingRecipe;
 import com.jerry.mekmm.api.recipes.RecyclerRecipe;
 import com.jerry.mekmm.api.recipes.StamperRecipe;
 import com.jerry.mekmm.api.recipes.basic.BasicFluidChemicalToFluidRecipe;
+import com.jerry.mekmm.api.recipes.basic.MMBasicChemicalChemicalToChemicalRecipe;
 import com.jerry.mekmm.api.recipes.basic.MMBasicItemStackChemicalToItemStackRecipe;
 import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
 import com.jerry.mekmm.common.registries.MMBlocks;
@@ -30,5 +31,7 @@ public class MMRecipeViewerRecipeType {
     public static final FakeRVRecipeType<MMBasicItemStackChemicalToItemStackRecipe> REPLICATOR = new FakeRVRecipeType<>(MMBlocks.REPLICATOR, MMBasicItemStackChemicalToItemStackRecipe.class, -3, -3, 170, 79);
 
     public static final FakeRVRecipeType<BasicFluidChemicalToFluidRecipe> FLUID_REPLICATOR = new FakeRVRecipeType<>(MMBlocks.FLUID_REPLICATOR, BasicFluidChemicalToFluidRecipe.class, -3, -3, 170, 79);
+
+    public static final FakeRVRecipeType<MMBasicChemicalChemicalToChemicalRecipe> CHEMICAL_REPLICATOR = new FakeRVRecipeType<>(MMBlocks.CHEMICAL_REPLICATOR, MMBasicChemicalChemicalToChemicalRecipe.class, -3, -3, 170, 79);
 
 }

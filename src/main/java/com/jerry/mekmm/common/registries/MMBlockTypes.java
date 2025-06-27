@@ -99,6 +99,15 @@ public class MMBlockTypes {
             .withComputerSupport("fluidReplicator")
             .build();
 
+    public static final MMMachine.MMFactoryMachine<TileEntityChemicalReplicator> CHEMICAL_REPLICATOR = MMMachine.MMMachineBuilder
+            .createMMFactoryMachine(() -> MMTileEntityTypes.CHEMICAL_REPLICATOR, MMLang.DESCRIPTION_REPLICATOR, MMFactoryType.REPLICATING)
+            .withGui(() -> MMContainerTypes.CHEMIcAL_REPLICATOR)
+            .withEnergyConfig(MMConfig.usage.replicator, MMConfig.storage.replicator)
+            .withSound(MekanismSounds.PURIFICATION_CHAMBER)
+            .withSideConfig(TransmissionType.CHEMICAL, TransmissionType.ITEM, TransmissionType.ENERGY)
+            .withComputerSupport("chemicalReplicator")
+            .build();
+
     static {
         for (FactoryTier tier : EnumUtils.FACTORY_TIERS) {
             for (MMFactoryType type : MMEnumUtils.MM_FACTORY_TYPES) {

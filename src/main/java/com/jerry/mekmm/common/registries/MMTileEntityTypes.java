@@ -105,6 +105,13 @@ public class MMTileEntityTypes {
             .withSimple(Capabilities.CONFIG_CARD)
             .build();
 
+    public static final TileEntityTypeRegistryObject<TileEntityChemicalReplicator> CHEMICAL_REPLICATOR = MM_TILE_ENTITY_TYPES
+            .mekBuilder(MMBlocks.CHEMICAL_REPLICATOR, TileEntityChemicalReplicator::new)
+            .clientTicker(TileEntityMekanism::tickClient)
+            .serverTicker(TileEntityMekanism::tickServer)
+            .withSimple(Capabilities.CONFIG_CARD)
+            .build();
+
     public static final TileEntityTypeRegistryObject<TileEntityAmbientGasCollector> AMBIENT_GAS_COLLECTOR = MM_TILE_ENTITY_TYPES
             .mekBuilder(MMBlocks.AMBIENT_GAS_COLLECTOR, TileEntityAmbientGasCollector::new)
             .clientTicker(TileEntityMekanism::tickClient)

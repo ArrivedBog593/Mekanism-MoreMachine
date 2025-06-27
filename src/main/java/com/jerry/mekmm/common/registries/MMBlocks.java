@@ -93,8 +93,9 @@ public class MMBlocks {
                             .build()
                     ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
                             .addInput(MoreMachineRecipeType.PLANTING_STATION, InputRecipeCache.ItemChemical::containsInputA)
-                            .addChemicalFillOrConvertSlot(0)
+                            .addChemicalFillOrConvertSlot(1)
                             .addOutput()
+                            .addOutput()//Secondary output
                             .addEnergy()
                             .build()
                     )
@@ -107,7 +108,8 @@ public class MMBlocks {
                             .component(MekanismDataComponents.SIDE_CONFIG, AttachedSideConfig.ELECTRIC_MACHINE)
                     )
             ).forItemHolder(holder -> holder.addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
-                    .addInput(MoreMachineRecipeType.RECYCLING, SingleInputRecipeCache::containsInput)
+                    .addInput(MoreMachineRecipeType.STAMPING, InputRecipeCache.DoubleItem::containsInputA)
+                    .addInput(MoreMachineRecipeType.STAMPING, InputRecipeCache.DoubleItem::containsInputB)
                     .addOutput()
                     .addEnergy()
                     .build()
@@ -120,7 +122,7 @@ public class MMBlocks {
                             .component(MekanismDataComponents.SIDE_CONFIG, AttachedSideConfig.ELECTRIC_MACHINE)
                     )
             ).forItemHolder(holder -> holder.addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
-                    .addInput(MoreMachineRecipeType.RECYCLING, SingleInputRecipeCache::containsInput)
+                    .addInput(MoreMachineRecipeType.LATHING, SingleInputRecipeCache::containsInput)
                     .addOutput()
                     .addEnergy()
                     .build()
@@ -133,7 +135,7 @@ public class MMBlocks {
                             .component(MekanismDataComponents.SIDE_CONFIG, AttachedSideConfig.ELECTRIC_MACHINE)
                     )
             ).forItemHolder(holder -> holder.addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
-                    .addInput(MoreMachineRecipeType.RECYCLING, SingleInputRecipeCache::containsInput)
+                    .addInput(MoreMachineRecipeType.ROLLING_MILL, SingleInputRecipeCache::containsInput)
                     .addOutput()
                     .addEnergy()
                     .build()
@@ -150,8 +152,8 @@ public class MMBlocks {
                             .addBasic(() -> TileEntityReplicator.MAX_GAS, TileEntityReplicator::isValidChemicalInput)
                             .build()
                     ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
-                            .addChemicalFillOrConvertSlot(0)
                             .addInput(TileEntityReplicator::isValidItemInput)
+                            .addChemicalFillOrConvertSlot(2)
                             .addOutput()
                             .addEnergy()
                             .build()
@@ -181,6 +183,26 @@ public class MMBlocks {
                     )
             );
 
+    public static final BlockRegistryObject<MMBlockFactoryMachine<TileEntityChemicalReplicator, MMMachine.MMFactoryMachine<TileEntityChemicalReplicator>>, ItemBlockTooltip<MMBlockFactoryMachine<TileEntityChemicalReplicator, MMMachine.MMFactoryMachine<TileEntityChemicalReplicator>>>> CHEMICAL_REPLICATOR =
+            MM_BLOCKS.register("chemical_replicator", () -> new MMBlockFactoryMachine<>(MMBlockTypes.CHEMICAL_REPLICATOR, properties -> properties.mapColor(MapColor.METAL)),
+                    (block, properties) -> new ItemBlockTooltip<>(block, true, properties
+                            .component(MekanismDataComponents.EJECTOR, AttachedEjector.DEFAULT)
+                            .component(MekanismDataComponents.SIDE_CONFIG, MMAttachedSideConfig.CHEMICAL_REPLICATOR)
+                    )
+            ).forItemHolder(holder -> holder
+                    .addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> ChemicalTanksBuilder.builder()
+                            .addBasic(() -> TileEntityReplicator.MAX_GAS, TileEntityChemicalReplicator::isValidChemicalInput)
+                            .addBasic(() -> TileEntityReplicator.MAX_GAS, TileEntityChemicalReplicator::isValidInputChemical)
+                            .build()
+                    ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
+                            .addChemicalFillOrConvertSlot(0)
+                            .addChemicalFillOrConvertSlot(1)
+                            .addOutput()
+                            .addEnergy()
+                            .build()
+                    )
+            );
+
     private static <TILE extends MMTileEntityFactory<?>> BlockRegistryObject<MMBlockFactoryMachine.MMBlockFactory<?>, MMItemBlockFactory> registerMMFactory(MMFactory<TILE> type) {
         FactoryTier tier = (FactoryTier) Objects.requireNonNull(type.get(AttributeTier.class)).tier();
         BlockRegistryObject<MMBlockFactoryMachine.MMBlockFactory<?>, MMItemBlockFactory> factory = registerTieredBlock(tier, "_" + type.getMMFactoryType().getRegistryNameComponent() + "_factory", () -> new MMBlockFactoryMachine.MMBlockFactory<>(type), MMItemBlockFactory::new);
@@ -198,16 +220,13 @@ public class MMBlocks {
                 case CNC_STAMPING -> holder.addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
                                 .addBasicFactorySlots(processes, recipeInputPredicate)
                                 .addInput(MekanismRecipeType.COMBINING, InputRecipeCache.DoubleItem::containsInputB)
+                                .addOutput()
                                 .addEnergy()
                                 .build()
                         );
-                case CNC_LATHING, CNC_ROLLING_MILL -> holder.addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
+                case CNC_LATHING, CNC_ROLLING_MILL, RECYCLING -> holder.addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
                                 .addBasicFactorySlots(processes, recipeInputPredicate)
-                                .addEnergy()
-                                .build()
-                        );
-                case RECYCLING -> holder.addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
-                                .addBasicFactorySlots(processes, recipeInputPredicate)
+                                .addOutput()
                                 .addEnergy()
                                 .build()
                         );
@@ -220,7 +239,9 @@ public class MMBlocks {
                                 .build()
                         ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
                                 .addBasicFactorySlots(processes, recipeInputPredicate, true)
-                                .addChemicalFillOrConvertSlot(0)
+                                .addChemicalFillOrConvertSlot(1)
+                                .addOutput()
+                                .addOutput()//Secondary output
                                 .addEnergy()
                                 .build()
                 );
@@ -229,6 +250,8 @@ public class MMBlocks {
                                 .build()
                         ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
                                 .addBasicFactorySlots(processes, recipeInputPredicate)
+                                .addChemicalFillOrConvertSlot(2)
+                                .addOutput()
                                 .addEnergy()
                                 .build()
                         );

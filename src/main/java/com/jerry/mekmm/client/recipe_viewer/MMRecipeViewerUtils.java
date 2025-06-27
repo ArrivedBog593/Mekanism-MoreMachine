@@ -2,10 +2,15 @@ package com.jerry.mekmm.client.recipe_viewer;
 
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.api.recipes.basic.BasicFluidChemicalToFluidRecipe;
+import com.jerry.mekmm.api.recipes.basic.MMBasicChemicalChemicalToChemicalRecipe;
 import com.jerry.mekmm.api.recipes.basic.MMBasicItemStackChemicalToItemStackRecipe;
 import com.jerry.mekmm.common.registries.MMChemicals;
+import com.jerry.mekmm.common.tile.machine.TileEntityChemicalReplicator;
 import com.jerry.mekmm.common.tile.machine.TileEntityFluidReplicator;
 import com.jerry.mekmm.common.tile.machine.TileEntityReplicator;
+import mekanism.api.MekanismAPI;
+import mekanism.api.chemical.Chemical;
+import mekanism.api.chemical.ChemicalStack;
 import mekanism.client.recipe_viewer.RecipeViewerUtils;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
@@ -43,6 +48,18 @@ public class MMRecipeViewerUtils {
         Map<ResourceLocation, BasicFluidChemicalToFluidRecipe> replicator = new HashMap<>();
         for (Map.Entry<ResourceKey<Fluid>, Fluid> entry : BuiltInRegistries.FLUID.entrySet()) {
             BasicFluidChemicalToFluidRecipe recipe = TileEntityFluidReplicator.getRecipe(new FluidStack(entry.getValue(), 1), MMChemicals.UU_MATTER.asStack(1));
+            if (recipe != null) {
+                replicator.put(RecipeViewerUtils.synthetic(entry.getKey().location(), "replicator", Mekmm.MOD_ID), recipe);
+            }
+        }
+        return replicator;
+    }
+
+    @SuppressWarnings("deprecation")
+    public static Map<ResourceLocation, MMBasicChemicalChemicalToChemicalRecipe> getChemicalReplicatorRecipes() {
+        Map<ResourceLocation, MMBasicChemicalChemicalToChemicalRecipe> replicator = new HashMap<>();
+        for (Map.Entry<ResourceKey<Chemical>, Chemical> entry : MekanismAPI.CHEMICAL_REGISTRY.entrySet()) {
+            MMBasicChemicalChemicalToChemicalRecipe recipe = TileEntityChemicalReplicator.getRecipe(new ChemicalStack(entry.getValue().getChemical().getAsHolder(), 1), MMChemicals.UU_MATTER.asStack(1));
             if (recipe != null) {
                 replicator.put(RecipeViewerUtils.synthetic(entry.getKey().location(), "replicator", Mekmm.MOD_ID), recipe);
             }

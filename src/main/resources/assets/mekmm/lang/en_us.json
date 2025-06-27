@@ -65,6 +65,8 @@
   "block.mekmm.advanced_replicating_factory": "Advanced Replicating Factory",
   "block.mekmm.elite_replicating_factory": "Elite Replicating Factory",
   "block.mekmm.ultimate_replicating_factory": "Ultimate Replicating Factory",
+  "block.mekmm.fluid_replicator": "Fluid Replicator",
+  "block.mekmm.chemical_replicator": "Chemical Replicator",
   "block.mekmm.ambient_gas_collector": "Ambient Gas Collector",
   "block.mekmm.author_doll": "Author Doll",
 
@@ -135,6 +137,8 @@
   "container.mekmm.advanced_replicating_factory": "Advanced Replicating Factory",
   "container.mekmm.elite_replicating_factory": "Elite Replicating Factory",
   "container.mekmm.ultimate_replicating_factory": "Ultimate Replicating Factory",
+  "container.mekmm.fluid_replicator": "Fluid Replicator",
+  "container.mekmm.chemical_replicator": "C. Replicator",
   "container.mekmm.ambient_gas_collector": "Ambient Gas Collector",
 
   "container.mekmm.large_gas_burning_generator": "Large Gas Burning Generator",

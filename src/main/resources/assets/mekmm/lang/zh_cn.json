@@ -65,6 +65,8 @@
   "block.mekmm.advanced_replicating_factory": "高级复制工厂",
   "block.mekmm.elite_replicating_factory": "精英复制工厂",
   "block.mekmm.ultimate_replicating_factory": "终极复制工厂",
+  "block.mekmm.fluid_replicator": "流体复制机",
+  "block.mekmm.chemical_replicator": "化学品复制机",
   "block.mekmm.ambient_gas_collector": "环境气体收集器",
   "block.mekmm.author_doll": "作者玩偶",
 
@@ -135,6 +137,8 @@
   "container.mekmm.advanced_replicating_factory": "高级复制工厂",
   "container.mekmm.elite_replicating_factory": "精英复制工厂",
   "container.mekmm.ultimate_replicating_factory": "终极复制工厂",
+  "container.mekmm.fluid_replicator": "流体复制机",
+  "container.mekmm.chemical_replicator": "化学品复制机",
   "container.mekmm.ambient_gas_collector": "环境气体收集器",
 
   "container.mekmm.large_gas_burning_generator": "大型燃气发电机",
