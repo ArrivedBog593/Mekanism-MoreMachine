@@ -10,6 +10,7 @@ import com.jerry.mekmm.common.registries.MMChemicals;
 import com.jerry.mekmm.common.util.MMUtils;
 import mekanism.api.IContentsListener;
 import mekanism.api.chemical.BasicChemicalTank;
+import mekanism.api.chemical.Chemical;
 import mekanism.api.chemical.ChemicalStack;
 import mekanism.api.chemical.IChemicalTank;
 import mekanism.api.recipes.cache.CachedRecipe;
@@ -46,6 +47,7 @@ import mekanism.common.tile.prefab.TileEntityProgressMachine;
 import mekanism.common.util.RegistryUtils;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
@@ -109,7 +111,8 @@ public class TileEntityFluidReplicator extends TileEntityProgressMachine<BasicFl
         configComponent.setupInputConfig(TransmissionType.CHEMICAL, chemicalTank);
 
         ejectorComponent = new TileComponentEjector(this);
-        ejectorComponent.setOutputData(configComponent, TransmissionType.FLUID, TransmissionType.ITEM);
+        ejectorComponent.setOutputData(configComponent, TransmissionType.FLUID, TransmissionType.ITEM)
+                .setCanTankEject(tank -> tank == fluidOutputTank);
 
         fluidInputHandler = InputHelper.getInputHandler(fluidInputTank, CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT);
         fluidOutputHandler = OutputHelper.getOutputHandler(fluidOutputTank, CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE);
@@ -183,9 +186,8 @@ public class TileEntityFluidReplicator extends TileEntityProgressMachine<BasicFl
     }
 
     public static boolean isValidFluidInput(FluidStack stack) {
-        Fluid fluid = stack.getFluid();
         if (customRecipeMap != null) {
-            return customRecipeMap.containsKey(Objects.requireNonNull(RegistryUtils.getName(fluid.builtInRegistryHolder())).toString());
+            return customRecipeMap.containsKey(Objects.requireNonNull(RegistryUtils.getName(stack.getFluidHolder())).toString());
         }
         return false;
     }
@@ -243,15 +245,15 @@ public class TileEntityFluidReplicator extends TileEntityProgressMachine<BasicFl
             return null;
         }
         if (customRecipeMap != null) {
-            Fluid fluid = fluidStack.getFluid();
+            Holder<Fluid> fluidHolder = fluidStack.getFluidHolder();
             //如果为空则赋值为0
-            int amount = customRecipeMap.getOrDefault(RegistryUtils.getName(fluidStack.getFluidHolder()).toString(), 0);
+            int amount = customRecipeMap.getOrDefault(RegistryUtils.getName(fluidHolder).toString(), 0);
             //防止null和配置文件中出现0
             if (amount == 0) return null;
             return new FluidReplicatorIRecipeSingle(
-                    IngredientCreatorAccess.fluid().fromHolder(fluid.builtInRegistryHolder(), 1),
+                    IngredientCreatorAccess.fluid().fromHolder(fluidHolder, 1),
                     IngredientCreatorAccess.chemicalStack().fromHolder(MMChemicals.UU_MATTER, amount),
-                    new FluidStack(fluid, FluidType.BUCKET_VOLUME)
+                    new FluidStack(fluidHolder, FluidType.BUCKET_VOLUME)
             );
         }
         return null;

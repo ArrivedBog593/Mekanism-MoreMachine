@@ -28,8 +28,10 @@ import mekanism.common.recipe.lookup.ISingleRecipeLookupHandler;
 import mekanism.common.recipe.lookup.cache.InputRecipeCache;
 import mekanism.common.tile.component.TileComponentEjector;
 import mekanism.common.tile.prefab.TileEntityProgressMachine;
+import mekanism.common.upgrade.MachineUpgradeData;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.block.Block;
@@ -138,5 +140,11 @@ public class TileEntityRecycler extends TileEntityProgressMachine<RecyclerRecipe
     @Override
     public boolean isConfigurationDataCompatible(Block type) {
         return super.isConfigurationDataCompatible(type) || MMUtils.isSameMMTypeFactory(getBlockHolder(), type);
+    }
+
+    @NotNull
+    @Override
+    public MachineUpgradeData getUpgradeData(HolderLookup.Provider provider) {
+        return new MachineUpgradeData(provider, redstone, getControlType(), getEnergyContainer(), getOperatingTicks(), energySlot, inputSlot, chanceOutputSlot, getComponents());
     }
 }

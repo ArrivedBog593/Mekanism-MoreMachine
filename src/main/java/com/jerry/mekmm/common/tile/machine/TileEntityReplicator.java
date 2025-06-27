@@ -20,6 +20,7 @@ import mekanism.api.recipes.inputs.InputHelper;
 import mekanism.api.recipes.outputs.IOutputHandler;
 import mekanism.api.recipes.outputs.OutputHelper;
 import mekanism.client.recipe_viewer.type.IRecipeViewerRecipeType;
+import mekanism.common.Mekanism;
 import mekanism.common.capabilities.energy.MachineEnergyContainer;
 import mekanism.common.capabilities.holder.chemical.ChemicalTankHelper;
 import mekanism.common.capabilities.holder.chemical.IChemicalTankHolder;
@@ -37,9 +38,13 @@ import mekanism.common.lib.transmitter.TransmissionType;
 import mekanism.common.recipe.IMekanismRecipeTypeProvider;
 import mekanism.common.tile.component.TileComponentEjector;
 import mekanism.common.tile.prefab.TileEntityProgressMachine;
+import mekanism.common.upgrade.AdvancedMachineUpgradeData;
+import mekanism.common.upgrade.IUpgradeData;
 import mekanism.common.util.RegistryUtils;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -158,9 +163,8 @@ public class TileEntityReplicator extends TileEntityProgressMachine<MMBasicItemS
     }
 
     public static boolean isValidItemInput(ItemStack stack) {
-        Item item = stack.getItem();
         if (customRecipeMap != null) {
-            return customRecipeMap.containsKey(Objects.requireNonNull(RegistryUtils.getName(item.builtInRegistryHolder())).toString());
+            return customRecipeMap.containsKey(Objects.requireNonNull(RegistryUtils.getName(stack.getItemHolder())).toString());
         }
         return false;
     }
@@ -211,15 +215,15 @@ public class TileEntityReplicator extends TileEntityProgressMachine<MMBasicItemS
             return null;
         }
         if (customRecipeMap != null) {
-            Item item = itemStack.getItem();
+            Holder<Item> itemHolder = itemStack.getItemHolder();
             //如果为空则赋值为0
-            int amount = customRecipeMap.getOrDefault(RegistryUtils.getName(itemStack.getItemHolder()).toString(), 0);
+            int amount = customRecipeMap.getOrDefault(RegistryUtils.getName(itemHolder).toString(), 0);
             //防止null和配置文件中出现0
             if (amount == 0) return null;
             return new ReplicatorIRecipeSingle(
-                    IngredientCreatorAccess.item().from(item, 1),
+                    IngredientCreatorAccess.item().fromHolder(itemHolder, 1),
                     IngredientCreatorAccess.chemicalStack().fromHolder(MMChemicals.UU_MATTER, amount),
-                    new ItemStack(item, 1)
+                    new ItemStack(itemHolder, 1)
             );
         }
         return null;
@@ -228,5 +232,24 @@ public class TileEntityReplicator extends TileEntityProgressMachine<MMBasicItemS
     @Override
     public boolean isConfigurationDataCompatible(Block type) {
         return super.isConfigurationDataCompatible(type) || MMUtils.isSameMMTypeFactory(getBlockHolder(), type);
+    }
+
+    @Override
+    public void parseUpgradeData(HolderLookup.Provider provider, @NotNull IUpgradeData upgradeData) {
+        if (upgradeData instanceof AdvancedMachineUpgradeData data) {
+            //Generic factory upgrade data handling
+            super.parseUpgradeData(provider, upgradeData);
+            //Copy the contents using NBT so that if it is not actually valid due to a reload we don't crash
+            chemicalTank.deserializeNBT(provider, data.stored.serializeNBT(provider));
+            chemicalSlot.deserializeNBT(provider, data.chemicalSlot.serializeNBT(provider));
+        } else {
+            Mekanism.logger.warn("Unhandled upgrade data.", new Throwable());
+        }
+    }
+
+    @Override
+    public @Nullable IUpgradeData getUpgradeData(HolderLookup.Provider provider) {
+        return new AdvancedMachineUpgradeData(provider, redstone, getControlType(), getEnergyContainer(), getOperatingTicks(), 0, chemicalTank, chemicalSlot, energySlot,
+                inputSlot, outputSlot, getComponents());
     }
 }
