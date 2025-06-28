@@ -55,11 +55,11 @@ public class MMRecipeViewerUtils {
         return replicator;
     }
 
-    @SuppressWarnings("deprecation")
     public static Map<ResourceLocation, MMBasicChemicalChemicalToChemicalRecipe> getChemicalReplicatorRecipes() {
         Map<ResourceLocation, MMBasicChemicalChemicalToChemicalRecipe> replicator = new HashMap<>();
         for (Map.Entry<ResourceKey<Chemical>, Chemical> entry : MekanismAPI.CHEMICAL_REGISTRY.entrySet()) {
-            MMBasicChemicalChemicalToChemicalRecipe recipe = TileEntityChemicalReplicator.getRecipe(new ChemicalStack(entry.getValue().getChemical().getAsHolder(), 1), MMChemicals.UU_MATTER.asStack(1));
+            //mek将很多方法弃用了，所以只能使用这个办法。
+            MMBasicChemicalChemicalToChemicalRecipe recipe = TileEntityChemicalReplicator.getRecipe(new ChemicalStack(MekanismAPI.CHEMICAL_REGISTRY.wrapAsHolder(entry.getValue()), 1), MMChemicals.UU_MATTER.asStack(1));
             if (recipe != null) {
                 replicator.put(RecipeViewerUtils.synthetic(entry.getKey().location(), "replicator", Mekmm.MOD_ID), recipe);
             }

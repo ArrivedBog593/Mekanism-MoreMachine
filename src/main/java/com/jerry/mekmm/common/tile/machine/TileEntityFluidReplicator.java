@@ -8,9 +8,9 @@ import com.jerry.mekmm.common.recipe.impl.FluidReplicatorIRecipeSingle;
 import com.jerry.mekmm.common.registries.MMBlocks;
 import com.jerry.mekmm.common.registries.MMChemicals;
 import com.jerry.mekmm.common.util.MMUtils;
+import com.jerry.mekmm.common.util.ValidatorUtils;
 import mekanism.api.IContentsListener;
 import mekanism.api.chemical.BasicChemicalTank;
-import mekanism.api.chemical.Chemical;
 import mekanism.api.chemical.ChemicalStack;
 import mekanism.api.chemical.IChemicalTank;
 import mekanism.api.recipes.cache.CachedRecipe;
@@ -72,7 +72,7 @@ public class TileEntityFluidReplicator extends TileEntityProgressMachine<BasicFl
     public static final long MAX_GAS = 10 * FluidType.BUCKET_VOLUME;
     private static final int BASE_TICKS_REQUIRED = 10 * SharedConstants.TICKS_PER_SECOND;
 
-    public static HashMap<String, Integer> customRecipeMap = getRecipeFromConfig();
+    public static HashMap<String, Integer> customRecipeMap = ValidatorUtils.getRecipeFromConfig(MMConfig.general.fluidDuplicatorRecipe.get());
 
     public BasicFluidTank fluidInputTank;
     public BasicFluidTank fluidOutputTank;
@@ -97,7 +97,7 @@ public class TileEntityFluidReplicator extends TileEntityProgressMachine<BasicFl
     public TileEntityFluidReplicator(BlockPos pos, BlockState state) {
         super(MMBlocks.FLUID_REPLICATOR, pos, state, TRACKED_ERROR_TYPES, BASE_TICKS_REQUIRED);
 //        configComponent.setupItemIOExtraConfig(fluidInputSlot, fluidOutputSlot, chemicalSlot, energySlot);
-        configComponent.setupItemIOConfig(List.of(fluidInputSlot, lFluidInputSlot, rFluidInputSlot), Collections.singletonList(fluidOutputSlot), energySlot, false);
+        configComponent.setupItemIOConfig(List.of(fluidInputSlot, lFluidInputSlot), List.of(rFluidInputSlot, fluidOutputSlot), energySlot, false);
         ConfigInfo itemConfig = configComponent.getConfig(TransmissionType.ITEM);
         if (itemConfig != null) {
             itemConfig.addSlotInfo(DataType.EXTRA, new InventorySlotInfo(true, true, chemicalSlot));
@@ -117,27 +117,6 @@ public class TileEntityFluidReplicator extends TileEntityProgressMachine<BasicFl
         fluidInputHandler = InputHelper.getInputHandler(fluidInputTank, CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT);
         fluidOutputHandler = OutputHelper.getOutputHandler(fluidOutputTank, CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE);
         chemicalInputHandler = InputHelper.getConstantInputHandler(chemicalTank);
-    }
-
-    public static HashMap<String, Integer> getRecipeFromConfig() {
-        HashMap<String, Integer> map = new HashMap<>();
-        List<?> pre = MMConfig.general.fluidDuplicatorRecipe.get();
-        List<String> recipes = new ArrayList<>();
-        for (Object item : pre) {
-            if (item instanceof String list) {
-                recipes.add(list);
-            }
-        }
-        if (recipes.isEmpty()) return null;
-        for (String element : recipes) {
-            String[] parts = element.split("#", 2); // 分割成最多两部分
-            if (parts.length != 2) continue;
-
-            String key = parts[0];
-            int value = Integer.parseInt(parts[1]);
-            map.put(key, value);
-        }
-        return map;
     }
 
     @Override

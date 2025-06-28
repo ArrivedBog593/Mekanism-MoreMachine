@@ -8,6 +8,7 @@ import com.jerry.mekmm.common.recipe.impl.ReplicatorIRecipeSingle;
 import com.jerry.mekmm.common.registries.MMBlocks;
 import com.jerry.mekmm.common.registries.MMChemicals;
 import com.jerry.mekmm.common.util.MMUtils;
+import com.jerry.mekmm.common.util.ValidatorUtils;
 import mekanism.api.IContentsListener;
 import mekanism.api.chemical.BasicChemicalTank;
 import mekanism.api.chemical.ChemicalStack;
@@ -53,7 +54,6 @@ import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -71,7 +71,7 @@ public class TileEntityReplicator extends TileEntityProgressMachine<MMBasicItemS
     private static final int BASE_TICKS_REQUIRED = 10 * SharedConstants.TICKS_PER_SECOND;
     public static final long MAX_GAS = 10 * FluidType.BUCKET_VOLUME;
 
-    public static HashMap<String, Integer> customRecipeMap = getRecipeFromConfig();
+    public static HashMap<String, Integer> customRecipeMap = ValidatorUtils.getRecipeFromConfig(MMConfig.general.itemDuplicatorRecipe.get());
 
     //化学品存储槽
     public IChemicalTank chemicalTank;
@@ -101,27 +101,6 @@ public class TileEntityReplicator extends TileEntityProgressMachine<MMBasicItemS
         chemicalInputHandler = InputHelper.getConstantInputHandler(chemicalTank);
         itemInputHandler = InputHelper.getInputHandler(inputSlot, CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT);
         outputHandler = OutputHelper.getOutputHandler(outputSlot, CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE);
-    }
-
-    public static HashMap<String, Integer> getRecipeFromConfig() {
-        HashMap<String, Integer> map = new HashMap<>();
-        List<?> pre = MMConfig.general.itemDuplicatorRecipe.get();
-        List<String> recipes = new ArrayList<>();
-        for (Object item : pre) {
-            if (item instanceof String list) {
-                recipes.add(list);
-            }
-        }
-        if (recipes.isEmpty()) return null;
-        for (String element : recipes) {
-            String[] parts = element.split("#", 2); // 分割成最多两部分
-            if (parts.length != 2) continue;
-
-            String key = parts[0];
-            int value = Integer.parseInt(parts[1]);
-            map.put(key, value);
-        }
-        return map;
     }
 
     @NotNull

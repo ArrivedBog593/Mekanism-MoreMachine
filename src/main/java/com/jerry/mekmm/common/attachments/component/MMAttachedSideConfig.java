@@ -23,7 +23,7 @@ public class MMAttachedSideConfig {
     public static final AttachedSideConfig CHEMICAL_REPLICATOR = Util.make(() -> {
         Map<TransmissionType, AttachedSideConfig.LightConfigInfo> configInfo = new EnumMap<>(TransmissionType.class);
         configInfo.put(TransmissionType.ITEM, AttachedSideConfig.LightConfigInfo.EXTRA_MACHINE);
-        configInfo.put(TransmissionType.CHEMICAL, MMAttachedSideConfig.TWO_INPUT_AND_OUT);
+        configInfo.put(TransmissionType.CHEMICAL, AttachedSideConfig.LightConfigInfo.TWO_INPUT_AND_OUT);
         configInfo.put(TransmissionType.ENERGY, AttachedSideConfig.LightConfigInfo.INPUT_ONLY);
         return new AttachedSideConfig(configInfo);
     });

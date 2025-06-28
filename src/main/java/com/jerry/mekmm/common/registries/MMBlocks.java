@@ -175,9 +175,11 @@ public class MMBlocks {
                             .addBasic(() -> TileEntityReplicator.MAX_GAS, TileEntityFluidReplicator::isValidChemicalInput)
                             .build()
                     ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
-                            .addFluidFillSlot(0)
-                            .addOutput()
-                            .addChemicalFillOrConvertSlot(1)
+                            .addFluidFillSlot(0)//右侧上槽
+                            .addOutput()//右侧下槽
+                            .addFluidDrainSlot(2)//左侧液体槽
+                            .addOutput()//右侧液体槽
+                            .addChemicalFillOrConvertSlot(4)//uu物质槽
                             .addEnergy()
                             .build()
                     )
@@ -191,8 +193,9 @@ public class MMBlocks {
                     )
             ).forItemHolder(holder -> holder
                     .addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> ChemicalTanksBuilder.builder()
-                            .addBasic(() -> TileEntityReplicator.MAX_GAS, TileEntityChemicalReplicator::isValidChemicalInput)
-                            .addBasic(() -> TileEntityReplicator.MAX_GAS, TileEntityChemicalReplicator::isValidInputChemical)
+                            .addBasic(() -> TileEntityChemicalReplicator.MAX_GAS, TileEntityChemicalReplicator::isValidChemicalInput)
+                            .addBasic(() -> TileEntityChemicalReplicator.MAX_GAS, TileEntityChemicalReplicator::isValidInputChemical)
+                            .addBasic(() -> TileEntityChemicalReplicator.MAX_GAS)
                             .build()
                     ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
                             .addChemicalFillOrConvertSlot(0)

@@ -8,6 +8,7 @@ import com.jerry.mekmm.common.recipe.impl.ChemicalReplicatorIRecipeSingle;
 import com.jerry.mekmm.common.registries.MMBlocks;
 import com.jerry.mekmm.common.registries.MMChemicals;
 import com.jerry.mekmm.common.util.MMUtils;
+import com.jerry.mekmm.common.util.ValidatorUtils;
 import mekanism.api.IContentsListener;
 import mekanism.api.chemical.BasicChemicalTank;
 import mekanism.api.chemical.Chemical;
@@ -62,7 +63,7 @@ public class TileEntityChemicalReplicator extends TileEntityProgressMachine<MMBa
     public static final long MAX_GAS = 10 * FluidType.BUCKET_VOLUME;
     private static final int BASE_TICKS_REQUIRED = 10 * SharedConstants.TICKS_PER_SECOND;
 
-    public static HashMap<String, Integer> customRecipeMap = getRecipeFromConfig();
+    public static HashMap<String, Integer> customRecipeMap = ValidatorUtils.getRecipeFromConfig(MMConfig.general.chemicalDuplicatorRecipe.get());
 
     public IChemicalTank firstInputTank;
     public IChemicalTank chemicalOutputTank;
@@ -92,7 +93,6 @@ public class TileEntityChemicalReplicator extends TileEntityProgressMachine<MMBa
             fluidConfig.addSlotInfo(DataType.OUTPUT, new ChemicalSlotInfo(false, true, chemicalOutputTank));
         }
         configComponent.setupInputConfig(TransmissionType.ENERGY, energyContainer);
-        configComponent.setupInputConfig(TransmissionType.CHEMICAL, secondaryInputTank);
 
         ejectorComponent = new TileComponentEjector(this);
         ejectorComponent.setOutputData(configComponent, TransmissionType.CHEMICAL, TransmissionType.ITEM)
@@ -101,27 +101,6 @@ public class TileEntityChemicalReplicator extends TileEntityProgressMachine<MMBa
         firstInputHandler = InputHelper.getInputHandler(firstInputTank, CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT);
         outputHandler = OutputHelper.getOutputHandler(chemicalOutputTank, CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE);
         secondaryInputHandler = InputHelper.getConstantInputHandler(secondaryInputTank);
-    }
-
-    public static HashMap<String, Integer> getRecipeFromConfig() {
-        HashMap<String, Integer> map = new HashMap<>();
-        List<?> pre = MMConfig.general.chemicalDuplicatorRecipe.get();
-        List<String> recipes = new ArrayList<>();
-        for (Object item : pre) {
-            if (item instanceof String list) {
-                recipes.add(list);
-            }
-        }
-        if (recipes.isEmpty()) return null;
-        for (String element : recipes) {
-            String[] parts = element.split("#", 2); // 分割成最多两部分
-            if (parts.length != 2) continue;
-
-            String key = parts[0];
-            int value = Integer.parseInt(parts[1]);
-            map.put(key, value);
-        }
-        return map;
     }
 
     @NotNull

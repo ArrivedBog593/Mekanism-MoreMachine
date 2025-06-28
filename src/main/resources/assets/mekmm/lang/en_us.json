@@ -164,10 +164,16 @@
   "description.mekmm.cnc_stamper": "A machine that relies on molds to process items.",
   "description.mekmm.cnc_lathe": "A machine with many functions for processing materials.",
   "description.mekmm.cnc_rolling_mill": "A machine that uses mechanical force to bend metal.",
-  "description.mekmm.replicator": "A machine that violates the laws of physics and can replicate objects using a certain substance.",
+  "description.mekmm.replicator": "A machine that violates the laws of physics and can replicate items using a certain substance.",
+  "description.mekmm.fluid_replicator": "A machine that violates the laws of physics and can replicate fluids using a certain substance.",
+  "description.mekmm.chemical_replicator": "A machine that violates the laws of physics and can replicate chemicals using a certain substance.",
   "description.mekmm.ambient_gas_collector": "A machine that extracts mysterious substances from the atmosphere.",
   "description.mekmm.author_doll": "A doll with the author's skin.",
 
   "tooltip.mekmm.is_blocking": "Blocked above the machine",
-  "tooltip.mekmm.no_blocking": "Not blocked above the machine"
+  "tooltip.mekmm.no_blocking": "Not blocked above the machine",
+
+  "general.item_replicator.recipes": "Recipe for Item Replicator ",
+  "general.fluid_replicator.recipes": "Recipe for Fluid Replicator",
+  "general.chemical_replicator.recipes": "Recipe for Chemical Replicator"
 }

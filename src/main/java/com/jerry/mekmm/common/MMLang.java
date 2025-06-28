@@ -32,6 +32,8 @@ public enum MMLang implements ILangEntry {
     DESCRIPTION_CNC_LATHE("description", "cnc_lathe"),
     DESCRIPTION_CNC_ROLLING_MILL("description", "cnc_rolling_mill"),
     DESCRIPTION_REPLICATOR("description", "replicator"),
+    DESCRIPTION_FLUID_REPLICATOR("description", "fluid_replicator"),
+    DESCRIPTION_CHEMicAL_REPLICATOR("description", "chemical_replicator"),
     DESCRIPTION_AMBIENT_GAS_COLLECTOR("description", "ambient_gas_collector"),
     AUTHOR_DOLL("description", "author_doll"),
 

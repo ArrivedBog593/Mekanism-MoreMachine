@@ -165,9 +165,15 @@
   "description.mekmm.cnc_lathe": "一台有着很多功能的加工材料的机器",
   "description.mekmm.cnc_rolling_mill": "一台利用机械力量弯折金属的机器",
   "description.mekmm.replicator": "一台违反物理学定律的机器，它可以利用某种物质复制物品",
+  "description.mekmm.fluid_replicator": "一台违反物理学定律的机器，它可以利用某种物质复制液体",
+  "description.mekmm.chemical_replicator": "一台违反物理学定律的机器，它可以利用某种物质复制化学品",
   "description.mekmm.ambient_gas_collector": "一台抽取大气中神秘物质的机器",
   "description.mekmm.author_doll": "一个有着作者皮肤的玩偶",
 
   "tooltip.mekmm.is_blocking": "机器上方有阻挡物",
-  "tooltip.mekmm.no_blocking": "机器上方无阻挡物"
+  "tooltip.mekmm.no_blocking": "机器上方无阻挡物",
+
+  "general.item_replicator.recipes": "物品复制机配方",
+  "general.fluid_replicator.recipes": "液体复制机配方",
+  "general.chemical_replicator.recipes": "化学品复制机配方"
 }

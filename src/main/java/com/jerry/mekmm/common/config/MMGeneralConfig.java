@@ -24,11 +24,11 @@ public class MMGeneralConfig extends BaseMekanismConfig {
         ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
 
         MMConfigTranslations.GENERAL_REPLICATOR_RECIPES.applyToBuilder(builder).push("replicator_recipes");
-        itemDuplicatorRecipe = CachedConfigValue.wrap(this, MMConfigTranslations.GENERAL_RECIPES.applyToBuilder(builder)
+        itemDuplicatorRecipe = CachedConfigValue.wrap(this, MMConfigTranslations.ITEM_RECIPES.applyToBuilder(builder)
                 .defineListAllowEmpty("itemDuplicatorRecipe", ArrayList::new, () -> Mekmm.MOD_ID, e -> e instanceof String list && ValidatorUtils.validateList(list)));
-        fluidDuplicatorRecipe = CachedConfigValue.wrap(this, MMConfigTranslations.GENERAL_RECIPES.applyToBuilder(builder)
+        fluidDuplicatorRecipe = CachedConfigValue.wrap(this, MMConfigTranslations.FLUID_RECIPES.applyToBuilder(builder)
                 .defineListAllowEmpty("fluidDuplicatorRecipe", ArrayList::new, () -> Mekmm.MOD_ID, e -> e instanceof String list && ValidatorUtils.validateList(list)));
-        chemicalDuplicatorRecipe = CachedConfigValue.wrap(this, MMConfigTranslations.GENERAL_RECIPES.applyToBuilder(builder)
+        chemicalDuplicatorRecipe = CachedConfigValue.wrap(this, MMConfigTranslations.CHEMICAL_RECIPES.applyToBuilder(builder)
                 .defineListAllowEmpty("chemicalDuplicatorRecipe", ArrayList::new, () -> Mekmm.MOD_ID, e -> e instanceof String list && ValidatorUtils.validateList(list)));
         builder.pop();
 
