@@ -175,5 +175,7 @@
 
   "general.item_replicator.recipes": "Recipe for Item Replicator ",
   "general.fluid_replicator.recipes": "Recipe for Fluid Replicator",
-  "general.chemical_replicator.recipes": "Recipe for Chemical Replicator"
+  "general.chemical_replicator.recipes": "Recipe for Chemical Replicator",
+
+  "fml.menu.mods.info.description.mekmm": "Added more machines and factories to Mekanism"
 }

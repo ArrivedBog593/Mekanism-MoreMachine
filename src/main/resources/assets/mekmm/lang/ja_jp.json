@@ -165,5 +165,7 @@
   "description.mekmm.author_doll": "このModの作者のスキンを纏った人形です。愛でましょう。",
 
   "tooltip.mekmm.is_blocking": "機械の上部が塞がれています",
-  "tooltip.mekmm.no_blocking": "機械の上部は塞がれていません"
+  "tooltip.mekmm.no_blocking": "機械の上部は塞がれていません",
+
+  "fml.menu.mods.info.description.mekmm": "Added more machines and factories to Mekanism"
 }

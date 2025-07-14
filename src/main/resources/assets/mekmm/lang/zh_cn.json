@@ -175,5 +175,7 @@
 
   "general.item_replicator.recipes": "物品复制机配方",
   "general.fluid_replicator.recipes": "液体复制机配方",
-  "general.chemical_replicator.recipes": "化学品复制机配方"
+  "general.chemical_replicator.recipes": "化学品复制机配方",
+
+  "fml.menu.mods.info.description.mekmm": "为通用机械添加更多机器和工厂"
 }
