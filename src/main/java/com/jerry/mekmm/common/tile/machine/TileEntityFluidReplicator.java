@@ -72,7 +72,7 @@ public class TileEntityFluidReplicator extends TileEntityProgressMachine<BasicFl
     public static final long MAX_GAS = 10 * FluidType.BUCKET_VOLUME;
     private static final int BASE_TICKS_REQUIRED = 10 * SharedConstants.TICKS_PER_SECOND;
 
-    public static HashMap<String, Integer> customRecipeMap = ValidatorUtils.getRecipeFromConfig(MMConfig.general.fluidDuplicatorRecipe.get());
+    public static HashMap<String, Integer> customRecipeMap = ValidatorUtils.getRecipeFromConfig(MMConfig.general.fluidReplicatorRecipe.get());
 
     public BasicFluidTank fluidInputTank;
     public BasicFluidTank fluidOutputTank;

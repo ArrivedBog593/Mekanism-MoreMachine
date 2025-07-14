@@ -71,7 +71,7 @@ public class TileEntityReplicator extends TileEntityProgressMachine<MMBasicItemS
     private static final int BASE_TICKS_REQUIRED = 10 * SharedConstants.TICKS_PER_SECOND;
     public static final long MAX_GAS = 10 * FluidType.BUCKET_VOLUME;
 
-    public static HashMap<String, Integer> customRecipeMap = ValidatorUtils.getRecipeFromConfig(MMConfig.general.itemDuplicatorRecipe.get());
+    public static HashMap<String, Integer> customRecipeMap = ValidatorUtils.getRecipeFromConfig(MMConfig.general.itemReplicatorRecipe.get());
 
     //化学品存储槽
     public IChemicalTank chemicalTank;

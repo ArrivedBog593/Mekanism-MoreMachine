@@ -84,16 +84,16 @@ public class MMBlockTypes {
     public static final MMMachine.MMFactoryMachine<TileEntityReplicator> REPLICATOR = MMMachine.MMMachineBuilder
             .createMMFactoryMachine(() -> MMTileEntityTypes.REPLICATOR, MMLang.DESCRIPTION_REPLICATOR, MMFactoryType.REPLICATING)
             .withGui(() -> MMContainerTypes.REPLICATOR)
-            .withEnergyConfig(MMConfig.usage.replicator, MMConfig.storage.replicator)
+            .withEnergyConfig(MMConfig.usage.itemReplicator, MMConfig.storage.itemReplicator)
             .withSound(MekanismSounds.PURIFICATION_CHAMBER)
             .with(AttributeSideConfig.ADVANCED_ELECTRIC_MACHINE)
-            .withComputerSupport("replicator")
+            .withComputerSupport("itemReplicator")
             .build();
 
     public static final MMMachine.MMFactoryMachine<TileEntityFluidReplicator> FLUID_REPLICATOR = MMMachine.MMMachineBuilder
             .createMMFactoryMachine(() -> MMTileEntityTypes.FLUID_REPLICATOR, MMLang.DESCRIPTION_FLUID_REPLICATOR, MMFactoryType.REPLICATING)
             .withGui(() -> MMContainerTypes.FLUID_REPLICATOR)
-            .withEnergyConfig(MMConfig.usage.replicator, MMConfig.storage.replicator)
+            .withEnergyConfig(MMConfig.usage.fluidReplicator, MMConfig.storage.fluidReplicator)
             .withSound(MekanismSounds.PURIFICATION_CHAMBER)
             .withSideConfig(TransmissionType.FLUID, TransmissionType.CHEMICAL, TransmissionType.ITEM, TransmissionType.ENERGY)
             .withComputerSupport("fluidReplicator")
@@ -102,7 +102,7 @@ public class MMBlockTypes {
     public static final MMMachine.MMFactoryMachine<TileEntityChemicalReplicator> CHEMICAL_REPLICATOR = MMMachine.MMMachineBuilder
             .createMMFactoryMachine(() -> MMTileEntityTypes.CHEMICAL_REPLICATOR, MMLang.DESCRIPTION_CHEMicAL_REPLICATOR, MMFactoryType.REPLICATING)
             .withGui(() -> MMContainerTypes.CHEMIcAL_REPLICATOR)
-            .withEnergyConfig(MMConfig.usage.replicator, MMConfig.storage.replicator)
+            .withEnergyConfig(MMConfig.usage.chemicalReplicator, MMConfig.storage.chemicalReplicator)
             .withSound(MekanismSounds.PURIFICATION_CHAMBER)
             .withSideConfig(TransmissionType.CHEMICAL, TransmissionType.ITEM, TransmissionType.ENERGY)
             .withComputerSupport("chemicalReplicator")

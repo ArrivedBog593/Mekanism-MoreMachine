@@ -24,8 +24,11 @@ public enum MMConfigTranslations implements IConfigTranslation {
     ENERGY_STORAGE_CNC_STAMPER(TranslationPreset.ENERGY_STORAGE, "CNC Stamper"),
     ENERGY_STORAGE_CNC_LATHE(TranslationPreset.ENERGY_STORAGE, "CNC Lathe"),
     ENERGY_STORAGE_ROLLING_MILL(TranslationPreset.ENERGY_STORAGE, "CNC Rolling Mill"),
-    ENERGY_STORAGE_REPLICATOR(TranslationPreset.ENERGY_STORAGE, "Replicator"),
     ENERGY_STORAGE_AMBIENT_GAS_COLLECTOR(TranslationPreset.ENERGY_STORAGE, "Ambient Gas Collector"),
+    ENERGY_STORAGE_REPLICATOR("storage.replicator", "Replicator", "Settings for configuring Replicator Energy Storage", true),
+    ENERGY_STORAGE_ITEM_REPLICATOR(TranslationPreset.ENERGY_STORAGE, "Item Replicator"),
+    ENERGY_STORAGE_FLUID_REPLICATOR(TranslationPreset.ENERGY_STORAGE, "Fluid Replicator"),
+    ENERGY_STORAGE_CHEMICAL_REPLICATOR(TranslationPreset.ENERGY_STORAGE, "Chemical Replicator"),
 
     //Usage Config
     ENERGY_USAGE_RECYCLER(TranslationPreset.ENERGY_USAGE, "Recycler"),
@@ -33,8 +36,11 @@ public enum MMConfigTranslations implements IConfigTranslation {
     ENERGY_USAGE_CNC_STAMPER(TranslationPreset.ENERGY_USAGE, "CNC Stamper"),
     ENERGY_USAGE_CNC_LATHE(TranslationPreset.ENERGY_USAGE, "CNC Lathe"),
     ENERGY_USAGE_ROLLING_MILL(TranslationPreset.ENERGY_USAGE, "CNC Rolling Mill"),
-    ENERGY_USAGE_REPLICATOR(TranslationPreset.ENERGY_USAGE, "Replicator"),
-    ENERGY_USAGE_AMBIENT_GAS_COLLECTOR(TranslationPreset.ENERGY_USAGE, "Ambient Gas Collector");
+    ENERGY_USAGE_AMBIENT_GAS_COLLECTOR(TranslationPreset.ENERGY_USAGE, "Ambient Gas Collector"),
+    ENERGY_USAGE_REPLICATOR("usage.replicator", "Replicator", "Settings for configuring Replicator Energy Usage", true),
+    ENERGY_USAGE_ITEM_REPLICATOR(TranslationPreset.ENERGY_USAGE, "Item Replicator"),
+    ENERGY_USAGE_FLUID_REPLICATOR(TranslationPreset.ENERGY_USAGE, "Fluid Replicator"),
+    ENERGY_USAGE_CHEMICAL_REPLICATOR(TranslationPreset.ENERGY_USAGE, "Chemical Replicator");
 
     private final String key;
     private final String title;

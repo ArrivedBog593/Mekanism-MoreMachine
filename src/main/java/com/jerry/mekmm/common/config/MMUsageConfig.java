@@ -14,7 +14,9 @@ public class MMUsageConfig extends BaseMekanismConfig {
     public final CachedLongValue cnc_stamper;
     public final CachedLongValue cnc_lathe;
     public final CachedLongValue cnc_rollingMill;
-    public final CachedLongValue replicator;
+    public final CachedLongValue itemReplicator;
+    public final CachedLongValue fluidReplicator;
+    public final CachedLongValue chemicalReplicator;
     public final CachedLongValue ambientGasCollector;
 
     MMUsageConfig() {
@@ -25,8 +27,13 @@ public class MMUsageConfig extends BaseMekanismConfig {
         cnc_stamper = CachedLongValue.definePositive(this, builder, MMConfigTranslations.ENERGY_USAGE_CNC_STAMPER, "cnc_stamper", 50L);
         cnc_lathe = CachedLongValue.definePositive(this, builder, MMConfigTranslations.ENERGY_USAGE_CNC_LATHE, "cnc_lathe", 50L);
         cnc_rollingMill = CachedLongValue.definePositive(this, builder, MMConfigTranslations.ENERGY_USAGE_ROLLING_MILL, "cnc_rollingMill", 50L);
-        replicator = CachedLongValue.definePositive(this, builder, MMConfigTranslations.ENERGY_USAGE_REPLICATOR, "replicator", 102_400L);
         ambientGasCollector = CachedLongValue.definePositive(this, builder, MMConfigTranslations.ENERGY_USAGE_AMBIENT_GAS_COLLECTOR, "ambientGasCollector", 100L);
+
+        MMConfigTranslations.ENERGY_USAGE_REPLICATOR.applyToBuilder(builder).push("replicator");
+        itemReplicator = CachedLongValue.definePositive(this, builder, MMConfigTranslations.ENERGY_USAGE_ITEM_REPLICATOR, "itemReplicator", 102_400L);
+        fluidReplicator = CachedLongValue.definePositive(this, builder, MMConfigTranslations.ENERGY_USAGE_FLUID_REPLICATOR, "fluidReplicator", 102_400L);
+        chemicalReplicator = CachedLongValue.definePositive(this, builder, MMConfigTranslations.ENERGY_USAGE_CHEMICAL_REPLICATOR, "chemicalReplicator", 102_400L);
+        builder.pop();
 
         configSpec = builder.build();
     }

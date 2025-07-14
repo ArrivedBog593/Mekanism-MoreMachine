@@ -6,6 +6,7 @@ import com.jerry.mekmm.client.recipe_viewer.MMRecipeViewerRecipeType;
 import com.jerry.mekmm.common.config.MMConfig;
 import com.jerry.mekmm.common.recipe.impl.ReplicatorIRecipeSingle;
 import com.jerry.mekmm.common.registries.MMChemicals;
+import com.jerry.mekmm.common.util.ValidatorUtils;
 import mekanism.api.IContentsListener;
 import mekanism.api.chemical.BasicChemicalTank;
 import mekanism.api.chemical.ChemicalStack;
@@ -65,7 +66,7 @@ public class TileEntityReplicatingFactory extends MMTileEntityItemToItemFactory<
 
     public static final long MAX_GAS = 10 * FluidType.BUCKET_VOLUME;
 
-    public static HashMap<String, Integer> customRecipeMap = getRecipeFromConfig();
+    public static HashMap<String, Integer> customRecipeMap = ValidatorUtils.getRecipeFromConfig(MMConfig.general.itemReplicatorRecipe.get());
 
     private final ILongInputHandler<ChemicalStack> chemicalInputHandler;
     //化学品存储槽
@@ -81,27 +82,6 @@ public class TileEntityReplicatingFactory extends MMTileEntityItemToItemFactory<
         ejectorComponent.setOutputData(configComponent, TransmissionType.ITEM);
 
         chemicalInputHandler = InputHelper.getConstantInputHandler(chemicalTank);
-    }
-
-    public static HashMap<String, Integer> getRecipeFromConfig() {
-        HashMap<String, Integer> map = new HashMap<>();
-        List<?> pre = MMConfig.general.itemDuplicatorRecipe.get();
-        List<String> recipes = new ArrayList<>();
-        for (Object item : pre) {
-            if (item instanceof String list) {
-                recipes.add(list);
-            }
-        }
-        if (recipes.isEmpty()) return null;
-        for (String element : recipes) {
-            String[] parts = element.split("#", 2); // 分割成最多两部分
-            if (parts.length != 2) continue;
-
-            String key = parts[0];
-            int value = Integer.parseInt(parts[1]);
-            map.put(key, value);
-        }
-        return map;
     }
 
     public IChemicalTank getChemicalTank() {
