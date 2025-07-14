@@ -36,7 +36,8 @@ public enum MMLang implements ILangEntry {
     DESCRIPTION_CHEMicAL_REPLICATOR("description", "chemical_replicator"),
     DESCRIPTION_AMBIENT_GAS_COLLECTOR("description", "ambient_gas_collector"),
     AUTHOR_DOLL("description", "author_doll"),
-
+    //JEI
+    RECIPE_VIEWER_INFO_UNSTABLE_DIMENSIONAL_GAS("info", "jei.unstable_dimensional_gas"),
     //Tooltip stuff
     IS_BLOCKING("tooltip", "is_blocking"),
     NO_BLOCKING("tooltip", "no_blocking");

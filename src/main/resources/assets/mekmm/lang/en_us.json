@@ -177,5 +177,7 @@
   "general.fluid_replicator.recipes": "Recipe for Fluid Replicator",
   "general.chemical_replicator.recipes": "Recipe for Chemical Replicator",
 
-  "fml.menu.mods.info.description.mekmm": "Added more machines and factories to Mekanism"
+  "info.mekmm.jei.unstable_dimensional_gas": "Use an Ambient Gas Collector for collection, and be careful not to place blocks above the machine.",
+
+  "fml.menu.mods.info.description.mekmm": "Use an unstable dimension gas collector for collection, and be careful not to place blocks above the machine"
 }

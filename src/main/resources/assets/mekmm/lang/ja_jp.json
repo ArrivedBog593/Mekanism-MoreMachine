@@ -167,5 +167,7 @@
   "tooltip.mekmm.is_blocking": "機械の上部が塞がれています",
   "tooltip.mekmm.no_blocking": "機械の上部は塞がれていません",
 
+  "info.mekmm.jei.unstable_dimensional_gas": "Use an Ambient Gas Collector for collection, and be careful not to place blocks above the machine.",
+
   "fml.menu.mods.info.description.mekmm": "Added more machines and factories to Mekanism"
 }
