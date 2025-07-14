@@ -230,7 +230,7 @@ public class TileEntityFluidReplicator extends TileEntityProgressMachine<BasicFl
             //防止null和配置文件中出现0
             if (amount == 0) return null;
             return new FluidReplicatorIRecipeSingle(
-                    IngredientCreatorAccess.fluid().fromHolder(fluidHolder, 1),
+                    IngredientCreatorAccess.fluid().fromHolder(fluidHolder, 1000),
                     IngredientCreatorAccess.chemicalStack().fromHolder(MMChemicals.UU_MATTER, amount),
                     new FluidStack(fluidHolder, FluidType.BUCKET_VOLUME)
             );

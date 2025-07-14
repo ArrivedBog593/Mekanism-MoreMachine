@@ -52,13 +52,15 @@ public class ChemicalReplicatorRecipeCategory extends BaseRecipeCategory<MMBasic
 
     public ChemicalReplicatorRecipeCategory(IGuiHelper helper, IRecipeViewerRecipeType<MMBasicChemicalChemicalToChemicalRecipe> recipeType) {
         super(helper, recipeType);
-        GaugeType type1 = GaugeType.STANDARD.with(DataType.INPUT);
-        secondaryGauge = addElement(GuiChemicalGauge.getDummy(type1, this, 7, 4));
-        firstGauge = addElement(GuiChemicalGauge.getDummy(type1, this, 28, 4));
-        outputGauge = addElement(GuiChemicalGauge.getDummy(type1, this, 131, 4));
+        GaugeType input_1 = GaugeType.STANDARD.with(DataType.INPUT_1);
+        GaugeType input_2 = GaugeType.STANDARD.with(DataType.INPUT_2);
+        GaugeType output = GaugeType.STANDARD.with(DataType.OUTPUT);
+        secondaryGauge = addElement(GuiChemicalGauge.getDummy(input_2, this, 7, 4));
+        firstGauge = addElement(GuiChemicalGauge.getDummy(input_1, this, 28, 4));
+        outputGauge = addElement(GuiChemicalGauge.getDummy(output, this, 131, 4));
         extra = addSlot(SlotType.EXTRA, 8, 65).with(SlotOverlay.MINUS);
         addSlot(SlotType.INPUT, 29, 65).with(SlotOverlay.PLUS);
-        addSlot(SlotType.INPUT, 132, 65).with(SlotOverlay.PLUS);
+        addSlot(SlotType.OUTPUT, 132, 65).with(SlotOverlay.PLUS);
         addSlot(SlotType.POWER, 152, 65).with(SlotOverlay.POWER);
         addSimpleProgress(ProgressType.LARGE_RIGHT, 64, 36);
         addElement(new GuiEnergyGauge(new GuiEnergyGauge.IEnergyInfoHandler() {

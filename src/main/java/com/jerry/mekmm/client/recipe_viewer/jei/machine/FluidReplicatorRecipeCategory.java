@@ -53,12 +53,13 @@ public class FluidReplicatorRecipeCategory extends BaseRecipeCategory<BasicFluid
     public FluidReplicatorRecipeCategory(IGuiHelper helper, IRecipeViewerRecipeType<BasicFluidChemicalToFluidRecipe> recipeType) {
         super(helper, recipeType);
         GaugeType type1 = GaugeType.STANDARD.with(DataType.INPUT);
+        GaugeType output = GaugeType.STANDARD.with(DataType.OUTPUT);
         inputGauge = addElement(GuiChemicalGauge.getDummy(type1, this, 7, 4));
         inputSlot = addElement(GuiChemicalGauge.getDummy(type1, this, 28, 4));
-        outputSlot = addElement(GuiChemicalGauge.getDummy(type1, this, 131, 4));
+        outputSlot = addElement(GuiChemicalGauge.getDummy(output, this, 131, 4));
         extra = addSlot(SlotType.EXTRA, 8, 65).with(SlotOverlay.MINUS);
         addSlot(SlotType.INPUT, 29, 65).with(SlotOverlay.PLUS);
-        addSlot(SlotType.INPUT, 132, 65).with(SlotOverlay.PLUS);
+        addSlot(SlotType.OUTPUT, 132, 65).with(SlotOverlay.PLUS);
         addSlot(SlotType.POWER, 152, 65).with(SlotOverlay.POWER);
         addSimpleProgress(ProgressType.LARGE_RIGHT, 64, 36);
         addElement(new GuiEnergyGauge(new GuiEnergyGauge.IEnergyInfoHandler() {

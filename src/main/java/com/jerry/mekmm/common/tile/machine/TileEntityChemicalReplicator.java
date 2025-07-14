@@ -203,7 +203,7 @@ public class TileEntityChemicalReplicator extends TileEntityProgressMachine<MMBa
             //防止null和配置文件中出现0
             if (amount == 0) return null;
             return new ChemicalReplicatorIRecipeSingle(
-                    IngredientCreatorAccess.chemicalStack().fromHolder(chemicalHolder, 1),
+                    IngredientCreatorAccess.chemicalStack().fromHolder(chemicalHolder, 1000),
                     IngredientCreatorAccess.chemicalStack().fromHolder(MMChemicals.UU_MATTER, amount),
                     new ChemicalStack(chemicalHolder, 1000)
             );
