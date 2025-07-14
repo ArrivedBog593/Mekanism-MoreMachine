@@ -27,12 +27,12 @@
               "source": "block_entity"
             }
           ],
-          "name": "mekmm:planting_station"
+          "name": "mekmm:chemical_replicator"
         }
       ],
       "name": "main",
       "rolls": 1.0
     }
   ],
-  "random_sequence": "mekmm:blocks/planting_station"
+  "random_sequence": "mekmm:blocks/chemical_replicator"
 }

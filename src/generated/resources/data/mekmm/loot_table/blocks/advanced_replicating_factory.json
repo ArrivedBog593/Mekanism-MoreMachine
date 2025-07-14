@@ -22,6 +22,7 @@
                 "mekanism:sorting",
                 "mekanism:upgrades",
                 "mekanism:energy",
+                "mekanism:items",
                 "mekanism:chemicals"
               ],
               "source": "block_entity"

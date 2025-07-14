@@ -3,11 +3,6 @@
   "pools": [
     {
       "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        }
-      ],
       "entries": [
         {
           "type": "minecraft:item",
@@ -25,7 +20,8 @@
                 "mekanism:security",
                 "mekanism:side_config",
                 "mekanism:upgrades",
-                "mekanism:energy"
+                "mekanism:energy",
+                "mekanism:items"
               ],
               "source": "block_entity"
             }

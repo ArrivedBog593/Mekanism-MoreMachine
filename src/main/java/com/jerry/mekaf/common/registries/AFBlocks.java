@@ -95,10 +95,10 @@ public class AFBlocks {
                                 .addOutputFactoryTank(tier.processes, TileEntityAdvancedFactoryBase.MAX_CHEMICAL * tier.processes)
                                 .build()
                         ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> AFItemSlotsBuilder.builder()
-                                        .addChemicalFillOrConvertSlot(0)
-                                        .addInputFactorySlots(processes, recipeItemInputPredicate)
-                                        .addEnergy()
-                                        .build()
+                                .addInputFactorySlots(processes, recipeItemInputPredicate)
+                                .addChemicalFillOrConvertSlot(0)
+                                .addEnergy()
+                                .build()
                         );
                 //输出储罐错位
                 case CHEMICAL_INFUSING ->

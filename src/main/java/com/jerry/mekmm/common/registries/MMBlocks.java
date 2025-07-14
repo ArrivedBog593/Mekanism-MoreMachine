@@ -105,7 +105,7 @@ public class MMBlocks {
             MM_BLOCKS.register("cnc_stamper", () -> new MMBlockFactoryMachine<>(MMBlockTypes.CNC_STAMPER, properties -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor())),
                     (block, properties) -> new ItemBlockTooltip<>(block, true, properties
                             .component(MekanismDataComponents.EJECTOR, AttachedEjector.DEFAULT)
-                            .component(MekanismDataComponents.SIDE_CONFIG, AttachedSideConfig.ELECTRIC_MACHINE)
+                            .component(MekanismDataComponents.SIDE_CONFIG, AttachedSideConfig.EXTRA_MACHINE)
                     )
             ).forItemHolder(holder -> holder.addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
                     .addInput(MoreMachineRecipeType.STAMPING, InputRecipeCache.DoubleItem::containsInputA)
@@ -149,12 +149,12 @@ public class MMBlocks {
                     )
             ).forItemHolder(holder -> holder
                     .addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> ChemicalTanksBuilder.builder()
-                            .addBasic(() -> TileEntityReplicator.MAX_GAS, TileEntityReplicator::isValidChemicalInput)
+                            .addBasic(TileEntityReplicator.MAX_GAS, TileEntityReplicator::isValidChemicalInput)
                             .build()
                     ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
                             .addInput(TileEntityReplicator::isValidItemInput)
-                            .addChemicalFillOrConvertSlot(2)
                             .addOutput()
+                            .addChemicalFillOrConvertSlot(0)
                             .addEnergy()
                             .build()
                     )
@@ -223,13 +223,11 @@ public class MMBlocks {
                 case CNC_STAMPING -> holder.addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
                                 .addBasicFactorySlots(processes, recipeInputPredicate)
                                 .addInput(MekanismRecipeType.COMBINING, InputRecipeCache.DoubleItem::containsInputB)
-                                .addOutput()
                                 .addEnergy()
                                 .build()
                         );
                 case CNC_LATHING, CNC_ROLLING_MILL, RECYCLING -> holder.addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
                                 .addBasicFactorySlots(processes, recipeInputPredicate)
-                                .addOutput()
                                 .addEnergy()
                                 .build()
                         );
@@ -243,18 +241,15 @@ public class MMBlocks {
                         ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
                                 .addBasicFactorySlots(processes, recipeInputPredicate, true)
                                 .addChemicalFillOrConvertSlot(1)
-                                .addOutput()
-                                .addOutput()//Secondary output
                                 .addEnergy()
                                 .build()
                 );
                 case REPLICATING -> holder.addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> ChemicalTanksBuilder.builder()
-                                .addBasic(TileEntityPlantingStation.MAX_GAS * processes, TileEntityReplicatingFactory::isValidChemicalInput)
+                                .addBasic(TileEntityReplicatingFactory.MAX_GAS * processes, TileEntityReplicatingFactory::isValidChemicalInput)
                                 .build()
                         ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
                                 .addBasicFactorySlots(processes, recipeInputPredicate)
-                                .addChemicalFillOrConvertSlot(2)
-                                .addOutput()
+                                .addChemicalFillOrConvertSlot(0)
                                 .addEnergy()
                                 .build()
                         );

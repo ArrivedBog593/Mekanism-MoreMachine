@@ -95,8 +95,7 @@ public class TileEntityReplicator extends TileEntityProgressMachine<MMBasicItemS
         configComponent.setupInputConfig(TransmissionType.CHEMICAL, chemicalTank);
 
         ejectorComponent = new TileComponentEjector(this);
-        ejectorComponent.setOutputData(configComponent, TransmissionType.ITEM, TransmissionType.CHEMICAL)
-                .setCanTankEject(tank -> tank != chemicalTank);
+        ejectorComponent.setOutputData(configComponent, TransmissionType.ITEM);
 
         chemicalInputHandler = InputHelper.getConstantInputHandler(chemicalTank);
         itemInputHandler = InputHelper.getInputHandler(inputSlot, CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT);
@@ -122,8 +121,8 @@ public class TileEntityReplicator extends TileEntityProgressMachine<MMBasicItemS
     @Override
     protected @Nullable IInventorySlotHolder getInitialInventory(IContentsListener listener, IContentsListener recipeCacheListener, IContentsListener recipeCacheUnpauseListener) {
         InventorySlotHelper builder = InventorySlotHelper.forSideWithConfig(this);
-        builder.addSlot(inputSlot = InputInventorySlot.at(TileEntityReplicator::isValidItemInput, recipeCacheListener, 29, 32)
-        ).tracksWarnings(slot -> slot.warning(WarningTracker.WarningType.NO_MATCHING_RECIPE, getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT)));
+        builder.addSlot(inputSlot = InputInventorySlot.at(TileEntityReplicator::isValidItemInput, recipeCacheListener, 29, 32))
+                .tracksWarnings(slot -> slot.warning(WarningTracker.WarningType.NO_MATCHING_RECIPE, getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT)));
         //输出槽位置
         //recipeCacheUnpauseListener，输出检测需要使用recipeCacheUnpauseListener，不然满了之后拿走物品不会更新状态
         builder.addSlot(outputSlot = OutputInventorySlot.at(recipeCacheUnpauseListener, 131, 32))
