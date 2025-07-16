@@ -6,7 +6,6 @@ import mekanism.api.Action;
 import mekanism.api.AutomationType;
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.inventory.IInventorySlot;
-import mekanism.api.recipes.SawmillRecipe;
 import mekanism.api.recipes.cache.CachedRecipe;
 import mekanism.api.recipes.outputs.IOutputHandler;
 import net.minecraft.world.item.ItemStack;
@@ -44,8 +43,6 @@ public class MMOutputHelper {
     }
 
     /**
-     * Wraps two inventory slots, a "main" slot, and a "secondary" slot into an {@link IOutputHandler} for handling {@link SawmillRecipe.ChanceOutput}s.
-     *
      * @param mainSlot                         Main slot to wrap.
      * @param secondarySlot                    Secondary slot to wrap.
      * @param mainSlotNotEnoughSpaceError      The error to apply if the main output causes the recipe to not be able to perform any operations.

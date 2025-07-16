@@ -399,7 +399,7 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
     @Override
     public boolean isConfigurationDataCompatible(Block blockType) {
         //Allow exact match or factories of the same type (as we will just ignore the extra data)
-        return super.isConfigurationDataCompatible(blockType) || MMUtils.isSameMMTypeFactory(getBlockHolder(), blockType);
+        return super.isConfigurationDataCompatible(blockType) || MMUtils.isSameAFTypeFactory(getBlockHolder(), blockType);
     }
 
     public boolean hasSecondaryResourceBar() {
