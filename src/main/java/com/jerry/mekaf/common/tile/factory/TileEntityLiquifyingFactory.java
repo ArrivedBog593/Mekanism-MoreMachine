@@ -16,7 +16,9 @@ import mekanism.api.recipes.inputs.InputHelper;
 import mekanism.api.recipes.outputs.IOutputHandler;
 import mekanism.api.recipes.outputs.OutputHelper;
 import mekanism.common.CommonWorldTickHandler;
+import mekanism.common.capabilities.fluid.BasicFluidTank;
 import mekanism.common.capabilities.holder.chemical.ChemicalTankHelper;
+import mekanism.common.capabilities.holder.fluid.FluidTankHelper;
 import mekanism.common.capabilities.holder.fluid.IFluidTankHolder;
 import mekanism.common.capabilities.holder.slot.InventorySlotHelper;
 import mekanism.common.inventory.slot.FluidInventorySlot;
@@ -73,7 +75,7 @@ public class TileEntityLiquifyingFactory extends TileEntityAdvancedFactoryBase<B
     FluidInventorySlot containerFillSlot;
     OutputInventorySlot containerOutputSlot;
 
-    protected TileEntityLiquifyingFactory(Holder<Block> blockProvider, BlockPos pos, BlockState state, List<CachedRecipe.OperationTracker.RecipeError> errorTypes, Set<CachedRecipe.OperationTracker.RecipeError> globalErrorTypes) {
+    public TileEntityLiquifyingFactory(Holder<Block> blockProvider, BlockPos pos, BlockState state) {
         super(blockProvider, pos, state, TRACKED_ERROR_TYPES, GLOBAL_ERROR_TYPES);
         inputItemSlots = new ArrayList<>();
         outputItemSlots = new ArrayList<>();
@@ -93,7 +95,9 @@ public class TileEntityLiquifyingFactory extends TileEntityAdvancedFactoryBase<B
 
     @Override
     protected @Nullable IFluidTankHolder getInitialFluidTanks(IContentsListener listener) {
-        return super.getInitialFluidTanks(listener);
+        FluidTankHelper builder = FluidTankHelper.forSideWithConfig(this);
+        builder.addTank(fluidTank = BasicFluidTank.output(MAX_FLUID, markAllMonitorsChanged(listener)));
+        return builder.build();
     }
 
     @Override
@@ -122,6 +126,12 @@ public class TileEntityLiquifyingFactory extends TileEntityAdvancedFactoryBase<B
             liquifiesOutputHandler[i] = OutputHelper.getOutputHandler(fluidTank, CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE, outputSlot, NOT_ENOUGH_SPACE_ITEM_OUTPUT_ERROR);
             processInfoSlots[i] = new NLProcessInfo(i, inputSlot, outputSlot);
         }
+    }
+
+    public static boolean isValidInputStatic(ItemStack stack) {
+        FoodProperties food = stack.getFoodProperties(null);
+        //And only allow inserting foods that actually would provide paste
+        return food != null && food.nutrition() > 0;
     }
 
     public boolean isValidInput(ItemStack stack) {

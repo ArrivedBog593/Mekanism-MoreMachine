@@ -104,6 +104,16 @@ public class AFBlockTypes {
             .withComputerSupport("isotopicCentrifuge")
             .build();
 
+    // Nutritional Liquifier
+    public static final MMMachine.MMFactoryMachine<TileEntityNutritionalLiquifier> NUTRITIONAL_LIQUIFIER = MMMachine.MMMachineBuilder
+            .createAdvancedFactoryMachine(() -> MekanismTileEntityTypes.NUTRITIONAL_LIQUIFIER, MekanismLang.DESCRIPTION_NUTRITIONAL_LIQUIFIER, AdvancedFactoryType.LIQUIFYING)
+            .withGui(() -> MekanismContainerTypes.NUTRITIONAL_LIQUIFIER)
+            .withEnergyConfig(MekanismConfig.usage.nutritionalLiquifier, MekanismConfig.storage.nutritionalLiquifier)
+            .withSideConfig(TransmissionType.ITEM, TransmissionType.FLUID, TransmissionType.ENERGY)
+            .withSound(MekanismSounds.NUTRITIONAL_LIQUIFIER)
+            .withComputerSupport("nutritionalLiquifier")
+            .build();
+
     static {
         for (FactoryTier tier : EnumUtils.FACTORY_TIERS) {
             for (AdvancedFactoryType type : MMEnumUtils.ADVANCED_FACTORY_TYPES) {

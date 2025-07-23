@@ -31,6 +31,7 @@ public class AdvancedItemBlockFactory extends ItemBlockTooltip<BlockTile<?, ?>> 
             case PRESSURISED_REACTING -> AttachedSideConfig.REACTION;
             case CRYSTALLIZING -> AttachedSideConfig.CRYSTALLIZER;
             case CENTRIFUGING -> AttachedSideConfig.CENTRIFUGE;
+            case LIQUIFYING -> AttachedSideConfig.LIQUIFIER;
 //            case SOLAR_NEUTRON_ACTIVATING -> AttachedSideConfig.SNA;
         };
     }

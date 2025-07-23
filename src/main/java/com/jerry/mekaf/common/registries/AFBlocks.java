@@ -8,6 +8,7 @@ import com.jerry.mekaf.common.block.prefab.AdvancedBlockFactoryMachine;
 import com.jerry.mekaf.common.content.blocktype.AdvancedFactory;
 import com.jerry.mekaf.common.content.blocktype.AdvancedFactoryType;
 import com.jerry.mekaf.common.item.block.machine.AdvancedItemBlockFactory;
+import com.jerry.mekaf.common.tile.factory.TileEntityLiquifyingFactory;
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekaf.common.tile.factory.TileEntityAdvancedFactoryBase;
 import com.jerry.mekmm.common.util.MMEnumUtils;
@@ -61,6 +62,7 @@ public class AFBlocks {
                 case OXIDIZING -> s -> MekanismRecipeType.OXIDIZING.getInputCache().containsInput(null, s);
                 case DISSOLVING -> s -> MekanismRecipeType.DISSOLUTION.getInputCache().containsInputA(null, s);
                 case PRESSURISED_REACTING -> s -> MekanismRecipeType.REACTION.getInputCache().containsInputA(null, s);
+                case LIQUIFYING -> TileEntityLiquifyingFactory::isValidInputStatic;
                 default -> null;
             };
             Predicate<ChemicalStack> recipeChemicalInputPredicate = switch (type.getAdvancedFactoryType()) {
@@ -161,6 +163,15 @@ public class AFBlocks {
                                 .addOutputFactoryTank(tier.processes, TileEntityAdvancedFactoryBase.MAX_CHEMICAL * tier.processes)
                                 .build()
                         ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
+                                .addEnergy()
+                                .build()
+                        );
+                case LIQUIFYING -> holder
+                        .addAttachmentOnlyContainers(ContainerType.FLUID, () -> FluidTanksBuilder.builder()
+                                .addBasic(TileEntityLiquifyingFactory.MAX_FLUID * tier.processes)
+                                .build()
+                        ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
+                                .addBasicFactorySlots(tier.processes, recipeItemInputPredicate)
                                 .addEnergy()
                                 .build()
                         );

@@ -63,6 +63,7 @@ public class MMBlockShapes {
             case CRYSTALLIZING -> BlockShapes.CHEMICAL_CRYSTALLIZER;
             case PRESSURISED_REACTING -> BlockShapes.PRESSURIZED_REACTION_CHAMBER;
             case CENTRIFUGING -> BlockShapes.ISOTOPIC_CENTRIFUGE;
+            case LIQUIFYING -> BlockShapes.ANTIPROTONIC_NUCLEOSYNTHESIZER;
         };
     }
 }
