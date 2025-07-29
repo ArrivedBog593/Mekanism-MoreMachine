@@ -12,13 +12,13 @@ import java.util.Locale;
 import java.util.function.Supplier;
 
 @NothingNullByDefault
-public enum MMFactoryType implements IHasTranslationKey.IHasEnumNameTranslationKey {
-    RECYCLING("recycling", MMLang.RECYCLING, () -> MMBlockTypes.RECYCLER, () -> MMBlocks.RECYCLER),
-    PLANTING_STATION("planting", MMLang.PLANTING, () -> MMBlockTypes.PLANTING_STATION, () -> MMBlocks.PLANTING_STATION),
-    CNC_STAMPING("stamping", MMLang.STAMPING, () -> MMBlockTypes.CNC_STAMPER, () -> MMBlocks.CNC_STAMPER),
-    CNC_LATHING("lathing", MMLang.LATHING, () -> MMBlockTypes.CNC_LATHE, () -> MMBlocks.CNC_LATHE),
-    CNC_ROLLING_MILL("rolling_mill", MMLang.ROLLING_MILL, () -> MMBlockTypes.CNC_ROLLING_MILL, () -> MMBlocks.CNC_ROLLING_MILL),
-    REPLICATING("replicating", MMLang.REPLICATING, () -> MMBlockTypes.REPLICATOR, () -> MMBlocks.REPLICATOR);
+public enum MMFactoryType implements IHasTranslationKey {
+    RECYCLING("recycling", MMLang.RECYCLING, () -> MMBlockTypes.RECYCLER, () -> MMBlocks.RECYCLER);
+//    PLANTING_STATION("planting", MMLang.PLANTING, () -> MMBlockTypes.PLANTING_STATION, () -> MMBlocks.PLANTING_STATION),
+//    CNC_STAMPING("stamping", MMLang.STAMPING, () -> MMBlockTypes.CNC_STAMPER, () -> MMBlocks.CNC_STAMPER),
+//    CNC_LATHING("lathing", MMLang.LATHING, () -> MMBlockTypes.CNC_LATHE, () -> MMBlocks.CNC_LATHE),
+//    CNC_ROLLING_MILL("rolling_mill", MMLang.ROLLING_MILL, () -> MMBlockTypes.CNC_ROLLING_MILL, () -> MMBlocks.CNC_ROLLING_MILL),
+//    REPLICATING("replicating", MMLang.REPLICATING, () -> MMBlockTypes.REPLICATOR, () -> MMBlocks.REPLICATOR);
 
     private final String registryNameComponent;
     private final ILangEntry langEntry;

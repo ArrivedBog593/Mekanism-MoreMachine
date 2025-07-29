@@ -3,35 +3,30 @@ package com.jerry.mekmm.common.tile.factory;
 import com.jerry.mekmm.api.recipes.RecyclerRecipe;
 import com.jerry.mekmm.api.recipes.cache.MMOneInputCachedRecipe;
 import com.jerry.mekmm.api.recipes.outputs.MMOutputHelper;
-import com.jerry.mekmm.client.recipe_viewer.MMRecipeViewerRecipeType;
 import com.jerry.mekmm.common.inventory.slot.MMFactoryInputInventorySlot;
 import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
 import mekanism.api.IContentsListener;
 import mekanism.api.inventory.IInventorySlot;
 import mekanism.api.math.MathUtils;
+import mekanism.api.providers.IBlockProvider;
 import mekanism.api.recipes.cache.CachedRecipe;
 import mekanism.api.recipes.inputs.IInputHandler;
 import mekanism.api.recipes.inputs.InputHelper;
 import mekanism.api.recipes.outputs.IOutputHandler;
-import mekanism.client.recipe_viewer.type.IRecipeViewerRecipeType;
 import mekanism.common.capabilities.holder.slot.InventorySlotHelper;
 import mekanism.common.inventory.slot.OutputInventorySlot;
 import mekanism.common.inventory.warning.WarningTracker;
 import mekanism.common.recipe.IMekanismRecipeTypeProvider;
 import mekanism.common.recipe.lookup.ISingleRecipeLookupHandler;
 import mekanism.common.recipe.lookup.cache.InputRecipeCache;
-import mekanism.common.recipe.lookup.monitor.FactoryRecipeCacheLookupMonitor;
 import mekanism.common.tier.FactoryTier;
 import mekanism.common.upgrade.MachineUpgradeData;
 import mekanism.common.util.InventoryUtils;
+import mekanism.common.util.MekanismUtils;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.SingleRecipeInput;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.common.util.TriPredicate;
+import net.minecraftforge.common.util.TriPredicate;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -55,7 +50,7 @@ public class TileEntityRecyclingFactory extends MMTileEntityFactory<RecyclerReci
     protected IInputHandler<@NotNull ItemStack>[] inputHandlers;
     protected IOutputHandler<RecyclerRecipe.ChanceOutput>[] outputHandlers;
 
-    public TileEntityRecyclingFactory(Holder<Block> blockProvider, BlockPos pos, BlockState state) {
+    public TileEntityRecyclingFactory(IBlockProvider blockProvider, BlockPos pos, BlockState state) {
         super(blockProvider, pos, state, TRACKED_ERROR_TYPES, GLOBAL_ERROR_TYPES);
     }
 
@@ -68,14 +63,9 @@ public class TileEntityRecyclingFactory extends MMTileEntityFactory<RecyclerReci
         int baseXMult = tier == FactoryTier.BASIC ? 38 : tier == FactoryTier.ADVANCED ? 26 : 19;
         for (int i = 0; i < tier.processes; i++) {
             int xPos = baseX + (i * baseXMult);
-            FactoryRecipeCacheLookupMonitor<RecyclerRecipe> lookupMonitor = recipeCacheLookupMonitors[i];
-            IContentsListener updateSortingAndUnpause = () -> {
-                updateSortingListener.onContentsChanged();
-                lookupMonitor.unpause();
-            };
-            OutputInventorySlot outputSlot = OutputInventorySlot.at(updateSortingAndUnpause, xPos, 57);
+            OutputInventorySlot outputSlot = OutputInventorySlot.at(updateSortingListener, xPos, 57);
             //Note: As we are an item factory that has comparator's based on items we can just use the monitor as a listener directly
-            MMFactoryInputInventorySlot inputSlot = MMFactoryInputInventorySlot.create(this, i, outputSlot, lookupMonitor, xPos, 13);
+            MMFactoryInputInventorySlot inputSlot = MMFactoryInputInventorySlot.create(this, i, outputSlot, recipeCacheLookupMonitors[i], xPos, 13);
             int index = i;
             builder.addSlot(inputSlot).tracksWarnings(slot -> slot.warning(WarningTracker.WarningType.NO_MATCHING_RECIPE, getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT, index)));
             builder.addSlot(outputSlot).tracksWarnings(slot -> slot.warning(WarningTracker.WarningType.NO_SPACE_IN_OUTPUT, getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE, index)));
@@ -93,7 +83,8 @@ public class TileEntityRecyclingFactory extends MMTileEntityFactory<RecyclerReci
 
     @Override
     protected @Nullable RecyclerRecipe findRecipe(int process, @NotNull ItemStack fallbackInput, @NotNull IInventorySlot chanceOutputSlot, @Nullable IInventorySlot outputSlot) {
-        return getRecipeType().getInputCache().findTypeBasedRecipe(level, fallbackInput, chanceOutputSlot.getStack(), OUTPUT_CHECK);
+        ItemStack output = outputSlot.getStack();
+        return getRecipeType().getInputCache().findTypeBasedRecipe(level, fallbackInput, recipe -> InventoryUtils.areItemsStackable(recipe.getOutput(fallbackInput).getMaxChanceOutput(), output));
     }
 
     @Override
@@ -112,13 +103,8 @@ public class TileEntityRecyclingFactory extends MMTileEntityFactory<RecyclerReci
     }
 
     @Override
-    public @NotNull IMekanismRecipeTypeProvider<SingleRecipeInput, RecyclerRecipe, InputRecipeCache.SingleItem<RecyclerRecipe>> getRecipeType() {
+    public @NotNull IMekanismRecipeTypeProvider<RecyclerRecipe, InputRecipeCache.SingleItem<RecyclerRecipe>> getRecipeType() {
         return MoreMachineRecipeType.RECYCLING;
-    }
-
-    @Override
-    public IRecipeViewerRecipeType<RecyclerRecipe> recipeViewerType() {
-        return MMRecipeViewerRecipeType.RECYCLER;
     }
 
     @Override
@@ -130,7 +116,7 @@ public class TileEntityRecyclingFactory extends MMTileEntityFactory<RecyclerReci
     public @NotNull CachedRecipe<RecyclerRecipe> createNewCachedRecipe(@NotNull RecyclerRecipe recipe, int cacheIndex) {
         return MMOneInputCachedRecipe.recycler(recipe, recheckAllRecipeErrors[cacheIndex], inputHandlers[cacheIndex], outputHandlers[cacheIndex])
                 .setErrorsChanged(errors -> errorTracker.onErrorsChanged(errors, cacheIndex))
-                .setCanHolderFunction(this::canFunction)
+                .setCanHolderFunction(() -> MekanismUtils.canFunction(this))
                 .setActive(active -> setActiveState(active, cacheIndex))
                 .setEnergyRequirements(energyContainer::getEnergyPerTick, energyContainer)
                 .setRequiredTicks(this::getTicksRequired)
@@ -140,7 +126,7 @@ public class TileEntityRecyclingFactory extends MMTileEntityFactory<RecyclerReci
 
     @NotNull
     @Override
-    public MachineUpgradeData getUpgradeData(HolderLookup.Provider provider) {
-        return new MachineUpgradeData(provider, redstone, getControlType(), getEnergyContainer(), progress, energySlot, inputSlots, outputSlots, isSorting(), getComponents());
+    public MachineUpgradeData getUpgradeData() {
+        return new MachineUpgradeData(redstone, getControlType(), getEnergyContainer(), progress, energySlot, inputSlots, outputSlots, isSorting(), getComponents());
     }
 }

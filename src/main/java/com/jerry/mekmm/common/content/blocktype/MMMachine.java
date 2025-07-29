@@ -1,10 +1,8 @@
 package com.jerry.mekmm.common.content.blocktype;
 
-import com.jerry.mekaf.common.content.blocktype.AdvancedFactoryType;
-import com.jerry.mekaf.common.block.attribute.AdvancedAttributeFactoryType;
-import com.jerry.mekaf.common.registries.AFBlocks;
 import com.jerry.mekmm.common.block.attribute.MMAttributeFactoryType;
 import com.jerry.mekmm.common.registries.MMBlocks;
+import mekanism.api.Upgrade;
 import mekanism.api.text.ILangEntry;
 import mekanism.common.block.attribute.*;
 import mekanism.common.content.blocktype.BlockTypeTile;
@@ -15,6 +13,7 @@ import mekanism.common.tile.base.TileEntityMekanism;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 
+import java.util.EnumSet;
 import java.util.Objects;
 import java.util.function.Supplier;
 
@@ -25,8 +24,8 @@ public class MMMachine<TILE extends TileEntityMekanism> extends BlockTypeTile<TI
         add(new AttributeParticleFX()
                 .add(ParticleTypes.SMOKE, rand -> new Pos3D(rand.nextFloat() * 0.6F - 0.3F, rand.nextFloat() * 6.0F / 16.0F, 0.52))
                 .add(DustParticleOptions.REDSTONE, rand -> new Pos3D(rand.nextFloat() * 0.6F - 0.3F, rand.nextFloat() * 6.0F / 16.0F, 0.52)));
-        add(Attributes.ACTIVE_LIGHT, new AttributeStateFacing(), Attributes.INVENTORY, Attributes.SECURITY, Attributes.REDSTONE, Attributes.COMPARATOR,
-                AttributeUpgradeSupport.DEFAULT_MACHINE_UPGRADES);
+        add(Attributes.ACTIVE_LIGHT, new AttributeStateFacing(), Attributes.INVENTORY, Attributes.SECURITY, Attributes.REDSTONE, Attributes.COMPARATOR);
+        add(new AttributeUpgradeSupport(EnumSet.of(Upgrade.SPEED, Upgrade.ENERGY, Upgrade.MUFFLING)));
     }
 
     public static class MMFactoryMachine<TILE extends TileEntityMekanism> extends MMMachine<TILE> {
@@ -36,18 +35,18 @@ public class MMMachine<TILE extends TileEntityMekanism> extends BlockTypeTile<TI
             add(new MMAttributeFactoryType(factoryType), new AttributeUpgradeable(() -> MMBlocks.getMMFactory(FactoryTier.BASIC, getMMFactoryType())));
         }
 
-        public MMFactoryMachine(Supplier<TileEntityTypeRegistryObject<TILE>> tileEntitySupplier, ILangEntry description, AdvancedFactoryType factoryType) {
-            super(tileEntitySupplier, description);
-            add(new AdvancedAttributeFactoryType(factoryType), new AttributeUpgradeable(() -> AFBlocks.getAdvancedFactory(FactoryTier.BASIC, getAdvancedFactoryType())));
-        }
+//        public MMFactoryMachine(Supplier<TileEntityTypeRegistryObject<TILE>> tileEntitySupplier, ILangEntry description, AdvancedFactoryType factoryType) {
+//            super(tileEntitySupplier, description);
+//            add(new AdvancedAttributeFactoryType(factoryType), new AttributeUpgradeable(() -> AFBlocks.getAdvancedFactory(FactoryTier.BASIC, getAdvancedFactoryType())));
+//        }
 
         public MMFactoryType getMMFactoryType() {
             return Objects.requireNonNull(get(MMAttributeFactoryType.class)).getMMFactoryType();
         }
 
-        public AdvancedFactoryType getAdvancedFactoryType() {
-            return Objects.requireNonNull(get(AdvancedAttributeFactoryType.class)).getAdvancedFactoryType();
-        }
+//        public AdvancedFactoryType getAdvancedFactoryType() {
+//            return Objects.requireNonNull(get(AdvancedAttributeFactoryType.class)).getAdvancedFactoryType();
+//        }
     }
 
     public static class MMMachineBuilder<MACHINE extends MMMachine<TILE>, TILE extends TileEntityMekanism, T extends MMMachineBuilder<MACHINE, TILE, T>> extends BlockTileBuilder<MACHINE, TILE, T> {
@@ -66,9 +65,9 @@ public class MMMachine<TILE extends TileEntityMekanism> extends BlockTypeTile<TI
             return new MMMachineBuilder<>(new MMFactoryMachine<>(tileEntityRegistrar, description, factoryType));
         }
 
-        public static <TILE extends TileEntityMekanism> MMMachineBuilder<MMFactoryMachine<TILE>, TILE, ?> createAdvancedFactoryMachine(Supplier<TileEntityTypeRegistryObject<TILE>> tileEntityRegistrar,
-                                                                                                                                 ILangEntry description, AdvancedFactoryType factoryType) {
-            return new MMMachineBuilder<>(new MMFactoryMachine<>(tileEntityRegistrar, description, factoryType));
-        }
+//        public static <TILE extends TileEntityMekanism> MMMachineBuilder<MMFactoryMachine<TILE>, TILE, ?> createAdvancedFactoryMachine(Supplier<TileEntityTypeRegistryObject<TILE>> tileEntityRegistrar,
+//                                                                                                                                 ILangEntry description, AdvancedFactoryType factoryType) {
+//            return new MMMachineBuilder<>(new MMFactoryMachine<>(tileEntityRegistrar, description, factoryType));
+//        }
     }
 }

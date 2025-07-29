@@ -1,29 +1,25 @@
 package com.jerry.mekaf.common.content.blocktype;
 
-import com.jerry.mekaf.common.registries.AFBlockTypes;
 import com.jerry.mekmm.common.MMLang;
 import com.jerry.mekmm.common.content.blocktype.MMMachine;
+import com.jerry.mekmm.common.registries.MMBlockTypes;
+import com.jerry.mekmm.common.registries.MMBlocks;
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.text.IHasTranslationKey;
 import mekanism.api.text.ILangEntry;
 import mekanism.common.registration.impl.BlockRegistryObject;
-import mekanism.common.registries.MekanismBlocks;
 
 import java.util.Locale;
 import java.util.function.Supplier;
 
 @NothingNullByDefault
-public enum AdvancedFactoryType implements IHasTranslationKey.IHasEnumNameTranslationKey {
-    //回旋应该加在这，如果会加的话
-    OXIDIZING("oxidizing", MMLang.OXIDIZING, () -> AFBlockTypes.CHEMICAL_OXIDIZER, () -> MekanismBlocks.CHEMICAL_OXIDIZER),
-    CHEMICAL_INFUSING("chemical_infusing", MMLang.CHEMICAL_INFUSING, () -> AFBlockTypes.CHEMICAL_INFUSER, () -> MekanismBlocks.CHEMICAL_INFUSER),
-    //电解分离机
-    DISSOLVING("dissolving", MMLang.DISSOLVING, () -> AFBlockTypes.CHEMICAL_DISSOLUTION_CHAMBER, () -> MekanismBlocks.CHEMICAL_DISSOLUTION_CHAMBER),
-    WASHING("washing", MMLang.WASHING, () -> AFBlockTypes.CHEMICAL_WASHER, () -> MekanismBlocks.CHEMICAL_WASHER),
-    CRYSTALLIZING("crystallizing", MMLang.CRYSTALLIZING, () -> AFBlockTypes.CHEMICAL_CRYSTALLIZER, () -> MekanismBlocks.CHEMICAL_CRYSTALLIZER),
-    PRESSURISED_REACTING("pressurised_reacting", MMLang.PRESSURISED_REACTING, () -> AFBlockTypes.PRESSURIZED_REACTION_CHAMBER, () -> MekanismBlocks.PRESSURIZED_REACTION_CHAMBER),
-    CENTRIFUGING("centrifuging", MMLang.CENTRIFUGING, () -> AFBlockTypes.ISOTOPIC_CENTRIFUGE, () -> MekanismBlocks.ISOTOPIC_CENTRIFUGE),
-    LIQUIFYING("liquifying", MMLang.LIQUIFYING, () -> AFBlockTypes.NUTRITIONAL_LIQUIFIER, () -> MekanismBlocks.NUTRITIONAL_LIQUIFIER);
+public enum AdvancedFactoryType implements IHasTranslationKey {
+    RECYCLING("recycling", MMLang.RECYCLING, () -> MMBlockTypes.RECYCLER, () -> MMBlocks.RECYCLER);
+//    PLANTING_STATION("planting", MMLang.PLANTING, () -> MMBlockTypes.PLANTING_STATION, () -> MMBlocks.PLANTING_STATION),
+//    CNC_STAMPING("stamping", MMLang.STAMPING, () -> MMBlockTypes.CNC_STAMPER, () -> MMBlocks.CNC_STAMPER),
+//    CNC_LATHING("lathing", MMLang.LATHING, () -> MMBlockTypes.CNC_LATHE, () -> MMBlocks.CNC_LATHE),
+//    CNC_ROLLING_MILL("rolling_mill", MMLang.ROLLING_MILL, () -> MMBlockTypes.CNC_ROLLING_MILL, () -> MMBlocks.CNC_ROLLING_MILL),
+//    REPLICATING("replicating", MMLang.REPLICATING, () -> MMBlockTypes.REPLICATOR, () -> MMBlocks.REPLICATOR);
 
     private final String registryNameComponent;
     private final ILangEntry langEntry;

@@ -1,0 +1,12 @@
+{
+  "type": "mekmm:recycling",
+  "input": {
+    "ingredient": {
+      "tag": "forge:stone"
+    }
+  },
+  "chance": 0.17,
+  "output": {
+    "item": "mekmm:scrap"
+  }
+}

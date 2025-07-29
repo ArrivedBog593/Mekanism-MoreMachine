@@ -3,7 +3,6 @@ package com.jerry.mekmm.common.tile.machine;
 import com.jerry.mekmm.api.recipes.RecyclerRecipe;
 import com.jerry.mekmm.api.recipes.cache.MMOneInputCachedRecipe;
 import com.jerry.mekmm.api.recipes.outputs.MMOutputHelper;
-import com.jerry.mekmm.client.recipe_viewer.MMRecipeViewerRecipeType;
 import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
 import com.jerry.mekmm.common.registries.MMBlocks;
 import com.jerry.mekmm.common.util.MMUtils;
@@ -12,7 +11,6 @@ import mekanism.api.recipes.cache.CachedRecipe;
 import mekanism.api.recipes.inputs.IInputHandler;
 import mekanism.api.recipes.inputs.InputHelper;
 import mekanism.api.recipes.outputs.IOutputHandler;
-import mekanism.client.recipe_viewer.type.IRecipeViewerRecipeType;
 import mekanism.common.capabilities.energy.MachineEnergyContainer;
 import mekanism.common.capabilities.holder.energy.EnergyContainerHelper;
 import mekanism.common.capabilities.holder.energy.IEnergyContainerHolder;
@@ -26,15 +24,15 @@ import mekanism.common.lib.transmitter.TransmissionType;
 import mekanism.common.recipe.IMekanismRecipeTypeProvider;
 import mekanism.common.recipe.lookup.ISingleRecipeLookupHandler;
 import mekanism.common.recipe.lookup.cache.InputRecipeCache;
+import mekanism.common.tile.component.TileComponentConfig;
 import mekanism.common.tile.component.TileComponentEjector;
 import mekanism.common.tile.prefab.TileEntityProgressMachine;
 import mekanism.common.upgrade.MachineUpgradeData;
+import mekanism.common.util.MekanismUtils;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.SingleRecipeInput;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -64,6 +62,7 @@ public class TileEntityRecycler extends TileEntityProgressMachine<RecyclerRecipe
 
     public TileEntityRecycler(BlockPos pos, BlockState state) {
         super(MMBlocks.RECYCLER, pos, state, TRACKED_ERROR_TYPES, BASE_TICKS_REQUIRED);
+        configComponent = new TileComponentConfig(this, TransmissionType.ITEM, TransmissionType.ENERGY);
         configComponent.setupItemIOConfig(Collections.singletonList(inputSlot), Collections.singletonList(chanceOutputSlot), energySlot, false);
         configComponent.setupInputConfig(TransmissionType.ENERGY, energyContainer);
 
@@ -76,20 +75,20 @@ public class TileEntityRecycler extends TileEntityProgressMachine<RecyclerRecipe
 
     @NotNull
     @Override
-    protected IEnergyContainerHolder getInitialEnergyContainers(IContentsListener listener, IContentsListener recipeCacheListener, IContentsListener recipeCacheUnpauseListener) {
-        EnergyContainerHelper builder = EnergyContainerHelper.forSideWithConfig(this);
-        builder.addContainer(energyContainer = MachineEnergyContainer.input(this, recipeCacheUnpauseListener));
+    protected IEnergyContainerHolder getInitialEnergyContainers(IContentsListener listener, IContentsListener recipeCacheListener) {
+        EnergyContainerHelper builder = EnergyContainerHelper.forSideWithConfig(this::getDirection, this::getConfig);
+        builder.addContainer(energyContainer = MachineEnergyContainer.input(this, listener));
         return builder.build();
     }
 
     @Override
-    protected @Nullable IInventorySlotHolder getInitialInventory(IContentsListener listener, IContentsListener recipeCacheListener, IContentsListener recipeCacheUnpauseListener) {
-        InventorySlotHelper builder = InventorySlotHelper.forSideWithConfig(this);
+    protected @Nullable IInventorySlotHolder getInitialInventory(IContentsListener listener, IContentsListener recipeCacheListener) {
+        InventorySlotHelper builder = InventorySlotHelper.forSideWithConfig(this::getDirection, this::getConfig);
         //输入槽位置
         builder.addSlot(inputSlot = InputInventorySlot.at(this::containsRecipe, recipeCacheListener, 64, 17))
                 .tracksWarnings(slot -> slot.warning(WarningTracker.WarningType.NO_MATCHING_RECIPE, getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT)));
         //输出槽位置
-        builder.addSlot(chanceOutputSlot = OutputInventorySlot.at(recipeCacheUnpauseListener,116, 35))
+        builder.addSlot(chanceOutputSlot = OutputInventorySlot.at(listener,116, 35))
                 .tracksWarnings(slot -> slot.warning(WarningTracker.WarningType.NO_SPACE_IN_OUTPUT, getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE)));
         //能量槽位置
         builder.addSlot(energySlot = EnergyInventorySlot.fillOrConvert(energyContainer, this::getLevel, listener, 64, 53));
@@ -97,21 +96,15 @@ public class TileEntityRecycler extends TileEntityProgressMachine<RecyclerRecipe
     }
 
     @Override
-    protected boolean onUpdateServer() {
-        boolean sendUpdatePacket = super.onUpdateServer();
+    protected void onUpdateServer() {
+        super.onUpdateServer();
         energySlot.fillContainerOrConvert();
         recipeCacheLookupMonitor.updateAndProcess();
-        return sendUpdatePacket;
     }
 
     @Override
-    public @NotNull IMekanismRecipeTypeProvider<SingleRecipeInput, RecyclerRecipe, InputRecipeCache.SingleItem<RecyclerRecipe>> getRecipeType() {
+    public @NotNull IMekanismRecipeTypeProvider<RecyclerRecipe, InputRecipeCache.SingleItem<RecyclerRecipe>> getRecipeType() {
         return MoreMachineRecipeType.RECYCLING;
-    }
-
-    @Override
-    public IRecipeViewerRecipeType<RecyclerRecipe> recipeViewerType() {
-        return MMRecipeViewerRecipeType.RECYCLER;
     }
 
     @Override
@@ -124,13 +117,12 @@ public class TileEntityRecycler extends TileEntityProgressMachine<RecyclerRecipe
     public CachedRecipe<RecyclerRecipe> createNewCachedRecipe(@NotNull RecyclerRecipe recipe, int cacheIndex) {
         return MMOneInputCachedRecipe.recycler(recipe, recheckAllRecipeErrors, inputHandler, chanceOutputHandler)
                 .setErrorsChanged(this::onErrorsChanged)
-                .setCanHolderFunction(this::canFunction)
+                .setCanHolderFunction(() -> MekanismUtils.canFunction(this))
                 .setActive(this::setActive)
                 .setEnergyRequirements(energyContainer::getEnergyPerTick, energyContainer)
                 .setRequiredTicks(this::getTicksRequired)
                 .setOnFinish(this::markForSave)
-                .setOperatingTicksChanged(this::setOperatingTicks)
-                .setBaselineMaxOperations(this::getOperationsPerTick);
+                .setOperatingTicksChanged(this::setOperatingTicks);
     }
 
     public MachineEnergyContainer<TileEntityRecycler> getEnergyContainer() {
@@ -138,13 +130,13 @@ public class TileEntityRecycler extends TileEntityProgressMachine<RecyclerRecipe
     }
 
     @Override
-    public boolean isConfigurationDataCompatible(Block type) {
-        return super.isConfigurationDataCompatible(type) || MMUtils.isSameMMTypeFactory(getBlockHolder(), type);
+    public boolean isConfigurationDataCompatible(BlockEntityType<?> tileType) {
+        return super.isConfigurationDataCompatible(tileType) || MMUtils.isSameMMTypeFactory(getBlockType(), tileType);
     }
 
     @NotNull
     @Override
-    public MachineUpgradeData getUpgradeData(HolderLookup.Provider provider) {
-        return new MachineUpgradeData(provider, redstone, getControlType(), getEnergyContainer(), getOperatingTicks(), energySlot, inputSlot, chanceOutputSlot, getComponents());
+    public MachineUpgradeData getUpgradeData() {
+        return new MachineUpgradeData(redstone, getControlType(), getEnergyContainer(), getOperatingTicks(), energySlot, inputSlot, chanceOutputSlot, getComponents());
     }
 }

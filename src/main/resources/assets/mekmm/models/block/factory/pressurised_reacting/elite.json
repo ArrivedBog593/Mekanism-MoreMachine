@@ -1,6 +1,0 @@
-{
-  "parent":"mekmm:block/factory/pressurised_reacting/base",
-  "textures": {
-    "all": "mekmm:block/factory/pressurised_reacting/pressurized_reaction_chamber_elite"
-  }
-}

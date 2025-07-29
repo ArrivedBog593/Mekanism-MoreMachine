@@ -1,70 +1,84 @@
 package com.jerry.mekmm.api.recipes;
 
-import com.jerry.mekmm.Mekmm;
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.recipes.MekanismRecipe;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
-import net.minecraft.core.Holder;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.SingleRecipeInput;
-import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 @NothingNullByDefault
-public abstract class RecyclerRecipe extends MekanismRecipe<SingleRecipeInput> implements Predicate<@NotNull ItemStack> {
+public abstract class RecyclerRecipe extends MekanismRecipe implements Predicate<@NotNull ItemStack> {
 
     protected static final RandomSource RANDOM = RandomSource.create();
-    private static final Holder<Item> RECYCLER = DeferredHolder.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(Mekmm.MOD_ID, "recycler"));
+//    private static final Holder<Item> RECYCLER = DeferredHolder.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(Mekmm.MOD_ID, "recycler"));
+
+    private final ItemStackIngredient input;
+    private final ItemStack chanceOutput;
+    private final double chance;
+
+    public RecyclerRecipe(ResourceLocation id, ItemStackIngredient input, ItemStack chanceOutput, double chance) {
+        super(id);
+        this.input = Objects.requireNonNull(input, "Input cannot be null.");
+        Objects.requireNonNull(chanceOutput, "Output cannot be null.");
+        if (chanceOutput.isEmpty()) {
+            throw new IllegalArgumentException("Output cannot be null.");
+        } else if (chance < 0 || chance > 1) {
+            throw new IllegalArgumentException("Output chance must be at least zero and at most one.");
+        }
+        this.chanceOutput = chanceOutput.copy();
+        this.chance = chance;
+    }
 
     @Override
-    public abstract boolean test(ItemStack stack);
-
-    @Override
-    public boolean matches(SingleRecipeInput input, Level level) {
-        //Don't match incomplete recipes or ones that don't match
-        return !isIncomplete() && test(input.item());
+    public boolean test(ItemStack stack) {
+        return input.test(stack);
     }
 
     /**
      * Gets a new chance output based on the given input.
      *
      * @param input Specific input.
-     *
      * @return New chance output.
-     *
      * @apiNote While Mekanism does not currently make use of the input, it is important to support it and pass the proper value in case any addons define input based
      * outputs where things like NBT may be different.
      * @implNote The passed in input should <strong>NOT</strong> be modified.
      */
     @Contract(value = "_ -> new")
-    public abstract ChanceOutput getOutput(ItemStack input);
+    public ChanceOutput getOutput(ItemStack input) {
+        return new ChanceOutput(chance > 0 ? RANDOM.nextDouble() : 0);
+    }
 
     /**
      * For JEI, gets the chance output representations to display.
      *
      * @return Representation of the chance output, <strong>MUST NOT</strong> be modified.
      */
-    public abstract List<ItemStack> getChanceOutputDefinition();
+    public List<ItemStack> getChanceOutputDefinition() {
+        return chanceOutput.isEmpty() ? Collections.emptyList() : Collections.singletonList(chanceOutput);
+    }
 
     /**
      * Gets the chance (between 0 and 1) of the chance output being produced.
      */
-    public abstract double getOutputChance();
+    public double getOutputChance() {
+        return chance;
+    }
 
     /**
      * Gets the input ingredient.
      */
-    public abstract ItemStackIngredient getInput();
+    public ItemStackIngredient getInput() {
+        return input;
+    }
 
     @Override
     public boolean isIncomplete() {
@@ -72,25 +86,28 @@ public abstract class RecyclerRecipe extends MekanismRecipe<SingleRecipeInput> i
     }
 
     @Override
-    public final RecipeType<RecyclerRecipe> getType() {
-        return MoreMachineRecipeTypes.TYPE_RECYCLER.value();
+    public void logMissingTags() {
+        input.logMissingTags();
     }
 
     @Override
-    public String getGroup() {
-        return "recycler";
-    }
-
-    @Override
-    public ItemStack getToastSymbol() {
-        return new ItemStack(RECYCLER);
+    public void write(FriendlyByteBuf buffer) {
+        input.write(buffer);
+        buffer.writeItem(chanceOutput);
+        buffer.writeDouble(chance);
     }
 
     /**
      * Represents a precalculated chance based output. This output keeps track of what random value was calculated for use in comparing if the chance output should be
      * created.
      */
-    public interface ChanceOutput {
+    public class ChanceOutput {
+
+        protected final double rand;
+
+        protected ChanceOutput(double rand) {
+            this.rand = rand;
+        }
 
         /**
          * Gets a copy of the chance output ignoring the random chance of it happening. This is mostly used for checking the maximum amount we can get as a chance
@@ -98,7 +115,9 @@ public abstract class RecyclerRecipe extends MekanismRecipe<SingleRecipeInput> i
          *
          * @implNote return a new copy or ItemStack.EMPTY
          */
-        ItemStack getMaxChanceOutput();
+        public ItemStack getMaxChanceOutput() {
+            return chance > 0 ? chanceOutput.copy() : ItemStack.EMPTY;
+        }
 
         /**
          * Gets a copy of the chance output if the random number generated for this output matches the chance of a secondary output being produced, otherwise returns
@@ -106,7 +125,12 @@ public abstract class RecyclerRecipe extends MekanismRecipe<SingleRecipeInput> i
          *
          * @implNote return a new copy or ItemStack.EMPTY
          */
-        ItemStack getChanceOutput();
+        public ItemStack getChanceOutput() {
+            if (rand <= chance) {
+                return chanceOutput.copy();
+            }
+            return ItemStack.EMPTY;
+        }
 
         /**
          * Similar to {@link #getChanceOutput()} except that this calculates a new random number to act as if this was another chance output for purposes of handling
@@ -114,6 +138,14 @@ public abstract class RecyclerRecipe extends MekanismRecipe<SingleRecipeInput> i
          *
          * @implNote return a new copy or ItemStack.EMPTY
          */
-        ItemStack nextChanceOutput();
+        public ItemStack nextChanceOutput() {
+            if (chance > 0) {
+                double rand = RANDOM.nextDouble();
+                if (rand <= chance) {
+                    return chanceOutput.copy();
+                }
+            }
+            return ItemStack.EMPTY;
+        }
     }
 }

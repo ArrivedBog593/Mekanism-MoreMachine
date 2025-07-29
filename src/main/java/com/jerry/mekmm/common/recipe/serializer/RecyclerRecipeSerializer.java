@@ -1,52 +1,80 @@
 package com.jerry.mekmm.common.recipe.serializer;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
+import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.api.recipes.RecyclerRecipe;
-import com.jerry.mekmm.api.recipes.basic.BasicRecyclerRecipe;
-import com.mojang.datafixers.util.Function3;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import mekanism.api.SerializationConstants;
-import mekanism.api.annotations.NothingNullByDefault;
+import mekanism.api.JsonConstants;
+import mekanism.api.SerializerHelper;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
+import mekanism.api.recipes.ingredients.creator.IngredientCreatorAccess;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-@NothingNullByDefault
-public class RecyclerRecipeSerializer implements RecipeSerializer<BasicRecyclerRecipe> {
+public class RecyclerRecipeSerializer<RECIPE extends RecyclerRecipe> implements RecipeSerializer<RECIPE> {
 
-    private final StreamCodec<RegistryFriendlyByteBuf, BasicRecyclerRecipe> streamCodec;
-    private final MapCodec<BasicRecyclerRecipe> codec;
+    private final IFactory<RECIPE> factory;
 
-    public RecyclerRecipeSerializer(Function3<ItemStackIngredient, ItemStack, Double, BasicRecyclerRecipe> factory) {
-
-        Codec<Double> chanceCodec = Codec.DOUBLE.validate(d -> d > 0 && d <= 1 ? DataResult.success(d) : DataResult.error(() -> "Expected chance to be greater than zero, and less than or equal to one. Found " + d));
-
-        this.codec = RecordCodecBuilder.mapCodec(instance -> instance.group(
-                ItemStackIngredient.CODEC.fieldOf(SerializationConstants.INPUT).forGetter(RecyclerRecipe::getInput),
-                ItemStack.CODEC.fieldOf(SerializationConstants.OUTPUT).forGetter(BasicRecyclerRecipe::getChanceOutputRaw),
-                chanceCodec.fieldOf("chance").forGetter(BasicRecyclerRecipe::getOutputChance)
-        ).apply(instance, factory));
-
-        this.streamCodec = StreamCodec.composite(
-                ItemStackIngredient.STREAM_CODEC, RecyclerRecipe::getInput,
-                ItemStack.STREAM_CODEC, BasicRecyclerRecipe::getChanceOutputRaw,
-                ByteBufCodecs.DOUBLE, RecyclerRecipe::getOutputChance,
-                factory
-        );
+    public RecyclerRecipeSerializer(IFactory<RECIPE> factory) {
+        this.factory = factory;
     }
 
     @Override
-    public MapCodec<BasicRecyclerRecipe> codec() {
-        return codec;
+    @NotNull
+    public RECIPE fromJson(@NotNull ResourceLocation recipeId, @NotNull JsonObject json) {
+        JsonElement input = GsonHelper.isArrayNode(json, JsonConstants.INPUT) ? GsonHelper.getAsJsonArray(json, JsonConstants.INPUT) :
+                GsonHelper.getAsJsonObject(json, JsonConstants.INPUT);
+        ItemStackIngredient inputIngredient = IngredientCreatorAccess.item().deserialize(input);
+        double getChance;
+        JsonElement chance = json.get("chance");
+        //判断有无chance字段
+        if (!GsonHelper.isNumberValue(chance)) {
+            throw new JsonSyntaxException("Expected chance to be a number greater than zero.");
+        }
+        //获取chance字段的值
+        getChance = chance.getAsJsonPrimitive().getAsDouble();
+        if (getChance <= 0 || getChance > 1) {
+            throw new JsonSyntaxException("Expected chance to be greater than zero, and less than or equal to  one.");
+        }
+        ItemStack output = SerializerHelper.getItemStack(json, JsonConstants.OUTPUT);
+        if (output.isEmpty()) {
+            throw new JsonSyntaxException("Recycler recipe output must not be empty, if it is defined.");
+        }
+        return factory.create(recipeId, inputIngredient, output, getChance);
     }
 
     @Override
-    public StreamCodec<RegistryFriendlyByteBuf, BasicRecyclerRecipe> streamCodec() {
-        return streamCodec;
+    public @Nullable RECIPE fromNetwork(@NotNull ResourceLocation recipeId, @NotNull FriendlyByteBuf buffer) {
+        try {
+            ItemStackIngredient inputIngredient = IngredientCreatorAccess.item().read(buffer);
+            ItemStack output = buffer.readItem();
+            double chance = buffer.readDouble();
+            return factory.create(recipeId, inputIngredient, output, chance);
+        } catch (Exception e) {
+            Mekmm.LOGGER.error("Error reading recycler recipe from packet.", e);
+            throw e;
+        }
+    }
+
+    @Override
+    public void toNetwork(@NotNull FriendlyByteBuf buffer, @NotNull RECIPE recipe) {
+        try {
+            recipe.write(buffer);
+        } catch (Exception e) {
+            Mekmm.LOGGER.error("Error writing recycler recipe to packet.", e);
+            throw e;
+        }
+    }
+
+    @FunctionalInterface
+    public interface IFactory<RECIPE extends RecyclerRecipe> {
+
+        RECIPE create(ResourceLocation id, ItemStackIngredient input, ItemStack output, double chance);
     }
 }

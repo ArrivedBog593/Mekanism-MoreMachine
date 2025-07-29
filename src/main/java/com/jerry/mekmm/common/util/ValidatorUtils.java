@@ -1,7 +1,5 @@
 package com.jerry.mekmm.common.util;
 
-import com.jerry.mekmm.common.config.MMConfig;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

@@ -1,0 +1,12 @@
+{
+  "type": "mekmm:recycling",
+  "input": {
+    "ingredient": {
+      "item": "minecraft:dirt"
+    }
+  },
+  "chance": 0.17,
+  "output": {
+    "item": "mekmm:scrap"
+  }
+}

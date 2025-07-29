@@ -1,6 +1,0 @@
-{
-  "parent":"mekmm:block/factory/oxidizing/base",
-  "textures": {
-    "elements": "mekmm:block/factory/oxidizing/chemical_oxidizer_elements_elite"
-  }
-}

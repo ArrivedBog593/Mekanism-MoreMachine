@@ -25,7 +25,6 @@ public enum MMLang implements ILangEntry {
     CRYSTALLIZING("factory", "crystallizing"),
     PRESSURISED_REACTING("factory", "pressurised_reacting"),
     CENTRIFUGING("factory", "centrifuging"),
-    LIQUIFYING("factory", "liquifying"),
     //Descriptions
     DESCRIPTION_RECYCLER("description", "recycler"),
     DESCRIPTION_PLANTING_STATION("description", "planting_station"),

@@ -4,7 +4,6 @@ import com.jerry.mekmm.common.block.attribute.MMAttributeFactoryType;
 import com.jerry.mekmm.common.registries.MMBlocks;
 import com.jerry.mekmm.common.registries.MMContainerTypes;
 import com.jerry.mekmm.common.tile.factory.MMTileEntityFactory;
-import mekanism.api.math.MathUtils;
 import mekanism.common.MekanismLang;
 import mekanism.common.block.attribute.*;
 import mekanism.common.inventory.container.MekanismContainer;
@@ -36,11 +35,11 @@ public class MMFactory<TILE extends MMTileEntityFactory<?>> extends MMMachine.MM
     private void setMachineData(FactoryTier tier) {
         setFrom(origMachine, AttributeSound.class, MMAttributeFactoryType.class, AttributeUpgradeSupport.class);
         AttributeEnergy origEnergy = origMachine.get(AttributeEnergy.class);
-        add(new AttributeEnergy(origEnergy::getUsage, () -> MathUtils.clampToLong(Math.max(origEnergy.getConfigStorage() * 0.5, origEnergy.getUsage()) * tier.processes)));
+        add(new AttributeEnergy(origEnergy::getUsage, () -> origEnergy.getConfigStorage().multiply(0.5).max(origEnergy.getUsage()).multiply(tier.processes)));
     }
 
     public static class MMFactoryBuilder<FACTORY extends MMFactory<TILE>, TILE extends MMTileEntityFactory<?>, T extends MMMachineBuilder<FACTORY, TILE, T>>
-          extends BlockTileBuilder<FACTORY, TILE, T> {
+            extends BlockTileBuilder<FACTORY, TILE, T> {
 
         protected MMFactoryBuilder(FACTORY holder) {
             super(holder);
@@ -48,22 +47,18 @@ public class MMFactory<TILE extends MMTileEntityFactory<?>> extends MMMachine.MM
 
         @SuppressWarnings("unchecked")
         public static <TILE extends MMTileEntityFactory<?>> MMFactoryBuilder<MMFactory<TILE>, TILE, ?> createMMFactory(Supplier<?> tileEntityRegistrar, MMFactoryType type,
-                                                                                                                   FactoryTier tier) {
+                                                                                                                       FactoryTier tier) {
             // this is dirty but unfortunately necessary for things to play right
             MMFactoryBuilder<MMFactory<TILE>, TILE, ?> builder = new MMFactoryBuilder<>(new MMFactory<>((Supplier<TileEntityTypeRegistryObject<TILE>>) tileEntityRegistrar,
-                  () -> MMContainerTypes.MM_FACTORY, type.getBaseMachine(), tier));
+                    () -> MMContainerTypes.MM_FACTORY, type.getBaseMachine(), tier));
             //Note, we can't just return the builder here as then it gets all confused about object types, so we just
             // assign the value here, and then return the builder itself as it is the same object
             builder.withComputerSupport(tier, type.getRegistryNameComponentCapitalized() + "Factory");
             builder.withCustomShape(MMBlockShapes.getShape(tier, type));
-            builder.with(switch (type) {
-                case RECYCLING, CNC_STAMPING, CNC_LATHING, CNC_ROLLING_MILL -> AttributeSideConfig.ELECTRIC_MACHINE;
-                case PLANTING_STATION, REPLICATING -> AttributeSideConfig.ADVANCED_ELECTRIC_MACHINE;
-            });
             builder.replace(new AttributeParticleFX().addDense(ParticleTypes.SMOKE, 5, rand -> new Pos3D(
-                  rand.nextFloat() * 0.7F - 0.3F,
-                  rand.nextFloat() * 0.1F + 0.7F,
-                  rand.nextFloat() * 0.7F - 0.3F
+                    rand.nextFloat() * 0.7F - 0.3F,
+                    rand.nextFloat() * 0.1F + 0.7F,
+                    rand.nextFloat() * 0.7F - 0.3F
             )));
             return builder;
         }
