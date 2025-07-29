@@ -1,4 +1,4 @@
-// 1.21.1	2025-05-28T01:52:30.3924542	Recipes
+// 1.21.1	2025-07-29T10:46:34.200658	Recipes
 668d08ca0292b7e4dec48a9a265a5e6207e8d3fb data/mekmm/recipe/ambient_gas_collector.json
 aef0da9a0aaf6eb03afda113c8088ef323394e0e data/mekmm/recipe/cnc_lathe.json
 b777c8688e3bfb2304d412434a2770b3256cb9f8 data/mekmm/recipe/cnc_rolling_mill.json
@@ -150,6 +150,7 @@ b4d0491a37fac5479300bee800a6e0adbe7072de data/mekmm/recipe/factory/advanced/chem
 7d6bcd602d10a7c6482ce19d6cec0542a18850f7 data/mekmm/recipe/factory/advanced/crystallizing.json
 75712ef8497429cadca60e614d7633adede37973 data/mekmm/recipe/factory/advanced/dissolving.json
 1375e0276ba36947d7999182e910e6c501e01c71 data/mekmm/recipe/factory/advanced/lathing.json
+d17191cbd9f9db12f858a996f07204688d1c0f3e data/mekmm/recipe/factory/advanced/liquifying.json
 29a3d2dd670cb9054af887bec38ae07e04974491 data/mekmm/recipe/factory/advanced/oxidizing.json
 e98dcbd568eb6340cd906381e5829a5f465678b4 data/mekmm/recipe/factory/advanced/planting.json
 95f9554603aadf8c60363c7a5f81bbc44f98e448 data/mekmm/recipe/factory/advanced/pressurised_reacting.json
@@ -163,6 +164,7 @@ e506c6a4dd6c73703e23e3c22aa147b3b0b20173 data/mekmm/recipe/factory/basic/chemica
 942523314686bc0052d68fcb9447195ed2ebb2a1 data/mekmm/recipe/factory/basic/crystallizing.json
 17f71c1b475c861ec07a543ab60655413de1c8ea data/mekmm/recipe/factory/basic/dissolving.json
 322649ec96fc5982e73ea23da527eb2b31704b9e data/mekmm/recipe/factory/basic/lathing.json
+2508abf0cb7d8a0daca7b28e717a03d47abc724d data/mekmm/recipe/factory/basic/liquifying.json
 5aa8e375595debbf3ab29e35dd5c92091581c156 data/mekmm/recipe/factory/basic/oxidizing.json
 09d955fd5d35e31cfd29784d8ff3bfc7c21b28ae data/mekmm/recipe/factory/basic/planting.json
 78019e93ed931a90ae7448fa9afef0c8fa29bfff data/mekmm/recipe/factory/basic/pressurised_reacting.json
@@ -176,6 +178,7 @@ b55ab5f8e0574ea46e959c04bf9b2cec3c058ed8 data/mekmm/recipe/factory/basic/washing
 0e4c1564b9b059314628b2ccdea329aea61dfeea data/mekmm/recipe/factory/elite/crystallizing.json
 396512204dbea7c02c788751a2b26eba59e90b0d data/mekmm/recipe/factory/elite/dissolving.json
 f4df0da2d77ba0a75f93fa644ab6da8db5a657df data/mekmm/recipe/factory/elite/lathing.json
+95c422d70d1b442d4ac92b0cd7f0d280b6ece933 data/mekmm/recipe/factory/elite/liquifying.json
 8927e2fa9e8f78699fe5a1d14f9efd60a4c99af2 data/mekmm/recipe/factory/elite/oxidizing.json
 c6adcbab76aaf9d32b970b1ab29502c0efdd1b3f data/mekmm/recipe/factory/elite/planting.json
 ba0a01301b970e6021deaffbcb8a2c67619c47b8 data/mekmm/recipe/factory/elite/pressurised_reacting.json
@@ -189,6 +192,7 @@ cb94152ad8322d8e79d60fc96e33c6350f199c70 data/mekmm/recipe/factory/ultimate/chem
 124826dcc33ccfd6ae3ac1d0ac4f19526b7e31c2 data/mekmm/recipe/factory/ultimate/crystallizing.json
 3813d4b5d35215ecfb8f8d135da13e5e109bf748 data/mekmm/recipe/factory/ultimate/dissolving.json
 690d7bc202ee346d9ef66f67bc1e8c8b6ad85e89 data/mekmm/recipe/factory/ultimate/lathing.json
+52db02bb8823e80c8382865c282e99b918087046 data/mekmm/recipe/factory/ultimate/liquifying.json
 dd8376ae0a29af06ade2b694e6d83cfb8ab1d51d data/mekmm/recipe/factory/ultimate/oxidizing.json
 2a7477f3dd3b3d3e2580053febe8904744a05d03 data/mekmm/recipe/factory/ultimate/planting.json
 08efd18a41fa97889fcecd41520fff29e02a53f3 data/mekmm/recipe/factory/ultimate/pressurised_reacting.json
@@ -216,7 +220,7 @@ fe382e5be900993ea69fdce0b476e39fa4f17c8f data/mekmm/recipe/planting/flower/sunfl
 0a7d6673a1f8eb33de23ecd16d9fbe00767040f0 data/mekmm/recipe/planting/flower/torchflower.json
 9be6fdb1a907b8a30b26823ded7f0d158e030559 data/mekmm/recipe/planting/flower/white_tulip.json
 a3e5c6c995343e920cb548af140b65a948b10cba data/mekmm/recipe/planting/flower/wither_rose.json
-2da36de756bca75432b531377ab2fdf64f0d5bf7 data/mekmm/recipe/planting/sapling/acacia_sapling.json
+b5e5c9fa91fc061124e6280ac4857705be925d88 data/mekmm/recipe/planting/sapling/acacia_sapling.json
 68a66603154ce27ec67fa12792cc2a03dc29bab5 data/mekmm/recipe/planting/sapling/birch_sapling.json
 e7a94282a4434fa2e7715fc9e85abb3bda8d2864 data/mekmm/recipe/planting/sapling/cherry_sapling.json
 d3b1d9931f6f72dc06f71300e20395072a27d666 data/mekmm/recipe/planting/sapling/dark_oak_sapling.json

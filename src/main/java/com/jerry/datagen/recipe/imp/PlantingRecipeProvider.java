@@ -64,7 +64,7 @@ public class PlantingRecipeProvider implements ISubRecipeProvider {
                 IngredientCreatorAccess.item().from(Items.ACACIA_SAPLING),
                 IngredientCreatorAccess.chemicalStack().from(MMChemicals.NUTRIENT_SOLUTION.asStack(1)),
                 new ItemStack(Items.ACACIA_SAPLING),
-                new ItemStack(Items.OAK_LOG, 6),
+                new ItemStack(Items.ACACIA_LOG, 6),
                 true
         ).build(consumer, Mekmm.rl(basePath + "sapling/acacia_sapling"));
         //Mangrove
