@@ -71,6 +71,7 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
     public static final CachedRecipe.OperationTracker.RecipeError NOT_ENOUGH_CHEMICAL_INPUT_ERROR = CachedRecipe.OperationTracker.RecipeError.create();
     public static final CachedRecipe.OperationTracker.RecipeError NOT_ENOUGH_SPACE_ITEM_OUTPUT_ERROR = CachedRecipe.OperationTracker.RecipeError.create();
     public static final CachedRecipe.OperationTracker.RecipeError NOT_ENOUGH_SPACE_GAS_OUTPUT_ERROR = CachedRecipe.OperationTracker.RecipeError.create();
+    //单个槽位报错，例如输入槽和输出槽
     private static final List<CachedRecipe.OperationTracker.RecipeError> TRACKED_ERROR_TYPES = List.of(
             CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_ENERGY,
             NOT_ENOUGH_ITEM_INPUT_ERROR,
@@ -80,6 +81,7 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
             NOT_ENOUGH_SPACE_GAS_OUTPUT_ERROR,
             CachedRecipe.OperationTracker.RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT
     );
+    //GLOBAL对应要统一处理的错误例如这里的输出储罐，在监听时应该用GLOBAL声明的Error才能正常报错
     private static final Set<CachedRecipe.OperationTracker.RecipeError> GLOBAL_ERROR_TYPES = Set.of(
             CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_ENERGY,
             NOT_ENOUGH_FLUID_INPUT_ERROR,
@@ -159,10 +161,10 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
             //Note: As we are an item factory that has comparator's based on items we can just use the monitor as a listener directly
             AdvancedFactoryInputInventorySlot inputSlot = AdvancedFactoryInputInventorySlot.create(this, i, outputSlot, outputChemicalTank, recipeCacheLookupMonitors[i], getXPos(i), 13);
             int index = i;
-            builder.addSlot(inputSlot).tracksWarnings(slot -> slot.warning(WarningTracker.WarningType.NO_MATCHING_RECIPE, getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT, index)));
-            builder.addSlot(outputSlot).tracksWarnings(slot -> slot.warning(WarningTracker.WarningType.NO_SPACE_IN_OUTPUT, getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE, index)));
-            itemInputHandlers[i] = InputHelper.getInputHandler(inputSlot, CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT);
-            reactionOutputHandlers[i] = OutputHelper.getOutputHandler(outputSlot, CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE, outputChemicalTank, NOT_ENOUGH_SPACE_GAS_OUTPUT_ERROR);
+            builder.addSlot(inputSlot).tracksWarnings(slot -> slot.warning(WarningTracker.WarningType.NO_MATCHING_RECIPE, getWarningCheck(NOT_ENOUGH_ITEM_INPUT_ERROR, index)));
+            builder.addSlot(outputSlot).tracksWarnings(slot -> slot.warning(WarningTracker.WarningType.NO_SPACE_IN_OUTPUT, getWarningCheck(NOT_ENOUGH_SPACE_ITEM_OUTPUT_ERROR, index)));
+            itemInputHandlers[i] = InputHelper.getInputHandler(inputSlot, NOT_ENOUGH_ITEM_INPUT_ERROR);
+            reactionOutputHandlers[i] = OutputHelper.getOutputHandler(outputSlot, NOT_ENOUGH_SPACE_ITEM_OUTPUT_ERROR, outputChemicalTank, NOT_ENOUGH_SPACE_GAS_OUTPUT_ERROR);
             processInfoSlots[i] = new PRCProcessInfo(i, inputSlot, outputSlot);
         }
     }

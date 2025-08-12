@@ -69,6 +69,9 @@ public class AdvancedFactory<TILE extends TileEntityAdvancedFactoryBase<?>> exte
                 case PRESSURISED_REACTING -> AttributeSideConfig.create(TransmissionType.ITEM, TransmissionType.CHEMICAL, TransmissionType.FLUID, TransmissionType.ENERGY);
                 case LIQUIFYING -> AttributeSideConfig.create(TransmissionType.FLUID, TransmissionType.ITEM, TransmissionType.ENERGY);
             });
+            if (type == AdvancedFactoryType.CENTRIFUGING) {
+                builder.with(AttributeHasBounding.ABOVE_ONLY);
+            }
             builder.replace(new AttributeParticleFX().addDense(ParticleTypes.SMOKE, 5, rand -> new Pos3D(
                   rand.nextFloat() * 0.7F - 0.3F,
                   rand.nextFloat() * 0.1F + 0.7F,

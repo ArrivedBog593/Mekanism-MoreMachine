@@ -53,6 +53,7 @@ import java.util.function.ToIntBiFunction;
 public class TileEntityLiquifyingFactory extends TileEntityAdvancedFactoryBase<BasicItemStackToFluidOptionalItemRecipe> implements ISingleRecipeLookupHandler.ItemRecipeLookupHandler<BasicItemStackToFluidOptionalItemRecipe> {
 
     public static final CachedRecipe.OperationTracker.RecipeError NOT_ENOUGH_SPACE_ITEM_OUTPUT_ERROR = CachedRecipe.OperationTracker.RecipeError.create();
+    //单个槽位报错，例如输入槽和输出槽
     private static final List<CachedRecipe.OperationTracker.RecipeError> TRACKED_ERROR_TYPES = List.of(
             CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_ENERGY,
             CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT,
@@ -60,10 +61,10 @@ public class TileEntityLiquifyingFactory extends TileEntityAdvancedFactoryBase<B
             NOT_ENOUGH_SPACE_ITEM_OUTPUT_ERROR,
             CachedRecipe.OperationTracker.RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT
     );
+    //GLOBAL对应要统一处理的错误例如这里的输出储罐，在监听时应该用GLOBAL声明的Error才能正常报错
     private static final Set<CachedRecipe.OperationTracker.RecipeError> GLOBAL_ERROR_TYPES = Set.of(
             CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_ENERGY,
-            CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE,
-            NOT_ENOUGH_SPACE_ITEM_OUTPUT_ERROR
+            CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE
     );
 
     private NLProcessInfo[] processInfoSlots;
@@ -121,7 +122,7 @@ public class TileEntityLiquifyingFactory extends TileEntityAdvancedFactoryBase<B
             AdvancedFactoryInputInventorySlot inputSlot = AdvancedFactoryInputInventorySlot.create(this, i, outputSlot, fluidTank, recipeCacheLookupMonitors[i], getXPos(i), 13);
             int index = i;
             builder.addSlot(inputSlot).tracksWarnings(slot -> slot.warning(WarningTracker.WarningType.NO_MATCHING_RECIPE, getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT, index)));
-            builder.addSlot(outputSlot).tracksWarnings(slot -> slot.warning(WarningTracker.WarningType.NO_SPACE_IN_OUTPUT, getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE, index)));
+            builder.addSlot(outputSlot).tracksWarnings(slot -> slot.warning(WarningTracker.WarningType.NO_SPACE_IN_OUTPUT, getWarningCheck(NOT_ENOUGH_SPACE_ITEM_OUTPUT_ERROR, index)));
             itemInputHandlers[i] = InputHelper.getInputHandler(inputSlot, CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT);
             liquifiesOutputHandler[i] = OutputHelper.getOutputHandler(fluidTank, CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE, outputSlot, NOT_ENOUGH_SPACE_ITEM_OUTPUT_ERROR);
             processInfoSlots[i] = new NLProcessInfo(i, inputSlot, outputSlot);

@@ -11,14 +11,17 @@
     "C": {
       "tag": "c:circuits/ultimate"
     },
+    "S": {
+      "tag": "c:chests"
+    },
     "X": {
       "item": "mekanism:steel_casing"
     }
   },
   "pattern": [
-    "ACA",
-    "#X#",
-    "ACA"
+    "A#A",
+    "CXC",
+    "ASA"
   ],
   "result": {
     "count": 1,

@@ -47,7 +47,7 @@ public abstract class PlantingRecipe extends ItemStackChemicalToObjectRecipe<Pla
         public PlantingStationRecipeOutput {
             Objects.requireNonNull(first, "First output cannot be null.");
             if (first.isEmpty()) {
-                throw new IllegalArgumentException("Main output cannot be null");
+                throw new IllegalArgumentException("First output cannot be null");
             }
         }
     }

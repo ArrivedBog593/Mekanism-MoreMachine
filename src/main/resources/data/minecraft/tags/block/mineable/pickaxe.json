@@ -60,6 +60,10 @@
     "mekmm:basic_centrifuging_factory",
     "mekmm:advanced_centrifuging_factory",
     "mekmm:elite_centrifuging_factory",
-    "mekmm:ultimate_centrifuging_factory"
+    "mekmm:ultimate_centrifuging_factory",
+    "mekmm:basic_liquifying_factory",
+    "mekmm:advanced_liquifying_factory",
+    "mekmm:elite_liquifying_factory",
+    "mekmm:ultimate_liquifying_factory"
   ]
 }

@@ -54,6 +54,8 @@ public class AFCatalystRegistryHelper {
                     registry.addRecipeCatalyst(AFBlocks.getAdvancedFactory(tier, AdvancedFactoryType.PRESSURISED_REACTING), recipeType);
                 } else if (workstation == MekanismBlocks.ISOTOPIC_CENTRIFUGE) {
                     registry.addRecipeCatalyst(AFBlocks.getAdvancedFactory(tier, AdvancedFactoryType.CENTRIFUGING), recipeType);
+                } else if (workstation == MekanismBlocks.NUTRITIONAL_LIQUIFIER) {
+                    registry.addRecipeCatalyst(AFBlocks.getAdvancedFactory(tier, AdvancedFactoryType.LIQUIFYING), recipeType);
                 }
             }
         }

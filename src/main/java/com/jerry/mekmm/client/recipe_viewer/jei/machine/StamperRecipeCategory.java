@@ -17,6 +17,7 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import org.jetbrains.annotations.NotNull;
 
+//虽然可以直接使用融合机的RecipeCategory，但复制一份应该更好
 public class StamperRecipeCategory extends HolderRecipeCategory<StamperRecipe> {
 
     private final GuiSlot input;

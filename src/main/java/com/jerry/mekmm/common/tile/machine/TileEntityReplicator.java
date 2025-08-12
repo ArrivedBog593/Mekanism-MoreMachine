@@ -68,7 +68,7 @@ public class TileEntityReplicator extends TileEntityProgressMachine<MMBasicItemS
             CachedRecipe.OperationTracker.RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT
     );
 
-    private static final int BASE_TICKS_REQUIRED = 10 * SharedConstants.TICKS_PER_SECOND;
+    public static final int BASE_TICKS_REQUIRED = 10 * SharedConstants.TICKS_PER_SECOND;
     public static final long MAX_GAS = 10 * FluidType.BUCKET_VOLUME;
 
     public static HashMap<String, Integer> customRecipeMap = ValidatorUtils.getRecipeFromConfig(MMConfig.general.itemReplicatorRecipe.get());

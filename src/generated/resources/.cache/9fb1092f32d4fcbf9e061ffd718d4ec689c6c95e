@@ -1,5 +1,6 @@
-// 1.21.1	2025-07-29T10:46:34.200658	Recipes
+// 1.21.1	2025-08-12T18:54:29.9126242	Recipes
 668d08ca0292b7e4dec48a9a265a5e6207e8d3fb data/mekmm/recipe/ambient_gas_collector.json
+bd9805149f56d2638d69a40e4aa278ca7b7f1857 data/mekmm/recipe/chemical_replicator.json
 aef0da9a0aaf6eb03afda113c8088ef323394e0e data/mekmm/recipe/cnc_lathe.json
 b777c8688e3bfb2304d412434a2770b3256cb9f8 data/mekmm/recipe/cnc_rolling_mill.json
 67efb9265613eba708956e16f13ab605c9bc8795 data/mekmm/recipe/cnc_stamper.json
@@ -201,6 +202,7 @@ df6849384d75905f9ef38ea55338e8fcc3e6d049 data/mekmm/recipe/factory/ultimate/repl
 d0ffb086adc6d0f944aafc9f700c989b09b548fa data/mekmm/recipe/factory/ultimate/rolling_mill.json
 354b16bb65f066793c4337e3faf23bb16aaafce8 data/mekmm/recipe/factory/ultimate/stamping.json
 47d15d9bd89f40d6c596c0f96da8a903a33e5ccc data/mekmm/recipe/factory/ultimate/washing.json
+a2b67b300577b6c122f083799ed303aaaf0f6df6 data/mekmm/recipe/fluid_replicator.json
 95e23920045100c7946b159748ccda5ae3558268 data/mekmm/recipe/planting/flower/allium.json
 3e7f1e76ad267abf85baac5c87ca103e7d73ed44 data/mekmm/recipe/planting/flower/azure_bluet.json
 b09504dae699aad2f6c8ada8636fea6a19972702 data/mekmm/recipe/planting/flower/blue_orchid.json
@@ -230,4 +232,4 @@ f8b57b11e38d2c16cc54f495d92c17a06ecc85c4 data/mekmm/recipe/planting/sapling/oak_
 762912ac082b24ab9431c82450c81c8a1d1b5543 data/mekmm/recipe/planting/sapling/spruce_sapling.json
 0f773de49f0a16401c9e35571b682735252eaf74 data/mekmm/recipe/planting_station.json
 0316db98e8ebfb80bd9ab567e6dba0cad96fcf79 data/mekmm/recipe/recycler.json
-006ffa937089225a395d4ed07f23292c174f7074 data/mekmm/recipe/replicator.json
+8c87b109aa0ccf21114a312492f1044af88cc976 data/mekmm/recipe/replicator.json

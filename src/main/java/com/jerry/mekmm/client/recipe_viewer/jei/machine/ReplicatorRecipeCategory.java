@@ -55,7 +55,7 @@ public class ReplicatorRecipeCategory extends BaseRecipeCategory<MMBasicItemStac
         GaugeType type1 = GaugeType.STANDARD.with(DataType.INPUT);
         inputGauge = addElement(GuiChemicalGauge.getDummy(type1, this, 7, 4));
         inputSlot = addSlot(SlotType.INPUT, 29, 32);
-        outputSlot = addSlot(SlotType.INPUT, 131, 32);
+        outputSlot = addSlot(SlotType.OUTPUT, 131, 32);
         extra = addSlot(SlotType.EXTRA, 8, 65).with(SlotOverlay.MINUS);
         addSlot(SlotType.POWER, 152, 65).with(SlotOverlay.POWER);
         addSimpleProgress(ProgressType.LARGE_RIGHT, 64, 36);

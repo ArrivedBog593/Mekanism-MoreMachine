@@ -17,13 +17,17 @@ public class MMBlockShapes {
         return Block.box(minX, minY, minZ, maxX, maxY, maxZ);
     }
 
+    public static final VoxelShape[] FULL_BLOCK_SHAPE = new VoxelShape[EnumUtils.HORIZONTAL_DIRECTIONS.length];
     //Factories
     public static final VoxelShape[] RECYCLER_FACTORY = new VoxelShape[EnumUtils.HORIZONTAL_DIRECTIONS.length];
-
     //Doll
     public static final VoxelShape[] AUTHOR_DOLL = new VoxelShape[EnumUtils.HORIZONTAL_DIRECTIONS.length];
 
     static {
+        VoxelShapeUtils.setShape(VoxelShapeUtils.combine(
+                box(0, 0, 0, 16, 16, 16)
+        ), FULL_BLOCK_SHAPE);
+
         VoxelShapeUtils.setShape(VoxelShapeUtils.combine(
                 box(0, 0, 0, 16, 16, 4), // front_panel
                 box(4, 4, 14, 12, 12, 16), // port
@@ -63,7 +67,7 @@ public class MMBlockShapes {
             case CRYSTALLIZING -> BlockShapes.CHEMICAL_CRYSTALLIZER;
             case PRESSURISED_REACTING -> BlockShapes.PRESSURIZED_REACTION_CHAMBER;
             case CENTRIFUGING -> BlockShapes.ISOTOPIC_CENTRIFUGE;
-            case LIQUIFYING -> BlockShapes.ANTIPROTONIC_NUCLEOSYNTHESIZER;
+            case LIQUIFYING -> FULL_BLOCK_SHAPE;
         };
     }
 }

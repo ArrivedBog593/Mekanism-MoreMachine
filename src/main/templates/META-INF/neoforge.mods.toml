@@ -11,7 +11,7 @@ license = "${mod_license}"
     displayURL= "https://www.curseforge.com/members/lost_myself8/projects"
     logoFile= "logo.png"
     # A text field displayed in the mod UI
-    #credits="" #optional
+    credits="Thank you to all those who have made any contributions to this mod" #optional
     # A text field displayed in the mod UI
     authors = "${mod_authors}" #optional
     # The description text for the mod (multi line!) (#mandatory)
