@@ -98,7 +98,7 @@ public class TileEntityLiquifyingFactory extends TileEntityAdvancedFactoryBase<B
     @Override
     protected @Nullable IFluidTankHolder getInitialFluidTanks(IContentsListener listener) {
         FluidTankHelper builder = FluidTankHelper.forSideWithConfig(this);
-        builder.addTank(fluidTank = BasicFluidTank.output(MAX_FLUID, markAllMonitorsChanged(listener)));
+        builder.addTank(fluidTank = BasicFluidTank.output(MAX_FLUID * tier.processes, markAllMonitorsChanged(listener)));
         return builder.build();
     }
 
