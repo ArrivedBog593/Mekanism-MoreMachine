@@ -1,17 +1,17 @@
-// 1.21.1	2025-08-12T18:54:29.9126242	Recipes
+// 1.21.1	2025-08-13T13:10:39.5739186	Recipes
 668d08ca0292b7e4dec48a9a265a5e6207e8d3fb data/mekmm/recipe/ambient_gas_collector.json
 bd9805149f56d2638d69a40e4aa278ca7b7f1857 data/mekmm/recipe/chemical_replicator.json
 aef0da9a0aaf6eb03afda113c8088ef323394e0e data/mekmm/recipe/cnc_lathe.json
 b777c8688e3bfb2304d412434a2770b3256cb9f8 data/mekmm/recipe/cnc_rolling_mill.json
 67efb9265613eba708956e16f13ab605c9bc8795 data/mekmm/recipe/cnc_stamper.json
 60f3669c991e6c1fb2e23e4ae7e1c23dc4f298b9 data/mekmm/recipe/compat/immersiveengineering/planting/hemp_seed.json
-803f222877028ede5511a55f9aded90193eb0fd1 data/mekmm/recipe/compat/immersiveengineering/stamper/copper_plate.json
-3a2b8b27017548c190755048c0115c98d3e463a7 data/mekmm/recipe/compat/immersiveengineering/stamper/copper_wire.json
-f71fc7954a5fc3011bf1f4ad73bcc4435f39dd2a data/mekmm/recipe/compat/immersiveengineering/stamper/empty_casing.json
-536ac34873b8feb7f56c98cf7fc96d5ce27ddd80 data/mekmm/recipe/compat/immersiveengineering/stamper/gold_plate.json
-8595521928c219be6ed8035459a7ac238429e63f data/mekmm/recipe/compat/immersiveengineering/stamper/iron_plate.json
-579fde789c3117f6b6657cc1d97070d16c24d5c9 data/mekmm/recipe/compat/immersiveengineering/stamper/iron_stick.json
-ecff4ab813e59eb543a6d5b1cb4990f796654c79 data/mekmm/recipe/compat/immersiveengineering/stamper/netherite_stick.json
+e8c36f2fed8c5cee413810858252371d990fbd89 data/mekmm/recipe/compat/immersiveengineering/stamper/copper_plate.json
+eabce324f3bbce195a1744df148c4003049bfd26 data/mekmm/recipe/compat/immersiveengineering/stamper/copper_wire.json
+0bc6d3803c99b1ae1e70b9de8387344de9714a81 data/mekmm/recipe/compat/immersiveengineering/stamper/empty_casing.json
+fbe4a1beac34b3091d09878f63d3e17debf8974c data/mekmm/recipe/compat/immersiveengineering/stamper/gold_plate.json
+6efa9788540b757a0a297c15ea3f7040158bd886 data/mekmm/recipe/compat/immersiveengineering/stamper/iron_plate.json
+a428bf56883e9f018664ff1f515faf2e85a1d42b data/mekmm/recipe/compat/immersiveengineering/stamper/iron_stick.json
+c27fa62c08eecf87dc0055f4f7bb91c07a7491a3 data/mekmm/recipe/compat/immersiveengineering/stamper/netherite_stick.json
 97b8dcac2062f26f4dbafc8488374257d18c574c data/mekmm/recipe/compat/mysticalagriculture/air.json
 3a1216be8024aea33e646c755ed16446155358e2 data/mekmm/recipe/compat/mysticalagriculture/aluminum.json
 5457b44064d5749ee6d592fc5bed4d7ec49e130d data/mekmm/recipe/compat/mysticalagriculture/amethyst.json

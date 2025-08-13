@@ -2,6 +2,7 @@ package com.jerry.mekmm.client.recipe_viewer.emi.recipe;
 
 import com.jerry.mekmm.api.recipes.RecyclerRecipe;
 import com.jerry.mekmm.common.tile.machine.TileEntityRecycler;
+import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
 import mekanism.client.gui.element.GuiUpArrow;
 import mekanism.client.gui.element.bar.GuiVerticalPowerBar;
@@ -11,14 +12,23 @@ import mekanism.client.recipe_viewer.RecipeViewerUtils;
 import mekanism.client.recipe_viewer.emi.MekanismEmiRecipeCategory;
 import mekanism.client.recipe_viewer.emi.recipe.MekanismEmiHolderRecipe;
 import mekanism.common.inventory.container.slot.SlotOverlay;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RecyclerEmiRecipe extends MekanismEmiHolderRecipe<RecyclerRecipe> {
 
     public RecyclerEmiRecipe(MekanismEmiRecipeCategory category, RecipeHolder<RecyclerRecipe> recipeHolder) {
         super(category, recipeHolder);
         addInputDefinition(recipe.getInput());
-        addItemOutputDefinition(recipe.getChanceOutputDefinition());
+        List<ItemStack> chanceOutputDefinition = recipe.getChanceOutputDefinition();
+        List<EmiStack> list = new ArrayList<>(chanceOutputDefinition.size());
+        for (ItemStack itemStack : chanceOutputDefinition) {
+            list.add(EmiStack.of(itemStack).setChance((float) recipe.getOutputChance()));
+        }
+        addOutputDefinition(list);
     }
 
     @Override

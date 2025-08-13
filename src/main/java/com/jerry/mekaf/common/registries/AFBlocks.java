@@ -80,7 +80,7 @@ public class AFBlocks {
                 case OXIDIZING ->
                         holder.addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> AFChemicalTanksBuilder.builder()
                                 //化学品输出（多个）
-                                .addOutputFactoryTank(tier.processes, TileEntityAdvancedFactoryBase.MAX_CHEMICAL * tier.processes)
+                                .addOutputFactoryTank(processes, TileEntityAdvancedFactoryBase.MAX_CHEMICAL * tier.processes)
                                 .build()
                         ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> AFItemSlotsBuilder.builder()
                                 //物品输入（多个）
@@ -92,9 +92,9 @@ public class AFBlocks {
                 case DISSOLVING ->
                         holder.addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> AFChemicalTanksBuilder.builder()
                                 //化学品输入
-                                .addBasic(TileEntityAdvancedFactoryBase.MAX_CHEMICAL * tier.processes, recipeChemicalInputPredicate)
+                                .addBasic(TileEntityAdvancedFactoryBase.MAX_CHEMICAL * processes, recipeChemicalInputPredicate)
                                 //化学品输出（多个）
-                                .addOutputFactoryTank(tier.processes, TileEntityAdvancedFactoryBase.MAX_CHEMICAL * tier.processes)
+                                .addOutputFactoryTank(processes, TileEntityAdvancedFactoryBase.MAX_CHEMICAL * processes)
                                 .build()
                         ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> AFItemSlotsBuilder.builder()
                                 .addInputFactorySlots(processes, recipeItemInputPredicate)
@@ -106,10 +106,10 @@ public class AFBlocks {
                 case CHEMICAL_INFUSING ->
                         holder.addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> AFChemicalTanksBuilder.builder()
                                 //Left
-                                .addInputFactoryTank(tier.processes, TileEntityAdvancedFactoryBase.MAX_CHEMICAL * tier.processes, recipeChemicalInputPredicate)
-                                .addOutputFactoryTank(tier.processes, TileEntityAdvancedFactoryBase.MAX_CHEMICAL * tier.processes)
+                                .addInputFactoryTank(processes, TileEntityAdvancedFactoryBase.MAX_CHEMICAL * processes, recipeChemicalInputPredicate)
+                                .addOutputFactoryTank(processes, TileEntityAdvancedFactoryBase.MAX_CHEMICAL * processes)
                                 //Right
-                                .addBasic(TileEntityAdvancedFactoryBase.MAX_CHEMICAL * tier.processes, recipeChemicalInputPredicate)
+                                .addBasic(TileEntityAdvancedFactoryBase.MAX_CHEMICAL * processes, recipeChemicalInputPredicate)
                                 .build()
                         ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
                                 //将右侧的储罐槽保留
@@ -120,11 +120,11 @@ public class AFBlocks {
                 //没问题
                 case WASHING -> holder
                         .addAttachmentOnlyContainers(ContainerType.FLUID, () -> FluidTanksBuilder.builder()
-                                .addBasic(TileEntityAdvancedFactoryBase.MAX_FLUID * tier.processes, MekanismRecipeType.WASHING, InputRecipeCache.FluidChemical::containsInputA)
+                                .addBasic(TileEntityAdvancedFactoryBase.MAX_FLUID * processes, MekanismRecipeType.WASHING, InputRecipeCache.FluidChemical::containsInputA)
                                 .build()
                         ).addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> AFChemicalTanksBuilder.builder()
-                                .addInputFactoryTank(tier.processes, TileEntityAdvancedFactoryBase.MAX_CHEMICAL * tier.processes, recipeChemicalInputPredicate)
-                                .addOutputFactoryTank(tier.processes, TileEntityAdvancedFactoryBase.MAX_CHEMICAL * tier.processes)
+                                .addInputFactoryTank(processes, TileEntityAdvancedFactoryBase.MAX_CHEMICAL * processes, recipeChemicalInputPredicate)
+                                .addOutputFactoryTank(processes, TileEntityAdvancedFactoryBase.MAX_CHEMICAL * processes)
                                 .build()
                         ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
                                 .addFluidFillSlot(0)
@@ -135,11 +135,11 @@ public class AFBlocks {
                 //使用工作台合成升级机器导致能量槽错位（mek原生bug）
                 case PRESSURISED_REACTING -> holder
                         .addAttachmentOnlyContainers(ContainerType.FLUID, () -> FluidTanksBuilder.builder()
-                                .addBasic(TileEntityAdvancedFactoryBase.MAX_FLUID * tier.processes, MekanismRecipeType.REACTION, InputRecipeCache.ItemFluidChemical::containsInputB)
+                                .addBasic(TileEntityAdvancedFactoryBase.MAX_FLUID * processes, MekanismRecipeType.REACTION, InputRecipeCache.ItemFluidChemical::containsInputB)
                                 .build()
                         ).addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> AFChemicalTanksBuilder.builder()
-                                .addBasic(TileEntityAdvancedFactoryBase.MAX_CHEMICAL * tier.processes, recipeChemicalInputPredicate)
-                                .addBasic(TileEntityAdvancedFactoryBase.MAX_CHEMICAL * tier.processes)
+                                .addBasic(TileEntityAdvancedFactoryBase.MAX_CHEMICAL * processes, recipeChemicalInputPredicate)
+                                .addBasic(TileEntityAdvancedFactoryBase.MAX_CHEMICAL * processes)
                                 .build()
                         ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
                                 .addBasicFactorySlots(processes, recipeItemInputPredicate)
@@ -159,8 +159,8 @@ public class AFBlocks {
                 //没问题
                 case CENTRIFUGING -> holder
                         .addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> AFChemicalTanksBuilder.builder()
-                                .addInputFactoryTank(tier.processes, TileEntityAdvancedFactoryBase.MAX_CHEMICAL * tier.processes, recipeChemicalInputPredicate)
-                                .addOutputFactoryTank(tier.processes, TileEntityAdvancedFactoryBase.MAX_CHEMICAL * tier.processes)
+                                .addInputFactoryTank(processes, TileEntityAdvancedFactoryBase.MAX_CHEMICAL * processes, recipeChemicalInputPredicate)
+                                .addOutputFactoryTank(processes, TileEntityAdvancedFactoryBase.MAX_CHEMICAL * processes)
                                 .build()
                         ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
                                 .addEnergy()
@@ -168,10 +168,10 @@ public class AFBlocks {
                         );
                 case LIQUIFYING -> holder
                         .addAttachmentOnlyContainers(ContainerType.FLUID, () -> FluidTanksBuilder.builder()
-                                .addBasic(TileEntityLiquifyingFactory.MAX_FLUID * tier.processes)
+                                .addBasic(TileEntityLiquifyingFactory.MAX_FLUID * processes)
                                 .build()
                         ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
-                                .addBasicFactorySlots(tier.processes, recipeItemInputPredicate)
+                                .addBasicFactorySlots(processes, recipeItemInputPredicate)
                                 .addEnergy()
                                 .build()
                         );

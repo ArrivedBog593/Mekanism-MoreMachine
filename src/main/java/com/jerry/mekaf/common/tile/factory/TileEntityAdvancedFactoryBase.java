@@ -1,6 +1,7 @@
 package com.jerry.mekaf.common.tile.factory;
 
 import com.jerry.mekaf.common.block.attribute.AdvancedAttributeFactoryType;
+import com.jerry.mekaf.common.capabilities.energy.AdvancedFactoryEnergyContainer;
 import com.jerry.mekaf.common.content.blocktype.AdvancedFactoryType;
 import com.jerry.mekmm.common.util.MMUtils;
 import it.unimi.dsi.fastutil.ints.IntArraySet;
@@ -102,7 +103,8 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
     @NotNull
     protected final AdvancedFactoryType type;
 
-    protected MachineEnergyContainer<TileEntityAdvancedFactoryBase<?>> energyContainer;
+    //为了加压工厂而更改
+    protected AdvancedFactoryEnergyContainer energyContainer;
 
     @WrappingComputerMethod(wrapper = ComputerIInventorySlotWrapper.class, methodNames = "getEnergyItem", docPlaceholder = "energy slot")
     EnergyInventorySlot energySlot;
@@ -169,7 +171,7 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
     @Override
     protected IEnergyContainerHolder getInitialEnergyContainers(IContentsListener listener) {
         EnergyContainerHelper builder = EnergyContainerHelper.forSideWithConfig(this);
-        builder.addContainer(energyContainer = MachineEnergyContainer.input(this, () -> {
+        builder.addContainer(energyContainer = AdvancedFactoryEnergyContainer.input(this, () -> {
             listener.onContentsChanged();
             for (FactoryRecipeCacheLookupMonitor<RECIPE> cacheLookupMonitor : recipeCacheLookupMonitors) {
                 cacheLookupMonitor.unpause();
@@ -222,6 +224,10 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
 
     public AdvancedFactoryType getMMFactoryType() {
         return type;
+    }
+
+    public long getRecipeEnergyRequired() {
+        return 0;
     }
 
     @Override

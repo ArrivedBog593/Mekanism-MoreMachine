@@ -1,6 +1,7 @@
 package com.jerry.mekaf.common.tile.factory;
 
 import com.jerry.mekaf.common.inventory.slot.AdvancedFactoryInputInventorySlot;
+import com.jerry.mekaf.common.upgrade.NutritionLiquifyingUpgradeData;
 import mekanism.api.Action;
 import mekanism.api.IContentsListener;
 import mekanism.api.RelativeSide;
@@ -21,7 +22,6 @@ import mekanism.common.capabilities.holder.chemical.ChemicalTankHelper;
 import mekanism.common.capabilities.holder.fluid.FluidTankHelper;
 import mekanism.common.capabilities.holder.fluid.IFluidTankHolder;
 import mekanism.common.capabilities.holder.slot.InventorySlotHelper;
-import mekanism.common.inventory.slot.FluidInventorySlot;
 import mekanism.common.inventory.slot.OutputInventorySlot;
 import mekanism.common.inventory.warning.WarningTracker;
 import mekanism.common.lib.transmitter.TransmissionType;
@@ -31,10 +31,13 @@ import mekanism.common.recipe.lookup.ISingleRecipeLookupHandler;
 import mekanism.common.recipe.lookup.cache.InputRecipeCache;
 import mekanism.common.recipe.lookup.monitor.FactoryRecipeCacheLookupMonitor;
 import mekanism.common.registries.MekanismFluids;
+import mekanism.common.tile.component.ITileComponent;
 import mekanism.common.tile.component.TileComponentEjector;
+import mekanism.common.upgrade.IUpgradeData;
 import mekanism.common.util.MekanismUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -73,8 +76,6 @@ public class TileEntityLiquifyingFactory extends TileEntityAdvancedFactoryBase<B
 
     protected final List<IInventorySlot> inputItemSlots;
     protected final List<IInventorySlot> outputItemSlots;
-    FluidInventorySlot containerFillSlot;
-    OutputInventorySlot containerOutputSlot;
 
     public TileEntityLiquifyingFactory(Holder<Block> blockProvider, BlockPos pos, BlockState state) {
         super(blockProvider, pos, state, TRACKED_ERROR_TYPES, GLOBAL_ERROR_TYPES);
@@ -131,13 +132,11 @@ public class TileEntityLiquifyingFactory extends TileEntityAdvancedFactoryBase<B
 
     public static boolean isValidInputStatic(ItemStack stack) {
         FoodProperties food = stack.getFoodProperties(null);
-        //And only allow inserting foods that actually would provide paste
         return food != null && food.nutrition() > 0;
     }
 
     public boolean isValidInput(ItemStack stack) {
         FoodProperties food = stack.getFoodProperties(null);
-        //And only allow inserting foods that actually would provide paste
         return food != null && food.nutrition() > 0;
     }
 
@@ -173,7 +172,7 @@ public class TileEntityLiquifyingFactory extends TileEntityAdvancedFactoryBase<B
         return OneInputCachedRecipe.itemToFluidOptionalItem(recipe, recheckAllRecipeErrors[cacheIndex], itemInputHandlers[cacheIndex], liquifiesOutputHandler[cacheIndex])
                 .setErrorsChanged(errors -> errorTracker.onErrorsChanged(errors, cacheIndex))
                 .setCanHolderFunction(this::canFunction)
-                .setActive(this::setActive)
+                .setActive(active -> setActiveState(active, cacheIndex))
                 .setEnergyRequirements(energyContainer::getEnergyPerTick, energyContainer)
                 .setRequiredTicks(this::getTicksRequired)
                 .setOnFinish(this::markForSave)
@@ -187,7 +186,8 @@ public class TileEntityLiquifyingFactory extends TileEntityAdvancedFactoryBase<B
 
     @Contract("null, _ -> false")
     protected boolean isCachedRecipeValid(@Nullable CachedRecipe<BasicItemStackToFluidOptionalItemRecipe> cached, @NotNull ItemStack stack) {
-        return cached != null && cached.getRecipe().getInput().testType(stack);
+        //不能使用cached.getRecipe().getInput().testType(stack)，会导致卡合成
+        return cached != null && isValidInputStatic(stack);
     }
 
     @Nullable
@@ -224,6 +224,37 @@ public class TileEntityLiquifyingFactory extends TileEntityAdvancedFactoryBase<B
 
     public boolean isItemValidForSlot(@NotNull ItemStack stack) {
         return true;
+    }
+
+    @Override
+    public void parseUpgradeData(HolderLookup.Provider provider, @NotNull IUpgradeData upgradeData) {
+        if (upgradeData instanceof NutritionLiquifyingUpgradeData data) {
+            redstone = data.redstone;
+            setControlType(data.controlType);
+            getEnergyContainer().setEnergy(data.energyContainer.getEnergy());
+            sorting = data.sorting;
+            energySlot.deserializeNBT(provider, data.energySlot.serializeNBT(provider));
+            System.arraycopy(data.progress, 0, progress, 0, data.progress.length);
+            for (int i = 0; i < data.inputSlots.size(); i++) {
+                //Copy the stack using NBT so that if it is not actually valid due to a reload we don't crash
+                inputItemSlots.get(i).deserializeNBT(provider, data.inputSlots.get(i).serializeNBT(provider));
+            }
+            for (int i = 0; i < data.outputSlots.size(); i++) {
+                outputItemSlots.get(i).setStack(data.outputSlots.get(i).getStack());
+            }
+            for (ITileComponent component : getComponents()) {
+                component.read(data.components, provider);
+            }
+            fluidTank.deserializeNBT(provider, data.fluidTank.serializeNBT(provider));
+        } else {
+            super.parseUpgradeData(provider, upgradeData);
+        }
+    }
+
+    @Override
+    public @Nullable NutritionLiquifyingUpgradeData getUpgradeData(HolderLookup.Provider provider) {
+        return new NutritionLiquifyingUpgradeData(provider, redstone, getControlType(), getEnergyContainer(), progress,
+                energySlot, inputItemSlots, outputItemSlots, fluidTank, isSorting(), getComponents());
     }
 
     @Override

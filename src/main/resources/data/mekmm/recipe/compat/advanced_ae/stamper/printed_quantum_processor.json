@@ -6,7 +6,7 @@
     }
   ],
   "type": "mekmm:stamper",
-  "main_input": {
+  "input": {
     "count": 1,
     "item": "advanced_ae:quantum_alloy"
   },

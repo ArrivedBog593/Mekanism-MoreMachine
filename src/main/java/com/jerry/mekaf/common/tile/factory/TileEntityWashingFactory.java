@@ -18,6 +18,7 @@ import mekanism.common.capabilities.fluid.BasicFluidTank;
 import mekanism.common.capabilities.holder.fluid.FluidTankHelper;
 import mekanism.common.capabilities.holder.fluid.IFluidTankHolder;
 import mekanism.common.capabilities.holder.slot.InventorySlotHelper;
+import mekanism.common.inventory.container.slot.SlotOverlay;
 import mekanism.common.inventory.slot.FluidInventorySlot;
 import mekanism.common.inventory.slot.OutputInventorySlot;
 import mekanism.common.lib.transmitter.TransmissionType;
@@ -74,8 +75,8 @@ public class TileEntityWashingFactory extends TileEntityChemicalToChemicalAdvanc
         super(blockProvider, pos, state, TRACKED_ERROR_TYPES, GLOBAL_ERROR_TYPES);
         ConfigInfo itemConfig = configComponent.getConfig(TransmissionType.ITEM);
         if (itemConfig != null) {
-            itemConfig.addSlotInfo(DataType.INPUT, new InventorySlotInfo(true, true, fluidSlot));
-            itemConfig.addSlotInfo(DataType.OUTPUT, new InventorySlotInfo(true, true, fluidOutputSlot));
+            itemConfig.addSlotInfo(DataType.INPUT, new InventorySlotInfo(true, false, fluidSlot));
+            itemConfig.addSlotInfo(DataType.OUTPUT, new InventorySlotInfo(false, true, fluidOutputSlot));
             itemConfig.addSlotInfo(DataType.INPUT_OUTPUT, new InventorySlotInfo(true, true, fluidSlot, fluidOutputSlot));
         }
         ConfigInfo config = configComponent.getConfig(TransmissionType.CHEMICAL);
@@ -106,6 +107,7 @@ public class TileEntityWashingFactory extends TileEntityChemicalToChemicalAdvanc
     protected void addSlots(InventorySlotHelper builder, IContentsListener listener, IContentsListener updateSortingListener) {
         builder.addSlot(fluidSlot = FluidInventorySlot.fill(fluidTank, listener, tier == FactoryTier.ULTIMATE ? 214 : 180, 71));
         builder.addSlot(fluidOutputSlot = OutputInventorySlot.at(listener, tier == FactoryTier.ULTIMATE ? 214 : 180, 102));
+        fluidSlot.setSlotOverlay(SlotOverlay.MINUS);
     }
 
     public BasicFluidTank getFluidTankBar() {

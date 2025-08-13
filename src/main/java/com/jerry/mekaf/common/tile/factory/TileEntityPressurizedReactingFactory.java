@@ -190,6 +190,7 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
         energyContainer.updateEnergyPerTick();
     }
 
+    @Override
     public long getRecipeEnergyRequired() {
         return recipeEnergyRequired;
     }
