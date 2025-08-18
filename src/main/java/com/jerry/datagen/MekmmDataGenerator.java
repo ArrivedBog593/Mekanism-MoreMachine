@@ -35,7 +35,7 @@ import java.util.function.Function;
 /**
  * 来自Mekanism的仓库，删去了大部分这个模组不需要的模块，如果需要参考还请参考Mekanism的仓库
  */
-@EventBusSubscriber(modid = Mekmm.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = Mekmm.MOD_ID)
 public class MekmmDataGenerator {
 
     @SuppressWarnings("UnstableApiUsage")

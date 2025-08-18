@@ -333,7 +333,7 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
         if (!isRemote() && IRadiationManager.INSTANCE.isRadiationEnabled() && shouldDumpRadiation()) {
             //If we are on a server and radiation is enabled dump all gas tanks with radioactive materials
             // Note: we handle clearing radioactive contents later in drop calculation due to when things are written to NBT
-            IRadiationManager.INSTANCE.dumpRadiation(getTileGlobalPos(), List.of(inputChemicalTank), false);
+            IRadiationManager.INSTANCE.dumpRadiation(getWorldNN(), worldPosition, List.of(inputChemicalTank), false);
         }
         inputChemicalTank.setEmpty();
     }
