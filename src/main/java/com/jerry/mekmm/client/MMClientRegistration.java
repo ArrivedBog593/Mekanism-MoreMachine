@@ -2,17 +2,31 @@ package com.jerry.mekmm.client;
 
 import com.jerry.mekaf.client.gui.machine.GuiAdvancedFactory;
 import com.jerry.mekaf.common.registries.AFContainerTypes;
+import com.jerry.meklm.client.gui.machine.GuiLargeRotaryCondensentrator;
+import com.jerry.meklm.common.registries.LMBlocks;
+import com.jerry.meklm.common.registries.LMContainerTypes;
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.client.gui.machine.*;
 import com.jerry.mekmm.common.registries.MMContainerTypes;
 import mekanism.client.ClientRegistrationUtil;
+import mekanism.client.model.baked.ExtensionBakedModel;
+import mekanism.client.render.lib.QuadTransformation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+
+import static mekanism.client.ClientRegistration.addCustomModel;
 
 @EventBusSubscriber(modid = Mekmm.MOD_ID, value = Dist.CLIENT)
 public class MMClientRegistration {
+
+    @SubscribeEvent
+    public static void init(FMLClientSetupEvent event) {
+        addCustomModel(LMBlocks.LARGE_ROTARY_CONDENSENTRATOR, (orig, evt) -> new ExtensionBakedModel.TransformedBakedModel<Void>(orig,
+                QuadTransformation.translate(0, 1, 0)));
+    }
 
     @SubscribeEvent
     public static void registerScreens(RegisterMenuScreensEvent event) {
@@ -28,5 +42,8 @@ public class MMClientRegistration {
 
         ClientRegistrationUtil.registerScreen(event, MMContainerTypes.MM_FACTORY, GuiMMFactory::new);
         ClientRegistrationUtil.registerScreen(event, AFContainerTypes.ADVANCED_FACTORY, GuiAdvancedFactory::new);
+
+        //Large machine
+        ClientRegistrationUtil.registerScreen(event, LMContainerTypes.LARGE_ROTARY_CONDENSENTRATOR, GuiLargeRotaryCondensentrator::new);
     }
 }
