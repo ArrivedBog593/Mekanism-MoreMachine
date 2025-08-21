@@ -2,10 +2,10 @@ package com.jerry.meklm.common.registries;
 
 import com.jerry.meklm.common.content.blocktype.LMBlockShapes;
 import com.jerry.meklm.common.tile.TileEntityLargeRotaryCondensentrator;
+import com.jerry.mekmm.common.config.MoreMachineConfig;
 import mekanism.common.MekanismLang;
 import mekanism.common.block.attribute.AttributeCustomSelectionBox;
 import mekanism.common.block.attribute.AttributeHasBounding;
-import mekanism.common.config.MekanismConfig;
 import mekanism.common.content.blocktype.Machine;
 import mekanism.common.lib.transmitter.TransmissionType;
 import mekanism.common.registries.MekanismSounds;
@@ -24,7 +24,7 @@ public class LMBlockTypes {
             .createMachine(() -> LMTileEntityTypes.LARGE_ROTARY_CONDENSENTRATOR, MekanismLang.DESCRIPTION_ROTARY_CONDENSENTRATOR)
             .withGui(() -> LMContainerTypes.LARGE_ROTARY_CONDENSENTRATOR)
             .withSound(MekanismSounds.ROTARY_CONDENSENTRATOR)
-            .withEnergyConfig(MekanismConfig.usage.rotaryCondensentrator, MekanismConfig.storage.rotaryCondensentrator)
+            .withEnergyConfig(MoreMachineConfig.usage.largeRotaryCondensentrator, MoreMachineConfig.storage.largeRotaryCondensentrator)
             .withSideConfig(TransmissionType.CHEMICAL, TransmissionType.FLUID, TransmissionType.ITEM, TransmissionType.ENERGY)
             .withCustomShape(LMBlockShapes.LARGE_ROTARY_CONDENSENTRATOR)
             .with(AttributeCustomSelectionBox.JSON)

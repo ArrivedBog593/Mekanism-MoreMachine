@@ -3,7 +3,7 @@ package com.jerry.meklm.client.gui.machine;
 import com.jerry.meklm.common.tile.TileEntityLargeRotaryCondensentrator;
 import mekanism.api.recipes.cache.CachedRecipe.OperationTracker.RecipeError;
 import mekanism.api.text.ILangEntry;
-import mekanism.client.gui.GuiConfigurableTile;
+import mekanism.client.gui.GuiMekanismTile;
 import mekanism.client.gui.element.GuiDownArrow;
 import mekanism.client.gui.element.GuiElement;
 import mekanism.client.gui.element.bar.GuiHorizontalPowerBar;
@@ -27,7 +27,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import org.jetbrains.annotations.NotNull;
 
-public class GuiLargeRotaryCondensentrator extends GuiConfigurableTile<TileEntityLargeRotaryCondensentrator, MekanismTileContainer<TileEntityLargeRotaryCondensentrator>> {
+public class GuiLargeRotaryCondensentrator extends GuiMekanismTile<TileEntityLargeRotaryCondensentrator, MekanismTileContainer<TileEntityLargeRotaryCondensentrator>> {
 
     private GuiElement energyBar;
 

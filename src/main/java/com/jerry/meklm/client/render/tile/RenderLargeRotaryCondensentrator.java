@@ -16,6 +16,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+//没用
 @NothingNullByDefault
 public class RenderLargeRotaryCondensentrator extends MekanismTileEntityRenderer<TileEntityLargeRotaryCondensentrator> implements IWireFrameRenderer {
 

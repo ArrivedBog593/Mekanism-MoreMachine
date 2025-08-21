@@ -3,7 +3,7 @@ package com.jerry.mekmm.common.registries;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.jerry.mekmm.common.MMLang;
-import com.jerry.mekmm.common.config.MMConfig;
+import com.jerry.mekmm.common.config.MoreMachineConfig;
 import com.jerry.mekmm.common.content.blocktype.MMBlockShapes;
 import com.jerry.mekmm.common.content.blocktype.MMFactory;
 import com.jerry.mekmm.common.content.blocktype.MMFactoryType;
@@ -34,7 +34,7 @@ public class MMBlockTypes {
             .createMMFactoryMachine(() -> MMTileEntityTypes.RECYCLER, MMLang.DESCRIPTION_RECYCLER, MMFactoryType.RECYCLING)
             .withGui(() -> MMContainerTypes.RECYCLER)
             .withSound(MekanismSounds.PRECISION_SAWMILL)
-            .withEnergyConfig(MMConfig.usage.recycler, MMConfig.storage.recycler)
+            .withEnergyConfig(MoreMachineConfig.usage.recycler, MoreMachineConfig.storage.recycler)
             .with(AttributeSideConfig.ELECTRIC_MACHINE)
             .withComputerSupport("recycler")
             .build();
@@ -44,7 +44,7 @@ public class MMBlockTypes {
             .createMMFactoryMachine(() -> MMTileEntityTypes.PLANTING_STATION, MMLang.DESCRIPTION_PLANTING_STATION, MMFactoryType.PLANTING_STATION)
             .withGui(() -> MMContainerTypes.PLANTING_STATION)
             .withSound(MekanismSounds.ENRICHMENT_CHAMBER)
-            .withEnergyConfig(MMConfig.usage.plantingStation, MMConfig.storage.plantingStation)
+            .withEnergyConfig(MoreMachineConfig.usage.plantingStation, MoreMachineConfig.storage.plantingStation)
             .with(AttributeUpgradeSupport.DEFAULT_ADVANCED_MACHINE_UPGRADES)
             .with(AttributeSideConfig.ADVANCED_ELECTRIC_MACHINE)
             .withComputerSupport("plantingStation")
@@ -55,7 +55,7 @@ public class MMBlockTypes {
             .createMMFactoryMachine(() -> MMTileEntityTypes.CNC_STAMPER, MMLang.DESCRIPTION_CNC_STAMPER, MMFactoryType.CNC_STAMPING)
             .withGui(() -> MMContainerTypes.CNC_STAMPER)
             .withSound(MekanismSounds.CRUSHER)
-            .withEnergyConfig(MMConfig.usage.cnc_stamper, MMConfig.storage.cnc_stamper)
+            .withEnergyConfig(MoreMachineConfig.usage.cnc_stamper, MoreMachineConfig.storage.cnc_stamper)
             .with(AttributeSideConfig.ELECTRIC_MACHINE)
             .withComputerSupport("cnc_stamper")
             .build();
@@ -65,7 +65,7 @@ public class MMBlockTypes {
             .createMMFactoryMachine(() -> MMTileEntityTypes.CNC_LATHE, MMLang.DESCRIPTION_CNC_LATHE, MMFactoryType.CNC_LATHING)
             .withGui(() -> MMContainerTypes.CNC_LATHE)
             .withSound(MekanismSounds.OSMIUM_COMPRESSOR)
-            .withEnergyConfig(MMConfig.usage.cnc_lathe, MMConfig.storage.cnc_lathe)
+            .withEnergyConfig(MoreMachineConfig.usage.cnc_lathe, MoreMachineConfig.storage.cnc_lathe)
             .with(AttributeSideConfig.ELECTRIC_MACHINE)
             .withComputerSupport("cnc_lathe")
             .build();
@@ -75,7 +75,7 @@ public class MMBlockTypes {
             .createMMFactoryMachine(() -> MMTileEntityTypes.CNC_ROLLING_MILL, MMLang.DESCRIPTION_CNC_ROLLING_MILL, MMFactoryType.CNC_ROLLING_MILL)
             .withGui(() -> MMContainerTypes.CNC_ROLLING_MILL)
             .withSound(MekanismSounds.COMBINER)
-            .withEnergyConfig(MMConfig.usage.cnc_rollingMill, MMConfig.storage.cnc_rollingMill)
+            .withEnergyConfig(MoreMachineConfig.usage.cnc_rollingMill, MoreMachineConfig.storage.cnc_rollingMill)
             .with(AttributeSideConfig.ELECTRIC_MACHINE)
             .withComputerSupport("cnc_rolling_mill")
             .build();
@@ -84,7 +84,7 @@ public class MMBlockTypes {
     public static final MMMachine.MMFactoryMachine<TileEntityReplicator> REPLICATOR = MMMachine.MMMachineBuilder
             .createMMFactoryMachine(() -> MMTileEntityTypes.REPLICATOR, MMLang.DESCRIPTION_REPLICATOR, MMFactoryType.REPLICATING)
             .withGui(() -> MMContainerTypes.REPLICATOR)
-            .withEnergyConfig(MMConfig.usage.itemReplicator, MMConfig.storage.itemReplicator)
+            .withEnergyConfig(MoreMachineConfig.usage.itemReplicator, MoreMachineConfig.storage.itemReplicator)
             .withSound(MekanismSounds.PURIFICATION_CHAMBER)
             .with(AttributeSideConfig.ADVANCED_ELECTRIC_MACHINE)
             .withComputerSupport("itemReplicator")
@@ -93,7 +93,7 @@ public class MMBlockTypes {
     public static final MMMachine.MMFactoryMachine<TileEntityFluidReplicator> FLUID_REPLICATOR = MMMachine.MMMachineBuilder
             .createMMFactoryMachine(() -> MMTileEntityTypes.FLUID_REPLICATOR, MMLang.DESCRIPTION_FLUID_REPLICATOR, MMFactoryType.REPLICATING)
             .withGui(() -> MMContainerTypes.FLUID_REPLICATOR)
-            .withEnergyConfig(MMConfig.usage.fluidReplicator, MMConfig.storage.fluidReplicator)
+            .withEnergyConfig(MoreMachineConfig.usage.fluidReplicator, MoreMachineConfig.storage.fluidReplicator)
             .withSound(MekanismSounds.PURIFICATION_CHAMBER)
             .withSideConfig(TransmissionType.FLUID, TransmissionType.CHEMICAL, TransmissionType.ITEM, TransmissionType.ENERGY)
             .withComputerSupport("fluidReplicator")
@@ -102,7 +102,7 @@ public class MMBlockTypes {
     public static final MMMachine.MMFactoryMachine<TileEntityChemicalReplicator> CHEMICAL_REPLICATOR = MMMachine.MMMachineBuilder
             .createMMFactoryMachine(() -> MMTileEntityTypes.CHEMICAL_REPLICATOR, MMLang.DESCRIPTION_CHEMicAL_REPLICATOR, MMFactoryType.REPLICATING)
             .withGui(() -> MMContainerTypes.CHEMIcAL_REPLICATOR)
-            .withEnergyConfig(MMConfig.usage.chemicalReplicator, MMConfig.storage.chemicalReplicator)
+            .withEnergyConfig(MoreMachineConfig.usage.chemicalReplicator, MoreMachineConfig.storage.chemicalReplicator)
             .withSound(MekanismSounds.PURIFICATION_CHAMBER)
             .withSideConfig(TransmissionType.CHEMICAL, TransmissionType.ITEM, TransmissionType.ENERGY)
             .withComputerSupport("chemicalReplicator")
@@ -120,7 +120,7 @@ public class MMBlockTypes {
     public static final Machine<TileEntityAmbientGasCollector> AMBIENT_GAS_COLLECTOR = Machine.MachineBuilder
             .createMachine(() -> MMTileEntityTypes.AMBIENT_GAS_COLLECTOR, MMLang.DESCRIPTION_AMBIENT_GAS_COLLECTOR)
             .withGui(() -> MMContainerTypes.AMBIENT_GAS_COLLECTOR)
-            .withEnergyConfig(MMConfig.usage.ambientGasCollector, MMConfig.storage.ambientGasCollector)
+            .withEnergyConfig(MoreMachineConfig.usage.ambientGasCollector, MoreMachineConfig.storage.ambientGasCollector)
             .withSupportedUpgrades(Upgrade.SPEED, Upgrade.ENERGY)
             .withCustomShape(BlockShapes.ELECTRIC_PUMP)
             .withComputerSupport("ambientGasCollector")

@@ -6,7 +6,7 @@ import com.jerry.mekaf.common.registries.AFTileEntityTypes;
 import com.jerry.meklm.common.registries.LMBlocks;
 import com.jerry.meklm.common.registries.LMContainerTypes;
 import com.jerry.meklm.common.registries.LMTileEntityTypes;
-import com.jerry.mekmm.common.config.MMConfig;
+import com.jerry.mekmm.common.config.MoreMachineConfig;
 import com.jerry.mekmm.common.network.MMPacketHandler;
 import com.jerry.mekmm.common.registries.*;
 import com.mojang.logging.LogUtils;
@@ -35,7 +35,7 @@ public class Mekmm {
         versionNumber = new Version(modContainer);
 
         // MoreMachine相关的注册
-        MMConfig.registerConfigs(modContainer);
+        MoreMachineConfig.registerConfigs(modContainer);
         MMItems.MM_ITEMS.register(modEventBus);
         MMBlocks.MM_BLOCKS.register(modEventBus);
         MMTileEntityTypes.MM_TILE_ENTITY_TYPES.register(modEventBus);
@@ -43,7 +43,7 @@ public class Mekmm {
         MMRecipeSerializersInternal.MM_RECIPE_SERIALIZERS.register(modEventBus);
         MMChemicals.MM_CHEMICALS.register(modEventBus);
         MMCreativeTabs.MM_CREATIVE_TABS.register(modEventBus);
-        modEventBus.addListener(MMConfig::onConfigLoad);
+        modEventBus.addListener(MoreMachineConfig::onConfigLoad);
         // LargeMachine相关的注册
 //        LMConfig.registerConfigs(modContainer);
         registerAdvancedFactory(modEventBus);

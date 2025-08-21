@@ -7,7 +7,7 @@ import net.minecraft.Util;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public enum MMConfigTranslations implements IConfigTranslation {
+public enum MoreMachineConfigTranslations implements IConfigTranslation {
 
     GENERAL_ENERGY_CONVERSION("general.energy_conversion", "Energy Conversion Rate", "Settings for configuring Energy Conversions", "Edit Conversion Rates"),
     GENERAL_ENERGY_CONVERSION_MULTIPLIER("general.energy_conversion.conversion_multiplier", "Conversion Multiplier",
@@ -29,6 +29,7 @@ public enum MMConfigTranslations implements IConfigTranslation {
     ENERGY_STORAGE_ITEM_REPLICATOR(TranslationPreset.ENERGY_STORAGE, "Item Replicator"),
     ENERGY_STORAGE_FLUID_REPLICATOR(TranslationPreset.ENERGY_STORAGE, "Fluid Replicator"),
     ENERGY_STORAGE_CHEMICAL_REPLICATOR(TranslationPreset.ENERGY_STORAGE, "Chemical Replicator"),
+    ENERGY_STORAGE_LARGE_ROTARY_CONDENSENTRATOR(TranslationPreset.ENERGY_STORAGE, "Large Rotary Condensentrator"),
 
     //Usage Config
     ENERGY_USAGE_RECYCLER(TranslationPreset.ENERGY_USAGE, "Recycler"),
@@ -40,7 +41,8 @@ public enum MMConfigTranslations implements IConfigTranslation {
     ENERGY_USAGE_REPLICATOR("usage.replicator", "Replicator", "Settings for configuring Replicator Energy Usage", true),
     ENERGY_USAGE_ITEM_REPLICATOR(TranslationPreset.ENERGY_USAGE, "Item Replicator"),
     ENERGY_USAGE_FLUID_REPLICATOR(TranslationPreset.ENERGY_USAGE, "Fluid Replicator"),
-    ENERGY_USAGE_CHEMICAL_REPLICATOR(TranslationPreset.ENERGY_USAGE, "Chemical Replicator");
+    ENERGY_USAGE_CHEMICAL_REPLICATOR(TranslationPreset.ENERGY_USAGE, "Chemical Replicator"),
+    ENERGY_USAGE_LARGE_ROTARY_CONDENSENTRATOR(TranslationPreset.ENERGY_USAGE, "Large Rotary Condensentrator");
 
     private final String key;
     private final String title;
@@ -48,23 +50,23 @@ public enum MMConfigTranslations implements IConfigTranslation {
     @Nullable
     private final String button;
 
-    MMConfigTranslations(TranslationPreset preset, String type) {
+    MoreMachineConfigTranslations(TranslationPreset preset, String type) {
         this(preset.path(type), preset.title(type), preset.tooltip(type));
     }
 
-    MMConfigTranslations(TranslationPreset preset, String type, String tooltipSuffix) {
+    MoreMachineConfigTranslations(TranslationPreset preset, String type, String tooltipSuffix) {
         this(preset.path(type), preset.title(type), preset.tooltip(type) + tooltipSuffix);
     }
 
-    MMConfigTranslations(String path, String title, String tooltip) {
+    MoreMachineConfigTranslations(String path, String title, String tooltip) {
         this(path, title, tooltip, false);
     }
 
-    MMConfigTranslations(String path, String title, String tooltip, boolean isSection) {
+    MoreMachineConfigTranslations(String path, String title, String tooltip, boolean isSection) {
         this(path, title, tooltip, IConfigTranslation.getSectionTitle(title, isSection));
     }
 
-    MMConfigTranslations(String path, String title, String tooltip, @Nullable String button) {
+    MoreMachineConfigTranslations(String path, String title, String tooltip, @Nullable String button) {
         this.key = Util.makeDescriptionId("configuration", Mekmm.rl(path));
         this.title = title;
         this.tooltip = tooltip;

@@ -1,5 +1,7 @@
 package com.jerry.meklm.common.tile;
 
+import com.jerry.meklm.common.capabilities.holder.chemical.CanAdjustChemicalTankHelper;
+import com.jerry.meklm.common.capabilities.holder.fluid.CanAdjustFluidTankHelper;
 import com.jerry.meklm.common.registries.LMBlocks;
 import mekanism.api.*;
 import mekanism.api.chemical.BasicChemicalTank;
@@ -16,13 +18,12 @@ import mekanism.api.recipes.outputs.IOutputHandler;
 import mekanism.api.recipes.outputs.OutputHelper;
 import mekanism.api.recipes.vanilla_input.RotaryRecipeInput;
 import mekanism.common.attachments.containers.ContainerType;
+import mekanism.common.capabilities.Capabilities;
 import mekanism.common.capabilities.energy.MachineEnergyContainer;
 import mekanism.common.capabilities.fluid.BasicFluidTank;
-import mekanism.common.capabilities.holder.chemical.ChemicalTankHelper;
 import mekanism.common.capabilities.holder.chemical.IChemicalTankHolder;
 import mekanism.common.capabilities.holder.energy.EnergyContainerHelper;
 import mekanism.common.capabilities.holder.energy.IEnergyContainerHolder;
-import mekanism.common.capabilities.holder.fluid.FluidTankHelper;
 import mekanism.common.capabilities.holder.fluid.IFluidTankHolder;
 import mekanism.common.capabilities.holder.slot.IInventorySlotHolder;
 import mekanism.common.capabilities.holder.slot.InventorySlotHelper;
@@ -33,6 +34,7 @@ import mekanism.common.integration.computer.SpecialComputerMethodWrapper.Compute
 import mekanism.common.integration.computer.annotation.ComputerMethod;
 import mekanism.common.integration.computer.annotation.WrappingComputerMethod;
 import mekanism.common.integration.computer.computercraft.ComputerConstants;
+import mekanism.common.integration.energy.EnergyCompatUtils;
 import mekanism.common.inventory.container.MekanismContainer;
 import mekanism.common.inventory.container.slot.ContainerSlotType;
 import mekanism.common.inventory.container.slot.SlotOverlay;
@@ -48,46 +50,53 @@ import mekanism.common.recipe.MekanismRecipeType;
 import mekanism.common.recipe.lookup.cache.RotaryInputRecipeCache;
 import mekanism.common.registries.MekanismDataComponents;
 import mekanism.common.tile.component.TileComponentEjector;
+import mekanism.common.tile.interfaces.IBoundingBlock;
 import mekanism.common.tile.interfaces.IHasMode;
 import mekanism.common.tile.prefab.TileEntityRecipeMachine;
 import mekanism.common.util.MekanismUtils;
 import mekanism.common.util.NBTUtils;
+import mekanism.common.util.WorldUtils;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.Vec3i;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.redstone.Redstone;
+import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.function.BooleanSupplier;
 
-public class TileEntityLargeRotaryCondensentrator extends TileEntityRecipeMachine<RotaryRecipe> implements IHasMode {
+public class TileEntityLargeRotaryCondensentrator extends TileEntityRecipeMachine<RotaryRecipe> implements IHasMode, IBoundingBlock {
 
     public static final RecipeError NOT_ENOUGH_FLUID_INPUT_ERROR = RecipeError.create();
     public static final RecipeError NOT_ENOUGH_GAS_INPUT_ERROR = RecipeError.create();
     public static final RecipeError NOT_ENOUGH_SPACE_GAS_OUTPUT_ERROR = RecipeError.create();
     public static final RecipeError NOT_ENOUGH_SPACE_FLUID_OUTPUT_ERROR = RecipeError.create();
     private static final List<RecipeError> TRACKED_ERROR_TYPES = List.of(
-          RecipeError.NOT_ENOUGH_ENERGY,
-          RecipeError.NOT_ENOUGH_ENERGY_REDUCED_RATE,
-          NOT_ENOUGH_FLUID_INPUT_ERROR,
-          NOT_ENOUGH_GAS_INPUT_ERROR,
-          NOT_ENOUGH_SPACE_GAS_OUTPUT_ERROR,
-          NOT_ENOUGH_SPACE_FLUID_OUTPUT_ERROR,
-          RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT
+            RecipeError.NOT_ENOUGH_ENERGY,
+            RecipeError.NOT_ENOUGH_ENERGY_REDUCED_RATE,
+            NOT_ENOUGH_FLUID_INPUT_ERROR,
+            NOT_ENOUGH_GAS_INPUT_ERROR,
+            NOT_ENOUGH_SPACE_GAS_OUTPUT_ERROR,
+            NOT_ENOUGH_SPACE_FLUID_OUTPUT_ERROR,
+            RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT
     );
     public static final int CAPACITY = 10 * FluidType.BUCKET_VOLUME;
 
     @WrappingComputerMethod(wrapper = ComputerChemicalTankWrapper.class, methodNames = {"getGas", "getGasCapacity", "getGasNeeded",
-                                                                                        "getGasFilledPercentage"}, docPlaceholder = "gas tank")
+            "getGasFilledPercentage"}, docPlaceholder = "gas tank")
     public IChemicalTank gasTank;
     @WrappingComputerMethod(wrapper = ComputerFluidTankWrapper.class, methodNames = {"getFluid", "getFluidCapacity", "getFluidNeeded",
-                                                                                     "getFluidFilledPercentage"}, docPlaceholder = "fluid tank")
+            "getFluidFilledPercentage"}, docPlaceholder = "fluid tank")
     public BasicFluidTank fluidTank;
     /**
      * True: fluid -> chemical
@@ -102,7 +111,8 @@ public class TileEntityLargeRotaryCondensentrator extends TileEntityRecipeMachin
     private final IInputHandler<@NotNull ChemicalStack> gasInputHandler;
 
     private long clientEnergyUsed = 0;
-    private int baselineMaxOperations = 1;
+    private int baselineMaxOperations = 30;
+    private int numPowering;
 
     private MachineEnergyContainer<TileEntityLargeRotaryCondensentrator> energyContainer;
     @WrappingComputerMethod(wrapper = ComputerIInventorySlotWrapper.class, methodNames = "getGasItemInput", docPlaceholder = "gas item input slot")
@@ -125,14 +135,14 @@ public class TileEntityLargeRotaryCondensentrator extends TileEntityRecipeMachin
 
         ejectorComponent = new TileComponentEjector(this);
         ejectorComponent.setOutputData(configComponent, TransmissionType.ITEM, TransmissionType.CHEMICAL, TransmissionType.FLUID)
-              .setCanEject(transmissionType -> {
-                  if (transmissionType == TransmissionType.CHEMICAL) {
-                      return mode;
-                  } else if (transmissionType == TransmissionType.FLUID) {
-                      return !mode;
-                  }
-                  return true;
-              });
+                .setCanEject(transmissionType -> {
+                    if (transmissionType == TransmissionType.CHEMICAL) {
+                        return mode;
+                    } else if (transmissionType == TransmissionType.FLUID) {
+                        return !mode;
+                    }
+                    return true;
+                });
 
         gasInputHandler = InputHelper.getInputHandler(gasTank, NOT_ENOUGH_GAS_INPUT_ERROR);
         fluidInputHandler = InputHelper.getInputHandler(fluidTank, NOT_ENOUGH_FLUID_INPUT_ERROR);
@@ -143,10 +153,10 @@ public class TileEntityLargeRotaryCondensentrator extends TileEntityRecipeMachin
     @NotNull
     @Override
     public IChemicalTankHolder getInitialChemicalTanks(IContentsListener listener, IContentsListener recipeCacheListener, IContentsListener recipeCacheUnpauseListener) {
-        ChemicalTankHelper builder = ChemicalTankHelper.forSideWithConfig(this);
-        //Only allow extraction
-        builder.addTank(gasTank = BasicChemicalTank.createModern(CAPACITY, (gas, automationType) -> automationType == AutomationType.MANUAL || mode,
-              (gas, automationType) -> automationType == AutomationType.INTERNAL || !mode, this::isValidGas, ChemicalAttributeValidator.ALWAYS_ALLOW, recipeCacheListener));
+        CanAdjustChemicalTankHelper builder = CanAdjustChemicalTankHelper.forSide(facingSupplier, side -> side == RelativeSide.BACK, side -> side == RelativeSide.RIGHT);
+        builder.addTank(gasTank = BasicChemicalTank.createModern(CAPACITY * 100, (gas, automationType) -> automationType == AutomationType.MANUAL || mode,
+                (gas, automationType) -> automationType == AutomationType.INTERNAL || !mode, this::isValidGas, ChemicalAttributeValidator.ALWAYS_ALLOW,
+                recipeCacheListener), RelativeSide.BACK, RelativeSide.RIGHT);
         return builder.build();
     }
 
@@ -157,9 +167,9 @@ public class TileEntityLargeRotaryCondensentrator extends TileEntityRecipeMachin
     @NotNull
     @Override
     protected IFluidTankHolder getInitialFluidTanks(IContentsListener listener, IContentsListener recipeCacheListener, IContentsListener recipeCacheUnpauseListener) {
-        FluidTankHelper builder = FluidTankHelper.forSideWithConfig(this);
-        builder.addTank(fluidTank = BasicFluidTank.create(CAPACITY, (fluid, automationType) -> automationType == AutomationType.MANUAL || !mode,
-              (fluid, automationType) -> automationType == AutomationType.INTERNAL || mode, this::isValidFluid, recipeCacheListener));
+        CanAdjustFluidTankHelper builder = CanAdjustFluidTankHelper.forSide(facingSupplier, side -> side == RelativeSide.BACK, side -> side == RelativeSide.LEFT);
+        builder.addTank(fluidTank = BasicFluidTank.create(CAPACITY * 100, (fluid, automationType) -> automationType == AutomationType.MANUAL || !mode,
+                (fluid, automationType) -> automationType == AutomationType.INTERNAL || mode, this::isValidFluid, recipeCacheListener), RelativeSide.BACK, RelativeSide.LEFT);
         return builder.build();
     }
 
@@ -170,8 +180,8 @@ public class TileEntityLargeRotaryCondensentrator extends TileEntityRecipeMachin
     @NotNull
     @Override
     protected IEnergyContainerHolder getInitialEnergyContainers(IContentsListener listener, IContentsListener recipeCacheListener, IContentsListener recipeCacheUnpauseListener) {
-        EnergyContainerHelper builder = EnergyContainerHelper.forSideWithConfig(this);
-        builder.addContainer(energyContainer = MachineEnergyContainer.input(this, recipeCacheUnpauseListener));
+        EnergyContainerHelper builder = EnergyContainerHelper.forSide(facingSupplier);
+        builder.addContainer(energyContainer = MachineEnergyContainer.input(this, recipeCacheUnpauseListener), RelativeSide.BACK);
         return builder.build();
     }
 
@@ -287,19 +297,19 @@ public class TileEntityLargeRotaryCondensentrator extends TileEntityRecipeMachin
     @Override
     public CachedRecipe<RotaryRecipe> createNewCachedRecipe(@NotNull RotaryRecipe recipe, int cacheIndex) {
         return new RotaryCachedRecipe(recipe, recheckAllRecipeErrors, fluidInputHandler, gasInputHandler, gasOutputHandler, fluidOutputHandler, this::getMode)
-              .setErrorsChanged(this::onErrorsChanged)
-              .setCanHolderFunction(this::canFunction)
-              .setActive(this::setActive)
-              .setEnergyRequirements(energyContainer::getEnergyPerTick, energyContainer)
-              .setBaselineMaxOperations(() -> baselineMaxOperations)
-              .setOnFinish(this::markForSave);
+                .setErrorsChanged(this::onErrorsChanged)
+                .setCanHolderFunction(this::canFunction)
+                .setActive(this::setActive)
+                .setEnergyRequirements(energyContainer::getEnergyPerTick, energyContainer)
+                .setBaselineMaxOperations(() -> baselineMaxOperations)
+                .setOnFinish(this::markForSave);
     }
 
     @Override
     public void recalculateUpgrades(Upgrade upgrade) {
         super.recalculateUpgrades(upgrade);
         if (upgrade == Upgrade.SPEED) {
-            baselineMaxOperations = (int) Math.pow(2, upgradeComponent.getUpgrades(Upgrade.SPEED));
+            baselineMaxOperations *= (int) Math.pow(2, upgradeComponent.getUpgrades(Upgrade.SPEED));
         }
     }
 
@@ -308,6 +318,136 @@ public class TileEntityLargeRotaryCondensentrator extends TileEntityRecipeMachin
         super.addContainerTrackers(container);
         container.track(SyncableBoolean.create(this::getMode, value -> mode = value));
         container.track(SyncableLong.create(this::getEnergyUsed, value -> clientEnergyUsed = value));
+    }
+
+    @Override
+    public boolean isPowered() {
+        return redstone || numPowering > 0;
+    }
+
+    @Override
+    public void onBoundingBlockPowerChange(BlockPos boundingPos, int oldLevel, int newLevel) {
+        if (oldLevel > 0) {
+            if (newLevel == 0) {
+                numPowering--;
+            }
+        } else if (newLevel > 0) {
+            numPowering++;
+        }
+    }
+
+    @Override
+    public int getBoundingComparatorSignal(Vec3i offset) {
+        Direction direction = getDirection();
+        Direction back = getOppositeDirection();
+        Direction right = getRightSide();
+        if (offset.equals(new Vec3i(right.getStepX(), 1, right.getStepZ()))) {
+            return getCurrentRedstoneLevel();
+        }
+        if (direction == Direction.EAST) {
+            if (offset.equals(new Vec3i(-1, 0, -1))) {
+                return getCurrentRedstoneLevel();
+            }
+        } else if (direction == Direction.SOUTH) {
+            if (offset.equals(new Vec3i(1, 0, -1))) {
+                return getCurrentRedstoneLevel();
+            }
+        } else if (direction == Direction.WEST) {
+            if (offset.equals(new Vec3i(1, 0, 1))) {
+                return getCurrentRedstoneLevel();
+            }
+        } else if (direction == Direction.NORTH) {
+            if (offset.equals(new Vec3i(-1, 0, 1))) {
+                return getCurrentRedstoneLevel();
+            }
+        }
+        return Redstone.SIGNAL_NONE;
+    }
+
+    @Override
+    public <T> @Nullable T getOffsetCapabilityIfEnabled(@NotNull BlockCapability<T, @Nullable Direction> capability, Direction side, @NotNull Vec3i offset) {
+        if (capability == Capabilities.CHEMICAL.block()) {
+            return Objects.requireNonNull(chemicalHandlerManager, "Expected to have chemical handler").resolve(capability, side);
+        } else if (capability == Capabilities.FLUID.block()) {
+            return Objects.requireNonNull(fluidHandlerManager, "Expected to have fluid handler").resolve(capability, side);
+        } else if (capability == Capabilities.ENERGY.block()) {
+            return Objects.requireNonNull(energyHandlerManager, "Expected to have energy handler").resolve(capability, side);
+        }
+        return WorldUtils.getCapability(level, capability, worldPosition, null, this, side);
+    }
+
+    @Override
+    public boolean isOffsetCapabilityDisabled(@NotNull BlockCapability<?, @Nullable Direction> capability, Direction side, @NotNull Vec3i offset) {
+        if (capability == Capabilities.CHEMICAL.block()) {
+            return notChemicalPort(side, offset);
+        } else if (capability == Capabilities.FLUID.block()) {
+            return notFluidPort(side, offset);
+        } else if (EnergyCompatUtils.isEnergyCapability(capability)) {
+            return notEnergyPort(side, offset);
+        }
+        return notChemicalPort(side, offset) && notFluidPort(side, offset) && notEnergyPort(side, offset);
+    }
+
+    private boolean notChemicalPort(Direction side, Vec3i offset) {
+        Direction direction = getDirection();
+        Direction back = getOppositeDirection();
+        Direction right = getRightSide();
+        if (offset.equals(new Vec3i(right.getStepX(), 1, right.getStepZ()))) {
+            return side != right;
+        }
+        if (direction == Direction.EAST) {
+            if (offset.equals(new Vec3i(-1, 0, -1))) {
+                return side != back;
+            }
+        } else if (direction == Direction.SOUTH) {
+            if (offset.equals(new Vec3i(1, 0, -1))) {
+                return side != back;
+            }
+        } else if (direction == Direction.WEST) {
+            if (offset.equals(new Vec3i(1, 0, 1))) {
+                return side != back;
+            }
+        } else if (direction == Direction.NORTH) {
+            if (offset.equals(new Vec3i(-1, 0, 1))) {
+                return side != back;
+            }
+        }
+        return true;
+    }
+
+    private boolean notFluidPort(Direction side, Vec3i offset) {
+        Direction direction = getDirection();
+        Direction back = getOppositeDirection();
+        Direction left = getLeftSide();
+        if (offset.equals(new Vec3i(left.getStepX(), 1, left.getStepZ()))) {
+            return side != left;
+        }
+        if (direction == Direction.EAST) {
+            if (offset.equals(new Vec3i(-1, 0, 1))) {
+                return side != back;
+            }
+        } else if (direction == Direction.SOUTH) {
+            if (offset.equals(new Vec3i(-1, 0, -1))) {
+                return side != back;
+            }
+        } else if (direction == Direction.WEST) {
+            if (offset.equals(new Vec3i(1, 0, -1))) {
+                return side != back;
+            }
+        } else if (direction == Direction.NORTH) {
+            if (offset.equals(new Vec3i(1, 0, 1))) {
+                return side != back;
+            }
+        }
+        return true;
+    }
+
+    private boolean notEnergyPort(Direction side, Vec3i offset) {
+        Direction back = getOppositeDirection();
+        if (offset.equals(new Vec3i(back.getStepX(), 0, back.getStepZ()))) {
+            return side != back;
+        }
+        return true;
     }
 
     //Methods relating to IComputerTile

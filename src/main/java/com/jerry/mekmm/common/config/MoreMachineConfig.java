@@ -11,24 +11,24 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MMConfig {
+public class MoreMachineConfig {
 
-    private MMConfig() {
+    private MoreMachineConfig() {
     }
 
     private static final Map<IConfigSpec, IMekanismConfig> KNOWN_CONFIGS = new HashMap<>();
-    public static final MMGeneralConfig general = new MMGeneralConfig();
-    public static final MMStorageConfig storage = new MMStorageConfig();
-    public static final MMUsageConfig usage = new MMUsageConfig();
+    public static final MoreMachineGeneralConfig general = new MoreMachineGeneralConfig();
+    public static final MoreMachineStorageConfig storage = new MoreMachineStorageConfig();
+    public static final MoreMachineUsageConfig usage = new MoreMachineUsageConfig();
 
     public static void registerConfigs(ModContainer modContainer) {
-        MMConfigHelper.registerConfig(KNOWN_CONFIGS, modContainer, general);
-        MMConfigHelper.registerConfig(KNOWN_CONFIGS, modContainer, storage);
-        MMConfigHelper.registerConfig(KNOWN_CONFIGS, modContainer, usage);
+        MoreMachineHelper.registerConfig(KNOWN_CONFIGS, modContainer, general);
+        MoreMachineHelper.registerConfig(KNOWN_CONFIGS, modContainer, storage);
+        MoreMachineHelper.registerConfig(KNOWN_CONFIGS, modContainer, usage);
     }
 
     public static void onConfigLoad(ModConfigEvent configEvent) {
-        MMConfigHelper.onConfigLoad(configEvent, Mekmm.MOD_ID, KNOWN_CONFIGS);
+        MoreMachineHelper.onConfigLoad(configEvent, Mekmm.MOD_ID, KNOWN_CONFIGS);
     }
 
     public static Collection<IMekanismConfig> getConfigs() {

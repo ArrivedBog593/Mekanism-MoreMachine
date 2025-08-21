@@ -11,9 +11,9 @@ import net.neoforged.fml.loading.FMLPaths;
 import java.nio.file.Path;
 import java.util.Map;
 
-public class MMConfigHelper {
+public class MoreMachineHelper {
 
-    private MMConfigHelper() {
+    private MoreMachineHelper() {
     }
 
     public static final Path CONFIG_DIR = FMLPaths.getOrCreateGameRelativePath(FMLPaths.CONFIGDIR.get().resolve(Mekmm.MOD_NAME));

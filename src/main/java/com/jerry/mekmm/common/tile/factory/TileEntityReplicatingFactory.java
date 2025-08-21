@@ -3,7 +3,7 @@ package com.jerry.mekmm.common.tile.factory;
 import com.jerry.mekmm.api.recipes.basic.MMBasicItemStackChemicalToItemStackRecipe;
 import com.jerry.mekmm.api.recipes.cache.ReplicatorCachedRecipe;
 import com.jerry.mekmm.client.recipe_viewer.MMRecipeViewerRecipeType;
-import com.jerry.mekmm.common.config.MMConfig;
+import com.jerry.mekmm.common.config.MoreMachineConfig;
 import com.jerry.mekmm.common.recipe.impl.ReplicatorIRecipeSingle;
 import com.jerry.mekmm.common.registries.MMChemicals;
 import com.jerry.mekmm.common.util.ValidatorUtils;
@@ -66,7 +66,7 @@ public class TileEntityReplicatingFactory extends MMTileEntityItemToItemFactory<
 
     public static final long MAX_GAS = 10 * FluidType.BUCKET_VOLUME;
 
-    public static HashMap<String, Integer> customRecipeMap = ValidatorUtils.getRecipeFromConfig(MMConfig.general.itemReplicatorRecipe.get());
+    public static HashMap<String, Integer> customRecipeMap = ValidatorUtils.getRecipeFromConfig(MoreMachineConfig.general.itemReplicatorRecipe.get());
 
     private final ILongInputHandler<ChemicalStack> chemicalInputHandler;
     //化学品存储槽

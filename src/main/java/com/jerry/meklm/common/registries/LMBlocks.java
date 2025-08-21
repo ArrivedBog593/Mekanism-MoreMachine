@@ -2,8 +2,6 @@ package com.jerry.meklm.common.registries;
 
 import com.jerry.meklm.common.tile.TileEntityLargeRotaryCondensentrator;
 import com.jerry.mekmm.Mekmm;
-import mekanism.common.attachments.component.AttachedEjector;
-import mekanism.common.attachments.component.AttachedSideConfig;
 import mekanism.common.attachments.containers.ContainerType;
 import mekanism.common.attachments.containers.chemical.ChemicalTanksBuilder;
 import mekanism.common.attachments.containers.fluid.FluidTanksBuilder;
@@ -30,14 +28,12 @@ public class LMBlocks {
             LM_BLOCKS.register("large_rotary_condensentrator", () -> new BlockTile.BlockTileModel<>(LMBlockTypes.LARGE_ROTARY_CONDENSENTRATOR,
                     properties -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor())), (block, properties) -> new ItemBlockTooltip<>(block, true, properties
                     .component(MekanismDataComponents.ROTARY_MODE, false)
-                    .component(MekanismDataComponents.EJECTOR, AttachedEjector.DEFAULT)
-                    .component(MekanismDataComponents.SIDE_CONFIG, AttachedSideConfig.ROTARY)
             )).forItemHolder(holder -> holder
                     .addAttachmentOnlyContainers(ContainerType.FLUID, () -> FluidTanksBuilder.builder()
-                            .addBasic(TileEntityLargeRotaryCondensentrator.CAPACITY, MekanismRecipeType.ROTARY, RotaryInputRecipeCache::containsInput)
+                            .addBasic(TileEntityLargeRotaryCondensentrator.CAPACITY * 100, MekanismRecipeType.ROTARY, RotaryInputRecipeCache::containsInput)
                             .build()
                     ).addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> ChemicalTanksBuilder.builder()
-                            .addBasic(TileEntityLargeRotaryCondensentrator.CAPACITY, MekanismRecipeType.ROTARY, RotaryInputRecipeCache::containsInput)
+                            .addBasic(TileEntityLargeRotaryCondensentrator.CAPACITY * 100, MekanismRecipeType.ROTARY, RotaryInputRecipeCache::containsInput)
                             .build()
                     ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
                             .addChemicalRotaryDrainSlot(0)

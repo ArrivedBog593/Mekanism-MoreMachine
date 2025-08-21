@@ -77,6 +77,7 @@
   "block.mekmm.large_gas_burning_generator": "Grande Gerador a Gás",
   "block.mekmm.large_electrolytic_separator": "Grande Separador Eletrolítico",
   "block.mekmm.large_chemical_washer": "Grande Lavador Químico",
+  "block.mekmm.large_rotary_condensentrator": "Large Rotary Condensentrator",
 
   "chemical.mekmm.nutritional_paste": "Pasta Nutritiva",
   "chemical.mekmm.nutrient_solution": "Solução Nutriente",
@@ -152,6 +153,7 @@
   "container.mekmm.large_gas_burning_generator": "Grande Gerador a Gás",
   "container.mekmm.large_electrolytic_separator": "Grande Separador Eletrolítico",
   "container.mekmm.large_chemical_washer": "Grande Lavador Químico",
+  "container.mekmm.large_rotary_condensentrator": "Large Rotary Condensentrator",
 
   "factory.mekmm.recycling": "Reciclagem",
   "factory.mekmm.planting": "Plantio",

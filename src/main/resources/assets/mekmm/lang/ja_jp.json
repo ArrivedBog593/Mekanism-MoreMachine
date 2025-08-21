@@ -75,6 +75,7 @@
   "block.mekmm.large_gas_burning_generator": "大型ガス燃焼発電機",
   "block.mekmm.large_electrolytic_separator": "大型電解分離機",
   "block.mekmm.large_chemical_washer": "大型化学洗浄機",
+  "block.mekmm.large_rotary_condensentrator": "Large Rotary Condensentrator",
 
   "chemical.mekmm.nutritional_paste": "栄養補助ペースト",
   "chemical.mekmm.nutrient_solution": "栄養促成補助液",
@@ -148,6 +149,7 @@
   "container.mekmm.large_gas_burning_generator": "大型ガス燃焼発電機",
   "container.mekmm.large_electrolytic_separator": "大型電解分離機",
   "container.mekmm.large_chemical_washer": "大型化学洗浄機",
+  "container.mekmm.large_rotary_condensentrator": "Large Rotary Condensentrator",
 
   "factory.mekmm.recycling": "資源再環",
   "factory.mekmm.planting": "植物成長栽培",
