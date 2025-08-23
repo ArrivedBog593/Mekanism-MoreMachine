@@ -88,6 +88,8 @@ public class TileEntityDissolvingFactory extends TileEntityItemToChemicalAdvance
         ConfigInfo chemicalConfig = configComponent.getConfig(TransmissionType.CHEMICAL);
         if (chemicalConfig != null) {
             chemicalConfig.addSlotInfo(DataType.INPUT, new ChemicalSlotInfo(true, false, injectTank));
+            chemicalConfig.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo(true, true, injectTank));
+            chemicalConfig.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo(true, true, Arrays.stream(outputTank).toList()));
         }
 
         ejectorComponent = new TileComponentEjector(this);
