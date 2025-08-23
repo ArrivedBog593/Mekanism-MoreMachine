@@ -13,7 +13,7 @@ import mekanism.client.recipe_viewer.type.IRecipeViewerRecipeType;
 import mekanism.common.inventory.container.slot.SlotOverlay;
 import mekanism.common.util.text.TextUtils;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
-import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
+import mezz.jei.api.gui.placement.HorizontalAlignment;
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
@@ -37,13 +37,13 @@ public class RecyclerRecipeCategory extends HolderRecipeCategory<RecyclerRecipe>
     }
 
     @Override
-    public void createRecipeExtras(IRecipeExtrasBuilder builder, RecipeHolder<RecyclerRecipe> recipeHolder, IRecipeSlotsView recipeSlotsView, IFocusGroup focuses) {
-        super.createRecipeExtras(builder, recipeHolder, recipeSlotsView, focuses);
+    public void createRecipeExtras(IRecipeExtrasBuilder builder, RecipeHolder<RecyclerRecipe> recipeHolder, IFocusGroup focuses) {
+        super.createRecipeExtras(builder, recipeHolder, focuses);
         double secondaryChance = recipeHolder.value().getOutputChance();
         if (secondaryChance > 0) {
-            builder.addText(TextUtils.getPercent(secondaryChance), getGuiLeft() + output.getRelativeX() + 1, getGuiTop() + output.getRelativeBottom() + 1, output.getWidth(), font().lineHeight)
-                    //Perform the same translations as super does
-                    .alignHorizontalRight()
+            builder.addText(TextUtils.getPercent(secondaryChance), output.getWidth(), font().lineHeight)
+                    .setPosition(getGuiLeft() + output.getRelativeX() + 1, getGuiTop() + output.getRelativeBottom() + 1)
+                    .setTextAlignment(HorizontalAlignment.RIGHT)
                     .setColor(titleTextColor());
         }
     }
