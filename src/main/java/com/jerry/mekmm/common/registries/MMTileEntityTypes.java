@@ -120,7 +120,7 @@ public class MMTileEntityTypes {
             .build();
 
     public static final TileEntityTypeRegistryObject<TileEntityDoll> AUTHOR_DOLL = MM_TILE_ENTITY_TYPES
-            .builder(MMBlocks.AUTHOR_DOLL, (pos, state) -> new TileEntityDoll(MMBlocks.AUTHOR_DOLL, pos, state))
+            .builder(MMBlocks.AUTHOR_DOLL, TileEntityDoll::new)
             .build();
 
     public static TileEntityTypeRegistryObject<? extends MMTileEntityFactory<?>> getMMFactoryTile(FactoryTier tier, MMFactoryType type) {

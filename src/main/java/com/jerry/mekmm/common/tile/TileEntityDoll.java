@@ -1,14 +1,13 @@
 package com.jerry.mekmm.common.tile;
 
+import com.jerry.mekmm.common.registries.MMBlocks;
 import mekanism.common.tile.base.TileEntityMekanism;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class TileEntityDoll extends TileEntityMekanism {
 
-    public TileEntityDoll(Holder<Block> blockProvider, BlockPos pos, BlockState state) {
-        super(blockProvider, pos, state);
+    public TileEntityDoll(BlockPos pos, BlockState state) {
+        super(MMBlocks.AUTHOR_DOLL, pos, state);
     }
 }

@@ -1,4 +1,4 @@
-package com.jerry.datagen.recipe;
+package com.jerry.datagen.common.recipe;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.recipes.RecipeOutput;

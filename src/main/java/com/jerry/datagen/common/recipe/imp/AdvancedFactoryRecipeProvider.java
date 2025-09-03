@@ -1,8 +1,8 @@
-package com.jerry.datagen.recipe.imp;
+package com.jerry.datagen.common.recipe.imp;
 
-import com.jerry.datagen.recipe.ISubRecipeProvider;
-import com.jerry.datagen.recipe.builder.MekMMDataShapedRecipeBuilder;
-import com.jerry.datagen.recipe.pattern.Pattern;
+import com.jerry.datagen.common.recipe.ISubRecipeProvider;
+import com.jerry.datagen.common.recipe.builder.MekMMDataShapedRecipeBuilder;
+import com.jerry.datagen.common.recipe.pattern.Pattern;
 import com.jerry.mekaf.common.block.attribute.AdvancedAttributeFactoryType;
 import com.jerry.mekaf.common.block.prefab.AdvancedBlockFactoryMachine;
 import com.jerry.mekaf.common.content.blocktype.AdvancedFactoryType;

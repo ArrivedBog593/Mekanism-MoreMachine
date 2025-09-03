@@ -100,6 +100,7 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
     private long recipeEnergyRequired = 0;
     private final IInputHandler<@NotNull FluidStack> fluidInputHandler;
     private final IInputHandler<@NotNull ChemicalStack> chemicalInputHandler;
+    protected IOutputHandler<PressurizedReactionRecipe.@NotNull PressurizedReactionRecipeOutput>[] reactionOutputHandlers;
 
     protected final List<IInventorySlot> inputItemSlots;
     protected final List<IInventorySlot> outputItemSlots;

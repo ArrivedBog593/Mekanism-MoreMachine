@@ -1,4 +1,4 @@
-package com.jerry.datagen.recipe.compat;
+package com.jerry.datagen.common.recipe.compat;
 
 import blusunrize.immersiveengineering.api.EnumMetals;
 import blusunrize.immersiveengineering.common.register.IEItems;

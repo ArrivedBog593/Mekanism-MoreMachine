@@ -3,6 +3,7 @@ package com.jerry.meklm.common.tile;
 import com.jerry.meklm.common.capabilities.holder.chemical.CanAdjustChemicalTankHelper;
 import com.jerry.meklm.common.capabilities.holder.fluid.CanAdjustFluidTankHelper;
 import com.jerry.meklm.common.registries.LMBlocks;
+import com.jerry.meklm.common.tile.prefab.TileEntityRecipeLargeMachine;
 import mekanism.api.*;
 import mekanism.api.chemical.BasicChemicalTank;
 import mekanism.api.chemical.ChemicalStack;
@@ -52,7 +53,6 @@ import mekanism.common.registries.MekanismDataComponents;
 import mekanism.common.tile.component.TileComponentEjector;
 import mekanism.common.tile.interfaces.IBoundingBlock;
 import mekanism.common.tile.interfaces.IHasMode;
-import mekanism.common.tile.prefab.TileEntityRecipeMachine;
 import mekanism.common.util.MekanismUtils;
 import mekanism.common.util.NBTUtils;
 import mekanism.common.util.WorldUtils;
@@ -75,7 +75,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.BooleanSupplier;
 
-public class TileEntityLargeRotaryCondensentrator extends TileEntityRecipeMachine<RotaryRecipe> implements IHasMode, IBoundingBlock {
+public class TileEntityLargeRotaryCondensentrator extends TileEntityRecipeLargeMachine<RotaryRecipe> implements IHasMode, IBoundingBlock {
 
     public static final RecipeError NOT_ENOUGH_FLUID_INPUT_ERROR = RecipeError.create();
     public static final RecipeError NOT_ENOUGH_GAS_INPUT_ERROR = RecipeError.create();
@@ -188,7 +188,7 @@ public class TileEntityLargeRotaryCondensentrator extends TileEntityRecipeMachin
     @NotNull
     @Override
     protected IInventorySlotHolder getInitialInventory(IContentsListener listener, IContentsListener recipeCacheListener, IContentsListener recipeCacheUnpauseListener) {
-        InventorySlotHelper builder = InventorySlotHelper.forSideWithConfig(this);
+        InventorySlotHelper builder = InventorySlotHelper.forSide(facingSupplier);
         BooleanSupplier modeSupplier = this::getMode;
         builder.addSlot(gasInputSlot = ChemicalInventorySlot.rotaryDrain(gasTank, modeSupplier, listener, 5, 25));
         builder.addSlot(gasOutputSlot = ChemicalInventorySlot.rotaryFill(gasTank, modeSupplier, listener, 5, 56));

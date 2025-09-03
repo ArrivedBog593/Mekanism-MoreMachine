@@ -1,4 +1,4 @@
-package com.jerry.datagen.recipe.builder;
+package com.jerry.datagen.common.recipe.builder;
 
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.datagen.recipe.MekanismRecipeBuilder;

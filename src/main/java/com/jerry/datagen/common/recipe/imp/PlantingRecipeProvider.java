@@ -1,6 +1,6 @@
-package com.jerry.datagen.recipe.imp;
+package com.jerry.datagen.common.recipe.imp;
 
-import com.jerry.datagen.recipe.ISubRecipeProvider;
+import com.jerry.datagen.common.recipe.ISubRecipeProvider;
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.api.datagen.recipe.builder.PlantingStationRecipeBuilder;
 import com.jerry.mekmm.common.registries.MMChemicals;

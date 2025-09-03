@@ -1,13 +1,13 @@
-package com.jerry.datagen.recipe.imp;
+package com.jerry.datagen.common.recipe.imp;
 
-import com.jerry.datagen.recipe.BaseRecipeProvider;
-import com.jerry.datagen.recipe.ISubRecipeProvider;
-import com.jerry.datagen.recipe.builder.ExtendedShapedRecipeBuilder;
-import com.jerry.datagen.recipe.builder.MekMMDataShapedRecipeBuilder;
-import com.jerry.datagen.recipe.compat.IERecipeProvider;
-import com.jerry.datagen.recipe.compat.MysticalRecipeProvider;
-import com.jerry.datagen.recipe.pattern.Pattern;
-import com.jerry.datagen.recipe.pattern.RecipePattern;
+import com.jerry.datagen.common.recipe.BaseRecipeProvider;
+import com.jerry.datagen.common.recipe.ISubRecipeProvider;
+import com.jerry.datagen.common.recipe.builder.ExtendedShapedRecipeBuilder;
+import com.jerry.datagen.common.recipe.builder.MekMMDataShapedRecipeBuilder;
+import com.jerry.datagen.common.recipe.compat.IERecipeProvider;
+import com.jerry.datagen.common.recipe.compat.MysticalRecipeProvider;
+import com.jerry.datagen.common.recipe.pattern.Pattern;
+import com.jerry.datagen.common.recipe.pattern.RecipePattern;
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.common.registries.MMBlocks;
 import com.jerry.mekmm.common.registries.MMItems;

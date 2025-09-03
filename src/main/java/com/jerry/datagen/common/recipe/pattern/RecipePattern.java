@@ -1,4 +1,4 @@
-package com.jerry.datagen.recipe.pattern;
+package com.jerry.datagen.common.recipe.pattern;
 
 import mekanism.api.annotations.NothingNullByDefault;
 import org.jetbrains.annotations.Nullable;

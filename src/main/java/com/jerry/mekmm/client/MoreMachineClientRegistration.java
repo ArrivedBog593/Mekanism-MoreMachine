@@ -20,7 +20,7 @@ import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import static mekanism.client.ClientRegistration.addCustomModel;
 
 @EventBusSubscriber(modid = Mekmm.MOD_ID, value = Dist.CLIENT)
-public class MMClientRegistration {
+public class MoreMachineClientRegistration {
 
     @SubscribeEvent
     public static void init(FMLClientSetupEvent event) {

@@ -1,6 +1,6 @@
-package com.jerry.datagen.recipe.builder;
+package com.jerry.datagen.common.recipe.builder;
 
-import com.jerry.datagen.recipe.pattern.RecipePattern;
+import com.jerry.datagen.common.recipe.pattern.RecipePattern;
 import it.unimi.dsi.fastutil.chars.Char2ObjectArrayMap;
 import it.unimi.dsi.fastutil.chars.Char2ObjectMap;
 import it.unimi.dsi.fastutil.chars.CharOpenHashSet;

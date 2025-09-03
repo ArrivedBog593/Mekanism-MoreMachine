@@ -120,7 +120,7 @@ public class AFBlocks {
                 //没问题
                 case WASHING -> holder
                         .addAttachmentOnlyContainers(ContainerType.FLUID, () -> FluidTanksBuilder.builder()
-                                .addBasic(TileEntityAdvancedFactoryBase.MAX_FLUID * processes, MekanismRecipeType.WASHING, InputRecipeCache.FluidChemical::containsInputA)
+                                .addBasic(TileEntityAdvancedFactoryBase.MAX_FLUID * processes * processes, MekanismRecipeType.WASHING, InputRecipeCache.FluidChemical::containsInputA)
                                 .build()
                         ).addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> AFChemicalTanksBuilder.builder()
                                 .addInputFactoryTank(processes, TileEntityAdvancedFactoryBase.MAX_CHEMICAL * processes, recipeChemicalInputPredicate)

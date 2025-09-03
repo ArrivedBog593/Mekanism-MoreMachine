@@ -10,6 +10,7 @@ import com.jerry.mekmm.common.config.MoreMachineConfig;
 import com.jerry.mekmm.common.network.MMPacketHandler;
 import com.jerry.mekmm.common.registries.*;
 import com.mojang.logging.LogUtils;
+import mekanism.common.base.IModModule;
 import mekanism.common.lib.Version;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
@@ -18,7 +19,7 @@ import net.neoforged.fml.common.Mod;
 import org.slf4j.Logger;
 
 @Mod(Mekmm.MOD_ID)
-public class Mekmm {
+public class Mekmm implements IModModule {
     public static final String MOD_ID = "mekmm";
     public static final String MOD_NAME = "MekanismMoreMachine";
     public static final Logger LOGGER = LogUtils.getLogger();
@@ -70,5 +71,15 @@ public class Mekmm {
         LMBlocks.LM_BLOCKS.register(modEventBus);
         LMTileEntityTypes.LM_TILE_ENTITY_TYPES.register(modEventBus);
         LMContainerTypes.LM_CONTAINER_TYPES.register(modEventBus);
+    }
+
+    @Override
+    public Version getVersion() {
+        return versionNumber;
+    }
+
+    @Override
+    public String getName() {
+        return "MoreMachine";
     }
 }

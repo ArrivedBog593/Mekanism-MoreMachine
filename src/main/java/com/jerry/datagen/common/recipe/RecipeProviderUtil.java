@@ -1,4 +1,4 @@
-package com.jerry.datagen.recipe;
+package com.jerry.datagen.common.recipe;
 
 import com.blakebr0.mysticalagriculture.api.crop.Crop;
 import com.blakebr0.mysticalagriculture.registry.CropRegistry;

@@ -8,6 +8,7 @@ import mekanism.api.RelativeSide;
 import mekanism.api.fluid.IExtendedFluidTank;
 import mekanism.api.inventory.IInventorySlot;
 import mekanism.api.math.MathUtils;
+import mekanism.api.recipes.ItemStackToFluidOptionalItemRecipe;
 import mekanism.api.recipes.basic.BasicItemStackToFluidOptionalItemRecipe;
 import mekanism.api.recipes.cache.CachedRecipe;
 import mekanism.api.recipes.cache.OneInputCachedRecipe;
@@ -73,6 +74,8 @@ public class TileEntityLiquifyingFactory extends TileEntityAdvancedFactoryBase<B
     private NLProcessInfo[] processInfoSlots;
 
     public IExtendedFluidTank fluidTank;
+
+    protected IOutputHandler<ItemStackToFluidOptionalItemRecipe.@NotNull FluidOptionalItemOutput>[] liquifiesOutputHandler;
 
     protected final List<IInventorySlot> inputItemSlots;
     protected final List<IInventorySlot> outputItemSlots;

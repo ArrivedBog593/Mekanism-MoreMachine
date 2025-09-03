@@ -14,9 +14,9 @@ public class MMCreativeTabs {
     public static final MekanismDeferredHolder<CreativeModeTab, CreativeModeTab> MEKANISM_MORE_MACHINE = MM_CREATIVE_TABS.registerMain(MMLang.MEKANISM_MORE_MACHINE,
             MMItems.SCRAP, builder ->
                     builder.displayItems((displayParameters, output) -> {
-                                CreativeTabDeferredRegister.addToDisplay(MMItems.MM_ITEMS, output);
-                                CreativeTabDeferredRegister.addToDisplay(MMBlocks.MM_BLOCKS, output);
-                                CreativeTabDeferredRegister.addToDisplay(AFBlocks.AF_BLOCKS, output);
-                            })
+                        CreativeTabDeferredRegister.addToDisplay(MMItems.MM_ITEMS, output);
+                        CreativeTabDeferredRegister.addToDisplay(MMBlocks.MM_BLOCKS, output);
+                        CreativeTabDeferredRegister.addToDisplay(AFBlocks.AF_BLOCKS, output);
+                    })
     );
 }

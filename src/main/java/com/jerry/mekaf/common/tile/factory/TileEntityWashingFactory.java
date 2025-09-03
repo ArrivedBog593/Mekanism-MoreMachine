@@ -99,7 +99,7 @@ public class TileEntityWashingFactory extends TileEntityChemicalToChemicalAdvanc
     @Override
     protected IFluidTankHolder getInitialFluidTanks(IContentsListener listener) {
         FluidTankHelper builder = FluidTankHelper.forSideWithConfig(this);
-        builder.addTank(fluidTank = BasicFluidTank.input(MAX_FLUID * tier.processes, this::containsRecipeA, markAllMonitorsChanged(listener)));
+        builder.addTank(fluidTank = BasicFluidTank.input(MAX_FLUID * tier.processes * tier.processes, this::containsRecipeA, markAllMonitorsChanged(listener)));
         return builder.build();
     }
 

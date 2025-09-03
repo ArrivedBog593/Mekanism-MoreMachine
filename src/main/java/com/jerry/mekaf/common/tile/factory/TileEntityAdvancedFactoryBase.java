@@ -12,9 +12,7 @@ import mekanism.api.Upgrade;
 import mekanism.api.chemical.ChemicalStack;
 import mekanism.api.chemical.IChemicalTank;
 import mekanism.api.inventory.IInventorySlot;
-import mekanism.api.recipes.ItemStackToFluidOptionalItemRecipe;
 import mekanism.api.recipes.MekanismRecipe;
-import mekanism.api.recipes.PressurizedReactionRecipe;
 import mekanism.api.recipes.cache.CachedRecipe;
 import mekanism.api.recipes.cache.CachedRecipe.OperationTracker.RecipeError;
 import mekanism.api.recipes.inputs.IInputHandler;
@@ -60,6 +58,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -112,8 +111,8 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
     protected IOutputHandler<@NotNull ChemicalStack>[] chemicalOutputHandlers;
     protected IInputHandler<@NotNull ItemStack>[] itemInputHandlers;
     protected IOutputHandler<@NotNull ItemStack>[] itemOutputHandlers;
-    protected IOutputHandler<PressurizedReactionRecipe.@NotNull PressurizedReactionRecipeOutput>[] reactionOutputHandlers;
-    protected IOutputHandler<ItemStackToFluidOptionalItemRecipe.@NotNull FluidOptionalItemOutput>[] liquifiesOutputHandler;
+    protected IInputHandler<@NotNull FluidStack>[] fluidInputHandlers;
+    protected IOutputHandler<@NotNull FluidStack>[] fluidOutputHandlers;
 
     protected TileEntityAdvancedFactoryBase(Holder<Block> blockProvider, BlockPos pos, BlockState state, List<RecipeError> errorTypes, Set<RecipeError> globalErrorTypes) {
         super(blockProvider, pos, state);

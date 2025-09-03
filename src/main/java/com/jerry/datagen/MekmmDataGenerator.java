@@ -3,8 +3,9 @@ package com.jerry.datagen;
 import com.electronwill.nightconfig.core.CommentedConfig;
 import com.electronwill.nightconfig.core.InMemoryCommentedFormat;
 import com.electronwill.nightconfig.core.concurrent.SynchronizedConfig;
+import com.jerry.datagen.client.lang.MoreMachineLangProvider;
 import com.jerry.datagen.common.loot.MoreMachineLootProvider;
-import com.jerry.datagen.recipe.imp.MoreMachineRecipeProvider;
+import com.jerry.datagen.common.recipe.imp.MoreMachineRecipeProvider;
 import com.jerry.mekmm.Mekmm;
 import mekanism.common.Mekanism;
 import mekanism.common.lib.FieldReflectionHelper;
@@ -69,7 +70,7 @@ public class MekmmDataGenerator {
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
         //Client side data generators
-
+        gen.addProvider(event.includeClient(), new MoreMachineLangProvider(output));
         //Server side data generators
         gen.addProvider(event.includeServer(), new MoreMachineLootProvider(output, lookupProvider));
         gen.addProvider(event.includeServer(), new MoreMachineRecipeProvider(output, lookupProvider, existingFileHelper));
