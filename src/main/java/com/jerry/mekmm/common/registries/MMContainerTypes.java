@@ -2,7 +2,7 @@ package com.jerry.mekmm.common.registries;
 
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.common.inventory.container.tile.MMFactoryContainer;
-import com.jerry.mekmm.common.tile.factory.MMTileEntityFactory;
+import com.jerry.mekmm.common.tile.factory.TileEntityMMFactory;
 import com.jerry.mekmm.common.tile.machine.TileEntityRecycler;
 import mekanism.common.inventory.container.tile.MekanismTileContainer;
 import mekanism.common.registration.impl.ContainerTypeDeferredRegister;
@@ -18,10 +18,10 @@ public class MMContainerTypes {
 
     public static final ContainerTypeRegistryObject<MekanismTileContainer<TileEntityRecycler>> RECYCLER = MM_CONTAINER_TYPES.register(MMBlocks.RECYCLER, TileEntityRecycler.class);
 
-    public static final ContainerTypeRegistryObject<MekanismTileContainer<MMTileEntityFactory<?>>> MM_FACTORY = MM_CONTAINER_TYPES.register("factory", factoryClass(), MMFactoryContainer::new);
+    public static final ContainerTypeRegistryObject<MekanismTileContainer<TileEntityMMFactory<?>>> MM_FACTORY = MM_CONTAINER_TYPES.register("factory", factoryClass(), MMFactoryContainer::new);
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    private static Class<MMTileEntityFactory<?>> factoryClass() {
-        return (Class) MMTileEntityFactory.class;
+    private static Class<TileEntityMMFactory<?>> factoryClass() {
+        return (Class) TileEntityMMFactory.class;
     }
 }

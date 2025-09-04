@@ -1,5 +1,7 @@
 package com.jerry.mekmm.client;
 
+import com.jerry.mekaf.client.gui.machine.GuiAdvancedFactory;
+import com.jerry.mekaf.common.registries.AFContainerTypes;
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.client.gui.machine.GuiMMFactory;
 import com.jerry.mekmm.client.gui.machine.GuiRecycler;
@@ -20,6 +22,8 @@ public class ClientRegistration {
         event.register(Registries.MENU, helper -> {
             ClientRegistrationUtil.registerScreen(MMContainerTypes.RECYCLER, GuiRecycler::new);
             ClientRegistrationUtil.registerScreen(MMContainerTypes.MM_FACTORY, GuiMMFactory::new);
+
+            ClientRegistrationUtil.registerScreen(AFContainerTypes.ADVANCED_FACTORY, GuiAdvancedFactory::new);
         });
     }
 }

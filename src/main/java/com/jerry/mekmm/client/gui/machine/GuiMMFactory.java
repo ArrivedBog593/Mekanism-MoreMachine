@@ -2,7 +2,7 @@ package com.jerry.mekmm.client.gui.machine;
 
 import com.jerry.mekmm.client.gui.element.tab.MMGuiSortingTab;
 import com.jerry.mekmm.client.jei.MoreMachineJEIRecipeType;
-import com.jerry.mekmm.common.tile.factory.MMTileEntityFactory;
+import com.jerry.mekmm.common.tile.factory.TileEntityMMFactory;
 import mekanism.api.recipes.cache.CachedRecipe;
 import mekanism.client.gui.GuiConfigurableTile;
 import mekanism.client.gui.element.GuiDumpButton;
@@ -20,12 +20,12 @@ import net.minecraft.world.entity.player.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class GuiMMFactory extends GuiConfigurableTile<MMTileEntityFactory<?>, MekanismTileContainer<MMTileEntityFactory<?>>> {
+public class GuiMMFactory extends GuiConfigurableTile<TileEntityMMFactory<?>, MekanismTileContainer<TileEntityMMFactory<?>>> {
 
     @Nullable
     private GuiDumpButton<?> dumpButton;
 
-    public GuiMMFactory(MekanismTileContainer<MMTileEntityFactory<?>> container, Inventory inv, Component title) {
+    public GuiMMFactory(MekanismTileContainer<TileEntityMMFactory<?>> container, Inventory inv, Component title) {
         super(container, inv, title);
         if (tile.hasSecondaryResourceBar()) {
             imageHeight += 11;

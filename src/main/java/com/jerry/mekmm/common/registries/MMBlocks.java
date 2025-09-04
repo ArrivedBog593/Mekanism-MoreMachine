@@ -8,7 +8,7 @@ import com.jerry.mekmm.common.content.blocktype.MMFactory;
 import com.jerry.mekmm.common.content.blocktype.MMFactoryType;
 import com.jerry.mekmm.common.content.blocktype.MMMachine;
 import com.jerry.mekmm.common.item.block.machine.MMItemBlockFactory;
-import com.jerry.mekmm.common.tile.factory.MMTileEntityFactory;
+import com.jerry.mekmm.common.tile.factory.TileEntityMMFactory;
 import com.jerry.mekmm.common.tile.machine.TileEntityRecycler;
 import com.jerry.mekmm.common.util.MMEnumUtils;
 import mekanism.api.tier.ITier;
@@ -48,7 +48,7 @@ public class MMBlocks {
 
     public static final BlockRegistryObject<MMBlockFactoryMachine<TileEntityRecycler, MMMachine.MMFactoryMachine<TileEntityRecycler>>, ItemBlockMachine> RECYCLER = MM_BLOCKS.register("recycler", () -> new MMBlockFactoryMachine<>(MMBlockTypes.RECYCLER, properties -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor())), ItemBlockMachine::new);
 
-    private static <TILE extends MMTileEntityFactory<?>> BlockRegistryObject<MMBlockFactoryMachine.MMBlockFactory<?>, MMItemBlockFactory> registerFactory(MMFactory<TILE> type) {
+    private static <TILE extends TileEntityMMFactory<?>> BlockRegistryObject<MMBlockFactoryMachine.MMBlockFactory<?>, MMItemBlockFactory> registerFactory(MMFactory<TILE> type) {
         return registerTieredBlock(type, "_" + type.getMMFactoryType().getRegistryNameComponent() + "_factory", () -> new MMBlockFactoryMachine.MMBlockFactory<>(type), MMItemBlockFactory::new);
     }
 

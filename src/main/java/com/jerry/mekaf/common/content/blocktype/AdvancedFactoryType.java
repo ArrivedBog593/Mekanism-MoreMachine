@@ -1,20 +1,21 @@
 package com.jerry.mekaf.common.content.blocktype;
 
+import com.jerry.mekaf.common.registries.AFBlockTypes;
 import com.jerry.mekmm.common.MMLang;
-import com.jerry.mekmm.common.content.blocktype.MMMachine;
-import com.jerry.mekmm.common.registries.MMBlockTypes;
-import com.jerry.mekmm.common.registries.MMBlocks;
+import com.jerry.mekmm.common.content.blocktype.MMMachine.MMFactoryMachine;
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.text.IHasTranslationKey;
 import mekanism.api.text.ILangEntry;
 import mekanism.common.registration.impl.BlockRegistryObject;
+import mekanism.common.registries.MekanismBlocks;
 
 import java.util.Locale;
 import java.util.function.Supplier;
 
 @NothingNullByDefault
 public enum AdvancedFactoryType implements IHasTranslationKey {
-    RECYCLING("recycling", MMLang.RECYCLING, () -> MMBlockTypes.RECYCLER, () -> MMBlocks.RECYCLER);
+    OXIDIZING("oxidizing", MMLang.OXIDIZING, () -> AFBlockTypes.CHEMICAL_OXIDIZER, () -> MekanismBlocks.CHEMICAL_OXIDIZER),
+    ;
 //    PLANTING_STATION("planting", MMLang.PLANTING, () -> MMBlockTypes.PLANTING_STATION, () -> MMBlocks.PLANTING_STATION),
 //    CNC_STAMPING("stamping", MMLang.STAMPING, () -> MMBlockTypes.CNC_STAMPER, () -> MMBlocks.CNC_STAMPER),
 //    CNC_LATHING("lathing", MMLang.LATHING, () -> MMBlockTypes.CNC_LATHE, () -> MMBlocks.CNC_LATHE),
@@ -23,10 +24,10 @@ public enum AdvancedFactoryType implements IHasTranslationKey {
 
     private final String registryNameComponent;
     private final ILangEntry langEntry;
-    private final Supplier<MMMachine.MMFactoryMachine<?>> baseMachine;
+    private final Supplier<MMFactoryMachine<?>> baseMachine;
     private final Supplier<BlockRegistryObject<?, ?>> baseBlock;
 
-    AdvancedFactoryType(String registryNameComponent, ILangEntry langEntry, Supplier<MMMachine.MMFactoryMachine<?>> baseMachine, Supplier<BlockRegistryObject<?, ?>> baseBlock) {
+    AdvancedFactoryType(String registryNameComponent, ILangEntry langEntry, Supplier<MMFactoryMachine<?>> baseMachine, Supplier<BlockRegistryObject<?, ?>> baseBlock) {
         this.registryNameComponent = registryNameComponent;
         this.langEntry = langEntry;
         this.baseMachine = baseMachine;
@@ -42,7 +43,7 @@ public enum AdvancedFactoryType implements IHasTranslationKey {
         return name.substring(0, 1).toUpperCase(Locale.ROOT) + name.substring(1);
     }
 
-    public MMMachine.MMFactoryMachine<?> getBaseMachine() {
+    public MMFactoryMachine<?> getBaseMachine() {
         return baseMachine.get();
     }
 

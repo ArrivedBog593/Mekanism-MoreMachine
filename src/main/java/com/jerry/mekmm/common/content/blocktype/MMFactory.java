@@ -3,7 +3,7 @@ package com.jerry.mekmm.common.content.blocktype;
 import com.jerry.mekmm.common.block.attribute.MMAttributeFactoryType;
 import com.jerry.mekmm.common.registries.MMBlocks;
 import com.jerry.mekmm.common.registries.MMContainerTypes;
-import com.jerry.mekmm.common.tile.factory.MMTileEntityFactory;
+import com.jerry.mekmm.common.tile.factory.TileEntityMMFactory;
 import mekanism.common.MekanismLang;
 import mekanism.common.block.attribute.*;
 import mekanism.common.inventory.container.MekanismContainer;
@@ -16,7 +16,7 @@ import net.minecraft.core.particles.ParticleTypes;
 
 import java.util.function.Supplier;
 
-public class MMFactory<TILE extends MMTileEntityFactory<?>> extends MMMachine.MMFactoryMachine<TILE> {
+public class MMFactory<TILE extends TileEntityMMFactory<?>> extends MMMachine.MMFactoryMachine<TILE> {
 
     private final MMFactoryMachine<?> origMachine;
 
@@ -38,7 +38,7 @@ public class MMFactory<TILE extends MMTileEntityFactory<?>> extends MMMachine.MM
         add(new AttributeEnergy(origEnergy::getUsage, () -> origEnergy.getConfigStorage().multiply(0.5).max(origEnergy.getUsage()).multiply(tier.processes)));
     }
 
-    public static class MMFactoryBuilder<FACTORY extends MMFactory<TILE>, TILE extends MMTileEntityFactory<?>, T extends MMMachineBuilder<FACTORY, TILE, T>>
+    public static class MMFactoryBuilder<FACTORY extends MMFactory<TILE>, TILE extends TileEntityMMFactory<?>, T extends MMMachineBuilder<FACTORY, TILE, T>>
             extends BlockTileBuilder<FACTORY, TILE, T> {
 
         protected MMFactoryBuilder(FACTORY holder) {
@@ -46,7 +46,7 @@ public class MMFactory<TILE extends MMTileEntityFactory<?>> extends MMMachine.MM
         }
 
         @SuppressWarnings("unchecked")
-        public static <TILE extends MMTileEntityFactory<?>> MMFactoryBuilder<MMFactory<TILE>, TILE, ?> createMMFactory(Supplier<?> tileEntityRegistrar, MMFactoryType type,
+        public static <TILE extends TileEntityMMFactory<?>> MMFactoryBuilder<MMFactory<TILE>, TILE, ?> createMMFactory(Supplier<?> tileEntityRegistrar, MMFactoryType type,
                                                                                                                        FactoryTier tier) {
             // this is dirty but unfortunately necessary for things to play right
             MMFactoryBuilder<MMFactory<TILE>, TILE, ?> builder = new MMFactoryBuilder<>(new MMFactory<>((Supplier<TileEntityTypeRegistryObject<TILE>>) tileEntityRegistrar,

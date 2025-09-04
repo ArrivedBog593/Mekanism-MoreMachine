@@ -33,7 +33,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Set;
 
-public class TileEntityRecyclingFactory extends MMTileEntityFactory<RecyclerRecipe> implements ISingleRecipeLookupHandler.ItemRecipeLookupHandler<RecyclerRecipe> {
+public class TileEntityRecyclingMMFactory extends TileEntityMMFactory<RecyclerRecipe> implements ISingleRecipeLookupHandler.ItemRecipeLookupHandler<RecyclerRecipe> {
 
     private static final TriPredicate<RecyclerRecipe, ItemStack, ItemStack> OUTPUT_CHECK =
             (recipe, input, output) -> InventoryUtils.areItemsStackable(recipe.getOutput(input).getMaxChanceOutput(), output);
@@ -50,7 +50,7 @@ public class TileEntityRecyclingFactory extends MMTileEntityFactory<RecyclerReci
     protected IInputHandler<@NotNull ItemStack>[] inputHandlers;
     protected IOutputHandler<RecyclerRecipe.ChanceOutput>[] outputHandlers;
 
-    public TileEntityRecyclingFactory(IBlockProvider blockProvider, BlockPos pos, BlockState state) {
+    public TileEntityRecyclingMMFactory(IBlockProvider blockProvider, BlockPos pos, BlockState state) {
         super(blockProvider, pos, state, TRACKED_ERROR_TYPES, GLOBAL_ERROR_TYPES);
     }
 

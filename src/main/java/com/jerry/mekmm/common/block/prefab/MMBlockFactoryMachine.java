@@ -2,7 +2,7 @@ package com.jerry.mekmm.common.block.prefab;
 
 import com.jerry.mekmm.common.content.blocktype.MMFactory;
 import com.jerry.mekmm.common.content.blocktype.MMMachine;
-import com.jerry.mekmm.common.tile.factory.MMTileEntityFactory;
+import com.jerry.mekmm.common.tile.factory.TileEntityMMFactory;
 import mekanism.common.block.prefab.BlockTile;
 import mekanism.common.block.states.IStateFluidLoggable;
 import mekanism.common.resource.BlockResourceInfo;
@@ -23,7 +23,7 @@ public class MMBlockFactoryMachine<TILE extends TileEntityMekanism, MACHINE exte
         }
     }
 
-    public static class MMBlockFactory<TILE extends MMTileEntityFactory<?>> extends MMBlockFactoryMachineModel<TILE, MMFactory<TILE>> {
+    public static class MMBlockFactory<TILE extends TileEntityMMFactory<?>> extends MMBlockFactoryMachineModel<TILE, MMFactory<TILE>> {
 
         public MMBlockFactory(MMFactory<TILE> factoryType) {
             super(factoryType, properties -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor()));

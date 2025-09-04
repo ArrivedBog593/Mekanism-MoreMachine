@@ -1,21 +1,21 @@
-package com.jerry.mekmm.client.gui.element.tab;
+package com.jerry.mekaf.client.gui.element.tab;
 
-import com.jerry.mekmm.Mekmm;
+import com.jerry.mekaf.common.tile.base.TileEntityAdvancedFactoryBase;
 import com.jerry.mekmm.common.network.to_server.MoreMachinePacketGuiInteract;
-import com.jerry.mekmm.common.tile.factory.TileEntityMMFactory;
 import mekanism.client.SpecialColors;
 import mekanism.client.gui.IGuiWrapper;
 import mekanism.client.gui.element.GuiInsetElement;
 import mekanism.client.render.MekanismRenderer;
+import mekanism.common.Mekanism;
 import mekanism.common.MekanismLang;
 import mekanism.common.util.MekanismUtils;
 import mekanism.common.util.text.BooleanStateDisplay;
 import net.minecraft.client.gui.GuiGraphics;
 import org.jetbrains.annotations.NotNull;
 
-public class MMGuiSortingTab extends GuiInsetElement<TileEntityMMFactory<?>> {
+public class AFGuiSortingTab extends GuiInsetElement<TileEntityAdvancedFactoryBase<?>> {
 
-    public MMGuiSortingTab(IGuiWrapper gui, TileEntityMMFactory<?> tile) {
+    public AFGuiSortingTab(IGuiWrapper gui, TileEntityAdvancedFactoryBase<?> tile) {
         super(MekanismUtils.getResource(MekanismUtils.ResourceType.GUI, "sorting.png"), gui, tile, -26, 62, 35, 18, true);
     }
 
@@ -38,6 +38,6 @@ public class MMGuiSortingTab extends GuiInsetElement<TileEntityMMFactory<?>> {
 
     @Override
     public void onClick(double mouseX, double mouseY, int button) {
-        Mekmm.packetHandler().sendToServer(new MoreMachinePacketGuiInteract(MoreMachinePacketGuiInteract.GuiInteraction.AUTO_SORT_BUTTON, dataSource));
+        Mekanism.packetHandler().sendToServer(new MoreMachinePacketGuiInteract(MoreMachinePacketGuiInteract.GuiInteraction.AUTO_SORT_BUTTON, dataSource));
     }
 }
