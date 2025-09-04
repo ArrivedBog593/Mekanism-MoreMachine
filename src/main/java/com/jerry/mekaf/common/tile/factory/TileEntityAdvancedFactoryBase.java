@@ -1,6 +1,6 @@
 package com.jerry.mekaf.common.tile.factory;
 
-import com.jerry.mekaf.common.block.attribute.AdvancedAttributeFactoryType;
+import com.jerry.mekaf.common.block.attribute.AttributeAdvancedFactoryType;
 import com.jerry.mekaf.common.capabilities.energy.AdvancedFactoryEnergyContainer;
 import com.jerry.mekaf.common.content.blocktype.AdvancedFactoryType;
 import com.jerry.mekmm.common.util.MMUtils;
@@ -116,7 +116,7 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
 
     protected TileEntityAdvancedFactoryBase(Holder<Block> blockProvider, BlockPos pos, BlockState state, List<RecipeError> errorTypes, Set<RecipeError> globalErrorTypes) {
         super(blockProvider, pos, state);
-        type = Attribute.getOrThrow(blockProvider, AdvancedAttributeFactoryType.class).getAdvancedFactoryType();
+        type = Attribute.getOrThrow(blockProvider, AttributeAdvancedFactoryType.class).getAdvancedFactoryType();
 
         configComponent.setupInputConfig(TransmissionType.ENERGY, energyContainer);
 
@@ -221,7 +221,7 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
         return null;
     }
 
-    public AdvancedFactoryType getMMFactoryType() {
+    public AdvancedFactoryType getAdvancedFactoryType() {
         return type;
     }
 

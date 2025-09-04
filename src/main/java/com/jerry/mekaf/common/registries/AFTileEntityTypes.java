@@ -2,7 +2,7 @@ package com.jerry.mekaf.common.registries;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
-import com.jerry.mekaf.common.block.prefab.AdvancedBlockFactoryMachine;
+import com.jerry.mekaf.common.block.prefab.BlockAdvancedFactoryMachine;
 import com.jerry.mekaf.common.content.blocktype.AdvancedFactoryType;
 import com.jerry.mekaf.common.item.block.machine.AdvancedItemBlockFactory;
 import com.jerry.mekaf.common.tile.factory.*;
@@ -43,7 +43,7 @@ public class AFTileEntityTypes {
     }
 
     private static void registerFactory(FactoryTier tier, AdvancedFactoryType type, AdvancedBlockEntityFactory<? extends TileEntityAdvancedFactoryBase<?>> factoryConstructor) {
-        BlockRegistryObject<AdvancedBlockFactoryMachine.AdvancedBlockFactory<?>, AdvancedItemBlockFactory> block = AFBlocks.getAdvancedFactory(tier, type);
+        BlockRegistryObject<BlockAdvancedFactoryMachine.BlockAdvancedFactory<?>, AdvancedItemBlockFactory> block = AFBlocks.getAdvancedFactory(tier, type);
         TileEntityTypeRegistryObject<? extends TileEntityAdvancedFactoryBase<?>> tileRO = AF_TILE_ENTITY_TYPES.mekBuilder(block, (pos, state) -> factoryConstructor.create(block, pos, state))
                 .clientTicker(TileEntityMekanism::tickClient)
                 .serverTicker(TileEntityMekanism::tickServer)

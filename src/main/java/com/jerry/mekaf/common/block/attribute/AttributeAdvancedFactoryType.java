@@ -4,11 +4,11 @@ import com.jerry.mekaf.common.content.blocktype.AdvancedFactoryType;
 import mekanism.common.block.attribute.Attribute;
 import org.jetbrains.annotations.NotNull;
 
-public class AdvancedAttributeFactoryType implements Attribute {
+public class AttributeAdvancedFactoryType implements Attribute {
 
     private final AdvancedFactoryType type;
 
-    public AdvancedAttributeFactoryType(AdvancedFactoryType type) {
+    public AttributeAdvancedFactoryType(AdvancedFactoryType type) {
         this.type = type;
     }
 

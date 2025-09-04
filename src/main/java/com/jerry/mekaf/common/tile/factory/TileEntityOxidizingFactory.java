@@ -31,7 +31,7 @@ import java.util.*;
 
 public class TileEntityOxidizingFactory extends TileEntityItemToChemicalAdvancedFactory<ItemStackToChemicalRecipe> implements ISingleRecipeLookupHandler.ItemRecipeLookupHandler<ItemStackToChemicalRecipe> {
 
-    protected static final TriPredicate<ItemStackToChemicalRecipe, ItemStack, ChemicalStack> OUTPUT_CHECK =
+    private static final TriPredicate<ItemStackToChemicalRecipe, ItemStack, ChemicalStack> OUTPUT_CHECK =
             (recipe, input, output) -> ChemicalStack.isSameChemical(recipe.getOutput(input), output);
     private static final List<CachedRecipe.OperationTracker.RecipeError> TRACKED_ERROR_TYPES = List.of(
             CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_ENERGY,
@@ -76,16 +76,19 @@ public class TileEntityOxidizingFactory extends TileEntityItemToChemicalAdvanced
                 .setBaselineMaxOperations(this::getOperationsPerTick);
     }
 
+    @Override
     @Contract("null, _ -> false")
     protected boolean isCachedRecipeValid(@Nullable CachedRecipe<ItemStackToChemicalRecipe> cached, @NotNull ItemStack stack) {
         return cached != null && cached.getRecipe().getInput().testType(stack);
     }
 
+    @Override
     @Nullable
     protected ItemStackToChemicalRecipe findRecipe(int process, @NotNull ItemStack fallbackInput, @NotNull IChemicalTank outputSlot) {
         return getRecipeType().getInputCache().findTypeBasedRecipe(level, fallbackInput, outputSlot.getStack(), OUTPUT_CHECK);
     }
 
+    @Override
     protected int getNeededInput(ItemStackToChemicalRecipe recipe, ItemStack inputStack) {
         return MathUtils.clampToInt(recipe.getInput().getNeededAmount(inputStack));
     }

@@ -1,8 +1,8 @@
 package com.jerry.mekaf.common.item.block.machine;
 
 import com.jerry.mekaf.common.attachments.component.AFAttachedSideConfig;
-import com.jerry.mekaf.common.block.attribute.AdvancedAttributeFactoryType;
-import com.jerry.mekaf.common.block.prefab.AdvancedBlockFactoryMachine;
+import com.jerry.mekaf.common.block.attribute.AttributeAdvancedFactoryType;
+import com.jerry.mekaf.common.block.prefab.BlockAdvancedFactoryMachine;
 import mekanism.api.text.EnumColor;
 import mekanism.common.MekanismLang;
 import mekanism.common.attachments.component.AttachedEjector;
@@ -22,8 +22,8 @@ import java.util.List;
 
 public class AdvancedItemBlockFactory extends ItemBlockTooltip<BlockTile<?, ?>> {
 
-    private static AttachedSideConfig getSideConfig(AdvancedBlockFactoryMachine.AdvancedBlockFactory<?> block) {
-        return switch (Attribute.getOrThrow(block.builtInRegistryHolder(), AdvancedAttributeFactoryType.class).getAdvancedFactoryType()) {
+    private static AttachedSideConfig getSideConfig(BlockAdvancedFactoryMachine.BlockAdvancedFactory<?> block) {
+        return switch (Attribute.getOrThrow(block.builtInRegistryHolder(), AttributeAdvancedFactoryType.class).getAdvancedFactoryType()) {
             case OXIDIZING -> AttachedSideConfig.CHEMICAL_OUT_MACHINE;
             case DISSOLVING -> AttachedSideConfig.DISSOLUTION;
             case CHEMICAL_INFUSING -> AFAttachedSideConfig.CHEMICAL_INFUSING;
@@ -36,7 +36,7 @@ public class AdvancedItemBlockFactory extends ItemBlockTooltip<BlockTile<?, ?>> 
         };
     }
 
-    public AdvancedItemBlockFactory(AdvancedBlockFactoryMachine.AdvancedBlockFactory<?> block, Properties properties) {
+    public AdvancedItemBlockFactory(BlockAdvancedFactoryMachine.BlockAdvancedFactory<?> block, Properties properties) {
         super(block, true, properties
                 .component(MekanismDataComponents.SORTING, false)
                 .component(MekanismDataComponents.EJECTOR, AttachedEjector.DEFAULT)
@@ -52,7 +52,7 @@ public class AdvancedItemBlockFactory extends ItemBlockTooltip<BlockTile<?, ?>> 
     @Override
     protected void addTypeDetails(@NotNull ItemStack stack, @NotNull Item.TooltipContext context, @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
         //Should always be present but validate it just in case
-        AdvancedAttributeFactoryType factoryType = Attribute.get(getBlock(), AdvancedAttributeFactoryType.class);
+        AttributeAdvancedFactoryType factoryType = Attribute.get(getBlock(), AttributeAdvancedFactoryType.class);
         if (factoryType != null) {
             tooltip.add(MekanismLang.FACTORY_TYPE.translateColored(EnumColor.INDIGO, EnumColor.GRAY, factoryType.getAdvancedFactoryType()));
         }

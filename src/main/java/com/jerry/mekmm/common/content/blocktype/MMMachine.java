@@ -1,7 +1,7 @@
 package com.jerry.mekmm.common.content.blocktype;
 
 import com.jerry.mekaf.common.content.blocktype.AdvancedFactoryType;
-import com.jerry.mekaf.common.block.attribute.AdvancedAttributeFactoryType;
+import com.jerry.mekaf.common.block.attribute.AttributeAdvancedFactoryType;
 import com.jerry.mekaf.common.registries.AFBlocks;
 import com.jerry.mekmm.common.block.attribute.MMAttributeFactoryType;
 import com.jerry.mekmm.common.registries.MMBlocks;
@@ -38,7 +38,7 @@ public class MMMachine<TILE extends TileEntityMekanism> extends BlockTypeTile<TI
 
         public MMFactoryMachine(Supplier<TileEntityTypeRegistryObject<TILE>> tileEntitySupplier, ILangEntry description, AdvancedFactoryType factoryType) {
             super(tileEntitySupplier, description);
-            add(new AdvancedAttributeFactoryType(factoryType), new AttributeUpgradeable(() -> AFBlocks.getAdvancedFactory(FactoryTier.BASIC, getAdvancedFactoryType())));
+            add(new AttributeAdvancedFactoryType(factoryType), new AttributeUpgradeable(() -> AFBlocks.getAdvancedFactory(FactoryTier.BASIC, getAdvancedFactoryType())));
         }
 
         public MMFactoryType getMMFactoryType() {
@@ -46,7 +46,7 @@ public class MMMachine<TILE extends TileEntityMekanism> extends BlockTypeTile<TI
         }
 
         public AdvancedFactoryType getAdvancedFactoryType() {
-            return Objects.requireNonNull(get(AdvancedAttributeFactoryType.class)).getAdvancedFactoryType();
+            return Objects.requireNonNull(get(AttributeAdvancedFactoryType.class)).getAdvancedFactoryType();
         }
     }
 

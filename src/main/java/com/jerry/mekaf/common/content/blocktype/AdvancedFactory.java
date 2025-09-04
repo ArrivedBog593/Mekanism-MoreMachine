@@ -1,6 +1,6 @@
 package com.jerry.mekaf.common.content.blocktype;
 
-import com.jerry.mekaf.common.block.attribute.AdvancedAttributeFactoryType;
+import com.jerry.mekaf.common.block.attribute.AttributeAdvancedFactoryType;
 import com.jerry.mekaf.common.registries.AFBlocks;
 import com.jerry.mekaf.common.registries.AFContainerTypes;
 import com.jerry.mekmm.common.content.blocktype.MMBlockShapes;
@@ -37,7 +37,7 @@ public class AdvancedFactory<TILE extends TileEntityAdvancedFactoryBase<?>> exte
     }
 
     private void setMachineData(FactoryTier tier) {
-        setFrom(origMachine, AttributeSound.class, AdvancedAttributeFactoryType.class, AttributeUpgradeSupport.class);
+        setFrom(origMachine, AttributeSound.class, AttributeAdvancedFactoryType.class, AttributeUpgradeSupport.class);
         AttributeEnergy origEnergy = origMachine.get(AttributeEnergy.class);
         if (origEnergy != null) {
             // 相比于原版，这里将0.5的乘数去除

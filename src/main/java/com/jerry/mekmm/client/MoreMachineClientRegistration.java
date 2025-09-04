@@ -39,11 +39,12 @@ public class MoreMachineClientRegistration {
         ClientRegistrationUtil.registerScreen(event, MMContainerTypes.FLUID_REPLICATOR, GuiFluidReplicator::new);
         ClientRegistrationUtil.registerScreen(event, MMContainerTypes.CHEMIcAL_REPLICATOR, GuiChemicalReplicator::new);
         ClientRegistrationUtil.registerScreen(event, MMContainerTypes.AMBIENT_GAS_COLLECTOR, GuiAmbientGasCollector::new);
-
         ClientRegistrationUtil.registerScreen(event, MMContainerTypes.MM_FACTORY, GuiMMFactory::new);
+
+        //Advanced Factory
         ClientRegistrationUtil.registerScreen(event, AFContainerTypes.ADVANCED_FACTORY, GuiAdvancedFactory::new);
 
-        //Large machine
+        //Large Machine
         ClientRegistrationUtil.registerScreen(event, LMContainerTypes.LARGE_ROTARY_CONDENSENTRATOR, GuiLargeRotaryCondensentrator::new);
     }
 }

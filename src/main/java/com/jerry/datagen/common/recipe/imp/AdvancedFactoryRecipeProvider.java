@@ -3,8 +3,8 @@ package com.jerry.datagen.common.recipe.imp;
 import com.jerry.datagen.common.recipe.ISubRecipeProvider;
 import com.jerry.datagen.common.recipe.builder.MekMMDataShapedRecipeBuilder;
 import com.jerry.datagen.common.recipe.pattern.Pattern;
-import com.jerry.mekaf.common.block.attribute.AdvancedAttributeFactoryType;
-import com.jerry.mekaf.common.block.prefab.AdvancedBlockFactoryMachine;
+import com.jerry.mekaf.common.block.attribute.AttributeAdvancedFactoryType;
+import com.jerry.mekaf.common.block.prefab.BlockAdvancedFactoryMachine;
 import com.jerry.mekaf.common.content.blocktype.AdvancedFactoryType;
 import com.jerry.mekaf.common.item.block.machine.AdvancedItemBlockFactory;
 import com.jerry.mekmm.Mekmm;
@@ -34,9 +34,9 @@ class AdvancedFactoryRecipeProvider implements ISubRecipeProvider {
         String ultimatePath = basePath + "ultimate/";
         TagKey<Item> osmiumIngot = MekanismTags.Items.PROCESSED_RESOURCES.get(ResourceType.INGOT, PrimaryResource.OSMIUM);
         for (AdvancedFactoryType type : MMEnumUtils.ADVANCED_FACTORY_TYPES) {
-            BlockRegistryObject<AdvancedBlockFactoryMachine.AdvancedBlockFactory<?>, AdvancedItemBlockFactory> basicFactory = AFBlocks.getAdvancedFactory(FactoryTier.BASIC, type);
-            BlockRegistryObject<AdvancedBlockFactoryMachine.AdvancedBlockFactory<?>, AdvancedItemBlockFactory> advancedFactory = AFBlocks.getAdvancedFactory(FactoryTier.ADVANCED, type);
-            BlockRegistryObject<AdvancedBlockFactoryMachine.AdvancedBlockFactory<?>, AdvancedItemBlockFactory> eliteFactory = AFBlocks.getAdvancedFactory(FactoryTier.ELITE, type);
+            BlockRegistryObject<BlockAdvancedFactoryMachine.BlockAdvancedFactory<?>, AdvancedItemBlockFactory> basicFactory = AFBlocks.getAdvancedFactory(FactoryTier.BASIC, type);
+            BlockRegistryObject<BlockAdvancedFactoryMachine.BlockAdvancedFactory<?>, AdvancedItemBlockFactory> advancedFactory = AFBlocks.getAdvancedFactory(FactoryTier.ADVANCED, type);
+            BlockRegistryObject<BlockAdvancedFactoryMachine.BlockAdvancedFactory<?>, AdvancedItemBlockFactory> eliteFactory = AFBlocks.getAdvancedFactory(FactoryTier.ELITE, type);
             addFactoryRecipe(consumer, basicPath, basicFactory, type.getBaseBlock().getItemHolder(), Tags.Items.INGOTS_IRON, MekanismTags.Items.ALLOYS_BASIC, MekanismTags.Items.CIRCUITS_BASIC);
             addFactoryRecipe(consumer, advancedPath, advancedFactory, basicFactory.getItemHolder(), osmiumIngot, MekanismTags.Items.ALLOYS_INFUSED, MekanismTags.Items.CIRCUITS_ADVANCED);
             addFactoryRecipe(consumer, elitePath, eliteFactory, advancedFactory.getItemHolder(), Tags.Items.INGOTS_GOLD, MekanismTags.Items.ALLOYS_REINFORCED, MekanismTags.Items.CIRCUITS_ELITE);
@@ -44,7 +44,7 @@ class AdvancedFactoryRecipeProvider implements ISubRecipeProvider {
         }
     }
 
-    private void addFactoryRecipe(RecipeOutput consumer, String basePath, BlockRegistryObject<AdvancedBlockFactoryMachine.AdvancedBlockFactory<?>, ?> factory, Holder<Item> toUpgrade,
+    private void addFactoryRecipe(RecipeOutput consumer, String basePath, BlockRegistryObject<BlockAdvancedFactoryMachine.BlockAdvancedFactory<?>, ?> factory, Holder<Item> toUpgrade,
                                   TagKey<Item> ingotTag, TagKey<Item> alloyTag, TagKey<Item> circuitTag) {
         MekMMDataShapedRecipeBuilder.shapedRecipe(factory)
               .pattern(MoreMachineRecipeProvider.TIER_PATTERN)
@@ -52,6 +52,6 @@ class AdvancedFactoryRecipeProvider implements ISubRecipeProvider {
               .key(Pattern.CIRCUIT, circuitTag)
               .key(Pattern.INGOT, ingotTag)
               .key(Pattern.ALLOY, alloyTag)
-              .build(consumer, Mekmm.rl(basePath + Attribute.getOrThrow(factory, AdvancedAttributeFactoryType.class).getAdvancedFactoryType().getRegistryNameComponent()));
+              .build(consumer, Mekmm.rl(basePath + Attribute.getOrThrow(factory, AttributeAdvancedFactoryType.class).getAdvancedFactoryType().getRegistryNameComponent()));
     }
 }

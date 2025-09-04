@@ -1,6 +1,6 @@
 package com.jerry.mekmm.common.util;
 
-import com.jerry.mekaf.common.block.attribute.AdvancedAttributeFactoryType;
+import com.jerry.mekaf.common.block.attribute.AttributeAdvancedFactoryType;
 import com.jerry.mekmm.common.block.attribute.MMAttributeFactoryType;
 import mekanism.common.block.attribute.Attribute;
 import net.minecraft.core.Holder;
@@ -20,9 +20,9 @@ public class MMUtils {
 
     //从MekanismUtils的isSameTypeFactory单拎出来的
     public static boolean isSameAFTypeFactory(Holder<Block> block, Block factoryBlockType) {
-        AdvancedAttributeFactoryType attribute = Attribute.get(block, AdvancedAttributeFactoryType.class);
+        AttributeAdvancedFactoryType attribute = Attribute.get(block, AttributeAdvancedFactoryType.class);
         if (attribute != null) {
-            AdvancedAttributeFactoryType otherType = Attribute.get(factoryBlockType, AdvancedAttributeFactoryType.class);
+            AttributeAdvancedFactoryType otherType = Attribute.get(factoryBlockType, AttributeAdvancedFactoryType.class);
             return otherType != null && attribute.getAdvancedFactoryType() == otherType.getAdvancedFactoryType();
         }
         return false;
