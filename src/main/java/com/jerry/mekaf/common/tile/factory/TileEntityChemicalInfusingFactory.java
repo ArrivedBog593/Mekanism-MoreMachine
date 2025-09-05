@@ -40,6 +40,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -75,9 +76,10 @@ public class TileEntityChemicalInfusingFactory extends TileEntityChemicalToChemi
         ConfigInfo chemicalConfig = configComponent.getConfig(TransmissionType.CHEMICAL);
         if (chemicalConfig != null) {
             chemicalConfig.addSlotInfo(DataType.INPUT_2, new ChemicalSlotInfo(true, false, rightTank));
-            chemicalConfig.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo(true, true, rightTank));
             chemicalConfig.addSlotInfo(DataType.INPUT_1, new ChemicalSlotInfo(true, false, inputChemicalTanks));
-            chemicalConfig.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo(true, true, inputChemicalTanks));
+            List<IChemicalTank> ioTank = new ArrayList<>(List.of(rightTank));
+            ioTank.addAll(inputChemicalTanks);
+            chemicalConfig.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo(true, true, ioTank));
         }
 
         ejectorComponent = new TileComponentEjector(this);

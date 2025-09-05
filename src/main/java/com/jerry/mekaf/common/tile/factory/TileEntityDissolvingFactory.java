@@ -48,6 +48,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -89,8 +90,10 @@ public class TileEntityDissolvingFactory extends TileEntityItemToChemicalAdvance
         ConfigInfo chemicalConfig = configComponent.getConfig(TransmissionType.CHEMICAL);
         if (chemicalConfig != null) {
             chemicalConfig.addSlotInfo(DataType.INPUT, new ChemicalSlotInfo(true, false, injectTank));
-            chemicalConfig.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo(true, true, injectTank));
-            chemicalConfig.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo(true, true, Arrays.stream(outputTank).toList()));
+            List<IChemicalTank> ioTank = new ArrayList<>(List.of(injectTank));
+            ioTank.addAll(outputChemicalTanks);
+            //这个只能设定一个
+            chemicalConfig.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo(true, true, ioTank));
         }
 
         ejectorComponent = new TileComponentEjector(this);
