@@ -609,7 +609,7 @@ public abstract class MMTileEntityFactory<RECIPE extends MekanismRecipe<?>> exte
         for (Entry<ItemStack, RecipeProcessInfo<RECIPE>> entry : processes.entrySet()) {
             // 获取有物品槽位的物品数量
             RecipeProcessInfo<RECIPE> recipeProcessInfo = entry.getValue();
-            // 获取minPerSlot（一般为1，富集聚聚乙烯为3）
+            // 获取minPerSlot（一般为1，富集聚乙烯为3）
             int minPerSlot = recipeProcessInfo.getMinPerSlot(this);
             // 需要的最大槽数
             int maxSlots = recipeProcessInfo.totalCount / minPerSlot;

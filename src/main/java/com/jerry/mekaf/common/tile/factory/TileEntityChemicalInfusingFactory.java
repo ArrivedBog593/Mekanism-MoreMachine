@@ -44,7 +44,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class TileEntityChemicalInfusingFactory extends TileEntityChemicalToChemicalAdvancedFactory<ChemicalChemicalToChemicalRecipe> implements IHasDumpButton, IEitherSideRecipeLookupHandler.EitherSideChemicalRecipeLookupHandler<ChemicalChemicalToChemicalRecipe> {
+public class TileEntityChemicalInfusingFactory extends TileEntityChemicalToChemicalFactory<ChemicalChemicalToChemicalRecipe> implements IHasDumpButton, IEitherSideRecipeLookupHandler.EitherSideChemicalRecipeLookupHandler<ChemicalChemicalToChemicalRecipe> {
 
     private static final List<CachedRecipe.OperationTracker.RecipeError> TRACKED_ERROR_TYPES = List.of(
             CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_ENERGY,

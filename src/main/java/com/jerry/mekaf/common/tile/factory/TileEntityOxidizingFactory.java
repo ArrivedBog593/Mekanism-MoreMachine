@@ -29,7 +29,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class TileEntityOxidizingFactory extends TileEntityItemToChemicalAdvancedFactory<ItemStackToChemicalRecipe> implements ISingleRecipeLookupHandler.ItemRecipeLookupHandler<ItemStackToChemicalRecipe> {
+public class TileEntityOxidizingFactory extends TileEntityItemToChemicalFactory<ItemStackToChemicalRecipe> implements ISingleRecipeLookupHandler.ItemRecipeLookupHandler<ItemStackToChemicalRecipe> {
 
     private static final TriPredicate<ItemStackToChemicalRecipe, ItemStack, ChemicalStack> OUTPUT_CHECK =
             (recipe, input, output) -> ChemicalStack.isSameChemical(recipe.getOutput(input), output);

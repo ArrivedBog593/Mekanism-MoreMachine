@@ -35,12 +35,12 @@ public class GuiAdvancedFactory extends GuiConfigurableTile<TileEntityAdvancedFa
     public GuiAdvancedFactory(MekanismTileContainer<TileEntityAdvancedFactoryBase<?>> container, Inventory inv, Component title) {
         super(container, inv, title);
         imageHeight += tile instanceof TileEntityPressurizedReactingFactory ? 8 : tile instanceof TileEntityLiquifyingFactory ? 0 : 13;
-        if (tile instanceof TileEntityChemicalToChemicalAdvancedFactory<?>) imageHeight += 13;
+        if (tile instanceof TileEntityChemicalToChemicalFactory<?>) imageHeight += 13;
         if (tile.hasSecondaryResourceBar()) {
             imageHeight += 11;
-            inventoryLabelY = tile instanceof TileEntityChemicalToChemicalAdvancedFactory<?> ? 111 : tile instanceof TileEntityPressurizedReactingFactory ? 93 : 98;
+            inventoryLabelY = tile instanceof TileEntityChemicalToChemicalFactory<?> ? 111 : tile instanceof TileEntityPressurizedReactingFactory ? 93 : 98;
         } else {
-            inventoryLabelY = tile instanceof TileEntityChemicalToChemicalAdvancedFactory<?> ? 103 : tile instanceof TileEntityLiquifyingFactory ? 75 : 88;
+            inventoryLabelY = tile instanceof TileEntityChemicalToChemicalFactory<?> ? 103 : tile instanceof TileEntityLiquifyingFactory ? 75 : 88;
         }
 
         if (tile.tier == FactoryTier.ULTIMATE) {
@@ -62,7 +62,7 @@ public class GuiAdvancedFactory extends GuiConfigurableTile<TileEntityAdvancedFa
         }
         addRenderableWidget(new AFGuiSortingTab(this, tile));
         addRenderableWidget(new GuiVerticalPowerBar(this, tile.getEnergyContainer(), imageWidth - 12, 16,
-                tile instanceof TileEntityItemToChemicalAdvancedFactory<?> || tile instanceof TileEntityChemicalToItemAdvancedFactory<?> ? 65 : tile instanceof TileEntityChemicalToChemicalAdvancedFactory<?> ? 78 : 52))
+                tile instanceof TileEntityItemToChemicalFactory<?> || tile instanceof TileEntityChemicalToItemFactory<?> ? 65 : tile instanceof TileEntityChemicalToChemicalFactory<?> ? 78 : 52))
                 .warning(WarningTracker.WarningType.NOT_ENOUGH_ENERGY, tile.getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_ENERGY, 0));
         addRenderableWidget(new GuiEnergyTab(this, tile.getEnergyContainer(), tile::getLastUsage));
 
@@ -88,11 +88,11 @@ public class GuiAdvancedFactory extends GuiConfigurableTile<TileEntityAdvancedFa
                 dumpButton = addRenderableWidget(new GuiDumpButton<>(this, (TileEntityAdvancedFactoryBase<?> & IHasDumpButton) tile, tile.tier == FactoryTier.ULTIMATE ? 182 : 148, 76));
             } else {
                 addRenderableWidget(new GuiChemicalBar(this, GuiChemicalBar.getProvider(tile.getChemicalTankBar(), tile.getChemicalTanks(null)),
-                        7, tile instanceof TileEntityChemicalToChemicalAdvancedFactory<?> ? 102 : 89,
+                        7, tile instanceof TileEntityChemicalToChemicalFactory<?> ? 102 : 89,
                         tile.tier == FactoryTier.ULTIMATE ? 172 : 138, 4, true))
                         .warning(WarningTracker.WarningType.NO_MATCHING_RECIPE, tile.getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_SECONDARY_INPUT, 0));
                 dumpButton = addRenderableWidget(new GuiDumpButton<>(this, (TileEntityAdvancedFactoryBase<?> & IHasDumpButton) tile, tile.tier == FactoryTier.ULTIMATE ? 182 : 148,
-                        tile instanceof TileEntityChemicalToChemicalAdvancedFactory<?> ? 102 : 89));
+                        tile instanceof TileEntityChemicalToChemicalFactory<?> ? 102 : 89));
             }
         }
 
@@ -102,7 +102,7 @@ public class GuiAdvancedFactory extends GuiConfigurableTile<TileEntityAdvancedFa
         }
 
         // 物品到气体的工厂只需要一排储罐，物品槽位在TileEntity中被添加
-        if (tile instanceof TileEntityItemToChemicalAdvancedFactory<?> factory) {
+        if (tile instanceof TileEntityItemToChemicalFactory<?> factory) {
             for (int i = 0; i < tile.tier.processes; i++) {
                 int index = i;
                 addRenderableWidget(new GuiChemicalGauge(() -> factory.outputChemicalTanks.get(index), () -> tile.getChemicalTanks(null), GaugeType.SMALL, this, factory.getXPos(index) - 1, 57))
@@ -111,7 +111,7 @@ public class GuiAdvancedFactory extends GuiConfigurableTile<TileEntityAdvancedFa
         }
 
         // 气体到物品的工厂只需要一排储罐，但储罐在上面
-        if (tile instanceof TileEntityChemicalToItemAdvancedFactory<?> factory) {
+        if (tile instanceof TileEntityChemicalToItemFactory<?> factory) {
             for (int i = 0; i < tile.tier.processes; i++) {
                 int index = i;
                 addRenderableWidget(new GuiChemicalGauge(() -> factory.inputChemicalTanks.get(index), () -> tile.getChemicalTanks(null), GaugeType.SMALL, this, factory.getXPos(index) - 1, 13))
@@ -120,7 +120,7 @@ public class GuiAdvancedFactory extends GuiConfigurableTile<TileEntityAdvancedFa
         }
 
         // 气体生产气体的工厂需要两排储罐
-        if (tile instanceof TileEntityChemicalToChemicalAdvancedFactory<?> factory) {
+        if (tile instanceof TileEntityChemicalToChemicalFactory<?> factory) {
             for (int i = 0; i < tile.tier.processes; i++) {
                 int index = i;
                 addRenderableWidget(new GuiChemicalGauge(() -> factory.inputChemicalTanks.get(index), () -> tile.getChemicalTanks(null), GaugeType.SMALL, this, factory.getXPos(index) - 1, 13))
@@ -134,7 +134,7 @@ public class GuiAdvancedFactory extends GuiConfigurableTile<TileEntityAdvancedFa
         for (int i = 0; i < tile.tier.processes; i++) {
             int cacheIndex = i;
             addRenderableWidget(new GuiProgress(() -> tile.getScaledProgress(1, cacheIndex), ProgressType.DOWN, this, 4 + tile.getXPos(i),
-                    tile instanceof TileEntityChemicalToChemicalAdvancedFactory<?> || tile instanceof TileEntityChemicalToItemAdvancedFactory<?> ? 46 : 33))
+                    tile instanceof TileEntityChemicalToChemicalFactory<?> || tile instanceof TileEntityChemicalToItemFactory<?> ? 46 : 33))
                     .recipeViewerCategory(tile)
                     //Only can happen if recipes change because inputs are sanitized in the factory based on the output
                     .warning(WarningTracker.WarningType.INPUT_DOESNT_PRODUCE_OUTPUT, tile.getWarningCheck(CachedRecipe.OperationTracker.RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT, cacheIndex));

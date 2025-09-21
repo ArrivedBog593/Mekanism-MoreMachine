@@ -47,7 +47,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Set;
 
-public class TileEntityWashingFactory extends TileEntityChemicalToChemicalAdvancedFactory<FluidChemicalToChemicalRecipe> implements IHasDumpButton, IDoubleRecipeLookupHandler.FluidChemicalRecipeLookupHandler<FluidChemicalToChemicalRecipe> {
+public class TileEntityWashingFactory extends TileEntityChemicalToChemicalFactory<FluidChemicalToChemicalRecipe> implements IHasDumpButton, IDoubleRecipeLookupHandler.FluidChemicalRecipeLookupHandler<FluidChemicalToChemicalRecipe> {
 
     protected static final DoubleInputRecipeCache.CheckRecipeType<FluidStack, ChemicalStack, FluidChemicalToChemicalRecipe, ChemicalStack> OUTPUT_CHECK =
             (recipe, input, extra, output) -> ChemicalStack.isSameChemical(recipe.getOutput(input, extra), output);

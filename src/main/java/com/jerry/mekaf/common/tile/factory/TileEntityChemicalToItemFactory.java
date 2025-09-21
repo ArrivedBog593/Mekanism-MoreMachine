@@ -39,7 +39,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.function.ToIntBiFunction;
 
-public abstract class TileEntityChemicalToItemAdvancedFactory<RECIPE extends MekanismRecipe<?>> extends TileEntityAdvancedFactoryBase<RECIPE>{
+public abstract class TileEntityChemicalToItemFactory<RECIPE extends MekanismRecipe<?>> extends TileEntityAdvancedFactoryBase<RECIPE> {
 
     protected CIProcessInfo[] processInfoSlots;
     public OutputInventorySlot[] outputSlot;
@@ -48,7 +48,7 @@ public abstract class TileEntityChemicalToItemAdvancedFactory<RECIPE extends Mek
     public List<IChemicalTank> inputChemicalTanks;
     public List<IInventorySlot> outputItemSlots;
 
-    protected TileEntityChemicalToItemAdvancedFactory(Holder<Block> blockProvider, BlockPos pos, BlockState state, List<CachedRecipe.OperationTracker.RecipeError> errorTypes, Set<CachedRecipe.OperationTracker.RecipeError> globalErrorTypes) {
+    protected TileEntityChemicalToItemFactory(Holder<Block> blockProvider, BlockPos pos, BlockState state, List<CachedRecipe.OperationTracker.RecipeError> errorTypes, Set<CachedRecipe.OperationTracker.RecipeError> globalErrorTypes) {
         super(blockProvider, pos, state, errorTypes, globalErrorTypes);
         inputChemicalTanks = new ArrayList<>();
         outputItemSlots = new ArrayList<>();
@@ -221,7 +221,7 @@ public abstract class TileEntityChemicalToItemAdvancedFactory<RECIPE extends Mek
         }
         if (!emptyProcesses.isEmpty()) {
             //If we have any empty slots, we need to factor them in as valid slots for items to transferred to
-            addEmptySlotsAsTargets(processes, emptyProcesses);
+            addEmptyTanksAsTargets(processes, emptyProcesses);
             //Note: Any remaining empty slots are "ignored" as we don't have any
             // spare items to distribute to them
         }
@@ -229,7 +229,7 @@ public abstract class TileEntityChemicalToItemAdvancedFactory<RECIPE extends Mek
         distributeItems(processes);
     }
 
-    protected void addEmptySlotsAsTargets(Map<ChemicalStack, CIRecipeProcessInfo<RECIPE>> processes, List<CIProcessInfo> emptyProcesses) {
+    protected void addEmptyTanksAsTargets(Map<ChemicalStack, CIRecipeProcessInfo<RECIPE>> processes, List<CIProcessInfo> emptyProcesses) {
         for (Map.Entry<ChemicalStack, CIRecipeProcessInfo<RECIPE>> entry : processes.entrySet()) {
             CIRecipeProcessInfo<RECIPE> recipeProcessInfo = entry.getValue();
             long minPerTank = recipeProcessInfo.getMinPerTank(this);
@@ -377,13 +377,13 @@ public abstract class TileEntityChemicalToItemAdvancedFactory<RECIPE extends Mek
 
         private final List<CIProcessInfo> processes = new ArrayList<>();
         @Nullable
-        private ToIntBiFunction<CIRecipeProcessInfo<RECIPE>, TileEntityChemicalToItemAdvancedFactory<RECIPE>> lazyMinPerTank;
+        private ToIntBiFunction<CIRecipeProcessInfo<RECIPE>, TileEntityChemicalToItemFactory<RECIPE>> lazyMinPerTank;
         private Object item;
         private RECIPE recipe;
         private long minPerTank = 1;
         private long totalCount;
 
-        public long getMinPerTank(TileEntityChemicalToItemAdvancedFactory<RECIPE> factory) {
+        public long getMinPerTank(TileEntityChemicalToItemFactory<RECIPE> factory) {
             if (lazyMinPerTank != null) {
                 //Get the value lazily
                 minPerTank = Math.max(1, lazyMinPerTank.applyAsInt(this, factory));

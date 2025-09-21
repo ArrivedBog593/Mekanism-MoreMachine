@@ -30,7 +30,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Set;
 
-public class TileEntityCrystallizingFactory extends TileEntityChemicalToItemAdvancedFactory<ChemicalCrystallizerRecipe> implements ISingleRecipeLookupHandler.ChemicalRecipeLookupHandler<ChemicalCrystallizerRecipe> {
+public class TileEntityCrystallizingFactory extends TileEntityChemicalToItemFactory<ChemicalCrystallizerRecipe> implements ISingleRecipeLookupHandler.ChemicalRecipeLookupHandler<ChemicalCrystallizerRecipe> {
 
     protected static final TriPredicate<ChemicalCrystallizerRecipe, ChemicalStack, ItemStack> OUTPUT_CHECK =
             (recipe, input, output) -> InventoryUtils.areItemsStackable(recipe.getOutput(input), output);

@@ -111,7 +111,7 @@ public class TileEntityLargeRotaryCondensentrator extends TileEntityRecipeLargeM
     private final IInputHandler<@NotNull ChemicalStack> gasInputHandler;
 
     private long clientEnergyUsed = 0;
-    private int baselineMaxOperations = 30;
+    private int baselineMaxOperations = 32;
     private int numPowering;
 
     private MachineEnergyContainer<TileEntityLargeRotaryCondensentrator> energyContainer;
