@@ -54,8 +54,9 @@ public class TileEntityCentrifugingFactory extends TileEntityChemicalToChemicalF
         ConfigInfo config = configComponent.getConfig(TransmissionType.CHEMICAL);
         if (config != null) {
             config.addSlotInfo(DataType.INPUT, new ChemicalSlotInfo(true, false, inputChemicalTanks));
-            config.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo(true, true, inputChemicalTanks));
-            config.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo(true, true, outputChemicalTanks));
+            List<IChemicalTank> ioTank = outputChemicalTanks;
+            ioTank.addAll(inputChemicalTanks);
+            config.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo(true, true, ioTank));
         }
         configComponent.addDisabledSides(RelativeSide.TOP);
 

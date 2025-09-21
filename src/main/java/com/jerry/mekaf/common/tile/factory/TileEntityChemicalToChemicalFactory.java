@@ -61,7 +61,7 @@ public abstract class TileEntityChemicalToChemicalFactory<RECIPE extends Mekanis
         ConfigInfo config = configComponent.getConfig(TransmissionType.CHEMICAL);
         if (config != null) {
             config.addSlotInfo(DataType.OUTPUT, new ChemicalSlotInfo(false, true, outputChemicalTanks));
-            config.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo(true, true, outputChemicalTanks));
+//            config.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo(true, true, outputChemicalTanks));
         }
         ConfigInfo itemConfig = configComponent.getConfig(TransmissionType.ITEM);
         if (itemConfig != null) {
