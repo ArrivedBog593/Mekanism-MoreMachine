@@ -1,6 +1,7 @@
 package com.jerry.mekaf.common.tile.base;
 
 import com.jerry.mekaf.common.inventory.slot.AdvancedFactoryInputInventorySlot;
+import com.jerry.mekaf.common.upgrade.ItemToMergedUpgradeData;
 import mekanism.api.Action;
 import mekanism.api.IContentsListener;
 import mekanism.api.RelativeSide;
@@ -32,6 +33,11 @@ import mekanism.common.inventory.warning.WarningTracker;
 import mekanism.common.lib.inventory.HashedItem;
 import mekanism.common.lib.transmitter.TransmissionType;
 import mekanism.common.tile.base.SubstanceType;
+import mekanism.common.tile.component.ITileComponent;
+import mekanism.common.tile.component.config.ConfigInfo;
+import mekanism.common.tile.component.config.DataType;
+import mekanism.common.tile.component.config.slot.ChemicalSlotInfo;
+import mekanism.common.upgrade.IUpgradeData;
 import mekanism.common.util.MekanismUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
@@ -43,7 +49,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.function.IntSupplier;
 
-public abstract class TileEntityItemToFourMergedFactory<RECIPE extends MekanismRecipe> extends TileEntityAdvancedFactoryBase<RECIPE> {
+public abstract class TileEntityItemToMergedFactory<RECIPE extends MekanismRecipe> extends TileEntityAdvancedFactoryBase<RECIPE> {
 
     private static final long MAX_CHEMICAL = 10_000;
 
@@ -53,12 +59,15 @@ public abstract class TileEntityItemToFourMergedFactory<RECIPE extends MekanismR
 
     protected final List<IInventorySlot> inputItemSlots;
     public final List<MergedChemicalTank> outputChemicalTanks;
+    public final List<IGasTank> outputGasTanks;
+    public final List<IInfusionTank> outputInfusionTanks;
+    public final List<IPigmentTank> outputPigmentTanks;
+    public final List<ISlurryTank> outputSlurryTanks;
 
-    protected TileEntityItemToFourMergedFactory(IBlockProvider blockProvider, BlockPos pos, BlockState state, List<CachedRecipe.OperationTracker.RecipeError> errorTypes, Set<CachedRecipe.OperationTracker.RecipeError> globalErrorTypes) {
+    protected TileEntityItemToMergedFactory(IBlockProvider blockProvider, BlockPos pos, BlockState state, List<CachedRecipe.OperationTracker.RecipeError> errorTypes, Set<CachedRecipe.OperationTracker.RecipeError> globalErrorTypes) {
         super(blockProvider, pos, state, errorTypes, globalErrorTypes);
         inputItemSlots = new ArrayList<>();
         outputChemicalTanks = new ArrayList<>();
-        outputTank = new MergedChemicalTank[tier.processes];
 
         processInfoSlots = new ItemToFourMergedProcessInfo[tier.processes];
         for (int i = 0; i < tier.processes; i++) {
@@ -71,11 +80,38 @@ public abstract class TileEntityItemToFourMergedFactory<RECIPE extends MekanismR
         }
 
         addSupported(TransmissionType.GAS, TransmissionType.INFUSION, TransmissionType.PIGMENT, TransmissionType.SLURRY);
-        for (int i = 0; i < tier.processes; i++) {
-            configComponent.setupOutputConfig(TransmissionType.GAS, outputTank[i].getGasTank(), RelativeSide.RIGHT);
-            configComponent.setupOutputConfig(TransmissionType.INFUSION, outputTank[i].getInfusionTank(), RelativeSide.RIGHT);
-            configComponent.setupOutputConfig(TransmissionType.PIGMENT, outputTank[i].getPigmentTank(), RelativeSide.RIGHT);
-            configComponent.setupOutputConfig(TransmissionType.SLURRY, outputTank[i].getSlurryTank(), RelativeSide.RIGHT);
+        //初始化其他储罐
+        outputGasTanks = new ArrayList<>();
+        outputInfusionTanks = new ArrayList<>();
+        outputPigmentTanks = new ArrayList<>();
+        outputSlurryTanks = new ArrayList<>();
+        for (MergedChemicalTank tank : outputChemicalTanks) {
+            outputGasTanks.add(tank.getGasTank());
+            outputInfusionTanks.add(tank.getInfusionTank());
+            outputPigmentTanks.add(tank.getPigmentTank());
+            outputSlurryTanks.add(tank.getSlurryTank());
+        }
+        ConfigInfo gasConfig = configComponent.getConfig(TransmissionType.GAS);
+        if (gasConfig != null) {
+            gasConfig.addSlotInfo(DataType.OUTPUT, new ChemicalSlotInfo.GasSlotInfo(false, true, outputGasTanks));
+            gasConfig.fill(DataType.INPUT);
+            gasConfig.setDataType(DataType.OUTPUT, RelativeSide.RIGHT);
+            gasConfig.setCanEject(true);
+        }
+        ConfigInfo infusionConfig = configComponent.getConfig(TransmissionType.INFUSION);
+        if (infusionConfig != null) {
+            infusionConfig.addSlotInfo(DataType.OUTPUT, new ChemicalSlotInfo.InfusionSlotInfo(false, true, outputInfusionTanks));
+            infusionConfig.setDataType(DataType.OUTPUT, RelativeSide.RIGHT);
+        }
+        ConfigInfo pigmentConfig = configComponent.getConfig(TransmissionType.PIGMENT);
+        if (pigmentConfig != null) {
+            pigmentConfig.addSlotInfo(DataType.OUTPUT, new ChemicalSlotInfo.PigmentSlotInfo(false, true, outputPigmentTanks));
+            pigmentConfig.setDataType(DataType.OUTPUT, RelativeSide.RIGHT);
+        }
+        ConfigInfo slurryConfig = configComponent.getConfig(TransmissionType.SLURRY);
+        if (slurryConfig != null) {
+            slurryConfig.addSlotInfo(DataType.OUTPUT, new ChemicalSlotInfo.SlurrySlotInfo(false, true, outputSlurryTanks));
+            slurryConfig.setDataType(DataType.OUTPUT, RelativeSide.RIGHT);
         }
         configComponent.setupItemIOConfig(inputItemSlots, Collections.emptyList(), energySlot, false);
     }
@@ -83,6 +119,9 @@ public abstract class TileEntityItemToFourMergedFactory<RECIPE extends MekanismR
     @Override
     protected void presetVariables() {
         super.presetVariables();
+        //在初始化所有储罐之前
+        outputTank = new MergedChemicalTank[tier.processes];
+        mergedOutputHandlers = new BoxedChemicalOutputHandler[tier.processes];
         IContentsListener saveOnlyListener = this::markForSave;
         for (int i = 0; i < tier.processes; i++) {
             outputTank[i] = MergedChemicalTank.create(
@@ -91,46 +130,36 @@ public abstract class TileEntityItemToFourMergedFactory<RECIPE extends MekanismR
                     ChemicalTankBuilder.PIGMENT.output(MAX_CHEMICAL, getListener(SubstanceType.PIGMENT, saveOnlyListener)),
                     ChemicalTankBuilder.SLURRY.output(MAX_CHEMICAL, getListener(SubstanceType.SLURRY, saveOnlyListener))
             );
+            mergedOutputHandlers[i] = new BoxedChemicalOutputHandler(outputTank[i], CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE);
         }
     }
 
     @Override
     protected void addGasTanks(ChemicalTankHelper<Gas, GasStack, IGasTank> builder, IContentsListener listener, IContentsListener updateSortingListener) {
-//        outputTank = new MergedChemicalTank[tier.processes];
-        mergedOutputHandler = new BoxedChemicalOutputHandler[tier.processes];
         for (int i = 0; i < tier.processes; i++) {
             builder.addTank(outputTank[i].getGasTank());
-            mergedOutputHandler[i] = new BoxedChemicalOutputHandler(outputTank[i], CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE);
+
         }
     }
 
     @Override
     protected void addInfusionTanks(ChemicalTankHelper<InfuseType, InfusionStack, IInfusionTank> builder, IContentsListener listener, IContentsListener updateSortingListener) {
-//        outputTank = new MergedChemicalTank[tier.processes];
-//        mergedOutputHandler = new BoxedChemicalOutputHandler[tier.processes];
         for (int i = 0; i < tier.processes; i++) {
             builder.addTank(outputTank[i].getInfusionTank());
-//            mergedOutputHandler[i] = new BoxedChemicalOutputHandler(outputTank[i], CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE);
         }
     }
 
     @Override
     protected void addPigmentTanks(ChemicalTankHelper<Pigment, PigmentStack, IPigmentTank> builder, IContentsListener listener, IContentsListener updateSortingListener) {
-//        outputTank = new MergedChemicalTank[tier.processes];
-//        mergedOutputHandler = new BoxedChemicalOutputHandler[tier.processes];
         for (int i = 0; i < tier.processes; i++) {
             builder.addTank(outputTank[i].getPigmentTank());
-//            mergedOutputHandler[i] = new BoxedChemicalOutputHandler(outputTank[i], CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE);
         }
     }
 
     @Override
     protected void addSlurryTanks(ChemicalTankHelper<Slurry, SlurryStack, ISlurryTank> builder, IContentsListener listener, IContentsListener updateSortingListener) {
-//        outputTank = new MergedChemicalTank[tier.processes];
-//        mergedOutputHandler = new BoxedChemicalOutputHandler[tier.processes];
         for (int i = 0; i < tier.processes; i++) {
             builder.addTank(outputTank[i].getSlurryTank());
-//            mergedOutputHandler[i] = new BoxedChemicalOutputHandler(outputTank[i], CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE);
         }
     }
 
@@ -177,7 +206,7 @@ public abstract class TileEntityItemToFourMergedFactory<RECIPE extends MekanismR
     }
 
     @Nullable
-    protected abstract RECIPE findRecipe(int process, @NotNull ItemStack fallbackInput, @NotNull MergedChemicalTank outputSlot);
+    protected abstract RECIPE findRecipe(int process, @NotNull ItemStack fallbackInput, @NotNull MergedChemicalTank outputTanks);
 
     /**
      * Like isItemValidForSlot makes no assumptions about current stored types
@@ -185,6 +214,33 @@ public abstract class TileEntityItemToFourMergedFactory<RECIPE extends MekanismR
     public abstract boolean isValidInputItem(@NotNull ItemStack stack);
 
     protected abstract int getNeededInput(RECIPE recipe, ItemStack inputStack);
+
+    @Override
+    public void parseUpgradeData(@NotNull IUpgradeData upgradeData) {
+        if (upgradeData instanceof ItemToMergedUpgradeData data) {
+            redstone = data.redstone;
+            setControlType(data.controlType);
+            getEnergyContainer().setEnergy(data.energyContainer.getEnergy());
+            sorting = data.sorting;
+            energySlot.deserializeNBT(data.energySlot.serializeNBT());
+            System.arraycopy(data.progress, 0, progress, 0, data.progress.length);
+            for (int i = 0; i < data.inputSlots.size(); i++) {
+                //Copy the stack using NBT so that if it is not actually valid due to a reload we don't crash
+                inputItemSlots.get(i).deserializeNBT(data.inputSlots.get(i).serializeNBT());
+            }
+            for (int i = 0; i < data.outputTanks.size(); i++) {
+                outputChemicalTanks.get(i).getGasTank().setStack(data.outputTanks.get(i).getGasTank().getStack());
+                outputChemicalTanks.get(i).getInfusionTank().setStack(data.outputTanks.get(i).getInfusionTank().getStack());
+                outputChemicalTanks.get(i).getPigmentTank().setStack(data.outputTanks.get(i).getPigmentTank().getStack());
+                outputChemicalTanks.get(i).getSlurryTank().setStack(data.outputTanks.get(i).getSlurryTank().getStack());
+            }
+            for (ITileComponent component : getComponents()) {
+                component.read(data.components);
+            }
+        } else {
+            super.parseUpgradeData(upgradeData);
+        }
+    }
 
     @Override
     protected void sortInventoryOrTank() {

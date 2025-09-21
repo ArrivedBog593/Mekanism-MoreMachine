@@ -21,7 +21,6 @@ import mekanism.api.chemical.pigment.PigmentStack;
 import mekanism.api.chemical.slurry.ISlurryTank;
 import mekanism.api.chemical.slurry.Slurry;
 import mekanism.api.chemical.slurry.SlurryStack;
-import mekanism.api.inventory.IInventorySlot;
 import mekanism.api.math.FloatingLong;
 import mekanism.api.providers.IBlockProvider;
 import mekanism.api.recipes.MekanismRecipe;
@@ -124,8 +123,8 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
     protected IOutputHandler<@NotNull PigmentStack>[] pigmentOutputHandlers;
     protected IInputHandler<@NotNull SlurryStack>[] slurryInputHandlers;
     protected IOutputHandler<@NotNull SlurryStack>[] slurryOutputHandlers;
-    protected BoxedChemicalInputHandler[] mergedInputHandler;
-    protected BoxedChemicalOutputHandler[] mergedOutputHandler;
+    protected BoxedChemicalInputHandler[] mergedInputHandlers;
+    protected BoxedChemicalOutputHandler[] mergedOutputHandlers;
     protected IInputHandler<@NotNull FluidStack>[] fluidInputHandlers;
     protected IOutputHandler<@NotNull FluidStack>[] fluidOutputHandlers;
 
@@ -264,15 +263,14 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
 
     }
 
+    public IGasTank getGasTankBar() {
+        return null;
+    }
+
     public int getXPos(int index) {
         int baseX = tier == FactoryTier.BASIC ? 55 : tier == FactoryTier.ADVANCED ? 35 : tier == FactoryTier.ELITE ? 29 : 27;
         int baseXMult = tier == FactoryTier.BASIC ? 38 : tier == FactoryTier.ADVANCED ? 26 : 19;
         return baseX + (index * baseXMult);
-    }
-
-    @Nullable
-    protected IInventorySlot getExtraSlot() {
-        return null;
     }
 
     public AdvancedFactoryType getAdvancedFactoryType() {
@@ -284,7 +282,7 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
         super.onUpdateServer();
         energySlot.fillContainerOrConvert();
 
-        handleSecondaryFuel();
+        handleExtrasFuel();
         if (sortingNeeded && isSorting()) {
             //If sorting is needed, and we have sorting enabled mark
             // sorting as no longer needed and sort the inventory
@@ -349,7 +347,7 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
     /**
      * Handles filling the secondary fuel tank based on the item in the extra slot
      */
-    protected void handleSecondaryFuel() {
+    protected void handleExtrasFuel() {
     }
 
     public int getProgress(int cacheIndex) {
@@ -453,7 +451,7 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
         return type.getBaseMachine().getTileType().get() == tileType;
     }
 
-    public boolean hasSecondaryResourceBar() {
+    public boolean hasExtrasResourceBar() {
         return false;
     }
 

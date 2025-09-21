@@ -1,7 +1,7 @@
 package com.jerry.mekaf.common.inventory.slot;
 
-import com.jerry.mekaf.common.tile.base.TileEntityItemToFourMergedFactory;
 import com.jerry.mekaf.common.tile.base.TileEntityItemToGasFactory;
+import com.jerry.mekaf.common.tile.base.TileEntityItemToMergedFactory;
 import mekanism.api.IContentsListener;
 import mekanism.api.chemical.gas.IGasTank;
 import mekanism.api.chemical.merged.MergedChemicalTank;
@@ -25,13 +25,13 @@ public class AdvancedFactoryInputInventorySlot extends InputInventorySlot {
                 factory::isValidInputItem, listener, x, y);
     }
 
-    public static AdvancedFactoryInputInventorySlot create(TileEntityItemToFourMergedFactory<?> factory, int process, MergedChemicalTank outputTank, @Nullable IContentsListener listener, int x, int y) {
+    public static AdvancedFactoryInputInventorySlot create(TileEntityItemToMergedFactory<?> factory, int process, MergedChemicalTank outputTank, @Nullable IContentsListener listener, int x, int y) {
         Objects.requireNonNull(factory, "Factory cannot be null");
         Objects.requireNonNull(outputTank, "Chemical output tank cannot be null");
         return new AdvancedFactoryInputInventorySlot(factory, process, outputTank, listener, x, y);
     }
 
-    private AdvancedFactoryInputInventorySlot(TileEntityItemToFourMergedFactory<?> factory, int process, MergedChemicalTank outputTank, @Nullable IContentsListener listener, int x, int y) {
+    private AdvancedFactoryInputInventorySlot(TileEntityItemToMergedFactory<?> factory, int process, MergedChemicalTank outputTank, @Nullable IContentsListener listener, int x, int y) {
         super(stack -> factory.inputProducesOutput(process, stack, outputTank, false),
                 factory::isValidInputItem, listener, x, y);
     }

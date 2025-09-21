@@ -57,12 +57,12 @@ public class MMBlockShapes {
     public static VoxelShape[] getShape(FactoryTier tier, AdvancedFactoryType type) {
         return switch (type) {
             case OXIDIZING -> BlockShapes.CHEMICAL_OXIDIZER;
-//            case CHEMICAL_INFUSING -> BlockShapes.CHEMICAL_INFUSER;
-//            case DISSOLVING -> BlockShapes.CHEMICAL_DISSOLUTION_CHAMBER;
-//            case WASHING -> BlockShapes.CHEMICAL_WASHER;
+            case CHEMICAL_INFUSING -> BlockShapes.CHEMICAL_INFUSER;
+            case DISSOLVING -> BlockShapes.CHEMICAL_DISSOLUTION_CHAMBER;
+            case WASHING -> BlockShapes.CHEMICAL_WASHER;
 //            case CRYSTALLIZING -> BlockShapes.CHEMICAL_CRYSTALLIZER;
 //            case PRESSURISED_REACTING -> BlockShapes.PRESSURIZED_REACTION_CHAMBER;
-//            case CENTRIFUGING -> BlockShapes.ISOTOPIC_CENTRIFUGE;
+            case CENTRIFUGING -> BlockShapes.ISOTOPIC_CENTRIFUGE;
         };
     }
 }
