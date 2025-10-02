@@ -3,7 +3,7 @@ package com.jerry.mekaf.common.tile;
 import com.jerry.mekaf.common.tile.base.TileEntityGasToGasFactory;
 import com.jerry.mekaf.common.upgrade.GasGasToGasUpgradeData;
 import mekanism.api.IContentsListener;
-import mekanism.api.Upgrade;
+import mekanism.api.chemical.ChemicalTankBuilder;
 import mekanism.api.chemical.gas.Gas;
 import mekanism.api.chemical.gas.GasStack;
 import mekanism.api.chemical.gas.IGasTank;
@@ -20,6 +20,8 @@ import mekanism.common.Mekanism;
 import mekanism.common.capabilities.holder.chemical.ChemicalTankHelper;
 import mekanism.common.capabilities.holder.slot.InventorySlotHelper;
 import mekanism.common.inventory.container.MekanismContainer;
+import mekanism.common.inventory.container.slot.ContainerSlotType;
+import mekanism.common.inventory.container.slot.SlotOverlay;
 import mekanism.common.inventory.container.sync.SyncableFloatingLong;
 import mekanism.common.inventory.slot.chemical.GasInventorySlot;
 import mekanism.common.lib.transmitter.TransmissionType;
@@ -63,17 +65,16 @@ public class TileEntityChemicalInfusingFactory extends TileEntityGasToGasFactory
     public IGasTank rightTank;
 
     private FloatingLong clientEnergyUsed = FloatingLong.ZERO;
-    private int baselineMaxOperations = 1;
 
     private final IInputHandler<@NotNull GasStack> rightInputHandler;
 
     GasInventorySlot rightInputSlot;
 
-    protected TileEntityChemicalInfusingFactory(IBlockProvider blockProvider, BlockPos pos, BlockState state) {
+    public TileEntityChemicalInfusingFactory(IBlockProvider blockProvider, BlockPos pos, BlockState state) {
         super(blockProvider, pos, state, TRACKED_ERROR_TYPES, GLOBAL_ERROR_TYPES);
         ConfigInfo itemConfig = configComponent.getConfig(TransmissionType.ITEM);
         if (itemConfig != null) {
-            itemConfig.addSlotInfo(DataType.INPUT_2, new InventorySlotInfo(true, false, rightInputSlot));
+            itemConfig.addSlotInfo(DataType.EXTRA, new InventorySlotInfo(true, false, rightInputSlot));
             itemConfig.addSlotInfo(DataType.INPUT_OUTPUT, new InventorySlotInfo(true, true, rightInputSlot));
         }
         ConfigInfo chemicalConfig = configComponent.getConfig(TransmissionType.GAS);
@@ -89,11 +90,6 @@ public class TileEntityChemicalInfusingFactory extends TileEntityGasToGasFactory
         ejectorComponent.setOutputData(configComponent, TransmissionType.ITEM, TransmissionType.GAS)
                 .setCanTankEject(outputGasTanks::contains);
         rightInputHandler = InputHelper.getInputHandler(rightTank, RecipeError.NOT_ENOUGH_RIGHT_INPUT);
-    }
-
-    @Override
-    protected void handleExtrasFuel() {
-        rightInputSlot.fillTank();
     }
 
     public FloatingLong getEnergyUsed() {
@@ -131,11 +127,30 @@ public class TileEntityChemicalInfusingFactory extends TileEntityGasToGasFactory
 
     @Override
     protected void addGasTanks(ChemicalTankHelper<Gas, GasStack, IGasTank> builder, IContentsListener listener, IContentsListener updateSortingListener) {
+        super.addGasTanks(builder, listener, updateSortingListener);
+        builder.addTank(rightTank = ChemicalTankBuilder.GAS.create(MAX_GAS * tier.processes, this::containsRecipe, markAllMonitorsChanged(listener)));
     }
 
     @Override
     protected void addSlots(InventorySlotHelper builder, IContentsListener listener, IContentsListener updateSortingListener) {
+        builder.addSlot(rightInputSlot = GasInventorySlot.fill(rightTank, listener, 7, 83));
+        rightInputSlot.setSlotType(ContainerSlotType.INPUT);
+        rightInputSlot.setSlotOverlay(SlotOverlay.MINUS);
+    }
 
+    @Override
+    public IGasTank getGasTankBar() {
+        return rightTank;
+    }
+
+    @Override
+    protected void handleExtrasFuel() {
+        rightInputSlot.fillTank();
+    }
+
+    @Override
+    public boolean hasExtrasResourceBar() {
+        return true;
     }
 
     @Override
@@ -160,16 +175,8 @@ public class TileEntityChemicalInfusingFactory extends TileEntityGasToGasFactory
                 .setCanHolderFunction(() -> MekanismUtils.canFunction(this))
                 .setActive(active -> setActiveState(active, cacheIndex))
                 .setEnergyRequirements(energyContainer::getEnergyPerTick, energyContainer)
-                .setBaselineMaxOperations(() -> baselineMaxOperations)
+                .setBaselineMaxOperations(this::getBaselineMaxOperations)
                 .setOnFinish(this::markForSave);
-    }
-
-    @Override
-    public void recalculateUpgrades(Upgrade upgrade) {
-        super.recalculateUpgrades(upgrade);
-        if (upgrade == Upgrade.SPEED) {
-            baselineMaxOperations = (int) Math.pow(2, upgradeComponent.getUpgrades(Upgrade.SPEED));
-        }
     }
 
     @Override

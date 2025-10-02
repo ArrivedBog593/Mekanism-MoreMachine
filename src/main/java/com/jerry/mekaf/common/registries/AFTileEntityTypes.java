@@ -3,10 +3,7 @@ package com.jerry.mekaf.common.registries;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.jerry.mekaf.common.content.blocktype.AdvancedFactoryType;
-import com.jerry.mekaf.common.tile.TileEntityCentrifugingFactory;
-import com.jerry.mekaf.common.tile.TileEntityDissolvingFactory;
-import com.jerry.mekaf.common.tile.TileEntityOxidizingFactory;
-import com.jerry.mekaf.common.tile.TileEntityWashingFactory;
+import com.jerry.mekaf.common.tile.*;
 import com.jerry.mekaf.common.tile.base.TileEntityAdvancedFactoryBase;
 import com.jerry.mekmm.Mekmm;
 import mekanism.common.registration.impl.TileEntityTypeDeferredRegister;
@@ -28,9 +25,13 @@ public class AFTileEntityTypes {
     static {
         for (FactoryTier tier : EnumUtils.FACTORY_TIERS) {
             FACTORIES.put(tier, AdvancedFactoryType.OXIDIZING, AF_TILE_ENTITY_TYPES.register(AFBlocks.getAdvancedFactory(tier, AdvancedFactoryType.OXIDIZING), (pos, state) -> new TileEntityOxidizingFactory(AFBlocks.getAdvancedFactory(tier, AdvancedFactoryType.OXIDIZING), pos, state), TileEntityMekanism::tickServer, TileEntityMekanism::tickClient));
+            FACTORIES.put(tier, AdvancedFactoryType.CHEMICAL_INFUSING, AF_TILE_ENTITY_TYPES.register(AFBlocks.getAdvancedFactory(tier, AdvancedFactoryType.CHEMICAL_INFUSING), (pos, state) -> new TileEntityChemicalInfusingFactory(AFBlocks.getAdvancedFactory(tier, AdvancedFactoryType.CHEMICAL_INFUSING), pos, state), TileEntityMekanism::tickServer, TileEntityMekanism::tickClient));
             FACTORIES.put(tier, AdvancedFactoryType.DISSOLVING, AF_TILE_ENTITY_TYPES.register(AFBlocks.getAdvancedFactory(tier, AdvancedFactoryType.DISSOLVING), (pos, state) -> new TileEntityDissolvingFactory(AFBlocks.getAdvancedFactory(tier, AdvancedFactoryType.DISSOLVING), pos, state), TileEntityMekanism::tickServer, TileEntityMekanism::tickClient));
             FACTORIES.put(tier, AdvancedFactoryType.WASHING, AF_TILE_ENTITY_TYPES.register(AFBlocks.getAdvancedFactory(tier, AdvancedFactoryType.WASHING), (pos, state) -> new TileEntityWashingFactory(AFBlocks.getAdvancedFactory(tier, AdvancedFactoryType.WASHING), pos, state), TileEntityMekanism::tickServer, TileEntityMekanism::tickClient));
+            FACTORIES.put(tier, AdvancedFactoryType.CRYSTALLIZING, AF_TILE_ENTITY_TYPES.register(AFBlocks.getAdvancedFactory(tier, AdvancedFactoryType.CRYSTALLIZING), (pos, state) -> new TileEntityCrystallizingFactory(AFBlocks.getAdvancedFactory(tier, AdvancedFactoryType.CRYSTALLIZING), pos, state), TileEntityMekanism::tickServer, TileEntityMekanism::tickClient));
+            FACTORIES.put(tier, AdvancedFactoryType.PRESSURISED_REACTING, AF_TILE_ENTITY_TYPES.register(AFBlocks.getAdvancedFactory(tier, AdvancedFactoryType.PRESSURISED_REACTING), (pos, state) -> new TileEntityPressurizedReactingFactory(AFBlocks.getAdvancedFactory(tier, AdvancedFactoryType.PRESSURISED_REACTING), pos, state), TileEntityMekanism::tickServer, TileEntityMekanism::tickClient));
             FACTORIES.put(tier, AdvancedFactoryType.CENTRIFUGING, AF_TILE_ENTITY_TYPES.register(AFBlocks.getAdvancedFactory(tier, AdvancedFactoryType.CENTRIFUGING), (pos, state) -> new TileEntityCentrifugingFactory(AFBlocks.getAdvancedFactory(tier, AdvancedFactoryType.CENTRIFUGING), pos, state), TileEntityMekanism::tickServer, TileEntityMekanism::tickClient));
+            FACTORIES.put(tier, AdvancedFactoryType.LIQUIFYING, AF_TILE_ENTITY_TYPES.register(AFBlocks.getAdvancedFactory(tier, AdvancedFactoryType.LIQUIFYING), (pos, state) -> new TileEntityLiquifyingFactory(AFBlocks.getAdvancedFactory(tier, AdvancedFactoryType.LIQUIFYING), pos, state), TileEntityMekanism::tickServer, TileEntityMekanism::tickClient));
         }
     }
 

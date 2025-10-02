@@ -44,6 +44,7 @@ public class Mekmm implements IModModule {
         MMBlocks.MM_BLOCKS.register(modEventBus);
         MMTileEntityTypes.MM_TILE_ENTITY_TYPES.register(modEventBus);
         MMContainerTypes.MM_CONTAINER_TYPES.register(modEventBus);
+        MMCreativeTabs.MM_CREATIVE_TABS.register(modEventBus);
         MMRecipeSerializers.MM_RECIPE_SERIALIZERS.register(modEventBus);
 
         registerAdvancedFactory(modEventBus);

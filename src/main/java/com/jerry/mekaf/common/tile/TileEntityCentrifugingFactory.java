@@ -1,9 +1,9 @@
 package com.jerry.mekaf.common.tile;
 
 import com.jerry.mekaf.common.tile.base.TileEntityGasToGasFactory;
+import com.jerry.mekaf.common.upgrade.GasToGasUpgradeData;
 import mekanism.api.IContentsListener;
 import mekanism.api.RelativeSide;
-import mekanism.api.Upgrade;
 import mekanism.api.chemical.gas.Gas;
 import mekanism.api.chemical.gas.GasStack;
 import mekanism.api.chemical.gas.IGasTank;
@@ -28,6 +28,7 @@ import mekanism.common.tile.component.config.ConfigInfo;
 import mekanism.common.tile.component.config.DataType;
 import mekanism.common.tile.component.config.slot.ChemicalSlotInfo;
 import mekanism.common.tile.interfaces.IBoundingBlock;
+import mekanism.common.upgrade.IUpgradeData;
 import mekanism.common.util.MekanismUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
@@ -47,10 +48,8 @@ public class TileEntityCentrifugingFactory extends TileEntityGasToGasFactory<Gas
             RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT
     );
     private static final Set<RecipeError> GLOBAL_ERROR_TYPES = Set.of(RecipeError.NOT_ENOUGH_ENERGY);
-    public static final int MAX_GAS = 10_000;
 
     private FloatingLong clientEnergyUsed = FloatingLong.ZERO;
-    private int baselineMaxOperations = 1;
 
     public TileEntityCentrifugingFactory(IBlockProvider blockProvider, BlockPos pos, BlockState state) {
         super(blockProvider, pos, state, TRACKED_ERROR_TYPES, GLOBAL_ERROR_TYPES);
@@ -127,15 +126,7 @@ public class TileEntityCentrifugingFactory extends TileEntityGasToGasFactory<Gas
                 .setActive(active -> setActiveState(active, cacheIndex))
                 .setOnFinish(this::markForSave)
                 .setEnergyRequirements(energyContainer::getEnergyPerTick, energyContainer)
-                .setBaselineMaxOperations(() -> baselineMaxOperations);
-    }
-
-    @Override
-    public void recalculateUpgrades(Upgrade upgrade) {
-        super.recalculateUpgrades(upgrade);
-        if (upgrade == Upgrade.SPEED) {
-            baselineMaxOperations = (int) Math.pow(2, upgradeComponent.getUpgrades(Upgrade.SPEED));
-        }
+                .setBaselineMaxOperations(this::getBaselineMaxOperations);
     }
 
     @Override
@@ -147,5 +138,11 @@ public class TileEntityCentrifugingFactory extends TileEntityGasToGasFactory<Gas
     public void addContainerTrackers(MekanismContainer container) {
         super.addContainerTrackers(container);
         container.track(SyncableFloatingLong.create(this::getEnergyUsed, value -> clientEnergyUsed = value));
+    }
+
+    @Override
+    public @Nullable IUpgradeData getUpgradeData() {
+        return new GasToGasUpgradeData(redstone, getControlType(), getEnergyContainer(),
+                progress, energySlot, inputGasTanks, outputGasTanks, isSorting(), getComponents());
     }
 }

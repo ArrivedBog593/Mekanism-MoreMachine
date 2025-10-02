@@ -19,7 +19,10 @@ public enum AdvancedFactoryType implements IHasTranslationKey {
 
     DISSOLVING("dissolving", MMLang.DISSOLVING, () -> AFBlockTypes.CHEMICAL_DISSOLUTION_CHAMBER, () -> MekanismBlocks.CHEMICAL_DISSOLUTION_CHAMBER),
     WASHING("washing", MMLang.WASHING, () -> AFBlockTypes.CHEMICAL_WASHER, () -> MekanismBlocks.CHEMICAL_WASHER),
-    CENTRIFUGING("centrifuging", MMLang.CENTRIFUGING, () -> AFBlockTypes.ISOTOPIC_CENTRIFUGE, () -> MekanismBlocks.ISOTOPIC_CENTRIFUGE);
+    CRYSTALLIZING("crystallizing", MMLang.CRYSTALLIZING, () -> AFBlockTypes.CHEMICAL_CRYSTALLIZER, () -> MekanismBlocks.CHEMICAL_CRYSTALLIZER),
+    PRESSURISED_REACTING("pressurised_reacting", MMLang.PRESSURISED_REACTING, () -> AFBlockTypes.PRESSURIZED_REACTION_CHAMBER, () -> MekanismBlocks.PRESSURIZED_REACTION_CHAMBER),
+    CENTRIFUGING("centrifuging", MMLang.CENTRIFUGING, () -> AFBlockTypes.ISOTOPIC_CENTRIFUGE, () -> MekanismBlocks.ISOTOPIC_CENTRIFUGE),
+    LIQUIFYING("liquifying", MMLang.LIQUIFYING, () -> AFBlockTypes.NUTRITIONAL_LIQUIFIER, () -> MekanismBlocks.NUTRITIONAL_LIQUIFIER);
 
     private final String registryNameComponent;
     private final ILangEntry langEntry;

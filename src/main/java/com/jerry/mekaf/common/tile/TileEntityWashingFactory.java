@@ -1,8 +1,8 @@
 package com.jerry.mekaf.common.tile;
 
 import com.jerry.mekaf.common.tile.base.TileEntitySlurryToSlurryFactory;
+import com.jerry.mekaf.common.upgrade.FluidSlurryToSlurryUpgradeData;
 import mekanism.api.IContentsListener;
-import mekanism.api.Upgrade;
 import mekanism.api.chemical.slurry.ISlurryTank;
 import mekanism.api.chemical.slurry.Slurry;
 import mekanism.api.chemical.slurry.SlurryStack;
@@ -15,6 +15,7 @@ import mekanism.api.recipes.cache.CachedRecipe.OperationTracker.RecipeError;
 import mekanism.api.recipes.cache.TwoInputCachedRecipe;
 import mekanism.api.recipes.inputs.IInputHandler;
 import mekanism.api.recipes.inputs.InputHelper;
+import mekanism.common.Mekanism;
 import mekanism.common.capabilities.fluid.BasicFluidTank;
 import mekanism.common.capabilities.holder.fluid.FluidTankHelper;
 import mekanism.common.capabilities.holder.fluid.IFluidTankHolder;
@@ -34,6 +35,7 @@ import mekanism.common.tile.component.config.DataType;
 import mekanism.common.tile.component.config.slot.ChemicalSlotInfo;
 import mekanism.common.tile.component.config.slot.InventorySlotInfo;
 import mekanism.common.tile.interfaces.IHasDumpButton;
+import mekanism.common.upgrade.IUpgradeData;
 import mekanism.common.util.MekanismUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
@@ -58,26 +60,25 @@ public class TileEntityWashingFactory extends TileEntitySlurryToSlurryFactory<Fl
             RecipeError.NOT_ENOUGH_ENERGY,
             RecipeError.NOT_ENOUGH_SECONDARY_INPUT
     );
-    private static final long MAX_SLURRY = 10_000;
     private static final int MAX_FLUID = 10_000;
 
     public BasicFluidTank fluidTank;
 
     private FloatingLong clientEnergyUsed = FloatingLong.ZERO;
-    private int baselineMaxOperations = 1;
 
     private final IInputHandler<@NotNull FluidStack> fluidInputHandler;
 
-    FluidInventorySlot fluidSlot;
+    FluidInventorySlot fluidInputSlot;
     OutputInventorySlot fluidOutputSlot;
 
     public TileEntityWashingFactory(IBlockProvider blockProvider, BlockPos pos, BlockState state) {
         super(blockProvider, pos, state, TRACKED_ERROR_TYPES, GLOBAL_ERROR_TYPES);
+        configComponent.addSupported(TransmissionType.FLUID);
         ConfigInfo itemConfig = configComponent.getConfig(TransmissionType.ITEM);
         if (itemConfig != null) {
-            itemConfig.addSlotInfo(DataType.INPUT, new InventorySlotInfo(true, false, fluidSlot));
+            itemConfig.addSlotInfo(DataType.INPUT, new InventorySlotInfo(true, false, fluidInputSlot));
             itemConfig.addSlotInfo(DataType.OUTPUT, new InventorySlotInfo(false, true, fluidOutputSlot));
-            itemConfig.addSlotInfo(DataType.INPUT_OUTPUT, new InventorySlotInfo(true, true, fluidSlot, fluidOutputSlot));
+            itemConfig.addSlotInfo(DataType.INPUT_OUTPUT, new InventorySlotInfo(true, true, fluidInputSlot, fluidOutputSlot));
         }
         ConfigInfo config = configComponent.getConfig(TransmissionType.SLURRY);
         if (config != null) {
@@ -97,15 +98,15 @@ public class TileEntityWashingFactory extends TileEntitySlurryToSlurryFactory<Fl
     @Override
     protected @Nullable IFluidTankHolder getInitialFluidTanks(IContentsListener listener) {
         FluidTankHelper builder = FluidTankHelper.forSideWithConfig(this::getDirection, this::getConfig);
-        builder.addTank(fluidTank = BasicFluidTank.input(MAX_FLUID * tier.processes * tier.processes, this::containsRecipeA, listener));
+        builder.addTank(fluidTank = BasicFluidTank.input(MAX_FLUID * tier.processes * tier.processes, this::containsRecipeA, markAllMonitorsChanged(listener)));
         return builder.build();
     }
 
     @Override
     protected void addSlots(InventorySlotHelper builder, IContentsListener listener, IContentsListener updateSortingListener) {
-        builder.addSlot(fluidSlot = FluidInventorySlot.fill(fluidTank, listener, tier == FactoryTier.ULTIMATE ? 214 : 180, 71));
+        builder.addSlot(fluidInputSlot = FluidInventorySlot.fill(fluidTank, listener, tier == FactoryTier.ULTIMATE ? 214 : 180, 71));
         builder.addSlot(fluidOutputSlot = OutputInventorySlot.at(listener, tier == FactoryTier.ULTIMATE ? 214 : 180, 102));
-        fluidSlot.setSlotOverlay(SlotOverlay.MINUS);
+        fluidInputSlot.setSlotOverlay(SlotOverlay.MINUS);
     }
 
     public BasicFluidTank getFluidTankBar() {
@@ -119,7 +120,7 @@ public class TileEntityWashingFactory extends TileEntitySlurryToSlurryFactory<Fl
 
     @Override
     protected void handleExtrasFuel() {
-        fluidSlot.fillTank(fluidOutputSlot);
+        fluidInputSlot.fillTank(fluidOutputSlot);
     }
 
     @Override
@@ -166,21 +167,31 @@ public class TileEntityWashingFactory extends TileEntitySlurryToSlurryFactory<Fl
                 .setCanHolderFunction(() -> MekanismUtils.canFunction(this))
                 .setActive(active -> setActiveState(active, cacheIndex))
                 .setEnergyRequirements(energyContainer::getEnergyPerTick, energyContainer)
-                .setBaselineMaxOperations(() -> baselineMaxOperations)
+                .setBaselineMaxOperations(this::getBaselineMaxOperations)
                 .setOnFinish(this::markForSave);
-    }
-
-    @Override
-    public void recalculateUpgrades(Upgrade upgrade) {
-        super.recalculateUpgrades(upgrade);
-        if (upgrade == Upgrade.SPEED) {
-            baselineMaxOperations = (int) Math.pow(2, upgradeComponent.getUpgrades(Upgrade.SPEED));
-        }
     }
 
     @Override
     protected void sortInventoryOrTank() {
 
+    }
+
+    @Override
+    public void parseUpgradeData(@NotNull IUpgradeData upgradeData) {
+        if (upgradeData instanceof FluidSlurryToSlurryUpgradeData data) {
+            super.parseUpgradeData(upgradeData);
+            fluidTank.deserializeNBT(data.inputTank.serializeNBT());
+            fluidInputSlot.deserializeNBT(data.fluidInputSlot.serializeNBT());
+            fluidOutputSlot.deserializeNBT(data.fluidOutputSlot.serializeNBT());
+        } else {
+            Mekanism.logger.warn("Unhandled upgrade data.", new Throwable());
+        }
+    }
+
+    @Override
+    public @Nullable IUpgradeData getUpgradeData() {
+        return new FluidSlurryToSlurryUpgradeData(redstone, getControlType(), getEnergyContainer(), progress, null,
+                energySlot, fluidInputSlot, fluidOutputSlot, inputSlurryTanks, fluidTank, outputSlurryTanks, isSorting(), getComponents());
     }
 
     @Override

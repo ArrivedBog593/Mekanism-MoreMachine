@@ -65,6 +65,24 @@ public class AFBlockTypes {
             .withCustomShape(BlockShapes.CHEMICAL_WASHER)
             .withComputerSupport("chemicalWasher")
             .build();
+    // Chemical Crystallizer
+    public static final MMFactoryMachine<TileEntityChemicalCrystallizer> CHEMICAL_CRYSTALLIZER = MMMachineBuilder
+            .createAdvancedFactoryMachine(() -> MekanismTileEntityTypes.CHEMICAL_CRYSTALLIZER, MekanismLang.DESCRIPTION_CHEMICAL_CRYSTALLIZER, AdvancedFactoryType.CRYSTALLIZING)
+            .withGui(() -> MekanismContainerTypes.CHEMICAL_CRYSTALLIZER)
+            .withSound(MekanismSounds.CHEMICAL_CRYSTALLIZER)
+            .withEnergyConfig(MekanismConfig.usage.chemicalCrystallizer, MekanismConfig.storage.chemicalCrystallizer)
+            .withCustomShape(BlockShapes.CHEMICAL_CRYSTALLIZER)
+            .withComputerSupport("chemicalCrystallizer")
+            .build();
+    // Pressurized Reaction Chamber
+    public static final MMFactoryMachine<TileEntityPressurizedReactionChamber> PRESSURIZED_REACTION_CHAMBER =MMMachineBuilder
+            .createAdvancedFactoryMachine(() -> MekanismTileEntityTypes.PRESSURIZED_REACTION_CHAMBER, MekanismLang.DESCRIPTION_PRESSURIZED_REACTION_CHAMBER, AdvancedFactoryType.PRESSURISED_REACTING)
+            .withGui(() -> MekanismContainerTypes.PRESSURIZED_REACTION_CHAMBER)
+            .withSound(MekanismSounds.PRESSURIZED_REACTION_CHAMBER)
+            .withEnergyConfig(MekanismConfig.usage.pressurizedReactionBase, MekanismConfig.storage.pressurizedReactionBase)
+            .withCustomShape(BlockShapes.PRESSURIZED_REACTION_CHAMBER)
+            .withComputerSupport("pressurizedReactionChamber")
+            .build();
     // Isotopic Centrifuge
     public static final MMFactoryMachine<TileEntityIsotopicCentrifuge> ISOTOPIC_CENTRIFUGE = MMMachineBuilder
             .createAdvancedFactoryMachine(() -> MekanismTileEntityTypes.ISOTOPIC_CENTRIFUGE, MekanismLang.DESCRIPTION_ISOTOPIC_CENTRIFUGE, AdvancedFactoryType.CENTRIFUGING)
@@ -74,6 +92,14 @@ public class AFBlockTypes {
             .withCustomShape(BlockShapes.ISOTOPIC_CENTRIFUGE)
             .withBounding((pos, state, builder) -> builder.add(pos.above()))
             .withComputerSupport("isotopicCentrifuge")
+            .build();
+    // Nutritional Liquifier
+    public static final MMFactoryMachine<TileEntityNutritionalLiquifier> NUTRITIONAL_LIQUIFIER = MMMachineBuilder
+            .createAdvancedFactoryMachine(() -> MekanismTileEntityTypes.NUTRITIONAL_LIQUIFIER, MekanismLang.DESCRIPTION_NUTRITIONAL_LIQUIFIER, AdvancedFactoryType.LIQUIFYING)
+            .withGui(() -> MekanismContainerTypes.NUTRITIONAL_LIQUIFIER)
+            .withEnergyConfig(MekanismConfig.usage.nutritionalLiquifier, MekanismConfig.storage.nutritionalLiquifier)
+            .withSound(MekanismSounds.NUTRITIONAL_LIQUIFIER)
+            .withComputerSupport("nutritionalLiquifier")
             .build();
 
     static {

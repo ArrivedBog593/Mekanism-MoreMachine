@@ -19,7 +19,6 @@ import java.util.function.Predicate;
 public abstract class RecyclerRecipe extends MekanismRecipe implements Predicate<@NotNull ItemStack> {
 
     protected static final RandomSource RANDOM = RandomSource.create();
-//    private static final Holder<Item> RECYCLER = DeferredHolder.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(Mekmm.MOD_ID, "recycler"));
 
     private final ItemStackIngredient input;
     private final ItemStack chanceOutput;

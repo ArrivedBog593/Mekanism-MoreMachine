@@ -1,47 +1,56 @@
-package com.jerry.mekaf.common.tile.base;
+package com.jerry.mekaf.common.tile;
 
 import com.jerry.mekaf.common.inventory.slot.AdvancedFactoryInputInventorySlot;
-import com.jerry.mekaf.common.upgrade.ItemToMergedUpgradeData;
+import com.jerry.mekaf.common.tile.base.TileEntityAdvancedFactoryBase;
+import com.jerry.mekaf.common.upgrade.PRCUpgradeData;
 import mekanism.api.Action;
 import mekanism.api.IContentsListener;
-import mekanism.api.RelativeSide;
+import mekanism.api.Upgrade;
 import mekanism.api.chemical.ChemicalTankBuilder;
+import mekanism.api.chemical.attribute.ChemicalAttributeValidator;
 import mekanism.api.chemical.gas.Gas;
 import mekanism.api.chemical.gas.GasStack;
 import mekanism.api.chemical.gas.IGasTank;
-import mekanism.api.chemical.infuse.IInfusionTank;
-import mekanism.api.chemical.infuse.InfuseType;
-import mekanism.api.chemical.infuse.InfusionStack;
-import mekanism.api.chemical.merged.MergedChemicalTank;
-import mekanism.api.chemical.pigment.IPigmentTank;
-import mekanism.api.chemical.pigment.Pigment;
-import mekanism.api.chemical.pigment.PigmentStack;
-import mekanism.api.chemical.slurry.ISlurryTank;
-import mekanism.api.chemical.slurry.Slurry;
-import mekanism.api.chemical.slurry.SlurryStack;
+import mekanism.api.functions.ConstantPredicates;
 import mekanism.api.inventory.IInventorySlot;
+import mekanism.api.math.FloatingLong;
+import mekanism.api.math.MathUtils;
 import mekanism.api.providers.IBlockProvider;
-import mekanism.api.recipes.MekanismRecipe;
+import mekanism.api.radiation.IRadiationManager;
+import mekanism.api.recipes.PressurizedReactionRecipe;
+import mekanism.api.recipes.PressurizedReactionRecipe.PressurizedReactionRecipeOutput;
 import mekanism.api.recipes.cache.CachedRecipe;
+import mekanism.api.recipes.cache.CachedRecipe.OperationTracker.RecipeError;
+import mekanism.api.recipes.cache.PressurizedReactionCachedRecipe;
 import mekanism.api.recipes.inputs.IInputHandler;
 import mekanism.api.recipes.inputs.InputHelper;
-import mekanism.api.recipes.outputs.BoxedChemicalOutputHandler;
+import mekanism.api.recipes.outputs.IOutputHandler;
+import mekanism.api.recipes.outputs.OutputHelper;
 import mekanism.common.CommonWorldTickHandler;
+import mekanism.common.capabilities.fluid.BasicFluidTank;
 import mekanism.common.capabilities.holder.chemical.ChemicalTankHelper;
+import mekanism.common.capabilities.holder.fluid.FluidTankHelper;
 import mekanism.common.capabilities.holder.slot.InventorySlotHelper;
+import mekanism.common.inventory.slot.OutputInventorySlot;
 import mekanism.common.inventory.warning.WarningTracker;
 import mekanism.common.lib.inventory.HashedItem;
 import mekanism.common.lib.transmitter.TransmissionType;
-import mekanism.common.tile.base.SubstanceType;
+import mekanism.common.recipe.IMekanismRecipeTypeProvider;
+import mekanism.common.recipe.MekanismRecipeType;
+import mekanism.common.recipe.lookup.ITripleRecipeLookupHandler.ItemFluidChemicalRecipeLookupHandler;
+import mekanism.common.recipe.lookup.cache.InputRecipeCache;
 import mekanism.common.tile.component.ITileComponent;
+import mekanism.common.tile.component.TileComponentEjector;
 import mekanism.common.tile.component.config.ConfigInfo;
 import mekanism.common.tile.component.config.DataType;
 import mekanism.common.tile.component.config.slot.ChemicalSlotInfo;
+import mekanism.common.tile.interfaces.IHasDumpButton;
 import mekanism.common.upgrade.IUpgradeData;
 import mekanism.common.util.MekanismUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -49,151 +58,196 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.function.IntSupplier;
 
-public abstract class TileEntityItemToMergedFactory<RECIPE extends MekanismRecipe> extends TileEntityAdvancedFactoryBase<RECIPE> {
+public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFactoryBase<PressurizedReactionRecipe> implements IHasDumpButton,
+        ItemFluidChemicalRecipeLookupHandler<Gas, GasStack, PressurizedReactionRecipe> {
 
-    private static final long MAX_CHEMICAL = 10_000;
+    public static final RecipeError NOT_ENOUGH_ITEM_INPUT_ERROR = RecipeError.create();
+    public static final RecipeError NOT_ENOUGH_FLUID_INPUT_ERROR = RecipeError.create();
+    public static final RecipeError NOT_ENOUGH_GAS_INPUT_ERROR = RecipeError.create();
+    public static final RecipeError NOT_ENOUGH_SPACE_ITEM_OUTPUT_ERROR = RecipeError.create();
+    public static final RecipeError NOT_ENOUGH_SPACE_GAS_OUTPUT_ERROR = RecipeError.create();
+    private static final List<RecipeError> TRACKED_ERROR_TYPES = List.of(
+            RecipeError.NOT_ENOUGH_ENERGY,
+            NOT_ENOUGH_ITEM_INPUT_ERROR,
+            NOT_ENOUGH_FLUID_INPUT_ERROR,
+            NOT_ENOUGH_GAS_INPUT_ERROR,
+            NOT_ENOUGH_SPACE_ITEM_OUTPUT_ERROR,
+            NOT_ENOUGH_SPACE_GAS_OUTPUT_ERROR,
+            RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT
+    );
+    private static final Set<RecipeError> GLOBAL_ERROR_TYPES = Set.of(
+            RecipeError.NOT_ENOUGH_ENERGY,
+            NOT_ENOUGH_FLUID_INPUT_ERROR,
+            NOT_ENOUGH_GAS_INPUT_ERROR,
+            NOT_ENOUGH_SPACE_GAS_OUTPUT_ERROR
+    );
+    private static final int BASE_DURATION = 100;
+    private static final long MAX_GAS = 10_000;
+    public static final int MAX_FLUID = 10_000;
 
-    protected ItemToMergedProcessInfo[] processInfoSlots;
-    AdvancedFactoryInputInventorySlot[] inputSlot;
-    MergedChemicalTank[] outputTank;
+    private PRCProcessInfo[] processInfoSlots;
 
-    public final List<IInventorySlot> inputItemSlots;
-    public final List<MergedChemicalTank> outputChemicalTanks;
-    public final List<IGasTank> outputGasTanks;
-    public final List<IInfusionTank> outputInfusionTanks;
-    public final List<IPigmentTank> outputPigmentTanks;
-    public final List<ISlurryTank> outputSlurryTanks;
+    public BasicFluidTank inputFluidTank;
+    public IGasTank inputGasTank;
+    public IGasTank outputGasTank;
 
-    protected TileEntityItemToMergedFactory(IBlockProvider blockProvider, BlockPos pos, BlockState state, List<CachedRecipe.OperationTracker.RecipeError> errorTypes, Set<CachedRecipe.OperationTracker.RecipeError> globalErrorTypes) {
-        super(blockProvider, pos, state, errorTypes, globalErrorTypes);
+    private FloatingLong recipeEnergyRequired = FloatingLong.ZERO;
+    private final IInputHandler<@NotNull FluidStack> fluidInputHandler;
+    private final IInputHandler<@NotNull GasStack> gasInputHandler;
+    protected IOutputHandler<PressurizedReactionRecipeOutput>[] reactionOutputHandlers;
+
+    protected final List<IInventorySlot> inputItemSlots;
+    protected final List<IInventorySlot> outputItemSlots;
+
+    public TileEntityPressurizedReactingFactory(IBlockProvider blockProvider, BlockPos pos, BlockState state) {
+        super(blockProvider, pos, state, TRACKED_ERROR_TYPES, GLOBAL_ERROR_TYPES);
         inputItemSlots = new ArrayList<>();
-        outputChemicalTanks = new ArrayList<>();
+        outputItemSlots = new ArrayList<>();
 
-        processInfoSlots = new ItemToMergedProcessInfo[tier.processes];
-        for (int i = 0; i < tier.processes; i++) {
-            processInfoSlots[i] = new ItemToMergedProcessInfo(i, inputSlot[i], outputTank[i]);
-        }
-
-        for (ItemToMergedProcessInfo info : processInfoSlots) {
+        for (PRCProcessInfo info : processInfoSlots) {
             inputItemSlots.add(info.inputSlot());
-            outputChemicalTanks.add(info.outputTank());
+            outputItemSlots.add(info.outputSlot());
         }
 
-        addSupported(TransmissionType.GAS, TransmissionType.INFUSION, TransmissionType.PIGMENT, TransmissionType.SLURRY);
-        //初始化其他储罐
-        outputGasTanks = new ArrayList<>();
-        outputInfusionTanks = new ArrayList<>();
-        outputPigmentTanks = new ArrayList<>();
-        outputSlurryTanks = new ArrayList<>();
-        for (MergedChemicalTank tank : outputChemicalTanks) {
-            outputGasTanks.add(tank.getGasTank());
-            outputInfusionTanks.add(tank.getInfusionTank());
-            outputPigmentTanks.add(tank.getPigmentTank());
-            outputSlurryTanks.add(tank.getSlurryTank());
+        addSupported(TransmissionType.FLUID, TransmissionType.GAS);
+        configComponent.setupItemIOConfig(inputItemSlots, outputItemSlots, energySlot, false);
+        configComponent.setupInputConfig(TransmissionType.FLUID, inputFluidTank);
+        ConfigInfo config = configComponent.getConfig(TransmissionType.GAS);
+        if (config != null) {
+            config.addSlotInfo(DataType.INPUT, new ChemicalSlotInfo.GasSlotInfo(true, true, inputGasTank));
+            config.addSlotInfo(DataType.OUTPUT, new ChemicalSlotInfo.GasSlotInfo(false, true, outputGasTank));
+            config.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo.GasSlotInfo(true, true, List.of(inputGasTank, outputGasTank)));
         }
-        ConfigInfo gasConfig = configComponent.getConfig(TransmissionType.GAS);
-        if (gasConfig != null) {
-            gasConfig.addSlotInfo(DataType.OUTPUT, new ChemicalSlotInfo.GasSlotInfo(false, true, outputGasTanks));
-            gasConfig.fill(DataType.INPUT);
-            gasConfig.setDataType(DataType.OUTPUT, RelativeSide.RIGHT);
-            gasConfig.setCanEject(true);
-        }
-        ConfigInfo infusionConfig = configComponent.getConfig(TransmissionType.INFUSION);
-        if (infusionConfig != null) {
-            infusionConfig.addSlotInfo(DataType.OUTPUT, new ChemicalSlotInfo.InfusionSlotInfo(false, true, outputInfusionTanks));
-            infusionConfig.setDataType(DataType.OUTPUT, RelativeSide.RIGHT);
-        }
-        ConfigInfo pigmentConfig = configComponent.getConfig(TransmissionType.PIGMENT);
-        if (pigmentConfig != null) {
-            pigmentConfig.addSlotInfo(DataType.OUTPUT, new ChemicalSlotInfo.PigmentSlotInfo(false, true, outputPigmentTanks));
-            pigmentConfig.setDataType(DataType.OUTPUT, RelativeSide.RIGHT);
-        }
-        ConfigInfo slurryConfig = configComponent.getConfig(TransmissionType.SLURRY);
-        if (slurryConfig != null) {
-            slurryConfig.addSlotInfo(DataType.OUTPUT, new ChemicalSlotInfo.SlurrySlotInfo(false, true, outputSlurryTanks));
-            slurryConfig.setDataType(DataType.OUTPUT, RelativeSide.RIGHT);
-        }
-        configComponent.setupItemIOConfig(inputItemSlots, Collections.emptyList(), energySlot, false);
-    }
 
-    @Override
-    protected void presetVariables() {
-        super.presetVariables();
-        //在初始化所有储罐之前
-        outputTank = new MergedChemicalTank[tier.processes];
-        mergedOutputHandlers = new BoxedChemicalOutputHandler[tier.processes];
-        IContentsListener saveOnlyListener = this::markForSave;
-        for (int i = 0; i < tier.processes; i++) {
-            outputTank[i] = MergedChemicalTank.create(
-                    ChemicalTankBuilder.GAS.output(MAX_CHEMICAL * tier.processes, getListener(SubstanceType.GAS, saveOnlyListener)),
-                    ChemicalTankBuilder.INFUSION.output(MAX_CHEMICAL * tier.processes, getListener(SubstanceType.INFUSION, saveOnlyListener)),
-                    ChemicalTankBuilder.PIGMENT.output(MAX_CHEMICAL * tier.processes, getListener(SubstanceType.PIGMENT, saveOnlyListener)),
-                    ChemicalTankBuilder.SLURRY.output(MAX_CHEMICAL * tier.processes, getListener(SubstanceType.SLURRY, saveOnlyListener))
-            );
-            mergedOutputHandlers[i] = new BoxedChemicalOutputHandler(outputTank[i], CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE);
-        }
+        ejectorComponent = new TileComponentEjector(this);
+        ejectorComponent.setOutputData(configComponent, TransmissionType.ITEM, TransmissionType.GAS)
+                .setCanTankEject(tank -> tank != inputGasTank);
+
+        fluidInputHandler = InputHelper.getInputHandler(inputFluidTank, NOT_ENOUGH_FLUID_INPUT_ERROR);
+        gasInputHandler = InputHelper.getInputHandler(inputGasTank, NOT_ENOUGH_GAS_INPUT_ERROR);
     }
 
     @Override
     protected void addGasTanks(ChemicalTankHelper<Gas, GasStack, IGasTank> builder, IContentsListener listener, IContentsListener updateSortingListener) {
-        for (int i = 0; i < tier.processes; i++) {
-            builder.addTank(outputTank[i].getGasTank());
-
-        }
+        builder.addTank(inputGasTank = ChemicalTankBuilder.GAS.create(MAX_GAS * tier.processes, ChemicalTankHelper.radioactiveInputTankPredicate(() -> outputGasTank),
+                ConstantPredicates.alwaysTrueBi(), this::containsRecipeC, ChemicalAttributeValidator.ALWAYS_ALLOW, markAllMonitorsChanged(listener)));
+        builder.addTank(outputGasTank = ChemicalTankBuilder.GAS.output(MAX_GAS * tier.processes, markAllMonitorsChanged(listener)));
     }
 
     @Override
-    protected void addInfusionTanks(ChemicalTankHelper<InfuseType, InfusionStack, IInfusionTank> builder, IContentsListener listener, IContentsListener updateSortingListener) {
-        for (int i = 0; i < tier.processes; i++) {
-            builder.addTank(outputTank[i].getInfusionTank());
-        }
-    }
-
-    @Override
-    protected void addPigmentTanks(ChemicalTankHelper<Pigment, PigmentStack, IPigmentTank> builder, IContentsListener listener, IContentsListener updateSortingListener) {
-        for (int i = 0; i < tier.processes; i++) {
-            builder.addTank(outputTank[i].getPigmentTank());
-        }
-    }
-
-    @Override
-    protected void addSlurryTanks(ChemicalTankHelper<Slurry, SlurryStack, ISlurryTank> builder, IContentsListener listener, IContentsListener updateSortingListener) {
-        for (int i = 0; i < tier.processes; i++) {
-            builder.addTank(outputTank[i].getSlurryTank());
-        }
+    protected void addFluidTanks(FluidTankHelper builder, IContentsListener listener, IContentsListener updateSortingListener) {
+        builder.addTank(inputFluidTank = BasicFluidTank.input(MAX_FLUID * tier.processes, ConstantPredicates.alwaysTrue(),
+                this::containsRecipeB, markAllMonitorsChanged(listener)));
     }
 
     @Override
     protected void addSlots(InventorySlotHelper builder, IContentsListener listener, IContentsListener updateSortingListener) {
-        inputSlot = new AdvancedFactoryInputInventorySlot[tier.processes];
         itemInputHandlers = new IInputHandler[tier.processes];
+        reactionOutputHandlers = new IOutputHandler[tier.processes];
+        processInfoSlots = new PRCProcessInfo[tier.processes];
         for (int i = 0; i < tier.processes; i++) {
-            inputSlot[i] = AdvancedFactoryInputInventorySlot.create(this, i, outputTank[i], recipeCacheLookupMonitors[i], getXPos(i), 13);
+            OutputInventorySlot outputSlot = OutputInventorySlot.at(recipeCacheLookupMonitors[i], getXPos(i), 57);
+            //Note: As we are an item factory that has comparator's based on items we can just use the monitor as a listener directly
+            AdvancedFactoryInputInventorySlot inputSlot = AdvancedFactoryInputInventorySlot.create(this, i, outputSlot, outputGasTank, recipeCacheLookupMonitors[i], getXPos(i), 13);
             int index = i;
-            builder.addSlot(inputSlot[i]).tracksWarnings(slot -> slot.warning(WarningTracker.WarningType.NO_MATCHING_RECIPE, getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT, index)));
-            itemInputHandlers[i] = InputHelper.getInputHandler(inputSlot[i], CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT);
+            builder.addSlot(inputSlot).tracksWarnings(slot -> slot.warning(WarningTracker.WarningType.NO_MATCHING_RECIPE, getWarningCheck(NOT_ENOUGH_ITEM_INPUT_ERROR, index)));
+            builder.addSlot(outputSlot).tracksWarnings(slot -> slot.warning(WarningTracker.WarningType.NO_SPACE_IN_OUTPUT, getWarningCheck(NOT_ENOUGH_SPACE_ITEM_OUTPUT_ERROR, index)));
+            itemInputHandlers[i] = InputHelper.getInputHandler(inputSlot, NOT_ENOUGH_ITEM_INPUT_ERROR);
+            reactionOutputHandlers[i] = OutputHelper.getOutputHandler(outputSlot, NOT_ENOUGH_SPACE_ITEM_OUTPUT_ERROR, outputGasTank, NOT_ENOUGH_SPACE_GAS_OUTPUT_ERROR);
+            processInfoSlots[i] = new PRCProcessInfo(i, inputSlot, outputSlot);
         }
     }
 
-    public boolean inputProducesOutput(int process, @NotNull ItemStack fallbackInput, @NotNull MergedChemicalTank outputTank, boolean updateCache) {
-        return outputTank.getAllTanks().isEmpty() || getRecipeForInput(process, fallbackInput, outputTank, updateCache) != null;
+    @Override
+    public void onCachedRecipeChanged(@Nullable CachedRecipe<PressurizedReactionRecipe> cachedRecipe, int cacheIndex) {
+        super.onCachedRecipeChanged(cachedRecipe, cacheIndex);
+        int recipeDuration;
+        if (cachedRecipe == null) {
+            recipeDuration = BASE_DURATION;
+            recipeEnergyRequired = FloatingLong.ZERO;
+        } else {
+            PressurizedReactionRecipe recipe = cachedRecipe.getRecipe();
+            recipeDuration = recipe.getDuration();
+            recipeEnergyRequired = recipe.getEnergyRequired();
+        }
+        boolean update = getTicksRequired() != recipeDuration;
+        setTicksRequired(recipeDuration);
+        if (update) {
+            recalculateUpgrades(Upgrade.SPEED);
+        }
+        //Ensure we take our recipe's energy per tick into account
+        energyContainer.updateEnergyPerTick();
+    }
+
+    @Override
+    public FloatingLong getRecipeEnergyRequired() {
+        return recipeEnergyRequired;
+    }
+
+    @Override
+    public IGasTank getGasTankBar() {
+        return inputGasTank;
+    }
+
+    public BasicFluidTank getFluidTankBar() {
+        return inputFluidTank;
+    }
+
+    @Override
+    public boolean hasExtrasResourceBar() {
+        return true;
+    }
+
+    @Override
+    public @NotNull IMekanismRecipeTypeProvider<PressurizedReactionRecipe, InputRecipeCache.ItemFluidChemical<Gas, GasStack, PressurizedReactionRecipe>> getRecipeType() {
+        return MekanismRecipeType.REACTION;
+    }
+
+    @Override
+    public @Nullable PressurizedReactionRecipe getRecipe(int cacheIndex) {
+        return findFirstRecipe(itemInputHandlers[cacheIndex], fluidInputHandler, gasInputHandler);
+    }
+
+    @Override
+    public @NotNull CachedRecipe<PressurizedReactionRecipe> createNewCachedRecipe(@NotNull PressurizedReactionRecipe recipe, int cacheIndex) {
+        return new PressurizedReactionCachedRecipe(recipe, recheckAllRecipeErrors[cacheIndex], itemInputHandlers[cacheIndex], fluidInputHandler, gasInputHandler, reactionOutputHandlers[cacheIndex])
+                .setErrorsChanged(errors -> errorTracker.onErrorsChanged(errors, cacheIndex))
+                .setCanHolderFunction(() -> MekanismUtils.canFunction(this))
+                .setActive(active -> setActiveState(active, cacheIndex))
+                .setEnergyRequirements(energyContainer::getEnergyPerTick, energyContainer)
+                .setRequiredTicks(this::getTicksRequired)
+                .setOnFinish(this::markForSave)
+                .setOperatingTicksChanged(operatingTicks -> progress[cacheIndex] = operatingTicks)
+                .setBaselineMaxOperations(this::getBaselineMaxOperations);
+    }
+
+    public boolean inputProducesOutput(int process, @NotNull ItemStack fallbackInput, IInventorySlot outputSlot, @NotNull IGasTank outputTank, boolean updateCache) {
+        return outputTank.isEmpty() || getRecipeForInput(process, fallbackInput, outputSlot, outputTank, updateCache) != null;
     }
 
     @Contract("null, _ -> false")
-    protected abstract boolean isCachedRecipeValid(@Nullable CachedRecipe<RECIPE> cached, @NotNull ItemStack stack);
+    protected boolean isCachedRecipeValid(@Nullable CachedRecipe<PressurizedReactionRecipe> cached, @NotNull ItemStack stack) {
+        if (cached != null) {
+            PressurizedReactionRecipe cachedRecipe = cached.getRecipe();
+            return cachedRecipe.getInputSolid().testType(stack) &&
+                    (inputFluidTank.isEmpty() || cachedRecipe.getInputFluid().testType(inputFluidTank.getFluid())) &&
+                    (inputGasTank.isEmpty() || cachedRecipe.getInputGas().testType(inputGasTank.getStack()));
+        }
+        return false;
+    }
 
     @Nullable
-    protected RECIPE getRecipeForInput(int process, @NotNull ItemStack fallbackInput, @Nullable MergedChemicalTank outputTank, boolean updateCache) {
+    protected PressurizedReactionRecipe getRecipeForInput(int process, @NotNull ItemStack fallbackInput, IInventorySlot outputSlot, @NotNull IGasTank outputTank, boolean updateCache) {
         if (!CommonWorldTickHandler.flushTagAndRecipeCaches) {
             //If our recipe caches are valid, grab our cached recipe and see if it is still valid
-            CachedRecipe<RECIPE> cached = getCachedRecipe(process);
-            if (cached != null && isCachedRecipeValid(cached, fallbackInput)) {
+            CachedRecipe<PressurizedReactionRecipe> cached = getCachedRecipe(process);
+            if (isCachedRecipeValid(cached, fallbackInput)) {
                 //Our input matches the recipe we have cached for this slot
                 return cached.getRecipe();
             }
         }
         //If there is no cached item input, or it doesn't match our fallback then it is an out of date cache, so we ignore the fact that we have a cache
-        RECIPE foundRecipe = findRecipe(process, fallbackInput, outputTank);
+        PressurizedReactionRecipe foundRecipe = findRecipe(process, fallbackInput, outputTank);
         if (foundRecipe == null) {
             //We could not find any valid recipe for the given item that matches the items in the current output slots
             return null;
@@ -206,18 +260,26 @@ public abstract class TileEntityItemToMergedFactory<RECIPE extends MekanismRecip
     }
 
     @Nullable
-    protected abstract RECIPE findRecipe(int process, @NotNull ItemStack fallbackInput, @NotNull MergedChemicalTank outputTanks);
+    protected PressurizedReactionRecipe findRecipe(int process, @NotNull ItemStack fallbackInput, @NotNull IGasTank outputTanks) {
+        return getRecipeType().getInputCache().findFirstRecipe(level, fallbackInput, inputFluidTank.getFluid(), inputGasTank.getStack());
+    }
 
-    /**
-     * Like isItemValidForSlot makes no assumptions about current stored types
-     */
-    public abstract boolean isValidInputItem(@NotNull ItemStack stack);
+    public boolean isItemValidForSlot(@NotNull ItemStack stack) {
+        return containsRecipeBAC(stack, inputFluidTank.getFluid(), inputGasTank.getStack()) || containsRecipeCAB(stack, inputFluidTank.getFluid(), inputGasTank.getStack());
+    }
 
-    protected abstract int getNeededInput(RECIPE recipe, ItemStack inputStack);
+
+    public boolean isValidInputItem(@NotNull ItemStack stack) {
+        return containsRecipeA(stack);
+    }
+
+    protected int getNeededInput(PressurizedReactionRecipe recipe, ItemStack inputStack) {
+        return MathUtils.clampToInt(recipe.getInputSolid().getNeededAmount(inputStack));
+    }
 
     @Override
     public void parseUpgradeData(@NotNull IUpgradeData upgradeData) {
-        if (upgradeData instanceof ItemToMergedUpgradeData data) {
+        if (upgradeData instanceof PRCUpgradeData data) {
             redstone = data.redstone;
             setControlType(data.controlType);
             getEnergyContainer().setEnergy(data.energyContainer.getEnergy());
@@ -228,38 +290,55 @@ public abstract class TileEntityItemToMergedFactory<RECIPE extends MekanismRecip
                 //Copy the stack using NBT so that if it is not actually valid due to a reload we don't crash
                 inputItemSlots.get(i).deserializeNBT(data.inputSlots.get(i).serializeNBT());
             }
-            for (int i = 0; i < data.outputTanks.size(); i++) {
-                outputChemicalTanks.get(i).getGasTank().setStack(data.outputTanks.get(i).getGasTank().getStack());
-                outputChemicalTanks.get(i).getInfusionTank().setStack(data.outputTanks.get(i).getInfusionTank().getStack());
-                outputChemicalTanks.get(i).getPigmentTank().setStack(data.outputTanks.get(i).getPigmentTank().getStack());
-                outputChemicalTanks.get(i).getSlurryTank().setStack(data.outputTanks.get(i).getSlurryTank().getStack());
+            for (int i = 0; i < data.outputSlots.size(); i++) {
+                outputItemSlots.get(i).setStack(data.outputSlots.get(i).getStack());
             }
             for (ITileComponent component : getComponents()) {
                 component.read(data.components);
             }
+            inputGasTank.deserializeNBT(data.inputChemicalTank.serializeNBT());
+            inputFluidTank.deserializeNBT(data.inputFluidTank.serializeNBT());
+            outputGasTank.deserializeNBT(data.outputTank.serializeNBT());
         } else {
             super.parseUpgradeData(upgradeData);
         }
     }
 
     @Override
+    public @Nullable IUpgradeData getUpgradeData() {
+        return new PRCUpgradeData(redstone, getControlType(), getEnergyContainer(), progress, energySlot,
+                inputGasTank, inputFluidTank, inputItemSlots, outputItemSlots, outputGasTank, isSorting(), getComponents());
+    }
+
+    @Override
+    public void dump() {
+        inputFluidTank.setStack(FluidStack.EMPTY);
+        if (!isRemote() && IRadiationManager.INSTANCE.isRadiationEnabled() && shouldDumpRadiation()) {
+            //If we are on a server and radiation is enabled dump all gas tanks with radioactive materials
+            // Note: we handle clearing radioactive contents later in drop calculation due to when things are written to NBT
+            IRadiationManager.INSTANCE.dumpRadiation(getTileCoord(), List.of(inputGasTank), false);
+        }
+        inputGasTank.setEmpty();
+    }
+
+    @Override
     protected void sortInventoryOrTank() {
-        Map<HashedItem, ItemToFourMergedRecipeProcessInfo> processes = new HashMap<>();
-        List<ItemToMergedProcessInfo> emptyProcesses = new ArrayList<>();
-        for (ItemToMergedProcessInfo processInfo : processInfoSlots) {
+        Map<HashedItem, PRCRecipeProcessInfo> processes = new HashMap<>();
+        List<PRCProcessInfo> emptyProcesses = new ArrayList<>();
+        for (PRCProcessInfo processInfo : processInfoSlots) {
             IInventorySlot inputSlot = processInfo.inputSlot();
             if (inputSlot.isEmpty()) {
                 emptyProcesses.add(processInfo);
             } else {
                 ItemStack inputStack = inputSlot.getStack();
                 HashedItem item = HashedItem.raw(inputStack);
-                ItemToFourMergedRecipeProcessInfo recipeProcessInfo = processes.computeIfAbsent(item, i -> new ItemToFourMergedRecipeProcessInfo());
+                PRCRecipeProcessInfo recipeProcessInfo = processes.computeIfAbsent(item, i -> new PRCRecipeProcessInfo());
                 recipeProcessInfo.processes.add(processInfo);
                 recipeProcessInfo.totalCount += inputStack.getCount();
                 if (recipeProcessInfo.lazyMinPerSlot == null && !CommonWorldTickHandler.flushTagAndRecipeCaches) {
                     //If we don't have a lazily initialized min per slot calculation set for it yet
                     // and our cache is not invalid/out of date due to a reload
-                    CachedRecipe<RECIPE> cachedRecipe = getCachedRecipe(processInfo.process());
+                    CachedRecipe<PressurizedReactionRecipe> cachedRecipe = getCachedRecipe(processInfo.process());
                     if (isCachedRecipeValid(cachedRecipe, inputStack)) {
                         // And our current process has a cached recipe then set the lazily initialized per slot value
                         // Note: If something goes wrong, and we end up with zero as how much we need as an input
@@ -273,8 +352,8 @@ public abstract class TileEntityItemToMergedFactory<RECIPE extends MekanismRecip
             //If all input slots are empty, just exit
             return;
         }
-        for (Map.Entry<HashedItem, ItemToFourMergedRecipeProcessInfo> entry : processes.entrySet()) {
-            ItemToFourMergedRecipeProcessInfo recipeProcessInfo = entry.getValue();
+        for (Map.Entry<HashedItem, PRCRecipeProcessInfo> entry : processes.entrySet()) {
+            PRCRecipeProcessInfo recipeProcessInfo = entry.getValue();
             if (recipeProcessInfo.lazyMinPerSlot == null) {
                 //If we don't have a lazy initializer for our minPerSlot setup, that means that there is
                 // no valid cached recipe for any of the slots of this type currently, so we want to try and
@@ -285,9 +364,9 @@ public abstract class TileEntityItemToMergedFactory<RECIPE extends MekanismRecip
                     // we don't do any extra processing here, and can properly short circuit
                     HashedItem item = entry.getKey();
                     ItemStack largerInput = item.createStack(Math.min(item.getMaxStackSize(), recipeProcessInfo.totalCount));
-                    ItemToMergedProcessInfo processInfo = recipeProcessInfo.processes.get(0);
+                    PRCProcessInfo processInfo = recipeProcessInfo.processes.get(0);
                     //Try getting a recipe for our input with a larger size, and update the cache if we find one
-                    RECIPE recipe = getRecipeForInput(processInfo.process(), largerInput, processInfo.outputTank, true);
+                    PressurizedReactionRecipe recipe = getRecipeForInput(processInfo.process(), largerInput, processInfo.outputSlot, outputGasTank, true);
                     if (recipe != null) {
                         return Math.max(1, getNeededInput(recipe, largerInput));
                     }
@@ -305,9 +384,9 @@ public abstract class TileEntityItemToMergedFactory<RECIPE extends MekanismRecip
         distributeItems(processes);
     }
 
-    private void addEmptySlotsAsTargets(Map<HashedItem, ItemToFourMergedRecipeProcessInfo> processes, List<ItemToMergedProcessInfo> emptyProcesses) {
-        for (Map.Entry<HashedItem, ItemToFourMergedRecipeProcessInfo> entry : processes.entrySet()) {
-            ItemToFourMergedRecipeProcessInfo recipeProcessInfo = entry.getValue();
+    private void addEmptySlotsAsTargets(Map<HashedItem, PRCRecipeProcessInfo> processes, List<PRCProcessInfo> emptyProcesses) {
+        for (Map.Entry<HashedItem, PRCRecipeProcessInfo> entry : processes.entrySet()) {
+            PRCRecipeProcessInfo recipeProcessInfo = entry.getValue();
             int minPerSlot = recipeProcessInfo.getMinPerSlot();
             int maxSlots = recipeProcessInfo.totalCount / minPerSlot;
             if (maxSlots <= 1) {
@@ -324,9 +403,9 @@ public abstract class TileEntityItemToMergedFactory<RECIPE extends MekanismRecip
             ItemStack sourceStack = entry.getKey().getInternalStack();
             int emptyToAdd = maxSlots - processCount;
             int added = 0;
-            List<ItemToMergedProcessInfo> toRemove = new ArrayList<>();
-            for (ItemToMergedProcessInfo emptyProcess : emptyProcesses) {
-                if (inputProducesOutput(emptyProcess.process(), sourceStack, emptyProcess.outputTank(), true)) {
+            List<PRCProcessInfo> toRemove = new ArrayList<>();
+            for (PRCProcessInfo emptyProcess : emptyProcesses) {
+                if (inputProducesOutput(emptyProcess.process(), sourceStack, emptyProcess.outputSlot(), outputGasTank, true)) {
                     //If the input is valid for the stuff in the empty process' output slot
                     // then add our empty process to our recipeProcessInfo, and mark
                     // the empty process as accounted for
@@ -348,9 +427,9 @@ public abstract class TileEntityItemToMergedFactory<RECIPE extends MekanismRecip
         }
     }
 
-    private void distributeItems(Map<HashedItem, ItemToFourMergedRecipeProcessInfo> processes) {
-        for (Map.Entry<HashedItem, ItemToFourMergedRecipeProcessInfo> entry : processes.entrySet()) {
-            ItemToFourMergedRecipeProcessInfo recipeProcessInfo = entry.getValue();
+    private void distributeItems(Map<HashedItem, PRCRecipeProcessInfo> processes) {
+        for (Map.Entry<HashedItem, PRCRecipeProcessInfo> entry : processes.entrySet()) {
+            PRCRecipeProcessInfo recipeProcessInfo = entry.getValue();
             int processCount = recipeProcessInfo.processes.size();
             if (processCount == 1) {
                 //If there is only one process with the item in it; short-circuit, no balancing is needed
@@ -397,7 +476,7 @@ public abstract class TileEntityItemToMergedFactory<RECIPE extends MekanismRecip
                 }
             }
             for (int i = 0; i < processCount; i++) {
-                ItemToMergedProcessInfo processInfo = recipeProcessInfo.processes.get(i);
+                PRCProcessInfo processInfo = recipeProcessInfo.processes.get(i);
                 AdvancedFactoryInputInventorySlot inputSlot = processInfo.inputSlot();
                 int sizeForSlot = numberPerSlot;
                 if (remainder > 0) {
@@ -446,13 +525,13 @@ public abstract class TileEntityItemToMergedFactory<RECIPE extends MekanismRecip
         }
     }
 
-    public record ItemToMergedProcessInfo(int process, @NotNull AdvancedFactoryInputInventorySlot inputSlot,
-                                          @NotNull MergedChemicalTank outputTank) {
+    public record PRCProcessInfo(int process, @NotNull AdvancedFactoryInputInventorySlot inputSlot,
+                                 @NotNull IInventorySlot outputSlot) {
     }
 
-    public static class ItemToFourMergedRecipeProcessInfo {
+    public static class PRCRecipeProcessInfo {
 
-        private final List<ItemToMergedProcessInfo> processes = new ArrayList<>();
+        private final List<PRCProcessInfo> processes = new ArrayList<>();
         @Nullable
         private IntSupplier lazyMinPerSlot;
         private int minPerSlot = 1;

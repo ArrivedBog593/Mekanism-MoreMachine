@@ -17,6 +17,8 @@ public class MMBlockShapes {
         return Block.box(minX, minY, minZ, maxX, maxY, maxZ);
     }
 
+    public static final VoxelShape[] FULL_BLOCK_SHAPE = new VoxelShape[EnumUtils.HORIZONTAL_DIRECTIONS.length];
+
     //Factories
     public static final VoxelShape[] RECYCLER_FACTORY = new VoxelShape[EnumUtils.HORIZONTAL_DIRECTIONS.length];
 
@@ -24,6 +26,10 @@ public class MMBlockShapes {
     public static final VoxelShape[] AUTHOR_DOLL = new VoxelShape[EnumUtils.HORIZONTAL_DIRECTIONS.length];
 
     static {
+        VoxelShapeUtils.setShape(VoxelShapeUtils.combine(
+                box(0, 0, 0, 16, 16, 16)
+        ), FULL_BLOCK_SHAPE);
+
         VoxelShapeUtils.setShape(VoxelShapeUtils.combine(
                 box(0, 0, 0, 16, 16, 4), // front_panel
                 box(4, 4, 14, 12, 12, 16), // port
@@ -57,12 +63,13 @@ public class MMBlockShapes {
     public static VoxelShape[] getShape(FactoryTier tier, AdvancedFactoryType type) {
         return switch (type) {
             case OXIDIZING -> BlockShapes.CHEMICAL_OXIDIZER;
-            case CHEMICAL_INFUSING -> BlockShapes.CHEMICAL_INFUSER;
             case DISSOLVING -> BlockShapes.CHEMICAL_DISSOLUTION_CHAMBER;
+            case CHEMICAL_INFUSING -> BlockShapes.CHEMICAL_INFUSER;
             case WASHING -> BlockShapes.CHEMICAL_WASHER;
-//            case CRYSTALLIZING -> BlockShapes.CHEMICAL_CRYSTALLIZER;
-//            case PRESSURISED_REACTING -> BlockShapes.PRESSURIZED_REACTION_CHAMBER;
+            case CRYSTALLIZING -> BlockShapes.CHEMICAL_CRYSTALLIZER;
+            case PRESSURISED_REACTING -> BlockShapes.PRESSURIZED_REACTION_CHAMBER;
             case CENTRIFUGING -> BlockShapes.ISOTOPIC_CENTRIFUGE;
+            case LIQUIFYING -> FULL_BLOCK_SHAPE;
         };
     }
 }

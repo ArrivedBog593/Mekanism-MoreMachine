@@ -13,6 +13,7 @@ import mekanism.api.inventory.IInventorySlot;
 import mekanism.api.providers.IBlockProvider;
 import mekanism.api.recipes.MekanismRecipe;
 import mekanism.api.recipes.cache.CachedRecipe;
+import mekanism.api.recipes.cache.CachedRecipe.OperationTracker.RecipeError;
 import mekanism.api.recipes.inputs.IInputHandler;
 import mekanism.api.recipes.inputs.InputHelper;
 import mekanism.api.recipes.outputs.IOutputHandler;
@@ -50,7 +51,7 @@ public abstract class TileEntityItemToGasFactory<RECIPE extends MekanismRecipe> 
     protected final List<IInventorySlot> inputItemSlots;
     public final List<IGasTank> outputGasTanks;
 
-    protected TileEntityItemToGasFactory(IBlockProvider blockProvider, BlockPos pos, BlockState state, List<CachedRecipe.OperationTracker.RecipeError> errorTypes, Set<CachedRecipe.OperationTracker.RecipeError> globalErrorTypes) {
+    protected TileEntityItemToGasFactory(IBlockProvider blockProvider, BlockPos pos, BlockState state, List<RecipeError> errorTypes, Set<RecipeError> globalErrorTypes) {
         super(blockProvider, pos, state, errorTypes, globalErrorTypes);
         inputItemSlots = new ArrayList<>();
         outputGasTanks = new ArrayList<>();
@@ -84,7 +85,7 @@ public abstract class TileEntityItemToGasFactory<RECIPE extends MekanismRecipe> 
         for (int i = 0; i < tier.processes; i++) {
             outputTank[i] = ChemicalTankBuilder.GAS.output(MAX_CHEMICAL * tier.processes, listener);
             builder.addTank(outputTank[i]);
-            gasOutputHandlers[i] = OutputHelper.getOutputHandler(outputTank[i], CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE);
+            gasOutputHandlers[i] = OutputHelper.getOutputHandler(outputTank[i], RecipeError.NOT_ENOUGH_OUTPUT_SPACE);
         }
     }
 
@@ -95,8 +96,8 @@ public abstract class TileEntityItemToGasFactory<RECIPE extends MekanismRecipe> 
         for (int i = 0; i < tier.processes; i++) {
             inputSlot[i] = AdvancedFactoryInputInventorySlot.create(this, i, outputTank[i], recipeCacheLookupMonitors[i], getXPos(i), 13);
             int index = i;
-            builder.addSlot(inputSlot[i]).tracksWarnings(slot -> slot.warning(WarningTracker.WarningType.NO_MATCHING_RECIPE, getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT, index)));
-            itemInputHandlers[i] = InputHelper.getInputHandler(inputSlot[i], CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT);
+            builder.addSlot(inputSlot[i]).tracksWarnings(slot -> slot.warning(WarningTracker.WarningType.NO_MATCHING_RECIPE, getWarningCheck(RecipeError.NOT_ENOUGH_INPUT, index)));
+            itemInputHandlers[i] = InputHelper.getInputHandler(inputSlot[i], RecipeError.NOT_ENOUGH_INPUT);
         }
     }
 

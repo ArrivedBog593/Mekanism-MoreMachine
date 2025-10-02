@@ -1,42 +1,31 @@
 package com.jerry.mekaf.common.tile.base;
 
 import com.jerry.mekaf.common.inventory.slot.AdvancedFactoryInputInventorySlot;
-import com.jerry.mekaf.common.upgrade.ItemToMergedUpgradeData;
+import com.jerry.mekaf.common.upgrade.ItemToFluidUpgradeData;
 import mekanism.api.Action;
 import mekanism.api.IContentsListener;
 import mekanism.api.RelativeSide;
-import mekanism.api.chemical.ChemicalTankBuilder;
-import mekanism.api.chemical.gas.Gas;
-import mekanism.api.chemical.gas.GasStack;
-import mekanism.api.chemical.gas.IGasTank;
-import mekanism.api.chemical.infuse.IInfusionTank;
-import mekanism.api.chemical.infuse.InfuseType;
-import mekanism.api.chemical.infuse.InfusionStack;
-import mekanism.api.chemical.merged.MergedChemicalTank;
-import mekanism.api.chemical.pigment.IPigmentTank;
-import mekanism.api.chemical.pigment.Pigment;
-import mekanism.api.chemical.pigment.PigmentStack;
-import mekanism.api.chemical.slurry.ISlurryTank;
-import mekanism.api.chemical.slurry.Slurry;
-import mekanism.api.chemical.slurry.SlurryStack;
+import mekanism.api.fluid.IExtendedFluidTank;
 import mekanism.api.inventory.IInventorySlot;
 import mekanism.api.providers.IBlockProvider;
 import mekanism.api.recipes.MekanismRecipe;
 import mekanism.api.recipes.cache.CachedRecipe;
+import mekanism.api.recipes.cache.CachedRecipe.OperationTracker.RecipeError;
 import mekanism.api.recipes.inputs.IInputHandler;
 import mekanism.api.recipes.inputs.InputHelper;
-import mekanism.api.recipes.outputs.BoxedChemicalOutputHandler;
+import mekanism.api.recipes.outputs.IOutputHandler;
+import mekanism.api.recipes.outputs.OutputHelper;
 import mekanism.common.CommonWorldTickHandler;
-import mekanism.common.capabilities.holder.chemical.ChemicalTankHelper;
+import mekanism.common.capabilities.fluid.BasicFluidTank;
+import mekanism.common.capabilities.holder.fluid.FluidTankHelper;
 import mekanism.common.capabilities.holder.slot.InventorySlotHelper;
-import mekanism.common.inventory.warning.WarningTracker;
+import mekanism.common.inventory.warning.WarningTracker.WarningType;
 import mekanism.common.lib.inventory.HashedItem;
 import mekanism.common.lib.transmitter.TransmissionType;
-import mekanism.common.tile.base.SubstanceType;
 import mekanism.common.tile.component.ITileComponent;
 import mekanism.common.tile.component.config.ConfigInfo;
 import mekanism.common.tile.component.config.DataType;
-import mekanism.common.tile.component.config.slot.ChemicalSlotInfo;
+import mekanism.common.tile.component.config.slot.FluidSlotInfo;
 import mekanism.common.upgrade.IUpgradeData;
 import mekanism.common.util.MekanismUtils;
 import net.minecraft.core.BlockPos;
@@ -49,117 +38,51 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.function.IntSupplier;
 
-public abstract class TileEntityItemToMergedFactory<RECIPE extends MekanismRecipe> extends TileEntityAdvancedFactoryBase<RECIPE> {
+public abstract class TileEntityItemToFluidFactory<RECIPE extends MekanismRecipe> extends TileEntityAdvancedFactoryBase<RECIPE> {
 
-    private static final long MAX_CHEMICAL = 10_000;
+    private static final int MAX_FLUID = 10_000;
 
-    protected ItemToMergedProcessInfo[] processInfoSlots;
+    protected I2FProcessInfo[] processInfoSlots;
     AdvancedFactoryInputInventorySlot[] inputSlot;
-    MergedChemicalTank[] outputTank;
+    IExtendedFluidTank[] outputTank;
 
-    public final List<IInventorySlot> inputItemSlots;
-    public final List<MergedChemicalTank> outputChemicalTanks;
-    public final List<IGasTank> outputGasTanks;
-    public final List<IInfusionTank> outputInfusionTanks;
-    public final List<IPigmentTank> outputPigmentTanks;
-    public final List<ISlurryTank> outputSlurryTanks;
+    protected final List<IInventorySlot> inputItemSlots;
+    public final List<IExtendedFluidTank> outputFluidTanks;
 
-    protected TileEntityItemToMergedFactory(IBlockProvider blockProvider, BlockPos pos, BlockState state, List<CachedRecipe.OperationTracker.RecipeError> errorTypes, Set<CachedRecipe.OperationTracker.RecipeError> globalErrorTypes) {
+    protected TileEntityItemToFluidFactory(IBlockProvider blockProvider, BlockPos pos, BlockState state, List<RecipeError> errorTypes, Set<RecipeError> globalErrorTypes) {
         super(blockProvider, pos, state, errorTypes, globalErrorTypes);
         inputItemSlots = new ArrayList<>();
-        outputChemicalTanks = new ArrayList<>();
+        outputFluidTanks = new ArrayList<>();
 
-        processInfoSlots = new ItemToMergedProcessInfo[tier.processes];
+        processInfoSlots = new I2FProcessInfo[tier.processes];
         for (int i = 0; i < tier.processes; i++) {
-            processInfoSlots[i] = new ItemToMergedProcessInfo(i, inputSlot[i], outputTank[i]);
+            processInfoSlots[i] = new I2FProcessInfo(i, inputSlot[i], outputTank[i]);
         }
 
-        for (ItemToMergedProcessInfo info : processInfoSlots) {
+        for (I2FProcessInfo info : processInfoSlots) {
             inputItemSlots.add(info.inputSlot());
-            outputChemicalTanks.add(info.outputTank());
+            outputFluidTanks.add(info.outputTank());
         }
 
-        addSupported(TransmissionType.GAS, TransmissionType.INFUSION, TransmissionType.PIGMENT, TransmissionType.SLURRY);
-        //初始化其他储罐
-        outputGasTanks = new ArrayList<>();
-        outputInfusionTanks = new ArrayList<>();
-        outputPigmentTanks = new ArrayList<>();
-        outputSlurryTanks = new ArrayList<>();
-        for (MergedChemicalTank tank : outputChemicalTanks) {
-            outputGasTanks.add(tank.getGasTank());
-            outputInfusionTanks.add(tank.getInfusionTank());
-            outputPigmentTanks.add(tank.getPigmentTank());
-            outputSlurryTanks.add(tank.getSlurryTank());
-        }
-        ConfigInfo gasConfig = configComponent.getConfig(TransmissionType.GAS);
+        configComponent.addSupported(TransmissionType.FLUID);
+
+        ConfigInfo gasConfig = configComponent.getConfig(TransmissionType.FLUID);
         if (gasConfig != null) {
-            gasConfig.addSlotInfo(DataType.OUTPUT, new ChemicalSlotInfo.GasSlotInfo(false, true, outputGasTanks));
-            gasConfig.fill(DataType.INPUT);
+            gasConfig.addSlotInfo(DataType.OUTPUT, new FluidSlotInfo(false, true, outputFluidTanks));
             gasConfig.setDataType(DataType.OUTPUT, RelativeSide.RIGHT);
             gasConfig.setCanEject(true);
-        }
-        ConfigInfo infusionConfig = configComponent.getConfig(TransmissionType.INFUSION);
-        if (infusionConfig != null) {
-            infusionConfig.addSlotInfo(DataType.OUTPUT, new ChemicalSlotInfo.InfusionSlotInfo(false, true, outputInfusionTanks));
-            infusionConfig.setDataType(DataType.OUTPUT, RelativeSide.RIGHT);
-        }
-        ConfigInfo pigmentConfig = configComponent.getConfig(TransmissionType.PIGMENT);
-        if (pigmentConfig != null) {
-            pigmentConfig.addSlotInfo(DataType.OUTPUT, new ChemicalSlotInfo.PigmentSlotInfo(false, true, outputPigmentTanks));
-            pigmentConfig.setDataType(DataType.OUTPUT, RelativeSide.RIGHT);
-        }
-        ConfigInfo slurryConfig = configComponent.getConfig(TransmissionType.SLURRY);
-        if (slurryConfig != null) {
-            slurryConfig.addSlotInfo(DataType.OUTPUT, new ChemicalSlotInfo.SlurrySlotInfo(false, true, outputSlurryTanks));
-            slurryConfig.setDataType(DataType.OUTPUT, RelativeSide.RIGHT);
         }
         configComponent.setupItemIOConfig(inputItemSlots, Collections.emptyList(), energySlot, false);
     }
 
     @Override
-    protected void presetVariables() {
-        super.presetVariables();
-        //在初始化所有储罐之前
-        outputTank = new MergedChemicalTank[tier.processes];
-        mergedOutputHandlers = new BoxedChemicalOutputHandler[tier.processes];
-        IContentsListener saveOnlyListener = this::markForSave;
+    protected void addFluidTanks(FluidTankHelper builder, IContentsListener listener, IContentsListener updateSortingListener) {
+        outputTank = new IExtendedFluidTank[tier.processes];
+        fluidOutputHandlers = new IOutputHandler[tier.processes];
         for (int i = 0; i < tier.processes; i++) {
-            outputTank[i] = MergedChemicalTank.create(
-                    ChemicalTankBuilder.GAS.output(MAX_CHEMICAL * tier.processes, getListener(SubstanceType.GAS, saveOnlyListener)),
-                    ChemicalTankBuilder.INFUSION.output(MAX_CHEMICAL * tier.processes, getListener(SubstanceType.INFUSION, saveOnlyListener)),
-                    ChemicalTankBuilder.PIGMENT.output(MAX_CHEMICAL * tier.processes, getListener(SubstanceType.PIGMENT, saveOnlyListener)),
-                    ChemicalTankBuilder.SLURRY.output(MAX_CHEMICAL * tier.processes, getListener(SubstanceType.SLURRY, saveOnlyListener))
-            );
-            mergedOutputHandlers[i] = new BoxedChemicalOutputHandler(outputTank[i], CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE);
-        }
-    }
-
-    @Override
-    protected void addGasTanks(ChemicalTankHelper<Gas, GasStack, IGasTank> builder, IContentsListener listener, IContentsListener updateSortingListener) {
-        for (int i = 0; i < tier.processes; i++) {
-            builder.addTank(outputTank[i].getGasTank());
-
-        }
-    }
-
-    @Override
-    protected void addInfusionTanks(ChemicalTankHelper<InfuseType, InfusionStack, IInfusionTank> builder, IContentsListener listener, IContentsListener updateSortingListener) {
-        for (int i = 0; i < tier.processes; i++) {
-            builder.addTank(outputTank[i].getInfusionTank());
-        }
-    }
-
-    @Override
-    protected void addPigmentTanks(ChemicalTankHelper<Pigment, PigmentStack, IPigmentTank> builder, IContentsListener listener, IContentsListener updateSortingListener) {
-        for (int i = 0; i < tier.processes; i++) {
-            builder.addTank(outputTank[i].getPigmentTank());
-        }
-    }
-
-    @Override
-    protected void addSlurryTanks(ChemicalTankHelper<Slurry, SlurryStack, ISlurryTank> builder, IContentsListener listener, IContentsListener updateSortingListener) {
-        for (int i = 0; i < tier.processes; i++) {
-            builder.addTank(outputTank[i].getSlurryTank());
+            outputTank[i] = BasicFluidTank.output(MAX_FLUID * tier.processes, listener);
+            builder.addTank(outputTank[i]);
+            fluidOutputHandlers[i] = OutputHelper.getOutputHandler(outputTank[i], RecipeError.NOT_ENOUGH_OUTPUT_SPACE);
         }
     }
 
@@ -170,20 +93,20 @@ public abstract class TileEntityItemToMergedFactory<RECIPE extends MekanismRecip
         for (int i = 0; i < tier.processes; i++) {
             inputSlot[i] = AdvancedFactoryInputInventorySlot.create(this, i, outputTank[i], recipeCacheLookupMonitors[i], getXPos(i), 13);
             int index = i;
-            builder.addSlot(inputSlot[i]).tracksWarnings(slot -> slot.warning(WarningTracker.WarningType.NO_MATCHING_RECIPE, getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT, index)));
-            itemInputHandlers[i] = InputHelper.getInputHandler(inputSlot[i], CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT);
+            builder.addSlot(inputSlot[i]).tracksWarnings(slot -> slot.warning(WarningType.NO_MATCHING_RECIPE, getWarningCheck(RecipeError.NOT_ENOUGH_INPUT, index)));
+            itemInputHandlers[i] = InputHelper.getInputHandler(inputSlot[i], RecipeError.NOT_ENOUGH_INPUT);
         }
     }
 
-    public boolean inputProducesOutput(int process, @NotNull ItemStack fallbackInput, @NotNull MergedChemicalTank outputTank, boolean updateCache) {
-        return outputTank.getAllTanks().isEmpty() || getRecipeForInput(process, fallbackInput, outputTank, updateCache) != null;
+    public boolean inputProducesOutput(int process, @NotNull ItemStack fallbackInput, @NotNull IExtendedFluidTank outputTank, boolean updateCache) {
+        return outputTank.getFluid().isEmpty() || getRecipeForInput(process, fallbackInput, outputTank, updateCache) != null;
     }
 
     @Contract("null, _ -> false")
     protected abstract boolean isCachedRecipeValid(@Nullable CachedRecipe<RECIPE> cached, @NotNull ItemStack stack);
 
     @Nullable
-    protected RECIPE getRecipeForInput(int process, @NotNull ItemStack fallbackInput, @Nullable MergedChemicalTank outputTank, boolean updateCache) {
+    protected RECIPE getRecipeForInput(int process, @NotNull ItemStack fallbackInput, @Nullable IExtendedFluidTank outputTank, boolean updateCache) {
         if (!CommonWorldTickHandler.flushTagAndRecipeCaches) {
             //If our recipe caches are valid, grab our cached recipe and see if it is still valid
             CachedRecipe<RECIPE> cached = getCachedRecipe(process);
@@ -206,7 +129,7 @@ public abstract class TileEntityItemToMergedFactory<RECIPE extends MekanismRecip
     }
 
     @Nullable
-    protected abstract RECIPE findRecipe(int process, @NotNull ItemStack fallbackInput, @NotNull MergedChemicalTank outputTanks);
+    protected abstract RECIPE findRecipe(int process, @NotNull ItemStack fallbackInput, @NotNull IExtendedFluidTank outputTanks);
 
     /**
      * Like isItemValidForSlot makes no assumptions about current stored types
@@ -217,7 +140,7 @@ public abstract class TileEntityItemToMergedFactory<RECIPE extends MekanismRecip
 
     @Override
     public void parseUpgradeData(@NotNull IUpgradeData upgradeData) {
-        if (upgradeData instanceof ItemToMergedUpgradeData data) {
+        if (upgradeData instanceof ItemToFluidUpgradeData data) {
             redstone = data.redstone;
             setControlType(data.controlType);
             getEnergyContainer().setEnergy(data.energyContainer.getEnergy());
@@ -229,10 +152,7 @@ public abstract class TileEntityItemToMergedFactory<RECIPE extends MekanismRecip
                 inputItemSlots.get(i).deserializeNBT(data.inputSlots.get(i).serializeNBT());
             }
             for (int i = 0; i < data.outputTanks.size(); i++) {
-                outputChemicalTanks.get(i).getGasTank().setStack(data.outputTanks.get(i).getGasTank().getStack());
-                outputChemicalTanks.get(i).getInfusionTank().setStack(data.outputTanks.get(i).getInfusionTank().getStack());
-                outputChemicalTanks.get(i).getPigmentTank().setStack(data.outputTanks.get(i).getPigmentTank().getStack());
-                outputChemicalTanks.get(i).getSlurryTank().setStack(data.outputTanks.get(i).getSlurryTank().getStack());
+                outputFluidTanks.get(i).setStack(data.outputTanks.get(i).getFluid());
             }
             for (ITileComponent component : getComponents()) {
                 component.read(data.components);
@@ -244,16 +164,16 @@ public abstract class TileEntityItemToMergedFactory<RECIPE extends MekanismRecip
 
     @Override
     protected void sortInventoryOrTank() {
-        Map<HashedItem, ItemToFourMergedRecipeProcessInfo> processes = new HashMap<>();
-        List<ItemToMergedProcessInfo> emptyProcesses = new ArrayList<>();
-        for (ItemToMergedProcessInfo processInfo : processInfoSlots) {
+        Map<HashedItem, I2FRecipeProcessInfo> processes = new HashMap<>();
+        List<I2FProcessInfo> emptyProcesses = new ArrayList<>();
+        for (I2FProcessInfo processInfo : processInfoSlots) {
             IInventorySlot inputSlot = processInfo.inputSlot();
             if (inputSlot.isEmpty()) {
                 emptyProcesses.add(processInfo);
             } else {
                 ItemStack inputStack = inputSlot.getStack();
                 HashedItem item = HashedItem.raw(inputStack);
-                ItemToFourMergedRecipeProcessInfo recipeProcessInfo = processes.computeIfAbsent(item, i -> new ItemToFourMergedRecipeProcessInfo());
+                I2FRecipeProcessInfo recipeProcessInfo = processes.computeIfAbsent(item, i -> new I2FRecipeProcessInfo());
                 recipeProcessInfo.processes.add(processInfo);
                 recipeProcessInfo.totalCount += inputStack.getCount();
                 if (recipeProcessInfo.lazyMinPerSlot == null && !CommonWorldTickHandler.flushTagAndRecipeCaches) {
@@ -273,8 +193,8 @@ public abstract class TileEntityItemToMergedFactory<RECIPE extends MekanismRecip
             //If all input slots are empty, just exit
             return;
         }
-        for (Map.Entry<HashedItem, ItemToFourMergedRecipeProcessInfo> entry : processes.entrySet()) {
-            ItemToFourMergedRecipeProcessInfo recipeProcessInfo = entry.getValue();
+        for (Map.Entry<HashedItem, I2FRecipeProcessInfo> entry : processes.entrySet()) {
+            I2FRecipeProcessInfo recipeProcessInfo = entry.getValue();
             if (recipeProcessInfo.lazyMinPerSlot == null) {
                 //If we don't have a lazy initializer for our minPerSlot setup, that means that there is
                 // no valid cached recipe for any of the slots of this type currently, so we want to try and
@@ -285,7 +205,7 @@ public abstract class TileEntityItemToMergedFactory<RECIPE extends MekanismRecip
                     // we don't do any extra processing here, and can properly short circuit
                     HashedItem item = entry.getKey();
                     ItemStack largerInput = item.createStack(Math.min(item.getMaxStackSize(), recipeProcessInfo.totalCount));
-                    ItemToMergedProcessInfo processInfo = recipeProcessInfo.processes.get(0);
+                    I2FProcessInfo processInfo = recipeProcessInfo.processes.get(0);
                     //Try getting a recipe for our input with a larger size, and update the cache if we find one
                     RECIPE recipe = getRecipeForInput(processInfo.process(), largerInput, processInfo.outputTank, true);
                     if (recipe != null) {
@@ -305,9 +225,9 @@ public abstract class TileEntityItemToMergedFactory<RECIPE extends MekanismRecip
         distributeItems(processes);
     }
 
-    private void addEmptySlotsAsTargets(Map<HashedItem, ItemToFourMergedRecipeProcessInfo> processes, List<ItemToMergedProcessInfo> emptyProcesses) {
-        for (Map.Entry<HashedItem, ItemToFourMergedRecipeProcessInfo> entry : processes.entrySet()) {
-            ItemToFourMergedRecipeProcessInfo recipeProcessInfo = entry.getValue();
+    private void addEmptySlotsAsTargets(Map<HashedItem, I2FRecipeProcessInfo> processes, List<I2FProcessInfo> emptyProcesses) {
+        for (Map.Entry<HashedItem, I2FRecipeProcessInfo> entry : processes.entrySet()) {
+            I2FRecipeProcessInfo recipeProcessInfo = entry.getValue();
             int minPerSlot = recipeProcessInfo.getMinPerSlot();
             int maxSlots = recipeProcessInfo.totalCount / minPerSlot;
             if (maxSlots <= 1) {
@@ -324,8 +244,8 @@ public abstract class TileEntityItemToMergedFactory<RECIPE extends MekanismRecip
             ItemStack sourceStack = entry.getKey().getInternalStack();
             int emptyToAdd = maxSlots - processCount;
             int added = 0;
-            List<ItemToMergedProcessInfo> toRemove = new ArrayList<>();
-            for (ItemToMergedProcessInfo emptyProcess : emptyProcesses) {
+            List<I2FProcessInfo> toRemove = new ArrayList<>();
+            for (I2FProcessInfo emptyProcess : emptyProcesses) {
                 if (inputProducesOutput(emptyProcess.process(), sourceStack, emptyProcess.outputTank(), true)) {
                     //If the input is valid for the stuff in the empty process' output slot
                     // then add our empty process to our recipeProcessInfo, and mark
@@ -348,9 +268,9 @@ public abstract class TileEntityItemToMergedFactory<RECIPE extends MekanismRecip
         }
     }
 
-    private void distributeItems(Map<HashedItem, ItemToFourMergedRecipeProcessInfo> processes) {
-        for (Map.Entry<HashedItem, ItemToFourMergedRecipeProcessInfo> entry : processes.entrySet()) {
-            ItemToFourMergedRecipeProcessInfo recipeProcessInfo = entry.getValue();
+    private void distributeItems(Map<HashedItem, I2FRecipeProcessInfo> processes) {
+        for (Map.Entry<HashedItem, I2FRecipeProcessInfo> entry : processes.entrySet()) {
+            I2FRecipeProcessInfo recipeProcessInfo = entry.getValue();
             int processCount = recipeProcessInfo.processes.size();
             if (processCount == 1) {
                 //If there is only one process with the item in it; short-circuit, no balancing is needed
@@ -397,7 +317,7 @@ public abstract class TileEntityItemToMergedFactory<RECIPE extends MekanismRecip
                 }
             }
             for (int i = 0; i < processCount; i++) {
-                ItemToMergedProcessInfo processInfo = recipeProcessInfo.processes.get(i);
+                I2FProcessInfo processInfo = recipeProcessInfo.processes.get(i);
                 AdvancedFactoryInputInventorySlot inputSlot = processInfo.inputSlot();
                 int sizeForSlot = numberPerSlot;
                 if (remainder > 0) {
@@ -446,13 +366,13 @@ public abstract class TileEntityItemToMergedFactory<RECIPE extends MekanismRecip
         }
     }
 
-    public record ItemToMergedProcessInfo(int process, @NotNull AdvancedFactoryInputInventorySlot inputSlot,
-                                          @NotNull MergedChemicalTank outputTank) {
+    public record I2FProcessInfo(int process, @NotNull AdvancedFactoryInputInventorySlot inputSlot,
+                                 @NotNull IExtendedFluidTank outputTank) {
     }
 
-    public static class ItemToFourMergedRecipeProcessInfo {
+    public static class I2FRecipeProcessInfo {
 
-        private final List<ItemToMergedProcessInfo> processes = new ArrayList<>();
+        private final List<I2FProcessInfo> processes = new ArrayList<>();
         @Nullable
         private IntSupplier lazyMinPerSlot;
         private int minPerSlot = 1;
