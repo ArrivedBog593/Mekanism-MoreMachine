@@ -19,7 +19,6 @@ import mekanism.api.recipes.inputs.IInputHandler;
 import mekanism.api.recipes.outputs.IOutputHandler;
 import mekanism.common.CommonWorldTickHandler;
 import mekanism.common.block.attribute.Attribute;
-import mekanism.common.capabilities.energy.MachineEnergyContainer;
 import mekanism.common.capabilities.holder.chemical.ChemicalTankHelper;
 import mekanism.common.capabilities.holder.chemical.IChemicalTankHolder;
 import mekanism.common.capabilities.holder.energy.EnergyContainerHelper;
@@ -409,11 +408,11 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
         return super.isConfigurationDataCompatible(blockType) || MMUtils.isSameAFTypeFactory(getBlockHolder(), blockType);
     }
 
-    public boolean hasSecondaryResourceBar() {
+    public boolean hasExtraResourceBar() {
         return false;
     }
 
-    public MachineEnergyContainer<TileEntityAdvancedFactoryBase<?>> getEnergyContainer() {
+    public AdvancedFactoryEnergyContainer getEnergyContainer() {
         return energyContainer;
     }
 

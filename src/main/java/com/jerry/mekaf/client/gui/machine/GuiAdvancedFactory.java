@@ -36,7 +36,7 @@ public class GuiAdvancedFactory extends GuiConfigurableTile<TileEntityAdvancedFa
         super(container, inv, title);
         imageHeight += tile instanceof TileEntityPressurizedReactingFactory ? 8 : tile instanceof TileEntityLiquifyingFactory ? 0 : 13;
         if (tile instanceof TileEntityChemicalToChemicalFactory<?>) imageHeight += 13;
-        if (tile.hasSecondaryResourceBar()) {
+        if (tile.hasExtraResourceBar()) {
             imageHeight += 11;
             inventoryLabelY = tile instanceof TileEntityChemicalToChemicalFactory<?> ? 111 : tile instanceof TileEntityPressurizedReactingFactory ? 93 : 98;
         } else {
@@ -66,7 +66,7 @@ public class GuiAdvancedFactory extends GuiConfigurableTile<TileEntityAdvancedFa
                 .warning(WarningTracker.WarningType.NOT_ENOUGH_ENERGY, tile.getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_ENERGY, 0));
         addRenderableWidget(new GuiEnergyTab(this, tile.getEnergyContainer(), tile::getLastUsage));
 
-        if (tile.hasSecondaryResourceBar()) {
+        if (tile.hasExtraResourceBar()) {
             if (tile instanceof TileEntityWashingFactory factory) {
                 addRenderableWidget(new GuiFluidBar(this, GuiFluidBar.getProvider(factory.getFluidTankBar(), tile.getFluidTanks(null)), 7, 102,
                         tile.tier == FactoryTier.ULTIMATE ? 172 : 138, 4, true))

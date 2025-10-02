@@ -17,7 +17,7 @@ public class AdvancedFactoryContainer extends MekanismTileContainer<TileEntityAd
 
     @Override
     protected int getInventoryYOffset() {
-        if (tile.hasSecondaryResourceBar()) {
+        if (tile.hasExtraResourceBar()) {
             return tile instanceof TileEntityChemicalToChemicalFactory<?> ? 121 : tile instanceof TileEntityPressurizedReactingFactory ? 103 : 108;
         }
         return tile instanceof TileEntityChemicalToChemicalFactory<?> ? 112 : tile instanceof TileEntityLiquifyingFactory ? 85 : 98;

@@ -116,7 +116,7 @@ public class TileEntityWashingFactory extends TileEntityChemicalToChemicalFactor
     }
 
     @Override
-    public boolean hasSecondaryResourceBar() {
+    public boolean hasExtraResourceBar() {
         return true;
     }
 

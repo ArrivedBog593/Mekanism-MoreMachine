@@ -119,7 +119,7 @@ public class TileEntityCentrifugingFactory extends TileEntityChemicalToChemicalF
                 .setActive(active -> setActiveState(active, cacheIndex))
                 .setOnFinish(this::markForSave)
                 .setEnergyRequirements(energyContainer::getEnergyPerTick, energyContainer)
-                .setBaselineMaxOperations(() -> baselineMaxOperations);
+                .setBaselineMaxOperations(this::getOperationsPerTick);
     }
 
     @Override

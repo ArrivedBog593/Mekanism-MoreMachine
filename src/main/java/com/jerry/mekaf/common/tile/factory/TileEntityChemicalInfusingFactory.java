@@ -70,7 +70,7 @@ public class TileEntityChemicalInfusingFactory extends TileEntityChemicalToChemi
         super(blockProvider, pos, state, TRACKED_ERROR_TYPES, GLOBAL_ERROR_TYPES);
         ConfigInfo itemConfig = configComponent.getConfig(TransmissionType.ITEM);
         if (itemConfig != null) {
-            itemConfig.addSlotInfo(DataType.INPUT_2, new InventorySlotInfo(true, false, rightInputSlot));
+            itemConfig.addSlotInfo(DataType.EXTRA, new InventorySlotInfo(true, false, rightInputSlot));
             itemConfig.addSlotInfo(DataType.INPUT_OUTPUT, new InventorySlotInfo(true, true, rightInputSlot));
         }
         ConfigInfo chemicalConfig = configComponent.getConfig(TransmissionType.CHEMICAL);
@@ -107,7 +107,7 @@ public class TileEntityChemicalInfusingFactory extends TileEntityChemicalToChemi
     }
 
     @Override
-    public boolean hasSecondaryResourceBar() {
+    public boolean hasExtraResourceBar() {
         return true;
     }
 

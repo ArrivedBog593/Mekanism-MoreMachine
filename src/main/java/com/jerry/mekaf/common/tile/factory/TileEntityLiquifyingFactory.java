@@ -138,7 +138,7 @@ public class TileEntityLiquifyingFactory extends TileEntityAdvancedFactoryBase<B
         return food != null && food.nutrition() > 0;
     }
 
-    public boolean isValidInput(ItemStack stack) {
+    public boolean isValidInputItem(ItemStack stack) {
         FoodProperties food = stack.getFoodProperties(null);
         return food != null && food.nutrition() > 0;
     }

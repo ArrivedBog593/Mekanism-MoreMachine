@@ -129,7 +129,7 @@ public class TileEntityDissolvingFactory extends TileEntityItemToChemicalFactory
     }
 
     @Override
-    public boolean hasSecondaryResourceBar() {
+    public boolean hasExtraResourceBar() {
         return true;
     }
 

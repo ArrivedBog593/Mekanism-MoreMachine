@@ -44,6 +44,6 @@ public class AdvancedFactoryInputInventorySlot extends InputInventorySlot {
 
     private AdvancedFactoryInputInventorySlot(TileEntityLiquifyingFactory factory, int process, IInventorySlot outputSlot, IExtendedFluidTank outputTank, @Nullable IContentsListener listener, int x, int y) {
         super(stack -> factory.isItemValidForSlot(stack) && factory.inputProducesOutput(process, stack, outputSlot, outputTank, false),
-                factory::isValidInput, listener, x, y);
+                factory::isValidInputItem, listener, x, y);
     }
 }

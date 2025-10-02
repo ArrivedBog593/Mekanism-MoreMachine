@@ -206,7 +206,7 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
     }
 
     @Override
-    public boolean hasSecondaryResourceBar() {
+    public boolean hasExtraResourceBar() {
         return true;
     }
 
@@ -330,10 +330,10 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
     @Override
     public void dump() {
         inputFluidTank.setStack(FluidStack.EMPTY);
-//        inputChemicalTank.setEmpty();
         if (!isRemote() && IRadiationManager.INSTANCE.isRadiationEnabled() && shouldDumpRadiation()) {
             //If we are on a server and radiation is enabled dump all gas tanks with radioactive materials
             // Note: we handle clearing radioactive contents later in drop calculation due to when things are written to NBT
+            //点击按钮后只需要释放输入储罐的辐射
             IRadiationManager.INSTANCE.dumpRadiation(getWorldNN(), worldPosition, List.of(inputChemicalTank), false);
         }
         inputChemicalTank.setEmpty();
