@@ -84,6 +84,11 @@ public class GuiMMFactory extends GuiConfigurableTile<TileEntityMMFactory<?>, Me
     private GuiProgress addProgress(GuiProgress progressBar) {
         MekanismJEIRecipeType<?> jeiType = switch (tile.getMMFactoryType()) {
             case RECYCLING -> MoreMachineJEIRecipeType.RECYCLING;
+            case PLANTING -> MoreMachineJEIRecipeType.PLANTING;
+            case CNC_STAMPING -> MoreMachineJEIRecipeType.CNC_STAMPING;
+            case CNC_LATHING -> MoreMachineJEIRecipeType.CNC_LATHING;
+            case CNC_ROLLING_MILL -> MoreMachineJEIRecipeType.CNC_ROLLING_MILL;
+            case REPLICATING -> MoreMachineJEIRecipeType.REPLICATOR;
         };
         return addRenderableWidget(progressBar.jeiCategories(jeiType));
     }

@@ -6,7 +6,7 @@ import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.common.content.blocktype.MMFactoryType;
 import com.jerry.mekmm.common.tile.factory.TileEntityMMFactory;
 import com.jerry.mekmm.common.tile.factory.TileEntityRecyclingMMFactory;
-import com.jerry.mekmm.common.tile.machine.TileEntityRecycler;
+import com.jerry.mekmm.common.tile.machine.*;
 import mekanism.common.registration.impl.TileEntityTypeDeferredRegister;
 import mekanism.common.registration.impl.TileEntityTypeRegistryObject;
 import mekanism.common.tier.FactoryTier;
@@ -30,6 +30,13 @@ public class MMTileEntityTypes {
     }
 
     public static final TileEntityTypeRegistryObject<TileEntityRecycler> RECYCLER = MM_TILE_ENTITY_TYPES.register(MMBlocks.RECYCLER, TileEntityRecycler::new, TileEntityMekanism::tickServer, TileEntityMekanism::tickClient);
+    public static final TileEntityTypeRegistryObject<TileEntityPlantingStation> PLANTING_STATION = MM_TILE_ENTITY_TYPES.register(MMBlocks.PLANTING_STATION, TileEntityPlantingStation::new, TileEntityMekanism::tickServer, TileEntityMekanism::tickClient);
+
+    public static final TileEntityTypeRegistryObject<TileEntityStamper> CNC_STAMPER = MM_TILE_ENTITY_TYPES.register(MMBlocks.CNC_STAMPER, TileEntityStamper::new, TileEntityMekanism::tickServer, TileEntityMekanism::tickClient);
+    public static final TileEntityTypeRegistryObject<TileEntityLathe> CNC_LATHE = MM_TILE_ENTITY_TYPES.register(MMBlocks.CNC_LATHE, TileEntityLathe::new, TileEntityMekanism::tickServer, TileEntityMekanism::tickClient);
+    public static final TileEntityTypeRegistryObject<TileEntityRollingMill> CNC_ROLLING_MILL = MM_TILE_ENTITY_TYPES.register(MMBlocks.CNC_ROLLING_MILL, TileEntityRollingMill::new, TileEntityMekanism::tickServer, TileEntityMekanism::tickClient);
+
+    public static final TileEntityTypeRegistryObject<TileEntityReplicator> REPLICATOR = MM_TILE_ENTITY_TYPES.register(MMBlocks.REPLICATOR, TileEntityReplicator::new, TileEntityMekanism::tickServer, TileEntityMekanism::tickClient);
 
     public static TileEntityTypeRegistryObject<? extends TileEntityMMFactory<?>> getMMFactoryTile(FactoryTier tier, MMFactoryType type) {
         return FACTORIES.get(tier, type);

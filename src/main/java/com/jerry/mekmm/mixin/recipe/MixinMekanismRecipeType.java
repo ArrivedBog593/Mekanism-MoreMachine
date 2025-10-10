@@ -1,7 +1,10 @@
-package com.jerry.mekmm.mixin;
+package com.jerry.mekmm.mixin.recipe;
 
+import com.jerry.mekmm.api.recipes.PlantingRecipe;
 import com.jerry.mekmm.api.recipes.RecyclerRecipe;
+import com.jerry.mekmm.api.recipes.StamperRecipe;
 import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
+import mekanism.api.recipes.ItemStackToItemStackRecipe;
 import mekanism.api.recipes.MekanismRecipe;
 import mekanism.common.recipe.IMekanismRecipeTypeProvider;
 import mekanism.common.recipe.MekanismRecipeType;
@@ -30,5 +33,13 @@ public abstract class MixinMekanismRecipeType<RECIPE extends MekanismRecipe, INP
     @Inject(method = "<clinit>", at = @At("TAIL"))
     private static void mekmm$initRecipe(CallbackInfo ci) {
         MoreMachineRecipeType.RECYCLING = register("recycling", recipeType -> new InputRecipeCache.SingleItem<>(recipeType, RecyclerRecipe::getInput));
+
+        MoreMachineRecipeType.PLANTING = register("planting", recipeType -> new InputRecipeCache.ItemChemical<>(recipeType, PlantingRecipe::getItemInput, PlantingRecipe::getGasInput));
+
+        MoreMachineRecipeType.STAMPING = register("stamping", recipeType -> new InputRecipeCache.DoubleItem<>(recipeType, StamperRecipe::getInput, StamperRecipe::getMold));
+
+        MoreMachineRecipeType.LATHING = register("lathing", recipeType -> new InputRecipeCache.SingleItem<>(recipeType, ItemStackToItemStackRecipe::getInput));
+
+        MoreMachineRecipeType.ROLLING_MILL = register("rolling_mill", recipeType -> new InputRecipeCache.SingleItem<>(recipeType, ItemStackToItemStackRecipe::getInput));
     }
 }

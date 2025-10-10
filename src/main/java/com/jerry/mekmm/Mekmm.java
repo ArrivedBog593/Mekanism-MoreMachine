@@ -3,7 +3,8 @@ package com.jerry.mekmm;
 import com.jerry.mekaf.common.registries.AFBlocks;
 import com.jerry.mekaf.common.registries.AFContainerTypes;
 import com.jerry.mekaf.common.registries.AFTileEntityTypes;
-import com.jerry.mekmm.common.network.MoreMachinePacketHandler;
+import com.jerry.mekmm.common.config.MoreMachineConfig;
+import com.jerry.mekmm.common.network.MMPacketHandler;
 import com.jerry.mekmm.common.registries.*;
 import com.mojang.logging.LogUtils;
 import mekanism.common.base.IModModule;
@@ -22,22 +23,23 @@ public class Mekmm implements IModModule {
     public static final String MOD_NAME = "MekanismMoreMachine";
     public static final Logger LOGGER = LogUtils.getLogger();
     /**
-     * Mekanism: MoreMachine Packet Pipeline
+     * Mekanism More Machine Packet Pipeline
      */
-    private final MoreMachinePacketHandler packetHandler;
+    private final MMPacketHandler packetHandler;
     /**
-     * Mekanism: MoreMachine mod instance
+     * Mekanism More Machine mod instance
      */
     public static Mekmm instance;
     /**
-     * Mekanism: MoreMachine version number
+     * Mekanism More Machine version number
      */
     public final Version versionNumber;
 
     public Mekmm(FMLJavaModLoadingContext context) {
+        instance = this;
         IEventBus modEventBus = context.getModEventBus();
         ModContainer modContainer = context.getContainer();
-        instance = this;
+        MoreMachineConfig.registerConfigs(modContainer);
         versionNumber = new Version(modContainer);
 
         MMItems.MM_ITEMS.register(modEventBus);
@@ -46,13 +48,14 @@ public class Mekmm implements IModModule {
         MMContainerTypes.MM_CONTAINER_TYPES.register(modEventBus);
         MMCreativeTabs.MM_CREATIVE_TABS.register(modEventBus);
         MMRecipeSerializers.MM_RECIPE_SERIALIZERS.register(modEventBus);
+        MoreMachineGas.MM_GASES.register(modEventBus);
 
         registerAdvancedFactory(modEventBus);
 
-        packetHandler = new MoreMachinePacketHandler();
+        packetHandler = new MMPacketHandler();
     }
 
-    public static MoreMachinePacketHandler packetHandler() {
+    public static MMPacketHandler packetHandler() {
         return instance.packetHandler;
     }
 

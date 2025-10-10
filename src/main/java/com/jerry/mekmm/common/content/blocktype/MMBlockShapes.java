@@ -52,11 +52,11 @@ public class MMBlockShapes {
     public static VoxelShape[] getShape(FactoryTier tier, MMFactoryType type) {
         return switch (type) {
             case RECYCLING  -> BlockShapes.SMELTING_FACTORY;
-//            case PLANTING_STATION -> BlockShapes.ENRICHING_FACTORY;
-//            case CNC_STAMPING -> BlockShapes.CRUSHING_FACTORY;
-//            case CNC_LATHING -> BlockShapes.COMPRESSING_FACTORY;
-//            case CNC_ROLLING_MILL -> BlockShapes.COMBINING_FACTORY;
-//            case REPLICATING -> BlockShapes.PURIFYING_FACTORY;
+            case PLANTING -> BlockShapes.ENRICHING_FACTORY;
+            case CNC_STAMPING -> BlockShapes.CRUSHING_FACTORY;
+            case CNC_LATHING -> BlockShapes.COMPRESSING_FACTORY;
+            case CNC_ROLLING_MILL -> BlockShapes.COMBINING_FACTORY;
+            case REPLICATING -> BlockShapes.PURIFYING_FACTORY;
         };
     }
 

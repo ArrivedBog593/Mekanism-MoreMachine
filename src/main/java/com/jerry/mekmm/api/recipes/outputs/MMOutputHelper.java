@@ -1,5 +1,6 @@
 package com.jerry.mekmm.api.recipes.outputs;
 
+import com.jerry.mekmm.api.recipes.PlantingRecipe.PlantingStationRecipeOutput;
 import com.jerry.mekmm.api.recipes.RecyclerRecipe;
 import mekanism.api.Action;
 import mekanism.api.AutomationType;
@@ -41,36 +42,35 @@ public class MMOutputHelper {
         };
     }
 
-//    /**
-//     * Wraps two inventory slots, a "main" slot, and a "secondary" slot into an {@link IOutputHandler} for handling {@link SawmillRecipe.ChanceOutput}s.
-//     *
-//     * @param mainSlot                         Main slot to wrap.
-//     * @param secondarySlot                    Secondary slot to wrap.
-//     * @param mainSlotNotEnoughSpaceError      The error to apply if the main output causes the recipe to not be able to perform any operations.
-//     * @param secondarySlotNotEnoughSpaceError The error to apply if the secondary output causes the recipe to not be able to perform any operations.
-//     */
-//    public static IOutputHandler<PlantingRecipe.PlantingStationRecipeOutput> getOutputHandler(IInventorySlot mainSlot, CachedRecipe.OperationTracker.RecipeError mainSlotNotEnoughSpaceError,
-//                                                                                              IInventorySlot secondarySlot, CachedRecipe.OperationTracker.RecipeError secondarySlotNotEnoughSpaceError) {
-//        Objects.requireNonNull(mainSlot, "Main slot cannot be null.");
-//        Objects.requireNonNull(secondarySlot, "Secondary/Extra slot cannot be null.");
-//        Objects.requireNonNull(mainSlotNotEnoughSpaceError, "Main slot not enough space error cannot be null.");
-//        Objects.requireNonNull(secondarySlotNotEnoughSpaceError, "Secondary/Extra slot not enough space error cannot be null.");
-//        return new IOutputHandler<>() {
-//            @Override
-//            public void handleOutput(PlantingRecipe.PlantingStationRecipeOutput toOutput, int operations) {
-//                MMOutputHelper.handleOutput(mainSlot, toOutput.first(), operations);
-//                MMOutputHelper.handleOutput(secondarySlot, toOutput.second(), operations);
-//            }
-//
-//            @Override
-//            public void calculateOperationsCanSupport(CachedRecipe.OperationTracker tracker, PlantingRecipe.PlantingStationRecipeOutput toOutput) {
-//                MMOutputHelper.calculateOperationsCanSupport(tracker, mainSlotNotEnoughSpaceError, mainSlot, toOutput.first());
-//                if (tracker.shouldContinueChecking()) {
-//                    MMOutputHelper.calculateOperationsCanSupport(tracker, secondarySlotNotEnoughSpaceError, secondarySlot, toOutput.second());
-//                }
-//            }
-//        };
-//    }
+    /**
+     *
+     * @param mainSlot                         Main slot to wrap.
+     * @param secondarySlot                    Secondary slot to wrap.
+     * @param mainSlotNotEnoughSpaceError      The error to apply if the main output causes the recipe to not be able to perform any operations.
+     * @param secondarySlotNotEnoughSpaceError The error to apply if the secondary output causes the recipe to not be able to perform any operations.
+     */
+    public static IOutputHandler<PlantingStationRecipeOutput> getOutputHandler(IInventorySlot mainSlot, CachedRecipe.OperationTracker.RecipeError mainSlotNotEnoughSpaceError,
+                                                                                              IInventorySlot secondarySlot, CachedRecipe.OperationTracker.RecipeError secondarySlotNotEnoughSpaceError) {
+        Objects.requireNonNull(mainSlot, "Main slot cannot be null.");
+        Objects.requireNonNull(secondarySlot, "Secondary/Extra slot cannot be null.");
+        Objects.requireNonNull(mainSlotNotEnoughSpaceError, "Main slot not enough space error cannot be null.");
+        Objects.requireNonNull(secondarySlotNotEnoughSpaceError, "Secondary/Extra slot not enough space error cannot be null.");
+        return new IOutputHandler<>() {
+            @Override
+            public void handleOutput(PlantingStationRecipeOutput toOutput, int operations) {
+                MMOutputHelper.handleOutput(mainSlot, toOutput.first(), operations);
+                MMOutputHelper.handleOutput(secondarySlot, toOutput.second(), operations);
+            }
+
+            @Override
+            public void calculateOperationsCanSupport(CachedRecipe.OperationTracker tracker, PlantingStationRecipeOutput toOutput) {
+                MMOutputHelper.calculateOperationsCanSupport(tracker, mainSlotNotEnoughSpaceError, mainSlot, toOutput.first());
+                if (tracker.shouldContinueChecking()) {
+                    MMOutputHelper.calculateOperationsCanSupport(tracker, secondarySlotNotEnoughSpaceError, secondarySlot, toOutput.second());
+                }
+            }
+        };
+    }
 
     private static void handleOutput(IInventorySlot inventorySlot, ItemStack toOutput, int operations) {
         if (operations == 0 || toOutput.isEmpty()) {
