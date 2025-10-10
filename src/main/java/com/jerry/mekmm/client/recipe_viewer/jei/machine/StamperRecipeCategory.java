@@ -38,8 +38,8 @@ public class StamperRecipeCategory extends HolderRecipeCategory<StamperRecipe> {
     @Override
     public void setRecipe(@NotNull IRecipeLayoutBuilder builder, RecipeHolder<StamperRecipe> recipeHolder, @NotNull IFocusGroup focusGroup) {
         StamperRecipe recipe = recipeHolder.value();
-        initItem(builder, RecipeIngredientRole.INPUT, input, recipe.getMainInput().getRepresentations());
-        initItem(builder, RecipeIngredientRole.INPUT, extra, recipe.getExtraInput().getRepresentations());
+        initItem(builder, RecipeIngredientRole.INPUT, input, recipe.getInput().getRepresentations());
+        initItem(builder, RecipeIngredientRole.INPUT, extra, recipe.getMold().getRepresentations());
         initItem(builder, RecipeIngredientRole.OUTPUT, output, recipe.getOutputDefinition());
     }
 }

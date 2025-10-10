@@ -19,12 +19,12 @@ public record MoreMachineRecipeSerializer<RECIPE extends Recipe<?>>(MapCodec<REC
 
     public static MekanismRecipeSerializer<BasicStamperRecipe> stamping(Function3<ItemStackIngredient, ItemStackIngredient, ItemStack, BasicStamperRecipe> factory) {
         return new MekanismRecipeSerializer<>(RecordCodecBuilder.mapCodec(instance -> instance.group(
-                ItemStackIngredient.CODEC.fieldOf(SerializationConstants.INPUT).forGetter(StamperRecipe::getMainInput),
-                ItemStackIngredient.CODEC.fieldOf("mold").forGetter(StamperRecipe::getExtraInput),
+                ItemStackIngredient.CODEC.fieldOf(SerializationConstants.INPUT).forGetter(StamperRecipe::getInput),
+                ItemStackIngredient.CODEC.fieldOf("mold").forGetter(StamperRecipe::getMold),
                 ItemStack.CODEC.fieldOf(SerializationConstants.OUTPUT).forGetter(BasicStamperRecipe::getOutputRaw)
         ).apply(instance, factory)), StreamCodec.composite(
-                ItemStackIngredient.STREAM_CODEC, BasicStamperRecipe::getMainInput,
-                ItemStackIngredient.STREAM_CODEC, BasicStamperRecipe::getExtraInput,
+                ItemStackIngredient.STREAM_CODEC, BasicStamperRecipe::getInput,
+                ItemStackIngredient.STREAM_CODEC, BasicStamperRecipe::getMold,
                 ItemStack.STREAM_CODEC, BasicStamperRecipe::getOutputRaw,
                 factory
         ));

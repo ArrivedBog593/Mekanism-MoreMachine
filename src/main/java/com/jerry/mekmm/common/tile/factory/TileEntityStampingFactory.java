@@ -89,14 +89,14 @@ public class TileEntityStampingFactory extends MMTileEntityItemToItemFactory<Sta
 
     @Override
     protected int getNeededInput(StamperRecipe recipe, ItemStack inputStack) {
-        return MathUtils.clampToInt(recipe.getMainInput().getNeededAmount(inputStack));
+        return MathUtils.clampToInt(recipe.getInput().getNeededAmount(inputStack));
     }
 
     @Override
     protected boolean isCachedRecipeValid(@Nullable CachedRecipe<StamperRecipe> cached, @NotNull ItemStack stack) {
         if (cached != null) {
             StamperRecipe cachedRecipe = cached.getRecipe();
-            return cachedRecipe.getMainInput().testType(stack) && (extraSlot.isEmpty() || cachedRecipe.getExtraInput().testType(extraSlot.getStack()));
+            return cachedRecipe.getInput().testType(stack) && (extraSlot.isEmpty() || cachedRecipe.getMold().testType(extraSlot.getStack()));
         }
         return false;
     }

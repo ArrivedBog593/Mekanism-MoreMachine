@@ -2,12 +2,14 @@ package com.jerry.mekmm.common.recipe.impl;
 
 import com.jerry.mekmm.api.recipes.basic.MMBasicChemicalChemicalToChemicalRecipe;
 import com.jerry.mekmm.common.registries.MMBlocks;
+import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.chemical.ChemicalStack;
 import mekanism.api.recipes.ingredients.ChemicalStackIngredient;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 
+@NothingNullByDefault
 public class ChemicalReplicatorIRecipeSingle extends MMBasicChemicalChemicalToChemicalRecipe {
 
     /**

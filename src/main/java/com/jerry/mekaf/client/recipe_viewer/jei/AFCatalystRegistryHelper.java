@@ -1,4 +1,4 @@
-package com.jerry.mekmm.client.recipe_viewer.jei;
+package com.jerry.mekaf.client.recipe_viewer.jei;
 
 import com.jerry.mekaf.common.content.blocktype.AdvancedFactoryType;
 import com.jerry.mekaf.common.registries.AFBlocks;

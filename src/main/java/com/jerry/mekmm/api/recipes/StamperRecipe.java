@@ -31,12 +31,12 @@ public abstract class StamperRecipe extends MekanismRecipe<RecipeInput> implemen
     /**
      * Gets the main input ingredient.
      */
-    public abstract ItemStackIngredient getMainInput();
+    public abstract ItemStackIngredient getInput();
 
     /**
      * Gets the secondary input ingredient.
      */
-    public abstract ItemStackIngredient getExtraInput();
+    public abstract ItemStackIngredient getMold();
 
     @NotNull
     @Override
@@ -90,7 +90,7 @@ public abstract class StamperRecipe extends MekanismRecipe<RecipeInput> implemen
 
     @Override
     public boolean isIncomplete() {
-        return getMainInput().hasNoMatchingInstances() || getExtraInput().hasNoMatchingInstances();
+        return getInput().hasNoMatchingInstances() || getMold().hasNoMatchingInstances();
     }
 
     @Override

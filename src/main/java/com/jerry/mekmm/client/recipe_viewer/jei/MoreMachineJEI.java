@@ -1,5 +1,6 @@
 package com.jerry.mekmm.client.recipe_viewer.jei;
 
+import com.jerry.mekaf.client.recipe_viewer.jei.AFCatalystRegistryHelper;
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.client.recipe_viewer.jei.machine.*;
 import com.jerry.mekmm.client.recipe_viewer.MMRecipeViewerRecipeType;

@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 import java.util.function.*;
 
+// 可能之后会拓展为额外输入不消化的通用CachedRecipe，因此参数不使用“mold”
 @NothingNullByDefault
 public class StamperCachedRecipe extends CachedRecipe<StamperRecipe> {
 
@@ -77,7 +78,7 @@ public class StamperCachedRecipe extends CachedRecipe<StamperRecipe> {
     public static StamperCachedRecipe createCache(StamperRecipe recipe,
                                               BooleanSupplier recheckAllErrors, IInputHandler<@NotNull ItemStack> inputHandler, IInputHandler<@NotNull ItemStack> extraInputHandler,
                                               IOutputHandler<@NotNull ItemStack> outputHandler) {
-        return new StamperCachedRecipe(recipe, recheckAllErrors, inputHandler, extraInputHandler, outputHandler, recipe::getMainInput, recipe::getExtraInput,
+        return new StamperCachedRecipe(recipe, recheckAllErrors, inputHandler, extraInputHandler, outputHandler, recipe::getInput, recipe::getMold,
                 recipe::getOutput, ConstantPredicates.ITEM_EMPTY, ConstantPredicates.ITEM_EMPTY, ConstantPredicates.ITEM_EMPTY);
     }
 

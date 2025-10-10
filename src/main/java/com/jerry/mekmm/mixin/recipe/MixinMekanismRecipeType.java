@@ -38,7 +38,7 @@ public class MixinMekanismRecipeType {
 
         MoreMachineRecipeType.PLANTING_STATION = register(MoreMachineRecipeTypes.NAME_PLANTING, recipeType -> new InputRecipeCache.ItemChemical<>(recipeType, PlantingRecipe::getItemInput, PlantingRecipe::getChemicalInput));
 
-        MoreMachineRecipeType.STAMPING = register(MoreMachineRecipeTypes.NAME_STAMPING, recipeType -> new InputRecipeCache.DoubleItem<>(recipeType, StamperRecipe::getMainInput, StamperRecipe::getExtraInput));
+        MoreMachineRecipeType.STAMPING = register(MoreMachineRecipeTypes.NAME_STAMPING, recipeType -> new InputRecipeCache.DoubleItem<>(recipeType, StamperRecipe::getInput, StamperRecipe::getMold));
 
         MoreMachineRecipeType.LATHING = register(MoreMachineRecipeTypes.NAME_LATHING, recipeType -> new InputRecipeCache.SingleItem<>(recipeType, ItemStackToItemStackRecipe::getInput));
 

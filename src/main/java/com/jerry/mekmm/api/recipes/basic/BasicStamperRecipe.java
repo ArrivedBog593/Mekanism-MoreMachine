@@ -42,12 +42,12 @@ public class BasicStamperRecipe extends StamperRecipe {
     }
 
     @Override
-    public ItemStackIngredient getMainInput() {
+    public ItemStackIngredient getInput() {
         return mainInput;
     }
 
     @Override
-    public ItemStackIngredient getExtraInput() {
+    public ItemStackIngredient getMold() {
         return extraInput;
     }
 

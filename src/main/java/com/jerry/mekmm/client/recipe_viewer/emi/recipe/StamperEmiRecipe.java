@@ -18,8 +18,8 @@ public class StamperEmiRecipe extends MekanismEmiHolderRecipe<StamperRecipe> {
 
     public StamperEmiRecipe(MekanismEmiRecipeCategory category, RecipeHolder<StamperRecipe> recipeHolder) {
         super(category, recipeHolder);
-        addInputDefinition(recipe.getMainInput());
-        addInputDefinition(recipe.getExtraInput());
+        addInputDefinition(recipe.getInput());
+        addInputDefinition(recipe.getMold());
         addItemOutputDefinition(recipe.getOutputDefinition());
     }
 
