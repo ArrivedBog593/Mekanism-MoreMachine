@@ -5,11 +5,11 @@ import com.jerry.datagen.common.recipe.builder.MekMMDataShapedRecipeBuilder;
 import com.jerry.datagen.common.recipe.pattern.Pattern;
 import com.jerry.mekmm.common.block.attribute.MMAttributeFactoryType;
 import com.jerry.mekmm.common.block.prefab.MMBlockFactoryMachine;
-import com.jerry.mekmm.common.content.blocktype.MMFactoryType;
-import com.jerry.mekmm.common.registries.MMBlocks;
+import com.jerry.mekmm.common.content.blocktype.MoreMachineFactoryType;
+import com.jerry.mekmm.common.registries.MoreMachineBlocks;
 import com.jerry.mekmm.Mekmm;
-import com.jerry.mekmm.common.item.block.machine.MMItemBlockFactory;
-import com.jerry.mekmm.common.util.MMEnumUtils;
+import com.jerry.mekmm.common.item.block.machine.ItemBlockMoreMachineFactory;
+import com.jerry.mekmm.common.util.MoreMachineEnumUtils;
 import mekanism.common.block.attribute.Attribute;
 import mekanism.common.registration.impl.BlockRegistryObject;
 import mekanism.common.resource.PrimaryResource;
@@ -33,14 +33,14 @@ class MMFactoryRecipeProvider implements ISubRecipeProvider {
         String elitePath = basePath + "elite/";
         String ultimatePath = basePath + "ultimate/";
         TagKey<Item> osmiumIngot = MekanismTags.Items.PROCESSED_RESOURCES.get(ResourceType.INGOT, PrimaryResource.OSMIUM);
-        for (MMFactoryType type : MMEnumUtils.MM_FACTORY_TYPES) {
-            BlockRegistryObject<MMBlockFactoryMachine.MMBlockFactory<?>, MMItemBlockFactory> basicFactory = MMBlocks.getMMFactory(FactoryTier.BASIC, type);
-            BlockRegistryObject<MMBlockFactoryMachine.MMBlockFactory<?>, MMItemBlockFactory> advancedFactory = MMBlocks.getMMFactory(FactoryTier.ADVANCED, type);
-            BlockRegistryObject<MMBlockFactoryMachine.MMBlockFactory<?>, MMItemBlockFactory> eliteFactory = MMBlocks.getMMFactory(FactoryTier.ELITE, type);
+        for (MoreMachineFactoryType type : MoreMachineEnumUtils.MM_FACTORY_TYPES) {
+            BlockRegistryObject<MMBlockFactoryMachine.MMBlockFactory<?>, ItemBlockMoreMachineFactory> basicFactory = MoreMachineBlocks.getMMFactory(FactoryTier.BASIC, type);
+            BlockRegistryObject<MMBlockFactoryMachine.MMBlockFactory<?>, ItemBlockMoreMachineFactory> advancedFactory = MoreMachineBlocks.getMMFactory(FactoryTier.ADVANCED, type);
+            BlockRegistryObject<MMBlockFactoryMachine.MMBlockFactory<?>, ItemBlockMoreMachineFactory> eliteFactory = MoreMachineBlocks.getMMFactory(FactoryTier.ELITE, type);
             addFactoryRecipe(consumer, basicPath, basicFactory, type.getBaseBlock().getItemHolder(), Tags.Items.INGOTS_IRON, MekanismTags.Items.ALLOYS_BASIC, MekanismTags.Items.CIRCUITS_BASIC);
             addFactoryRecipe(consumer, advancedPath, advancedFactory, basicFactory.getItemHolder(), osmiumIngot, MekanismTags.Items.ALLOYS_INFUSED, MekanismTags.Items.CIRCUITS_ADVANCED);
             addFactoryRecipe(consumer, elitePath, eliteFactory, advancedFactory.getItemHolder(), Tags.Items.INGOTS_GOLD, MekanismTags.Items.ALLOYS_REINFORCED, MekanismTags.Items.CIRCUITS_ELITE);
-            addFactoryRecipe(consumer, ultimatePath, MMBlocks.getMMFactory(FactoryTier.ULTIMATE, type), eliteFactory.getItemHolder(), Tags.Items.GEMS_DIAMOND, MekanismTags.Items.ALLOYS_ATOMIC, MekanismTags.Items.CIRCUITS_ULTIMATE);
+            addFactoryRecipe(consumer, ultimatePath, MoreMachineBlocks.getMMFactory(FactoryTier.ULTIMATE, type), eliteFactory.getItemHolder(), Tags.Items.GEMS_DIAMOND, MekanismTags.Items.ALLOYS_ATOMIC, MekanismTags.Items.CIRCUITS_ULTIMATE);
         }
     }
 

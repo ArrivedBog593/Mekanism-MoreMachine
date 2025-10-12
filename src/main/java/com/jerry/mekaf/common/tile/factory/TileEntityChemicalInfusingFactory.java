@@ -9,6 +9,7 @@ import mekanism.api.chemical.IChemicalTank;
 import mekanism.api.math.MathUtils;
 import mekanism.api.recipes.ChemicalChemicalToChemicalRecipe;
 import mekanism.api.recipes.cache.CachedRecipe;
+import mekanism.api.recipes.cache.CachedRecipe.OperationTracker.RecipeError;
 import mekanism.api.recipes.cache.ChemicalChemicalToChemicalCachedRecipe;
 import mekanism.api.recipes.inputs.IInputHandler;
 import mekanism.api.recipes.inputs.InputHelper;
@@ -23,8 +24,8 @@ import mekanism.common.inventory.slot.chemical.ChemicalInventorySlot;
 import mekanism.common.lib.transmitter.TransmissionType;
 import mekanism.common.recipe.IMekanismRecipeTypeProvider;
 import mekanism.common.recipe.MekanismRecipeType;
-import mekanism.common.recipe.lookup.IEitherSideRecipeLookupHandler;
-import mekanism.common.recipe.lookup.cache.InputRecipeCache;
+import mekanism.common.recipe.lookup.IEitherSideRecipeLookupHandler.EitherSideChemicalRecipeLookupHandler;
+import mekanism.common.recipe.lookup.cache.InputRecipeCache.EitherSideChemical;
 import mekanism.common.tile.component.TileComponentEjector;
 import mekanism.common.tile.component.config.ConfigInfo;
 import mekanism.common.tile.component.config.DataType;
@@ -44,19 +45,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class TileEntityChemicalInfusingFactory extends TileEntityChemicalToChemicalFactory<ChemicalChemicalToChemicalRecipe> implements IHasDumpButton, IEitherSideRecipeLookupHandler.EitherSideChemicalRecipeLookupHandler<ChemicalChemicalToChemicalRecipe> {
+public class TileEntityChemicalInfusingFactory extends TileEntityChemicalToChemicalFactory<ChemicalChemicalToChemicalRecipe> implements IHasDumpButton, EitherSideChemicalRecipeLookupHandler<ChemicalChemicalToChemicalRecipe> {
 
-    private static final List<CachedRecipe.OperationTracker.RecipeError> TRACKED_ERROR_TYPES = List.of(
-            CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_ENERGY,
-            CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_ENERGY_REDUCED_RATE,
-            CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_LEFT_INPUT,
-            CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_RIGHT_INPUT,
-            CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE,
-            CachedRecipe.OperationTracker.RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT
+    private static final List<RecipeError> TRACKED_ERROR_TYPES = List.of(
+            RecipeError.NOT_ENOUGH_ENERGY,
+            RecipeError.NOT_ENOUGH_ENERGY_REDUCED_RATE,
+            RecipeError.NOT_ENOUGH_LEFT_INPUT,
+            RecipeError.NOT_ENOUGH_RIGHT_INPUT,
+            RecipeError.NOT_ENOUGH_OUTPUT_SPACE,
+            RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT
     );
-    private static final Set<CachedRecipe.OperationTracker.RecipeError> GLOBAL_ERROR_TYPES = Set.of(
-            CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_ENERGY,
-            CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_RIGHT_INPUT
+    private static final Set<RecipeError> GLOBAL_ERROR_TYPES = Set.of(
+            RecipeError.NOT_ENOUGH_ENERGY,
+            RecipeError.NOT_ENOUGH_RIGHT_INPUT
     );
 
     //原右侧储罐
@@ -85,7 +86,7 @@ public class TileEntityChemicalInfusingFactory extends TileEntityChemicalToChemi
         ejectorComponent = new TileComponentEjector(this);
         ejectorComponent.setOutputData(configComponent, TransmissionType.ITEM, TransmissionType.CHEMICAL)
                 .setCanTankEject(tank -> outputChemicalTanks.contains(tank));
-        rightInputHandler = InputHelper.getInputHandler(rightTank, CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_RIGHT_INPUT);
+        rightInputHandler = InputHelper.getInputHandler(rightTank, RecipeError.NOT_ENOUGH_RIGHT_INPUT);
     }
 
     @Override
@@ -146,7 +147,7 @@ public class TileEntityChemicalInfusingFactory extends TileEntityChemicalToChemi
     }
 
     @Override
-    public @NotNull IMekanismRecipeTypeProvider<?, ChemicalChemicalToChemicalRecipe, InputRecipeCache.EitherSideChemical<ChemicalChemicalToChemicalRecipe>> getRecipeType() {
+    public @NotNull IMekanismRecipeTypeProvider<?, ChemicalChemicalToChemicalRecipe, EitherSideChemical<ChemicalChemicalToChemicalRecipe>> getRecipeType() {
         return MekanismRecipeType.CHEMICAL_INFUSING;
     }
 

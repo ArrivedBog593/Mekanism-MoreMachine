@@ -2,7 +2,7 @@ package com.jerry.meklm.common.tile;
 
 import com.jerry.meklm.common.capabilities.holder.chemical.CanAdjustChemicalTankHelper;
 import com.jerry.meklm.common.capabilities.holder.fluid.CanAdjustFluidTankHelper;
-import com.jerry.meklm.common.registries.LMBlocks;
+import com.jerry.meklm.common.registries.LargeMachineBlocks;
 import com.jerry.meklm.common.tile.prefab.TileEntityRecipeLargeMachine;
 import mekanism.api.*;
 import mekanism.api.chemical.BasicChemicalTank;
@@ -127,7 +127,7 @@ public class TileEntityLargeRotaryCondensentrator extends TileEntityRecipeLargeM
     EnergyInventorySlot energySlot;
 
     public TileEntityLargeRotaryCondensentrator(BlockPos pos, BlockState state) {
-        super(LMBlocks.LARGE_ROTARY_CONDENSENTRATOR, pos, state, TRACKED_ERROR_TYPES);
+        super(LargeMachineBlocks.LARGE_ROTARY_CONDENSENTRATOR, pos, state, TRACKED_ERROR_TYPES);
         configComponent.setupItemIOConfig(List.of(gasInputSlot, fluidInputSlot), List.of(gasOutputSlot, fluidOutputSlot), energySlot, true);
         configComponent.setupIOConfig(TransmissionType.CHEMICAL, gasTank, RelativeSide.LEFT, true);
         configComponent.setupIOConfig(TransmissionType.FLUID, fluidTank, RelativeSide.RIGHT, true);

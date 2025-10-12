@@ -5,15 +5,16 @@ import com.jerry.mekmm.api.recipes.cache.ReplicatorCachedRecipe;
 import com.jerry.mekmm.client.recipe_viewer.MMRecipeViewerRecipeType;
 import com.jerry.mekmm.common.config.MoreMachineConfig;
 import com.jerry.mekmm.common.recipe.impl.FluidReplicatorIRecipeSingle;
-import com.jerry.mekmm.common.registries.MMBlocks;
-import com.jerry.mekmm.common.registries.MMChemicals;
-import com.jerry.mekmm.common.util.MMUtils;
+import com.jerry.mekmm.common.registries.MoreMachineBlocks;
+import com.jerry.mekmm.common.registries.MoreMachineChemicals;
+import com.jerry.mekmm.common.util.MoreMachineUtils;
 import com.jerry.mekmm.common.util.ValidatorUtils;
 import mekanism.api.IContentsListener;
 import mekanism.api.chemical.BasicChemicalTank;
 import mekanism.api.chemical.ChemicalStack;
 import mekanism.api.chemical.IChemicalTank;
 import mekanism.api.recipes.cache.CachedRecipe;
+import mekanism.api.recipes.cache.CachedRecipe.OperationTracker.RecipeError;
 import mekanism.api.recipes.ingredients.creator.IngredientCreatorAccess;
 import mekanism.api.recipes.inputs.IInputHandler;
 import mekanism.api.recipes.inputs.ILongInputHandler;
@@ -60,12 +61,12 @@ import java.util.*;
 
 public class TileEntityFluidReplicator extends TileEntityProgressMachine<BasicFluidChemicalToFluidRecipe> {
 
-    private static final List<CachedRecipe.OperationTracker.RecipeError> TRACKED_ERROR_TYPES = List.of(
-            CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_ENERGY,
-            CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT,
-            CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_SECONDARY_INPUT,
-            CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE,
-            CachedRecipe.OperationTracker.RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT
+    private static final List<RecipeError> TRACKED_ERROR_TYPES = List.of(
+            RecipeError.NOT_ENOUGH_ENERGY,
+            RecipeError.NOT_ENOUGH_INPUT,
+            RecipeError.NOT_ENOUGH_SECONDARY_INPUT,
+            RecipeError.NOT_ENOUGH_OUTPUT_SPACE,
+            RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT
     );
 
     public static final int MAX_FLUID = 10 * FluidType.BUCKET_VOLUME;
@@ -95,7 +96,7 @@ public class TileEntityFluidReplicator extends TileEntityProgressMachine<BasicFl
     EnergyInventorySlot energySlot;
 
     public TileEntityFluidReplicator(BlockPos pos, BlockState state) {
-        super(MMBlocks.FLUID_REPLICATOR, pos, state, TRACKED_ERROR_TYPES, BASE_TICKS_REQUIRED);
+        super(MoreMachineBlocks.FLUID_REPLICATOR, pos, state, TRACKED_ERROR_TYPES, BASE_TICKS_REQUIRED);
 //        configComponent.setupItemIOExtraConfig(fluidInputSlot, fluidOutputSlot, chemicalSlot, energySlot);
         configComponent.setupItemIOConfig(List.of(fluidInputSlot, lFluidInputSlot), List.of(rFluidInputSlot, fluidOutputSlot), energySlot, false);
         ConfigInfo itemConfig = configComponent.getConfig(TransmissionType.ITEM);
@@ -114,8 +115,8 @@ public class TileEntityFluidReplicator extends TileEntityProgressMachine<BasicFl
         ejectorComponent.setOutputData(configComponent, TransmissionType.FLUID, TransmissionType.ITEM)
                 .setCanTankEject(tank -> tank == fluidOutputTank);
 
-        fluidInputHandler = InputHelper.getInputHandler(fluidInputTank, CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT);
-        fluidOutputHandler = OutputHelper.getOutputHandler(fluidOutputTank, CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE);
+        fluidInputHandler = InputHelper.getInputHandler(fluidInputTank, RecipeError.NOT_ENOUGH_INPUT);
+        fluidOutputHandler = OutputHelper.getOutputHandler(fluidOutputTank, RecipeError.NOT_ENOUGH_OUTPUT_SPACE);
         chemicalInputHandler = InputHelper.getConstantInputHandler(chemicalTank);
     }
 
@@ -172,7 +173,7 @@ public class TileEntityFluidReplicator extends TileEntityProgressMachine<BasicFl
     }
 
     public static boolean isValidChemicalInput(ChemicalStack stack) {
-        return stack.is(MMChemicals.UU_MATTER);
+        return stack.is(MoreMachineChemicals.UU_MATTER);
     }
 
     @Override
@@ -231,7 +232,7 @@ public class TileEntityFluidReplicator extends TileEntityProgressMachine<BasicFl
             if (amount == 0) return null;
             return new FluidReplicatorIRecipeSingle(
                     IngredientCreatorAccess.fluid().fromHolder(fluidHolder, 1000),
-                    IngredientCreatorAccess.chemicalStack().fromHolder(MMChemicals.UU_MATTER, amount),
+                    IngredientCreatorAccess.chemicalStack().fromHolder(MoreMachineChemicals.UU_MATTER, amount),
                     new FluidStack(fluidHolder, FluidType.BUCKET_VOLUME)
             );
         }
@@ -240,6 +241,6 @@ public class TileEntityFluidReplicator extends TileEntityProgressMachine<BasicFl
 
     @Override
     public boolean isConfigurationDataCompatible(Block type) {
-        return super.isConfigurationDataCompatible(type) || MMUtils.isSameMMTypeFactory(getBlockHolder(), type);
+        return super.isConfigurationDataCompatible(type) || MoreMachineUtils.isSameMMTypeFactory(getBlockHolder(), type);
     }
 }

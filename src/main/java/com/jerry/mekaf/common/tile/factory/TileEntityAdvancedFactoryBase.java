@@ -3,7 +3,7 @@ package com.jerry.mekaf.common.tile.factory;
 import com.jerry.mekaf.common.block.attribute.AttributeAdvancedFactoryType;
 import com.jerry.mekaf.common.capabilities.energy.AdvancedFactoryEnergyContainer;
 import com.jerry.mekaf.common.content.blocktype.AdvancedFactoryType;
-import com.jerry.mekmm.common.util.MMUtils;
+import com.jerry.mekmm.common.util.MoreMachineUtils;
 import it.unimi.dsi.fastutil.ints.IntArraySet;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import mekanism.api.IContentsListener;
@@ -405,7 +405,7 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
     @Override
     public boolean isConfigurationDataCompatible(Block blockType) {
         //Allow exact match or factories of the same type (as we will just ignore the extra data)
-        return super.isConfigurationDataCompatible(blockType) || MMUtils.isSameAFTypeFactory(getBlockHolder(), blockType);
+        return super.isConfigurationDataCompatible(blockType) || MoreMachineUtils.isSameAFTypeFactory(getBlockHolder(), blockType);
     }
 
     public boolean hasExtraResourceBar() {

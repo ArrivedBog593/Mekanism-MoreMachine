@@ -9,10 +9,7 @@ import mekanism.api.SerializationConstants;
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.recipes.ingredients.FluidStackIngredient;
 import mekanism.api.recipes.ingredients.creator.IngredientCreatorAccess;
-import mekanism.client.gui.element.gauge.GaugeType;
-import mekanism.client.gui.element.gauge.GuiChemicalGauge;
-import mekanism.client.gui.element.gauge.GuiEnergyGauge;
-import mekanism.client.gui.element.gauge.GuiGauge;
+import mekanism.client.gui.element.gauge.*;
 import mekanism.client.gui.element.progress.ProgressType;
 import mekanism.client.gui.element.slot.GuiSlot;
 import mekanism.client.gui.element.slot.SlotType;
@@ -45,18 +42,18 @@ public class FluidReplicatorRecipeCategory extends BaseRecipeCategory<BasicFluid
             FluidStack.CODEC.fieldOf(SerializationConstants.OUTPUT).forGetter(BasicFluidChemicalToFluidRecipe::getOutputRaw)
     ).apply(instance, FluidReplicatorIRecipeSingle::new));
 
-    private final GuiGauge<?> inputGauge;
-    private final GuiGauge<?> outputSlot;
-    private final GuiGauge<?> inputSlot;
+    private final GuiGauge<?> gasInputGauge;
+    private final GuiGauge<?> fluidInputGauge;
+    private final GuiGauge<?> outputGauge;
     private final GuiSlot extra;
 
     public FluidReplicatorRecipeCategory(IGuiHelper helper, IRecipeViewerRecipeType<BasicFluidChemicalToFluidRecipe> recipeType) {
         super(helper, recipeType);
-        GaugeType type1 = GaugeType.STANDARD.with(DataType.INPUT);
+        GaugeType input = GaugeType.STANDARD.with(DataType.INPUT);
         GaugeType output = GaugeType.STANDARD.with(DataType.OUTPUT);
-        inputGauge = addElement(GuiChemicalGauge.getDummy(type1, this, 7, 4));
-        inputSlot = addElement(GuiChemicalGauge.getDummy(type1, this, 28, 4));
-        outputSlot = addElement(GuiChemicalGauge.getDummy(output, this, 131, 4));
+        gasInputGauge = addElement(GuiChemicalGauge.getDummy(input, this, 7, 4));
+        fluidInputGauge = addElement(GuiFluidGauge.getDummy(input, this, 28, 4));
+        outputGauge = addElement(GuiChemicalGauge.getDummy(output, this, 131, 4));
         extra = addSlot(SlotType.EXTRA, 8, 65).with(SlotOverlay.MINUS);
         addSlot(SlotType.INPUT, 29, 65).with(SlotOverlay.PLUS);
         addSlot(SlotType.OUTPUT, 132, 65).with(SlotOverlay.PLUS);
@@ -77,9 +74,9 @@ public class FluidReplicatorRecipeCategory extends BaseRecipeCategory<BasicFluid
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, BasicFluidChemicalToFluidRecipe recipe, IFocusGroup focuses) {
-        initFluid(builder, RecipeIngredientRole.INPUT, inputSlot, recipe.getFluidInput().getRepresentations());
-        initChemical(builder, RecipeIngredientRole.INPUT, inputGauge, recipe.getChemicalInput().getRepresentations());
-        initFluid(builder, RecipeIngredientRole.OUTPUT, outputSlot, recipe.getOutputDefinition());
+        initFluid(builder, RecipeIngredientRole.INPUT, fluidInputGauge, recipe.getFluidInput().getRepresentations());
+        initChemical(builder, RecipeIngredientRole.INPUT, gasInputGauge, recipe.getChemicalInput().getRepresentations());
+        initFluid(builder, RecipeIngredientRole.OUTPUT, outputGauge, recipe.getOutputDefinition());
         initItem(builder, RecipeIngredientRole.CATALYST, extra, RecipeViewerUtils.getStacksFor(recipe.getChemicalInput(), true));
     }
 

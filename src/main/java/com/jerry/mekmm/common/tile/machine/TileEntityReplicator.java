@@ -5,15 +5,16 @@ import com.jerry.mekmm.api.recipes.cache.ReplicatorCachedRecipe;
 import com.jerry.mekmm.client.recipe_viewer.MMRecipeViewerRecipeType;
 import com.jerry.mekmm.common.config.MoreMachineConfig;
 import com.jerry.mekmm.common.recipe.impl.ReplicatorIRecipeSingle;
-import com.jerry.mekmm.common.registries.MMBlocks;
-import com.jerry.mekmm.common.registries.MMChemicals;
-import com.jerry.mekmm.common.util.MMUtils;
+import com.jerry.mekmm.common.registries.MoreMachineBlocks;
+import com.jerry.mekmm.common.registries.MoreMachineChemicals;
+import com.jerry.mekmm.common.util.MoreMachineUtils;
 import com.jerry.mekmm.common.util.ValidatorUtils;
 import mekanism.api.IContentsListener;
 import mekanism.api.chemical.BasicChemicalTank;
 import mekanism.api.chemical.ChemicalStack;
 import mekanism.api.chemical.IChemicalTank;
 import mekanism.api.recipes.cache.CachedRecipe;
+import mekanism.api.recipes.cache.CachedRecipe.OperationTracker.RecipeError;
 import mekanism.api.recipes.ingredients.creator.IngredientCreatorAccess;
 import mekanism.api.recipes.inputs.IInputHandler;
 import mekanism.api.recipes.inputs.ILongInputHandler;
@@ -34,7 +35,7 @@ import mekanism.common.inventory.slot.EnergyInventorySlot;
 import mekanism.common.inventory.slot.InputInventorySlot;
 import mekanism.common.inventory.slot.OutputInventorySlot;
 import mekanism.common.inventory.slot.chemical.ChemicalInventorySlot;
-import mekanism.common.inventory.warning.WarningTracker;
+import mekanism.common.inventory.warning.WarningTracker.WarningType;
 import mekanism.common.lib.transmitter.TransmissionType;
 import mekanism.common.recipe.IMekanismRecipeTypeProvider;
 import mekanism.common.tile.component.TileComponentEjector;
@@ -60,12 +61,12 @@ import java.util.Objects;
 
 public class TileEntityReplicator extends TileEntityProgressMachine<MMBasicItemStackChemicalToItemStackRecipe> {
 
-    private static final List<CachedRecipe.OperationTracker.RecipeError> TRACKED_ERROR_TYPES = List.of(
-            CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_ENERGY,
-            CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT,
-            CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_SECONDARY_INPUT,
-            CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE,
-            CachedRecipe.OperationTracker.RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT
+    private static final List<RecipeError> TRACKED_ERROR_TYPES = List.of(
+            RecipeError.NOT_ENOUGH_ENERGY,
+            RecipeError.NOT_ENOUGH_INPUT,
+            RecipeError.NOT_ENOUGH_SECONDARY_INPUT,
+            RecipeError.NOT_ENOUGH_OUTPUT_SPACE,
+            RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT
     );
 
     public static final int BASE_TICKS_REQUIRED = 10 * SharedConstants.TICKS_PER_SECOND;
@@ -89,7 +90,7 @@ public class TileEntityReplicator extends TileEntityProgressMachine<MMBasicItemS
     EnergyInventorySlot energySlot;
 
     public TileEntityReplicator(BlockPos pos, BlockState state) {
-        super(MMBlocks.REPLICATOR, pos, state, TRACKED_ERROR_TYPES, BASE_TICKS_REQUIRED);
+        super(MoreMachineBlocks.REPLICATOR, pos, state, TRACKED_ERROR_TYPES, BASE_TICKS_REQUIRED);
         configComponent.setupItemIOExtraConfig(inputSlot, outputSlot, chemicalSlot, energySlot);
         configComponent.setupInputConfig(TransmissionType.ENERGY, energyContainer);
         configComponent.setupInputConfig(TransmissionType.CHEMICAL, chemicalTank);
@@ -98,8 +99,8 @@ public class TileEntityReplicator extends TileEntityProgressMachine<MMBasicItemS
         ejectorComponent.setOutputData(configComponent, TransmissionType.ITEM);
 
         chemicalInputHandler = InputHelper.getConstantInputHandler(chemicalTank);
-        itemInputHandler = InputHelper.getInputHandler(inputSlot, CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT);
-        outputHandler = OutputHelper.getOutputHandler(outputSlot, CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE);
+        itemInputHandler = InputHelper.getInputHandler(inputSlot, RecipeError.NOT_ENOUGH_INPUT);
+        outputHandler = OutputHelper.getOutputHandler(outputSlot, RecipeError.NOT_ENOUGH_OUTPUT_SPACE);
     }
 
     @NotNull
@@ -122,11 +123,11 @@ public class TileEntityReplicator extends TileEntityProgressMachine<MMBasicItemS
     protected @Nullable IInventorySlotHolder getInitialInventory(IContentsListener listener, IContentsListener recipeCacheListener, IContentsListener recipeCacheUnpauseListener) {
         InventorySlotHelper builder = InventorySlotHelper.forSideWithConfig(this);
         builder.addSlot(inputSlot = InputInventorySlot.at(TileEntityReplicator::isValidItemInput, recipeCacheListener, 29, 32))
-                .tracksWarnings(slot -> slot.warning(WarningTracker.WarningType.NO_MATCHING_RECIPE, getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT)));
+                .tracksWarnings(slot -> slot.warning(WarningType.NO_MATCHING_RECIPE, getWarningCheck(RecipeError.NOT_ENOUGH_INPUT)));
         //输出槽位置
         //recipeCacheUnpauseListener，输出检测需要使用recipeCacheUnpauseListener，不然满了之后拿走物品不会更新状态
         builder.addSlot(outputSlot = OutputInventorySlot.at(recipeCacheUnpauseListener, 131, 32))
-                .tracksWarnings(slot -> slot.warning(WarningTracker.WarningType.NO_SPACE_IN_OUTPUT, getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE)));
+                .tracksWarnings(slot -> slot.warning(WarningType.NO_SPACE_IN_OUTPUT, getWarningCheck(RecipeError.NOT_ENOUGH_OUTPUT_SPACE)));
         //化学品罐槽位置
         builder.addSlot(chemicalSlot = ChemicalInventorySlot.fillOrConvert(chemicalTank, this::getLevel, listener, 8, 65));
         //能量槽位置
@@ -137,7 +138,7 @@ public class TileEntityReplicator extends TileEntityProgressMachine<MMBasicItemS
     }
 
     public static boolean isValidChemicalInput(ChemicalStack stack) {
-        return stack.is(MMChemicals.UU_MATTER);
+        return stack.is(MoreMachineChemicals.UU_MATTER);
     }
 
     public static boolean isValidItemInput(ItemStack stack) {
@@ -200,7 +201,7 @@ public class TileEntityReplicator extends TileEntityProgressMachine<MMBasicItemS
             if (amount == 0) return null;
             return new ReplicatorIRecipeSingle(
                     IngredientCreatorAccess.item().fromHolder(itemHolder, 1),
-                    IngredientCreatorAccess.chemicalStack().fromHolder(MMChemicals.UU_MATTER, amount),
+                    IngredientCreatorAccess.chemicalStack().fromHolder(MoreMachineChemicals.UU_MATTER, amount),
                     new ItemStack(itemHolder, 1)
             );
         }
@@ -209,7 +210,7 @@ public class TileEntityReplicator extends TileEntityProgressMachine<MMBasicItemS
 
     @Override
     public boolean isConfigurationDataCompatible(Block type) {
-        return super.isConfigurationDataCompatible(type) || MMUtils.isSameMMTypeFactory(getBlockHolder(), type);
+        return super.isConfigurationDataCompatible(type) || MoreMachineUtils.isSameMMTypeFactory(getBlockHolder(), type);
     }
 
     @Override

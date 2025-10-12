@@ -2,12 +2,12 @@ package com.jerry.mekmm.common.tile.machine;
 
 import com.jerry.mekmm.client.recipe_viewer.MMRecipeViewerRecipeType;
 import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
-import com.jerry.mekmm.common.registries.MMBlocks;
-import com.jerry.mekmm.common.util.MMUtils;
+import com.jerry.mekmm.common.registries.MoreMachineBlocks;
+import com.jerry.mekmm.common.util.MoreMachineUtils;
 import mekanism.api.recipes.ItemStackToItemStackRecipe;
 import mekanism.client.recipe_viewer.type.IRecipeViewerRecipeType;
 import mekanism.common.recipe.IMekanismRecipeTypeProvider;
-import mekanism.common.recipe.lookup.cache.InputRecipeCache;
+import mekanism.common.recipe.lookup.cache.InputRecipeCache.SingleItem;
 import mekanism.common.tile.prefab.TileEntityElectricMachine;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
@@ -18,11 +18,11 @@ import org.jetbrains.annotations.Nullable;
 public class TileEntityLathe extends TileEntityElectricMachine {
 
     public TileEntityLathe(BlockPos pos, BlockState state) {
-        super(MMBlocks.CNC_LATHE, pos, state, BASE_TICKS_REQUIRED);
+        super(MoreMachineBlocks.CNC_LATHE, pos, state, BASE_TICKS_REQUIRED);
     }
 
     @Override
-    public @NotNull IMekanismRecipeTypeProvider<?, ItemStackToItemStackRecipe, InputRecipeCache.SingleItem<ItemStackToItemStackRecipe>> getRecipeType() {
+    public @NotNull IMekanismRecipeTypeProvider<?, ItemStackToItemStackRecipe, SingleItem<ItemStackToItemStackRecipe>> getRecipeType() {
         return MoreMachineRecipeType.LATHING;
     }
 
@@ -33,6 +33,6 @@ public class TileEntityLathe extends TileEntityElectricMachine {
 
     @Override
     public boolean isConfigurationDataCompatible(Block type) {
-        return super.isConfigurationDataCompatible(type) || MMUtils.isSameMMTypeFactory(getBlockHolder(), type);
+        return super.isConfigurationDataCompatible(type) || MoreMachineUtils.isSameMMTypeFactory(getBlockHolder(), type);
     }
 }

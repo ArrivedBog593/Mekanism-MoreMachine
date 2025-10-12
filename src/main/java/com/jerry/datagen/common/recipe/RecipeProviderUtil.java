@@ -3,7 +3,7 @@ package com.jerry.datagen.common.recipe;
 import com.blakebr0.mysticalagriculture.api.crop.Crop;
 import com.blakebr0.mysticalagriculture.registry.CropRegistry;
 import com.jerry.mekmm.api.datagen.recipe.builder.PlantingStationRecipeBuilder;
-import com.jerry.mekmm.common.registries.MMChemicals;
+import com.jerry.mekmm.common.registries.MoreMachineChemicals;
 import mekanism.api.datagen.recipe.MekanismRecipeBuilder;
 import mekanism.api.recipes.ingredients.creator.IngredientCreatorAccess;
 import mekanism.common.Mekanism;
@@ -23,7 +23,7 @@ public class RecipeProviderUtil {
         for (Crop crop : CropRegistry.getInstance().getCrops()) {
             build(consumer, PlantingStationRecipeBuilder.planting(
                     IngredientCreatorAccess.item().from(crop.getSeedsItem()),
-                    IngredientCreatorAccess.chemicalStack().from(MMChemicals.UU_MATTER.asStack(1)),
+                    IngredientCreatorAccess.chemicalStack().from(MoreMachineChemicals.UU_MATTER.asStack(1)),
                     new ItemStack(crop.getSeedsItem()),
                     new ItemStack(crop.getEssenceItem()),
                     true

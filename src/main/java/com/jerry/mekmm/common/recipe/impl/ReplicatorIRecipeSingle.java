@@ -1,7 +1,7 @@
 package com.jerry.mekmm.common.recipe.impl;
 
 import com.jerry.mekmm.api.recipes.basic.MMBasicItemStackChemicalToItemStackRecipe;
-import com.jerry.mekmm.common.registries.MMBlocks;
+import com.jerry.mekmm.common.registries.MoreMachineBlocks;
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.recipes.ingredients.ChemicalStackIngredient;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
@@ -37,6 +37,6 @@ public class ReplicatorIRecipeSingle extends MMBasicItemStackChemicalToItemStack
 
     @Override
     public ItemStack getToastSymbol() {
-        return new ItemStack(MMBlocks.REPLICATOR);
+        return new ItemStack(MoreMachineBlocks.REPLICATOR);
     }
 }

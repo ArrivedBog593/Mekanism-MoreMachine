@@ -1,7 +1,7 @@
 package com.jerry.mekmm.client.gui.machine;
 
-import com.jerry.mekmm.client.gui.element.tab.MMGuiSortingTab;
-import com.jerry.mekmm.common.tile.factory.MMTileEntityFactory;
+import com.jerry.mekmm.client.gui.element.tab.MoreMachineGuiSortingTab;
+import com.jerry.mekmm.common.tile.factory.TileEntityMoreMachineFactory;
 import com.jerry.mekmm.common.tile.factory.TileEntityPlantingFactory;
 import com.jerry.mekmm.common.tile.factory.TileEntityReplicatingFactory;
 import mekanism.api.recipes.cache.CachedRecipe;
@@ -22,12 +22,12 @@ import net.minecraft.world.entity.player.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class GuiMMFactory extends GuiConfigurableTile<MMTileEntityFactory<?>, MekanismTileContainer<MMTileEntityFactory<?>>> {
+public class GuiMMFactory extends GuiConfigurableTile<TileEntityMoreMachineFactory<?>, MekanismTileContainer<TileEntityMoreMachineFactory<?>>> {
 
     @Nullable
     private GuiDumpButton<?> dumpButton;
 
-    public GuiMMFactory(MekanismTileContainer<MMTileEntityFactory<?>> container, Inventory inv, Component title) {
+    public GuiMMFactory(MekanismTileContainer<TileEntityMoreMachineFactory<?>> container, Inventory inv, Component title) {
         super(container, inv, title);
         if (tile.hasSecondaryResourceBar()) {
             imageHeight += 11;
@@ -51,7 +51,7 @@ public class GuiMMFactory extends GuiConfigurableTile<MMTileEntityFactory<?>, Me
     @Override
     protected void addGuiElements() {
         super.addGuiElements();
-        addRenderableWidget(new MMGuiSortingTab(this, tile));
+        addRenderableWidget(new MoreMachineGuiSortingTab(this, tile));
         addRenderableWidget(new GuiVerticalPowerBar(this, tile.getEnergyContainer(), imageWidth - 12, 16, tile instanceof TileEntityPlantingFactory ? 73 : 52))
                 .warning(WarningTracker.WarningType.NOT_ENOUGH_ENERGY, tile.getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_ENERGY, 0));
 
@@ -61,13 +61,13 @@ public class GuiMMFactory extends GuiConfigurableTile<MMTileEntityFactory<?>, Me
                 addRenderableWidget(new GuiChemicalBar(this, GuiChemicalBar.getProvider(factory.getChemicalTank(), tile.getChemicalTanks(null)), 7, 96,
                         tile.tier == FactoryTier.ULTIMATE ? 172 : 138, 4, true))
                         .warning(WarningTracker.WarningType.NO_MATCHING_RECIPE, tile.getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_SECONDARY_INPUT, 0));
-                dumpButton = addRenderableWidget(new GuiDumpButton<>(this, (MMTileEntityFactory<?> & IHasDumpButton) tile, tile.tier == FactoryTier.ULTIMATE ? 182 : 148, 96));
+                dumpButton = addRenderableWidget(new GuiDumpButton<>(this, (TileEntityMoreMachineFactory<?> & IHasDumpButton) tile, tile.tier == FactoryTier.ULTIMATE ? 182 : 148, 96));
             }
             if (tile instanceof TileEntityReplicatingFactory factory) {
                 addRenderableWidget(new GuiChemicalBar(this, GuiChemicalBar.getProvider(factory.getChemicalTank(), tile.getChemicalTanks(null)), 7, 76,
                         tile.tier == FactoryTier.ULTIMATE ? 172 : 138, 4, true))
                         .warning(WarningTracker.WarningType.NO_MATCHING_RECIPE, tile.getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_SECONDARY_INPUT, 0));
-                dumpButton = addRenderableWidget(new GuiDumpButton<>(this, (MMTileEntityFactory<?> & IHasDumpButton) tile, tile.tier == FactoryTier.ULTIMATE ? 182 : 148, 76));
+                dumpButton = addRenderableWidget(new GuiDumpButton<>(this, (TileEntityMoreMachineFactory<?> & IHasDumpButton) tile, tile.tier == FactoryTier.ULTIMATE ? 182 : 148, 76));
             }
         }
 

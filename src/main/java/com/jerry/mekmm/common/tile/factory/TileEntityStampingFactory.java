@@ -38,7 +38,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Set;
 
-public class TileEntityStampingFactory extends MMTileEntityItemToItemFactory<StamperRecipe> implements DoubleItemRecipeLookupHandler<StamperRecipe> {
+public class TileEntityStampingFactory extends TileEntityItemToItemMMFactory<StamperRecipe> implements DoubleItemRecipeLookupHandler<StamperRecipe> {
 
     private static final CheckRecipeType<ItemStack, ItemStack, StamperRecipe, ItemStack> OUTPUT_CHECK =
           (recipe, input, extra, output) -> InventoryUtils.areItemsStackable(recipe.getOutput(input, extra), output);

@@ -4,7 +4,7 @@ import com.blakebr0.mysticalagriculture.api.crop.Crop;
 import com.blakebr0.mysticalagriculture.registry.CropRegistry;
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.api.datagen.recipe.builder.PlantingStationRecipeBuilder;
-import com.jerry.mekmm.common.registries.MMChemicals;
+import com.jerry.mekmm.common.registries.MoreMachineChemicals;
 import mekanism.api.recipes.ingredients.creator.IngredientCreatorAccess;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.recipes.RecipeOutput;
@@ -24,7 +24,7 @@ public class MysticalRecipeProvider extends CompatRecipeProvider {
         for (Crop crop : CropRegistry.getInstance().getCrops()) {
             PlantingStationRecipeBuilder.planting(
                     IngredientCreatorAccess.item().from(crop.getSeedsItem()),
-                    IngredientCreatorAccess.chemicalStack().from(MMChemicals.NUTRIENT_SOLUTION.asStack(1)),
+                    IngredientCreatorAccess.chemicalStack().from(MoreMachineChemicals.NUTRIENT_SOLUTION.asStack(1)),
                     new ItemStack(crop.getSeedsItem()),
                     new ItemStack(crop.getEssenceItem(), switch (crop.getTier().getValue()) {
                         case 1 -> 5;

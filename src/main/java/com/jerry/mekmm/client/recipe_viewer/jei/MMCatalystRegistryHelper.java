@@ -1,7 +1,7 @@
 package com.jerry.mekmm.client.recipe_viewer.jei;
 
 import com.jerry.mekmm.common.block.attribute.MMAttributeFactoryType;
-import com.jerry.mekmm.common.registries.MMBlocks;
+import com.jerry.mekmm.common.registries.MoreMachineBlocks;
 import mekanism.client.recipe_viewer.jei.MekanismJEI;
 import mekanism.client.recipe_viewer.type.IRecipeViewerRecipeType;
 import mekanism.common.block.attribute.Attribute;
@@ -44,7 +44,7 @@ public class MMCatalystRegistryHelper {
                 MMAttributeFactoryType factoryType = Attribute.get(blockItem.getBlock(), MMAttributeFactoryType.class);
                 if (factoryType != null) {
                     for (FactoryTier tier : EnumUtils.FACTORY_TIERS) {
-                        registry.addRecipeCatalyst(MMBlocks.getMMFactory(tier, factoryType.getMMFactoryType()), recipeType);
+                        registry.addRecipeCatalyst(MoreMachineBlocks.getMMFactory(tier, factoryType.getMMFactoryType()), recipeType);
                     }
                 }
             }

@@ -1,6 +1,6 @@
 package com.jerry.mekaf.client.gui.element.tab;
 
-import com.jerry.mekmm.common.network.to_server.MMPacketGuiInteract;
+import com.jerry.mekmm.common.network.to_server.MoreMachinePacketGuiInteract;
 import com.jerry.mekaf.common.tile.factory.TileEntityAdvancedFactoryBase;
 import mekanism.client.SpecialColors;
 import mekanism.client.gui.IGuiWrapper;
@@ -33,6 +33,6 @@ public class AFGuiSortingTab extends GuiInsetElement<TileEntityAdvancedFactoryBa
 
     @Override
     public void onClick(double mouseX, double mouseY, int button) {
-        PacketUtils.sendToServer(new MMPacketGuiInteract(MMPacketGuiInteract.MMGuiInteraction.AUTO_SORT_BUTTON, dataSource));
+        PacketUtils.sendToServer(new MoreMachinePacketGuiInteract(MoreMachinePacketGuiInteract.MMGuiInteraction.AUTO_SORT_BUTTON, dataSource));
     }
 }

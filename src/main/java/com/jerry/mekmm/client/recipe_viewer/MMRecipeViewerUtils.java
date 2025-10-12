@@ -4,7 +4,7 @@ import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.api.recipes.basic.BasicFluidChemicalToFluidRecipe;
 import com.jerry.mekmm.api.recipes.basic.MMBasicChemicalChemicalToChemicalRecipe;
 import com.jerry.mekmm.api.recipes.basic.MMBasicItemStackChemicalToItemStackRecipe;
-import com.jerry.mekmm.common.registries.MMChemicals;
+import com.jerry.mekmm.common.registries.MoreMachineChemicals;
 import com.jerry.mekmm.common.tile.machine.TileEntityChemicalReplicator;
 import com.jerry.mekmm.common.tile.machine.TileEntityFluidReplicator;
 import com.jerry.mekmm.common.tile.machine.TileEntityReplicator;
@@ -36,7 +36,7 @@ public class MMRecipeViewerUtils {
         // CreativeModeTabs.searchTab().getDisplayItems(). The bigger issue is how to come up with unique synthetic
         // names for the recipes as EMI requires they be unique. (Maybe index them?)
         for (Map.Entry<ResourceKey<Item>, Item> entry : BuiltInRegistries.ITEM.entrySet()) {
-            MMBasicItemStackChemicalToItemStackRecipe recipe = TileEntityReplicator.getRecipe(entry.getValue().getDefaultInstance(), MMChemicals.UU_MATTER.asStack(1));
+            MMBasicItemStackChemicalToItemStackRecipe recipe = TileEntityReplicator.getRecipe(entry.getValue().getDefaultInstance(), MoreMachineChemicals.UU_MATTER.asStack(1));
             if (recipe != null) {
                 replicator.put(RecipeViewerUtils.synthetic(entry.getKey().location(), "replicator", Mekmm.MOD_ID), recipe);
             }
@@ -47,7 +47,7 @@ public class MMRecipeViewerUtils {
     public static Map<ResourceLocation, BasicFluidChemicalToFluidRecipe> getFluidReplicatorRecipes() {
         Map<ResourceLocation, BasicFluidChemicalToFluidRecipe> replicator = new HashMap<>();
         for (Map.Entry<ResourceKey<Fluid>, Fluid> entry : BuiltInRegistries.FLUID.entrySet()) {
-            BasicFluidChemicalToFluidRecipe recipe = TileEntityFluidReplicator.getRecipe(new FluidStack(entry.getValue(), 1), MMChemicals.UU_MATTER.asStack(1));
+            BasicFluidChemicalToFluidRecipe recipe = TileEntityFluidReplicator.getRecipe(new FluidStack(entry.getValue(), 1), MoreMachineChemicals.UU_MATTER.asStack(1));
             if (recipe != null) {
                 replicator.put(RecipeViewerUtils.synthetic(entry.getKey().location(), "replicator", Mekmm.MOD_ID), recipe);
             }
@@ -59,7 +59,7 @@ public class MMRecipeViewerUtils {
         Map<ResourceLocation, MMBasicChemicalChemicalToChemicalRecipe> replicator = new HashMap<>();
         for (Map.Entry<ResourceKey<Chemical>, Chemical> entry : MekanismAPI.CHEMICAL_REGISTRY.entrySet()) {
             //mek将很多方法弃用了，所以只能使用这个办法。
-            MMBasicChemicalChemicalToChemicalRecipe recipe = TileEntityChemicalReplicator.getRecipe(new ChemicalStack(MekanismAPI.CHEMICAL_REGISTRY.wrapAsHolder(entry.getValue()), 1), MMChemicals.UU_MATTER.asStack(1));
+            MMBasicChemicalChemicalToChemicalRecipe recipe = TileEntityChemicalReplicator.getRecipe(new ChemicalStack(MekanismAPI.CHEMICAL_REGISTRY.wrapAsHolder(entry.getValue()), 1), MoreMachineChemicals.UU_MATTER.asStack(1));
             if (recipe != null) {
                 replicator.put(RecipeViewerUtils.synthetic(entry.getKey().location(), "replicator", Mekmm.MOD_ID), recipe);
             }

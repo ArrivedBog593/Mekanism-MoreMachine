@@ -1,6 +1,6 @@
 package com.jerry.mekaf.common.inventory.container.tile;
 
-import com.jerry.mekaf.common.registries.AFContainerTypes;
+import com.jerry.mekaf.common.registries.AdvancedFactoryContainerTypes;
 import com.jerry.mekaf.common.tile.factory.TileEntityAdvancedFactoryBase;
 import com.jerry.mekaf.common.tile.factory.TileEntityChemicalToChemicalFactory;
 import com.jerry.mekaf.common.tile.factory.TileEntityLiquifyingFactory;
@@ -12,7 +12,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class AdvancedFactoryContainer extends MekanismTileContainer<TileEntityAdvancedFactoryBase<?>> {
 
     public AdvancedFactoryContainer(int id, Inventory inv, TileEntityAdvancedFactoryBase<?> tile) {
-        super(AFContainerTypes.ADVANCED_FACTORY, id, inv, tile);
+        super(AdvancedFactoryContainerTypes.ADVANCED_FACTORY, id, inv, tile);
     }
 
     @Override

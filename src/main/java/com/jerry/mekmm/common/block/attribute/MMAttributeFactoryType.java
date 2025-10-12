@@ -1,19 +1,19 @@
 package com.jerry.mekmm.common.block.attribute;
 
-import com.jerry.mekmm.common.content.blocktype.MMFactoryType;
+import com.jerry.mekmm.common.content.blocktype.MoreMachineFactoryType;
 import mekanism.common.block.attribute.Attribute;
 import org.jetbrains.annotations.NotNull;
 
 public class MMAttributeFactoryType implements Attribute {
 
-    private final MMFactoryType type;
+    private final MoreMachineFactoryType type;
 
-    public MMAttributeFactoryType(MMFactoryType type) {
+    public MMAttributeFactoryType(MoreMachineFactoryType type) {
         this.type = type;
     }
 
     @NotNull
-    public MMFactoryType getMMFactoryType() {
+    public MoreMachineFactoryType getMMFactoryType() {
         return type;
     }
 }

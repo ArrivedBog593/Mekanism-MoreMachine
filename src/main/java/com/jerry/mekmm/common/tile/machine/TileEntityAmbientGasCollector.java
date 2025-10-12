@@ -1,7 +1,7 @@
 package com.jerry.mekmm.common.tile.machine;
 
-import com.jerry.mekmm.common.registries.MMBlocks;
-import com.jerry.mekmm.common.registries.MMChemicals;
+import com.jerry.mekmm.common.registries.MoreMachineBlocks;
+import com.jerry.mekmm.common.registries.MoreMachineChemicals;
 import mekanism.api.*;
 import mekanism.api.chemical.BasicChemicalTank;
 import mekanism.api.chemical.ChemicalStack;
@@ -76,7 +76,7 @@ public class TileEntityAmbientGasCollector extends TileEntityMekanism implements
     EnergyInventorySlot energySlot;
 
     public TileEntityAmbientGasCollector(BlockPos pos, BlockState state) {
-        super(MMBlocks.AMBIENT_GAS_COLLECTOR, pos, state);
+        super(MoreMachineBlocks.AMBIENT_GAS_COLLECTOR, pos, state);
     }
 
     @Override
@@ -154,7 +154,7 @@ public class TileEntityAmbientGasCollector extends TileEntityMekanism implements
             BlockState blockState = state.get();
             Block block = blockState.getBlock();
             if (isAir(block)) {
-                ChemicalStack chemicalStack = new ChemicalStack(MMChemicals.UNSTABLE_DIMENSIONAL_GAS, 1);
+                ChemicalStack chemicalStack = new ChemicalStack(MoreMachineChemicals.UNSTABLE_DIMENSIONAL_GAS, 1);
                 activeType = chemicalStack.copyWithAmount(1);
                 chemicalTank.insert(chemicalStack, Action.EXECUTE, AutomationType.INTERNAL);
                 return true;

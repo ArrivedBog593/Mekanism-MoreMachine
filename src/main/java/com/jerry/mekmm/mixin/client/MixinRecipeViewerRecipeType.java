@@ -1,6 +1,6 @@
 package com.jerry.mekmm.mixin.client;
 
-import com.jerry.mekmm.common.registries.MMBlocks;
+import com.jerry.mekmm.common.registries.MoreMachineBlocks;
 import mekanism.api.recipes.ItemStackToChemicalRecipe;
 import mekanism.client.recipe_viewer.type.RecipeViewerRecipeType;
 import mekanism.client.recipe_viewer.type.SimpleRVRecipeType;
@@ -33,7 +33,7 @@ public abstract class MixinRecipeViewerRecipeType {
         CHEMICAL_CONVERSION = new SimpleRVRecipeType<>(MekanismRecipeType.CHEMICAL_CONVERSION, ItemStackToChemicalRecipe.class, MekanismLang.CONVERSION_CHEMICAL, MekanismUtils.getResource(MekanismUtils.ResourceType.GUI, "chemicals.png"), -20, -12, 132, 62,
                 MekanismBlocks.PURIFICATION_CHAMBER, MekanismBlocks.METALLURGIC_INFUSER, MekanismBlocks.OSMIUM_COMPRESSOR, MekanismBlocks.CHEMICAL_INJECTION_CHAMBER, MekanismBlocks.CHEMICAL_DISSOLUTION_CHAMBER, MekanismBlocks.ANTIPROTONIC_NUCLEOSYNTHESIZER,
                 // TODO:这里的顺序会影响显示效果，这很奇怪
-                MMBlocks.REPLICATOR, MMBlocks.PLANTING_STATION);
+                MoreMachineBlocks.REPLICATOR, MoreMachineBlocks.PLANTING_STATION);
 
     }
 }

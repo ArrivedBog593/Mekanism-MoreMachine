@@ -1,13 +1,13 @@
 package com.jerry.mekmm;
 
-import com.jerry.mekaf.common.registries.AFBlocks;
-import com.jerry.mekaf.common.registries.AFContainerTypes;
-import com.jerry.mekaf.common.registries.AFTileEntityTypes;
-import com.jerry.meklm.common.registries.LMBlocks;
-import com.jerry.meklm.common.registries.LMContainerTypes;
-import com.jerry.meklm.common.registries.LMTileEntityTypes;
+import com.jerry.mekaf.common.registries.AdvancedFactoryBlocks;
+import com.jerry.mekaf.common.registries.AdvancedFactoryContainerTypes;
+import com.jerry.mekaf.common.registries.AdvancedFactoryTileEntityTypes;
+import com.jerry.meklm.common.registries.LargeMachineBlocks;
+import com.jerry.meklm.common.registries.LargeMachineContainerTypes;
+import com.jerry.meklm.common.registries.LargeMachineTileEntityTypes;
 import com.jerry.mekmm.common.config.MoreMachineConfig;
-import com.jerry.mekmm.common.network.MMPacketHandler;
+import com.jerry.mekmm.common.network.MoreMachinePacketHandler;
 import com.jerry.mekmm.common.registries.*;
 import com.mojang.logging.LogUtils;
 import mekanism.common.base.IModModule;
@@ -24,7 +24,7 @@ public class Mekmm implements IModModule {
     public static final String MOD_NAME = "MekanismMoreMachine";
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    private final MMPacketHandler packetHandler;
+    private final MoreMachinePacketHandler packetHandler;
 
     public static Mekmm instance;
 
@@ -37,23 +37,23 @@ public class Mekmm implements IModModule {
 
         // MoreMachine相关的注册
         MoreMachineConfig.registerConfigs(modContainer);
-        MMItems.MM_ITEMS.register(modEventBus);
-        MMBlocks.MM_BLOCKS.register(modEventBus);
-        MMTileEntityTypes.MM_TILE_ENTITY_TYPES.register(modEventBus);
-        MMContainerTypes.MM_CONTAINER_TYPES.register(modEventBus);
-        MMRecipeSerializersInternal.MM_RECIPE_SERIALIZERS.register(modEventBus);
-        MMChemicals.MM_CHEMICALS.register(modEventBus);
-        MMCreativeTabs.MM_CREATIVE_TABS.register(modEventBus);
+        MoreMachineItems.MM_ITEMS.register(modEventBus);
+        MoreMachineBlocks.MM_BLOCKS.register(modEventBus);
+        MoreMachineTileEntityTypes.MM_TILE_ENTITY_TYPES.register(modEventBus);
+        MoreMachineContainerTypes.MM_CONTAINER_TYPES.register(modEventBus);
+        MoreMachineRecipeSerializersInternal.MM_RECIPE_SERIALIZERS.register(modEventBus);
+        MoreMachineChemicals.MM_CHEMICALS.register(modEventBus);
+        MoreMachineCreativeTabs.MM_CREATIVE_TABS.register(modEventBus);
         modEventBus.addListener(MoreMachineConfig::onConfigLoad);
         // LargeMachine相关的注册
 //        LMConfig.registerConfigs(modContainer);
         registerAdvancedFactory(modEventBus);
         registerLargeMachine(modEventBus);
 
-        packetHandler = new MMPacketHandler(modEventBus, versionNumber);
+        packetHandler = new MoreMachinePacketHandler(modEventBus, versionNumber);
     }
 
-    public static MMPacketHandler packetHandler() {
+    public static MoreMachinePacketHandler packetHandler() {
         return instance.packetHandler;
     }
 
@@ -62,15 +62,15 @@ public class Mekmm implements IModModule {
     }
 
     private void registerAdvancedFactory(IEventBus modEventBus) {
-        AFBlocks.AF_BLOCKS.register(modEventBus);
-        AFTileEntityTypes.AF_TILE_ENTITY_TYPES.register(modEventBus);
-        AFContainerTypes.AF_CONTAINER_TYPES.register(modEventBus);
+        AdvancedFactoryBlocks.AF_BLOCKS.register(modEventBus);
+        AdvancedFactoryTileEntityTypes.AF_TILE_ENTITY_TYPES.register(modEventBus);
+        AdvancedFactoryContainerTypes.AF_CONTAINER_TYPES.register(modEventBus);
     }
 
     private void registerLargeMachine(IEventBus modEventBus) {
-        LMBlocks.LM_BLOCKS.register(modEventBus);
-        LMTileEntityTypes.LM_TILE_ENTITY_TYPES.register(modEventBus);
-        LMContainerTypes.LM_CONTAINER_TYPES.register(modEventBus);
+        LargeMachineBlocks.LM_BLOCKS.register(modEventBus);
+        LargeMachineTileEntityTypes.LM_TILE_ENTITY_TYPES.register(modEventBus);
+        LargeMachineContainerTypes.LM_CONTAINER_TYPES.register(modEventBus);
     }
 
     @Override

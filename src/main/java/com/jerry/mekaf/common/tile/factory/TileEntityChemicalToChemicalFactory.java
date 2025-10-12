@@ -10,6 +10,7 @@ import mekanism.api.chemical.IChemicalTank;
 import mekanism.api.chemical.attribute.ChemicalAttributeValidator;
 import mekanism.api.recipes.MekanismRecipe;
 import mekanism.api.recipes.cache.CachedRecipe;
+import mekanism.api.recipes.cache.CachedRecipe.OperationTracker.RecipeError;
 import mekanism.api.recipes.inputs.IInputHandler;
 import mekanism.api.recipes.inputs.InputHelper;
 import mekanism.api.recipes.outputs.IOutputHandler;
@@ -48,7 +49,7 @@ public abstract class TileEntityChemicalToChemicalFactory<RECIPE extends Mekanis
     public List<IChemicalTank> inputChemicalTanks;
     public List<IChemicalTank> outputChemicalTanks;
 
-    protected TileEntityChemicalToChemicalFactory(Holder<Block> blockProvider, BlockPos pos, BlockState state, List<CachedRecipe.OperationTracker.RecipeError> errorTypes, Set<CachedRecipe.OperationTracker.RecipeError> globalErrorTypes) {
+    protected TileEntityChemicalToChemicalFactory(Holder<Block> blockProvider, BlockPos pos, BlockState state, List<RecipeError> errorTypes, Set<RecipeError> globalErrorTypes) {
         super(blockProvider, pos, state, errorTypes, globalErrorTypes);
         inputChemicalTanks = new ArrayList<>();
         outputChemicalTanks = new ArrayList<>();
@@ -61,7 +62,6 @@ public abstract class TileEntityChemicalToChemicalFactory<RECIPE extends Mekanis
         ConfigInfo config = configComponent.getConfig(TransmissionType.CHEMICAL);
         if (config != null) {
             config.addSlotInfo(DataType.OUTPUT, new ChemicalSlotInfo(false, true, outputChemicalTanks));
-//            config.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo(true, true, outputChemicalTanks));
         }
         ConfigInfo itemConfig = configComponent.getConfig(TransmissionType.ITEM);
         if (itemConfig != null) {
@@ -91,8 +91,8 @@ public abstract class TileEntityChemicalToChemicalFactory<RECIPE extends Mekanis
                     ChemicalAttributeValidator.ALWAYS_ALLOW, recipeCacheLookupMonitors[index]);
             builder.addTank(inputTank[i]);
             builder.addTank(outputTank[i]);
-            chemicalInputHandlers[i] = InputHelper.getInputHandler(inputTank[i], CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT);
-            chemicalOutputHandlers[i] = OutputHelper.getOutputHandler(outputTank[i], CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE);
+            chemicalInputHandlers[i] = InputHelper.getInputHandler(inputTank[i], RecipeError.NOT_ENOUGH_INPUT);
+            chemicalOutputHandlers[i] = OutputHelper.getOutputHandler(outputTank[i], RecipeError.NOT_ENOUGH_OUTPUT_SPACE);
             processInfoSlots[i] = new CCProcessInfo(i, inputTank[i], outputTank[i]);
         }
     }

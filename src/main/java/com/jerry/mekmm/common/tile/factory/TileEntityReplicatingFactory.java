@@ -5,7 +5,7 @@ import com.jerry.mekmm.api.recipes.cache.ReplicatorCachedRecipe;
 import com.jerry.mekmm.client.recipe_viewer.MMRecipeViewerRecipeType;
 import com.jerry.mekmm.common.config.MoreMachineConfig;
 import com.jerry.mekmm.common.recipe.impl.ReplicatorIRecipeSingle;
-import com.jerry.mekmm.common.registries.MMChemicals;
+import com.jerry.mekmm.common.registries.MoreMachineChemicals;
 import com.jerry.mekmm.common.util.ValidatorUtils;
 import mekanism.api.IContentsListener;
 import mekanism.api.chemical.BasicChemicalTank;
@@ -14,6 +14,7 @@ import mekanism.api.chemical.IChemicalTank;
 import mekanism.api.inventory.IInventorySlot;
 import mekanism.api.math.MathUtils;
 import mekanism.api.recipes.cache.CachedRecipe;
+import mekanism.api.recipes.cache.CachedRecipe.OperationTracker.RecipeError;
 import mekanism.api.recipes.ingredients.creator.IngredientCreatorAccess;
 import mekanism.api.recipes.inputs.ILongInputHandler;
 import mekanism.api.recipes.inputs.InputHelper;
@@ -25,9 +26,9 @@ import mekanism.common.capabilities.holder.slot.InventorySlotHelper;
 import mekanism.common.inventory.slot.chemical.ChemicalInventorySlot;
 import mekanism.common.lib.transmitter.TransmissionType;
 import mekanism.common.recipe.IMekanismRecipeTypeProvider;
-import mekanism.common.recipe.lookup.IDoubleRecipeLookupHandler;
+import mekanism.common.recipe.lookup.IDoubleRecipeLookupHandler.ItemChemicalRecipeLookupHandler;
 import mekanism.common.recipe.lookup.cache.DoubleInputRecipeCache;
-import mekanism.common.recipe.lookup.cache.InputRecipeCache;
+import mekanism.common.recipe.lookup.cache.InputRecipeCache.ItemChemical;
 import mekanism.common.tile.component.TileComponentEjector;
 import mekanism.common.tile.interfaces.IHasDumpButton;
 import mekanism.common.upgrade.AdvancedMachineUpgradeData;
@@ -47,21 +48,21 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class TileEntityReplicatingFactory extends MMTileEntityItemToItemFactory<MMBasicItemStackChemicalToItemStackRecipe> implements IHasDumpButton,
-        IDoubleRecipeLookupHandler.ItemChemicalRecipeLookupHandler<MMBasicItemStackChemicalToItemStackRecipe> {
+public class TileEntityReplicatingFactory extends TileEntityItemToItemMMFactory<MMBasicItemStackChemicalToItemStackRecipe> implements IHasDumpButton,
+        ItemChemicalRecipeLookupHandler<MMBasicItemStackChemicalToItemStackRecipe> {
 
     protected static final DoubleInputRecipeCache.CheckRecipeType<ItemStack, ChemicalStack, MMBasicItemStackChemicalToItemStackRecipe, ItemStack> OUTPUT_CHECK =
             (recipe, input, extra, output) -> InventoryUtils.areItemsStackable(recipe.getOutput(input, extra), output);
-    private static final List<CachedRecipe.OperationTracker.RecipeError> TRACKED_ERROR_TYPES = List.of(
-            CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_ENERGY,
-            CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT,
-            CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_SECONDARY_INPUT,
-            CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE,
-            CachedRecipe.OperationTracker.RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT
+    private static final List<RecipeError> TRACKED_ERROR_TYPES = List.of(
+            RecipeError.NOT_ENOUGH_ENERGY,
+            RecipeError.NOT_ENOUGH_INPUT,
+            RecipeError.NOT_ENOUGH_SECONDARY_INPUT,
+            RecipeError.NOT_ENOUGH_OUTPUT_SPACE,
+            RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT
     );
-    private static final Set<CachedRecipe.OperationTracker.RecipeError> GLOBAL_ERROR_TYPES = Set.of(
-            CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_ENERGY,
-            CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_SECONDARY_INPUT
+    private static final Set<RecipeError> GLOBAL_ERROR_TYPES = Set.of(
+            RecipeError.NOT_ENOUGH_ENERGY,
+            RecipeError.NOT_ENOUGH_SECONDARY_INPUT
     );
 
     public static final long MAX_GAS = 10 * FluidType.BUCKET_VOLUME;
@@ -134,7 +135,7 @@ public class TileEntityReplicatingFactory extends MMTileEntityItemToItemFactory<
     }
 
     public static boolean isValidChemicalInput(ChemicalStack stack) {
-        return stack.is(MMChemicals.UU_MATTER);
+        return stack.is(MoreMachineChemicals.UU_MATTER);
     }
 
     @Override
@@ -147,7 +148,7 @@ public class TileEntityReplicatingFactory extends MMTileEntityItemToItemFactory<
     }
 
     @Override
-    public @NotNull IMekanismRecipeTypeProvider<?, MMBasicItemStackChemicalToItemStackRecipe, InputRecipeCache.ItemChemical<MMBasicItemStackChemicalToItemStackRecipe>> getRecipeType() {
+    public @NotNull IMekanismRecipeTypeProvider<?, MMBasicItemStackChemicalToItemStackRecipe, ItemChemical<MMBasicItemStackChemicalToItemStackRecipe>> getRecipeType() {
         return null;
     }
 
@@ -186,7 +187,7 @@ public class TileEntityReplicatingFactory extends MMTileEntityItemToItemFactory<
             if (amount == 0) return null;
             return new ReplicatorIRecipeSingle(
                     IngredientCreatorAccess.item().from(item, 1),
-                    IngredientCreatorAccess.chemicalStack().fromHolder(MMChemicals.UU_MATTER, amount),
+                    IngredientCreatorAccess.chemicalStack().fromHolder(MoreMachineChemicals.UU_MATTER, amount),
                     new ItemStack(item, 1)
             );
         }

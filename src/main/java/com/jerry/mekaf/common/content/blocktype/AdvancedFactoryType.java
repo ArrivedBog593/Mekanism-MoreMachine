@@ -1,8 +1,8 @@
 package com.jerry.mekaf.common.content.blocktype;
 
-import com.jerry.mekaf.common.registries.AFBlockTypes;
-import com.jerry.mekmm.common.MMLang;
-import com.jerry.mekmm.common.content.blocktype.MMMachine;
+import com.jerry.mekaf.common.registries.AdvancedFactoryBlockTypes;
+import com.jerry.mekmm.common.MoreMachineLang;
+import com.jerry.mekmm.common.content.blocktype.MoreMachineMachine;
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.text.IHasTranslationKey;
 import mekanism.api.text.ILangEntry;
@@ -15,22 +15,22 @@ import java.util.function.Supplier;
 @NothingNullByDefault
 public enum AdvancedFactoryType implements IHasTranslationKey.IHasEnumNameTranslationKey {
     //回旋应该加在这，如果会加的话
-    OXIDIZING("oxidizing", MMLang.OXIDIZING, () -> AFBlockTypes.CHEMICAL_OXIDIZER, () -> MekanismBlocks.CHEMICAL_OXIDIZER),
-    CHEMICAL_INFUSING("chemical_infusing", MMLang.CHEMICAL_INFUSING, () -> AFBlockTypes.CHEMICAL_INFUSER, () -> MekanismBlocks.CHEMICAL_INFUSER),
+    OXIDIZING("oxidizing", MoreMachineLang.OXIDIZING, () -> AdvancedFactoryBlockTypes.CHEMICAL_OXIDIZER, () -> MekanismBlocks.CHEMICAL_OXIDIZER),
+    CHEMICAL_INFUSING("chemical_infusing", MoreMachineLang.CHEMICAL_INFUSING, () -> AdvancedFactoryBlockTypes.CHEMICAL_INFUSER, () -> MekanismBlocks.CHEMICAL_INFUSER),
     //电解分离机
-    DISSOLVING("dissolving", MMLang.DISSOLVING, () -> AFBlockTypes.CHEMICAL_DISSOLUTION_CHAMBER, () -> MekanismBlocks.CHEMICAL_DISSOLUTION_CHAMBER),
-    WASHING("washing", MMLang.WASHING, () -> AFBlockTypes.CHEMICAL_WASHER, () -> MekanismBlocks.CHEMICAL_WASHER),
-    CRYSTALLIZING("crystallizing", MMLang.CRYSTALLIZING, () -> AFBlockTypes.CHEMICAL_CRYSTALLIZER, () -> MekanismBlocks.CHEMICAL_CRYSTALLIZER),
-    PRESSURISED_REACTING("pressurised_reacting", MMLang.PRESSURISED_REACTING, () -> AFBlockTypes.PRESSURIZED_REACTION_CHAMBER, () -> MekanismBlocks.PRESSURIZED_REACTION_CHAMBER),
-    CENTRIFUGING("centrifuging", MMLang.CENTRIFUGING, () -> AFBlockTypes.ISOTOPIC_CENTRIFUGE, () -> MekanismBlocks.ISOTOPIC_CENTRIFUGE),
-    LIQUIFYING("liquifying", MMLang.LIQUIFYING, () -> AFBlockTypes.NUTRITIONAL_LIQUIFIER, () -> MekanismBlocks.NUTRITIONAL_LIQUIFIER);
+    DISSOLVING("dissolving", MoreMachineLang.DISSOLVING, () -> AdvancedFactoryBlockTypes.CHEMICAL_DISSOLUTION_CHAMBER, () -> MekanismBlocks.CHEMICAL_DISSOLUTION_CHAMBER),
+    WASHING("washing", MoreMachineLang.WASHING, () -> AdvancedFactoryBlockTypes.CHEMICAL_WASHER, () -> MekanismBlocks.CHEMICAL_WASHER),
+    CRYSTALLIZING("crystallizing", MoreMachineLang.CRYSTALLIZING, () -> AdvancedFactoryBlockTypes.CHEMICAL_CRYSTALLIZER, () -> MekanismBlocks.CHEMICAL_CRYSTALLIZER),
+    PRESSURISED_REACTING("pressurised_reacting", MoreMachineLang.PRESSURISED_REACTING, () -> AdvancedFactoryBlockTypes.PRESSURIZED_REACTION_CHAMBER, () -> MekanismBlocks.PRESSURIZED_REACTION_CHAMBER),
+    CENTRIFUGING("centrifuging", MoreMachineLang.CENTRIFUGING, () -> AdvancedFactoryBlockTypes.ISOTOPIC_CENTRIFUGE, () -> MekanismBlocks.ISOTOPIC_CENTRIFUGE),
+    LIQUIFYING("liquifying", MoreMachineLang.LIQUIFYING, () -> AdvancedFactoryBlockTypes.NUTRITIONAL_LIQUIFIER, () -> MekanismBlocks.NUTRITIONAL_LIQUIFIER);
 
     private final String registryNameComponent;
     private final ILangEntry langEntry;
-    private final Supplier<MMMachine.MMFactoryMachine<?>> baseMachine;
+    private final Supplier<MoreMachineMachine.MoreMachineFactoryMachine<?>> baseMachine;
     private final Supplier<BlockRegistryObject<?, ?>> baseBlock;
 
-    AdvancedFactoryType(String registryNameComponent, ILangEntry langEntry, Supplier<MMMachine.MMFactoryMachine<?>> baseMachine, Supplier<BlockRegistryObject<?, ?>> baseBlock) {
+    AdvancedFactoryType(String registryNameComponent, ILangEntry langEntry, Supplier<MoreMachineMachine.MoreMachineFactoryMachine<?>> baseMachine, Supplier<BlockRegistryObject<?, ?>> baseBlock) {
         this.registryNameComponent = registryNameComponent;
         this.langEntry = langEntry;
         this.baseMachine = baseMachine;
@@ -46,7 +46,7 @@ public enum AdvancedFactoryType implements IHasTranslationKey.IHasEnumNameTransl
         return name.substring(0, 1).toUpperCase(Locale.ROOT) + name.substring(1);
     }
 
-    public MMMachine.MMFactoryMachine<?> getBaseMachine() {
+    public MoreMachineMachine.MoreMachineFactoryMachine<?> getBaseMachine() {
         return baseMachine.get();
     }
 

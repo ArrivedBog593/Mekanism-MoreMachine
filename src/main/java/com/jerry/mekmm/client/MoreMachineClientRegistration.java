@@ -1,13 +1,13 @@
 package com.jerry.mekmm.client;
 
 import com.jerry.mekaf.client.gui.machine.GuiAdvancedFactory;
-import com.jerry.mekaf.common.registries.AFContainerTypes;
+import com.jerry.mekaf.common.registries.AdvancedFactoryContainerTypes;
 import com.jerry.meklm.client.gui.machine.GuiLargeRotaryCondensentrator;
-import com.jerry.meklm.common.registries.LMBlocks;
-import com.jerry.meklm.common.registries.LMContainerTypes;
+import com.jerry.meklm.common.registries.LargeMachineBlocks;
+import com.jerry.meklm.common.registries.LargeMachineContainerTypes;
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.client.gui.machine.*;
-import com.jerry.mekmm.common.registries.MMContainerTypes;
+import com.jerry.mekmm.common.registries.MoreMachineContainerTypes;
 import mekanism.client.ClientRegistrationUtil;
 import mekanism.client.model.baked.ExtensionBakedModel;
 import mekanism.client.render.lib.QuadTransformation;
@@ -24,27 +24,27 @@ public class MoreMachineClientRegistration {
 
     @SubscribeEvent
     public static void init(FMLClientSetupEvent event) {
-        addCustomModel(LMBlocks.LARGE_ROTARY_CONDENSENTRATOR, (orig, evt) -> new ExtensionBakedModel.TransformedBakedModel<Void>(orig,
+        addCustomModel(LargeMachineBlocks.LARGE_ROTARY_CONDENSENTRATOR, (orig, evt) -> new ExtensionBakedModel.TransformedBakedModel<Void>(orig,
                 QuadTransformation.translate(0, 1, 0)));
     }
 
     @SubscribeEvent
     public static void registerScreens(RegisterMenuScreensEvent event) {
-        ClientRegistrationUtil.registerScreen(event, MMContainerTypes.RECYCLER, GuiRecycler::new);
-        ClientRegistrationUtil.registerScreen(event, MMContainerTypes.PLANTING_STATION, GuiPlantingStation::new);
-        ClientRegistrationUtil.registerScreen(event, MMContainerTypes.CNC_STAMPER, GuiStamper::new);
-        ClientRegistrationUtil.registerElectricScreen(event, MMContainerTypes.CNC_LATHE);
-        ClientRegistrationUtil.registerElectricScreen(event, MMContainerTypes.CNC_ROLLING_MILL);
-        ClientRegistrationUtil.registerScreen(event, MMContainerTypes.REPLICATOR, GuiReplicator::new);
-        ClientRegistrationUtil.registerScreen(event, MMContainerTypes.FLUID_REPLICATOR, GuiFluidReplicator::new);
-        ClientRegistrationUtil.registerScreen(event, MMContainerTypes.CHEMIcAL_REPLICATOR, GuiChemicalReplicator::new);
-        ClientRegistrationUtil.registerScreen(event, MMContainerTypes.AMBIENT_GAS_COLLECTOR, GuiAmbientGasCollector::new);
-        ClientRegistrationUtil.registerScreen(event, MMContainerTypes.MM_FACTORY, GuiMMFactory::new);
+        ClientRegistrationUtil.registerScreen(event, MoreMachineContainerTypes.RECYCLER, GuiRecycler::new);
+        ClientRegistrationUtil.registerScreen(event, MoreMachineContainerTypes.PLANTING_STATION, GuiPlantingStation::new);
+        ClientRegistrationUtil.registerScreen(event, MoreMachineContainerTypes.CNC_STAMPER, GuiStamper::new);
+        ClientRegistrationUtil.registerElectricScreen(event, MoreMachineContainerTypes.CNC_LATHE);
+        ClientRegistrationUtil.registerElectricScreen(event, MoreMachineContainerTypes.CNC_ROLLING_MILL);
+        ClientRegistrationUtil.registerScreen(event, MoreMachineContainerTypes.REPLICATOR, GuiReplicator::new);
+        ClientRegistrationUtil.registerScreen(event, MoreMachineContainerTypes.FLUID_REPLICATOR, GuiFluidReplicator::new);
+        ClientRegistrationUtil.registerScreen(event, MoreMachineContainerTypes.CHEMIcAL_REPLICATOR, GuiChemicalReplicator::new);
+        ClientRegistrationUtil.registerScreen(event, MoreMachineContainerTypes.AMBIENT_GAS_COLLECTOR, GuiAmbientGasCollector::new);
+        ClientRegistrationUtil.registerScreen(event, MoreMachineContainerTypes.MM_FACTORY, GuiMMFactory::new);
 
         //Advanced Factory
-        ClientRegistrationUtil.registerScreen(event, AFContainerTypes.ADVANCED_FACTORY, GuiAdvancedFactory::new);
+        ClientRegistrationUtil.registerScreen(event, AdvancedFactoryContainerTypes.ADVANCED_FACTORY, GuiAdvancedFactory::new);
 
         //Large Machine
-        ClientRegistrationUtil.registerScreen(event, LMContainerTypes.LARGE_ROTARY_CONDENSENTRATOR, GuiLargeRotaryCondensentrator::new);
+        ClientRegistrationUtil.registerScreen(event, LargeMachineContainerTypes.LARGE_ROTARY_CONDENSENTRATOR, GuiLargeRotaryCondensentrator::new);
     }
 }

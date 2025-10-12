@@ -4,11 +4,11 @@ import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.client.recipe_viewer.MMRecipeViewerRecipeType;
 import com.jerry.mekmm.client.recipe_viewer.MMRecipeViewerUtils;
 import com.jerry.mekmm.client.recipe_viewer.emi.recipe.*;
-import com.jerry.mekmm.common.MMLang;
+import com.jerry.mekmm.common.MoreMachineLang;
 import com.jerry.mekmm.common.block.attribute.MMAttributeFactoryType;
-import com.jerry.mekmm.common.registries.MMBlocks;
-import com.jerry.mekmm.common.registries.MMChemicals;
-import com.jerry.mekmm.common.registries.MMItems;
+import com.jerry.mekmm.common.registries.MoreMachineBlocks;
+import com.jerry.mekmm.common.registries.MoreMachineChemicals;
+import com.jerry.mekmm.common.registries.MoreMachineItems;
 import dev.emi.emi.api.EmiEntrypoint;
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
@@ -45,8 +45,8 @@ public class MoreMachineEMI implements EmiPlugin {
     public void register(EmiRegistry registry) {
         addCategories(registry);
 
-        registerItemSubtypes(registry, MMItems.MM_ITEMS.getEntries());
-        registerItemSubtypes(registry, MMBlocks.MM_BLOCKS.getSecondaryEntries());
+        registerItemSubtypes(registry, MoreMachineItems.MM_ITEMS.getEntries());
+        registerItemSubtypes(registry, MoreMachineBlocks.MM_BLOCKS.getSecondaryEntries());
     }
 
     private void addCategories(EmiRegistry registry) {
@@ -61,8 +61,8 @@ public class MoreMachineEMI implements EmiPlugin {
         addCategoryAndRecipes(registry, MMRecipeViewerRecipeType.LATHE, ItemStackToItemStackEmiRecipe::new);
         addCategoryAndRecipes(registry, MMRecipeViewerRecipeType.ROLLING_MILL, ItemStackToItemStackEmiRecipe::new);
 
-        registry.addRecipe(new EmiInfoRecipe(List.of(new ChemicalEmiStack(MMChemicals.UNSTABLE_DIMENSIONAL_GAS.asStack(FluidType.BUCKET_VOLUME))), List.of(
-                MMLang.RECIPE_VIEWER_INFO_UNSTABLE_DIMENSIONAL_GAS.translate()), Mekmm.rl("info/unstable_dimensional_gas")));
+        registry.addRecipe(new EmiInfoRecipe(List.of(new ChemicalEmiStack(MoreMachineChemicals.UNSTABLE_DIMENSIONAL_GAS.asStack(FluidType.BUCKET_VOLUME))), List.of(
+                MoreMachineLang.RECIPE_VIEWER_INFO_UNSTABLE_DIMENSIONAL_GAS.translate()), Mekmm.rl("info/unstable_dimensional_gas")));
     }
 
     public static <RECIPE extends MekanismRecipe<?>, TYPE extends IRecipeViewerRecipeType<RECIPE> & IMekanismRecipeTypeProvider<?, RECIPE, ?>> void addCategoryAndRecipes(
@@ -96,7 +96,7 @@ public class MoreMachineEMI implements EmiPlugin {
                 MMAttributeFactoryType factoryType = Attribute.get(blockItem.getBlock(), MMAttributeFactoryType.class);
                 if (factoryType != null) {
                     for (FactoryTier tier : EnumUtils.FACTORY_TIERS) {
-                        registry.addWorkstation(category, EmiStack.of(MMBlocks.getMMFactory(tier, factoryType.getMMFactoryType())));
+                        registry.addWorkstation(category, EmiStack.of(MoreMachineBlocks.getMMFactory(tier, factoryType.getMMFactoryType())));
                     }
                 }
             }

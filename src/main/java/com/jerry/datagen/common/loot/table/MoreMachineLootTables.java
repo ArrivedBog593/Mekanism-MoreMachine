@@ -1,7 +1,7 @@
 package com.jerry.datagen.common.loot.table;
 
-import com.jerry.mekaf.common.registries.AFBlocks;
-import com.jerry.mekmm.common.registries.MMBlocks;
+import com.jerry.mekaf.common.registries.AdvancedFactoryBlocks;
+import com.jerry.mekmm.common.registries.MoreMachineBlocks;
 import net.minecraft.core.HolderLookup;
 
 public class MoreMachineLootTables extends BaseBlockLootTables {
@@ -12,7 +12,7 @@ public class MoreMachineLootTables extends BaseBlockLootTables {
 
     @Override
     protected void generate() {
-        dropSelfWithContents(MMBlocks.MM_BLOCKS.getPrimaryEntries());
-        dropSelfWithContents(AFBlocks.AF_BLOCKS.getPrimaryEntries());
+        dropSelfWithContents(MoreMachineBlocks.MM_BLOCKS.getPrimaryEntries());
+        dropSelfWithContents(AdvancedFactoryBlocks.AF_BLOCKS.getPrimaryEntries());
     }
 }
