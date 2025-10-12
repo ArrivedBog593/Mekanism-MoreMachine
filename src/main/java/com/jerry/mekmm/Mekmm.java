@@ -10,6 +10,7 @@ import com.jerry.mekmm.common.config.MoreMachineConfig;
 import com.jerry.mekmm.common.network.MoreMachinePacketHandler;
 import com.jerry.mekmm.common.registries.*;
 import com.mojang.logging.LogUtils;
+import mekanism.common.Mekanism;
 import mekanism.common.base.IModModule;
 import mekanism.common.lib.Version;
 import net.minecraft.resources.ResourceLocation;
@@ -31,7 +32,7 @@ public class Mekmm implements IModModule {
     public final Version versionNumber;
 
     public Mekmm(IEventBus modEventBus, ModContainer modContainer) {
-        instance = this;
+        Mekanism.addModule(instance = this);
         //Set our version number to match the neoforge.mods.toml file, which matches the one in our build.gradle
         versionNumber = new Version(modContainer);
 
