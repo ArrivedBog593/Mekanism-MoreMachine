@@ -6,14 +6,16 @@ import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.common.block.prefab.MMBlockFactoryMachine;
 import com.jerry.mekmm.common.content.blocktype.MMFactory;
 import com.jerry.mekmm.common.content.blocktype.MMFactoryType;
-import com.jerry.mekmm.common.content.blocktype.MMMachine;
+import com.jerry.mekmm.common.content.blocktype.MMMachine.MMFactoryMachine;
 import com.jerry.mekmm.common.item.block.machine.MMItemBlockFactory;
 import com.jerry.mekmm.common.tile.factory.TileEntityMMFactory;
 import com.jerry.mekmm.common.tile.machine.*;
 import com.jerry.mekmm.common.util.MMEnumUtils;
 import mekanism.api.tier.ITier;
 import mekanism.common.block.attribute.AttributeTier;
+import mekanism.common.block.prefab.BlockTile.BlockTileModel;
 import mekanism.common.content.blocktype.BlockType;
+import mekanism.common.content.blocktype.Machine;
 import mekanism.common.item.block.machine.ItemBlockMachine;
 import mekanism.common.registration.impl.BlockDeferredRegister;
 import mekanism.common.registration.impl.BlockRegistryObject;
@@ -46,14 +48,17 @@ public class MMBlocks {
         }
     }
 
-    public static final BlockRegistryObject<MMBlockFactoryMachine<TileEntityRecycler, MMMachine.MMFactoryMachine<TileEntityRecycler>>, ItemBlockMachine> RECYCLER = MM_BLOCKS.register("recycler", () -> new MMBlockFactoryMachine<>(MMBlockTypes.RECYCLER, properties -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor())), ItemBlockMachine::new);
-    public static final BlockRegistryObject<MMBlockFactoryMachine<TileEntityPlantingStation, MMMachine.MMFactoryMachine<TileEntityPlantingStation>>, ItemBlockMachine> PLANTING_STATION = MM_BLOCKS.register("planting_station", () -> new MMBlockFactoryMachine<>(MMBlockTypes.PLANTING_STATION, properties -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor())), ItemBlockMachine::new);
+    public static final BlockRegistryObject<MMBlockFactoryMachine<TileEntityRecycler, MMFactoryMachine<TileEntityRecycler>>, ItemBlockMachine> RECYCLER = MM_BLOCKS.register("recycler", () -> new MMBlockFactoryMachine<>(MMBlockTypes.RECYCLER, properties -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor())), ItemBlockMachine::new);
+    public static final BlockRegistryObject<MMBlockFactoryMachine<TileEntityPlantingStation, MMFactoryMachine<TileEntityPlantingStation>>, ItemBlockMachine> PLANTING_STATION = MM_BLOCKS.register("planting_station", () -> new MMBlockFactoryMachine<>(MMBlockTypes.PLANTING_STATION, properties -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor())), ItemBlockMachine::new);
 
-    public static final BlockRegistryObject<MMBlockFactoryMachine<TileEntityStamper, MMMachine.MMFactoryMachine<TileEntityStamper>>, ItemBlockMachine> CNC_STAMPER = MM_BLOCKS.register("cnc_stamper", () -> new MMBlockFactoryMachine<>(MMBlockTypes.CNC_STAMPER, properties -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor())), ItemBlockMachine::new);
-    public static final BlockRegistryObject<MMBlockFactoryMachine<TileEntityLathe, MMMachine.MMFactoryMachine<TileEntityLathe>>, ItemBlockMachine> CNC_LATHE = MM_BLOCKS.register("cnc_lathe", () -> new MMBlockFactoryMachine<>(MMBlockTypes.CNC_LATHE, properties -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor())), ItemBlockMachine::new);
-    public static final BlockRegistryObject<MMBlockFactoryMachine<TileEntityRollingMill, MMMachine.MMFactoryMachine<TileEntityRollingMill>>, ItemBlockMachine> CNC_ROLLING_MILL = MM_BLOCKS.register("cnc_rolling_mill", () -> new MMBlockFactoryMachine<>(MMBlockTypes.CNC_ROLLING_MILL, properties -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor())), ItemBlockMachine::new);
+    public static final BlockRegistryObject<MMBlockFactoryMachine<TileEntityStamper, MMFactoryMachine<TileEntityStamper>>, ItemBlockMachine> CNC_STAMPER = MM_BLOCKS.register("cnc_stamper", () -> new MMBlockFactoryMachine<>(MMBlockTypes.CNC_STAMPER, properties -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor())), ItemBlockMachine::new);
+    public static final BlockRegistryObject<MMBlockFactoryMachine<TileEntityLathe, MMFactoryMachine<TileEntityLathe>>, ItemBlockMachine> CNC_LATHE = MM_BLOCKS.register("cnc_lathe", () -> new MMBlockFactoryMachine<>(MMBlockTypes.CNC_LATHE, properties -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor())), ItemBlockMachine::new);
+    public static final BlockRegistryObject<MMBlockFactoryMachine<TileEntityRollingMill, MMFactoryMachine<TileEntityRollingMill>>, ItemBlockMachine> CNC_ROLLING_MILL = MM_BLOCKS.register("cnc_rolling_mill", () -> new MMBlockFactoryMachine<>(MMBlockTypes.CNC_ROLLING_MILL, properties -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor())), ItemBlockMachine::new);
 
-    public static final BlockRegistryObject<MMBlockFactoryMachine<TileEntityReplicator, MMMachine.MMFactoryMachine<TileEntityReplicator>>, ItemBlockMachine> REPLICATOR = MM_BLOCKS.register("replicator", () -> new MMBlockFactoryMachine<>(MMBlockTypes.REPLICATOR, properties -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor())), ItemBlockMachine::new);
+    public static final BlockRegistryObject<MMBlockFactoryMachine<TileEntityReplicator, MMFactoryMachine<TileEntityReplicator>>, ItemBlockMachine> REPLICATOR = MM_BLOCKS.register("replicator", () -> new MMBlockFactoryMachine<>(MMBlockTypes.REPLICATOR, properties -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor())), ItemBlockMachine::new);
+    public static final BlockRegistryObject<MMBlockFactoryMachine<TileEntityFluidReplicator, MMFactoryMachine<TileEntityFluidReplicator>>, ItemBlockMachine> FLUID_REPLICATOR = MM_BLOCKS.register("fluid_replicator", () -> new MMBlockFactoryMachine<>(MMBlockTypes.FLUID_REPLICATOR, properties -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor())), ItemBlockMachine::new);
+
+    public static final BlockRegistryObject<BlockTileModel<TileEntityAmbientGasCollector, Machine<TileEntityAmbientGasCollector>>, ItemBlockMachine> AMBIENT_GAS_COLLECTOR = MM_BLOCKS.register("ambient_gas_collector", () -> new BlockTileModel<>(MMBlockTypes.AMBIENT_GAS_COLLECTOR, properties -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor())), ItemBlockMachine::new);
 
     private static <TILE extends TileEntityMMFactory<?>> BlockRegistryObject<MMBlockFactoryMachine.MMBlockFactory<?>, MMItemBlockFactory> registerFactory(MMFactory<TILE> type) {
         return registerTieredBlock(type, "_" + type.getMMFactoryType().getRegistryNameComponent() + "_factory", () -> new MMBlockFactoryMachine.MMBlockFactory<>(type), MMItemBlockFactory::new);

@@ -1,5 +1,6 @@
 package com.jerry.mekmm.client.jei;
 
+import com.jerry.mekmm.api.recipes.FluidStackGasToFluidStackRecipe;
 import com.jerry.mekmm.api.recipes.PlantingRecipe;
 import com.jerry.mekmm.api.recipes.RecyclerRecipe;
 import com.jerry.mekmm.api.recipes.StamperRecipe;
@@ -22,5 +23,6 @@ public class MoreMachineJEIRecipeType {
     public static final MekanismJEIRecipeType<ItemStackToItemStackRecipe> CNC_ROLLING_MILL = new MekanismJEIRecipeType<>(MMBlocks.CNC_ROLLING_MILL, ItemStackToItemStackRecipe.class);
 
     public static final MekanismJEIRecipeType<ItemStackGasToItemStackRecipe> REPLICATOR = new MekanismJEIRecipeType<>(MMBlocks.REPLICATOR, ItemStackGasToItemStackRecipe.class);
+    public static final MekanismJEIRecipeType<FluidStackGasToFluidStackRecipe> FLUID_REPLICATOR = new MekanismJEIRecipeType<>(MMBlocks.FLUID_REPLICATOR, FluidStackGasToFluidStackRecipe.class);
 
 }

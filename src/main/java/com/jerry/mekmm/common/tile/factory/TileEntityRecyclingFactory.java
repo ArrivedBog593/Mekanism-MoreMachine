@@ -10,12 +10,13 @@ import mekanism.api.inventory.IInventorySlot;
 import mekanism.api.math.MathUtils;
 import mekanism.api.providers.IBlockProvider;
 import mekanism.api.recipes.cache.CachedRecipe;
+import mekanism.api.recipes.cache.CachedRecipe.OperationTracker.RecipeError;
 import mekanism.api.recipes.inputs.IInputHandler;
 import mekanism.api.recipes.inputs.InputHelper;
 import mekanism.api.recipes.outputs.IOutputHandler;
 import mekanism.common.capabilities.holder.slot.InventorySlotHelper;
 import mekanism.common.inventory.slot.OutputInventorySlot;
-import mekanism.common.inventory.warning.WarningTracker;
+import mekanism.common.inventory.warning.WarningTracker.WarningType;
 import mekanism.common.recipe.IMekanismRecipeTypeProvider;
 import mekanism.common.recipe.lookup.ISingleRecipeLookupHandler;
 import mekanism.common.recipe.lookup.cache.InputRecipeCache;
@@ -26,31 +27,27 @@ import mekanism.common.util.MekanismUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.util.TriPredicate;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Set;
 
-public class TileEntityRecyclingMMFactory extends TileEntityMMFactory<RecyclerRecipe> implements ISingleRecipeLookupHandler.ItemRecipeLookupHandler<RecyclerRecipe> {
+public class TileEntityRecyclingFactory extends TileEntityMMFactory<RecyclerRecipe> implements ISingleRecipeLookupHandler.ItemRecipeLookupHandler<RecyclerRecipe> {
 
-    private static final TriPredicate<RecyclerRecipe, ItemStack, ItemStack> OUTPUT_CHECK =
-            (recipe, input, output) -> InventoryUtils.areItemsStackable(recipe.getOutput(input).getMaxChanceOutput(), output);
-
-    private static final List<CachedRecipe.OperationTracker.RecipeError> TRACKED_ERROR_TYPES = List.of(
-            CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_ENERGY,
-            CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT,
-            CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE,
-            CachedRecipe.OperationTracker.RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT
+    private static final List<RecipeError> TRACKED_ERROR_TYPES = List.of(
+            RecipeError.NOT_ENOUGH_ENERGY,
+            RecipeError.NOT_ENOUGH_INPUT,
+            RecipeError.NOT_ENOUGH_OUTPUT_SPACE,
+            RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT
     );
 
-    private static final Set<CachedRecipe.OperationTracker.RecipeError> GLOBAL_ERROR_TYPES = Set.of(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_ENERGY);
+    private static final Set<RecipeError> GLOBAL_ERROR_TYPES = Set.of(RecipeError.NOT_ENOUGH_ENERGY);
 
     protected IInputHandler<@NotNull ItemStack>[] inputHandlers;
     protected IOutputHandler<RecyclerRecipe.ChanceOutput>[] outputHandlers;
 
-    public TileEntityRecyclingMMFactory(IBlockProvider blockProvider, BlockPos pos, BlockState state) {
+    public TileEntityRecyclingFactory(IBlockProvider blockProvider, BlockPos pos, BlockState state) {
         super(blockProvider, pos, state, TRACKED_ERROR_TYPES, GLOBAL_ERROR_TYPES);
     }
 
@@ -67,11 +64,11 @@ public class TileEntityRecyclingMMFactory extends TileEntityMMFactory<RecyclerRe
             //Note: As we are an item factory that has comparator's based on items we can just use the monitor as a listener directly
             MMFactoryInputInventorySlot inputSlot = MMFactoryInputInventorySlot.create(this, i, outputSlot, recipeCacheLookupMonitors[i], xPos, 13);
             int index = i;
-            builder.addSlot(inputSlot).tracksWarnings(slot -> slot.warning(WarningTracker.WarningType.NO_MATCHING_RECIPE, getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT, index)));
-            builder.addSlot(outputSlot).tracksWarnings(slot -> slot.warning(WarningTracker.WarningType.NO_SPACE_IN_OUTPUT, getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE, index)));
+            builder.addSlot(inputSlot).tracksWarnings(slot -> slot.warning(WarningType.NO_MATCHING_RECIPE, getWarningCheck(RecipeError.NOT_ENOUGH_INPUT, index)));
+            builder.addSlot(outputSlot).tracksWarnings(slot -> slot.warning(WarningType.NO_SPACE_IN_OUTPUT, getWarningCheck(RecipeError.NOT_ENOUGH_OUTPUT_SPACE, index)));
 
-            inputHandlers[i] = InputHelper.getInputHandler(inputSlot, CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT);
-            outputHandlers[i] = MMOutputHelper.getOutputHandler(outputSlot, CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE);
+            inputHandlers[i] = InputHelper.getInputHandler(inputSlot, RecipeError.NOT_ENOUGH_INPUT);
+            outputHandlers[i] = MMOutputHelper.getOutputHandler(outputSlot, RecipeError.NOT_ENOUGH_OUTPUT_SPACE);
             processInfoSlots[i] = new ProcessInfo(i, inputSlot, outputSlot, null);
         }
     }

@@ -1,26 +1,27 @@
 package com.jerry.mekmm.common.recipe.impl;
 
 import com.jerry.mekmm.Mekmm;
+import com.jerry.mekmm.api.recipes.FluidStackGasToFluidStackRecipe;
 import com.jerry.mekmm.common.registries.MMBlocks;
 import mekanism.api.annotations.NothingNullByDefault;
-import mekanism.api.recipes.ItemStackGasToItemStackRecipe;
 import mekanism.api.recipes.ingredients.ChemicalStackIngredient.GasStackIngredient;
-import mekanism.api.recipes.ingredients.ItemStackIngredient;
+import mekanism.api.recipes.ingredients.FluidStackIngredient;
 import mekanism.common.util.RegistryUtils;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 
 @NothingNullByDefault
-public class ReplicatorIRecipe extends ItemStackGasToItemStackRecipe {
+public class FluidReplicatorIRecipe extends FluidStackGasToFluidStackRecipe {
 
-    public ReplicatorIRecipe(Item item, ItemStackIngredient itemInput, GasStackIngredient gasInput, ItemStack output) {
-        this(Mekmm.rl("item_replicator/" + RegistryUtils.getName(item).toString().replace(':', '/')), itemInput, gasInput, output);
+    public FluidReplicatorIRecipe(Fluid fluid, FluidStackIngredient fluidInput, GasStackIngredient gasInput, FluidStack output) {
+        this(Mekmm.rl("fluid_replicator/" + RegistryUtils.getName(fluid).toString().replace(':', '/')), fluidInput, gasInput, output);
     }
 
-    public ReplicatorIRecipe(ResourceLocation id, ItemStackIngredient itemInput, GasStackIngredient gasInput, ItemStack output) {
+    public FluidReplicatorIRecipe(ResourceLocation id, FluidStackIngredient itemInput, GasStackIngredient gasInput, FluidStack output) {
         super(id, itemInput, gasInput, output);
     }
 
@@ -36,11 +37,11 @@ public class ReplicatorIRecipe extends ItemStackGasToItemStackRecipe {
 
     @Override
     public String getGroup() {
-        return MMBlocks.REPLICATOR.getName();
+        return MMBlocks.FLUID_REPLICATOR.getName();
     }
 
     @Override
     public ItemStack getToastSymbol() {
-        return MMBlocks.REPLICATOR.getItemStack();
+        return MMBlocks.FLUID_REPLICATOR.getItemStack();
     }
 }

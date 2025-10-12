@@ -4,8 +4,7 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.common.content.blocktype.MMFactoryType;
-import com.jerry.mekmm.common.tile.factory.TileEntityMMFactory;
-import com.jerry.mekmm.common.tile.factory.TileEntityRecyclingMMFactory;
+import com.jerry.mekmm.common.tile.factory.*;
 import com.jerry.mekmm.common.tile.machine.*;
 import mekanism.common.registration.impl.TileEntityTypeDeferredRegister;
 import mekanism.common.registration.impl.TileEntityTypeRegistryObject;
@@ -25,7 +24,12 @@ public class MMTileEntityTypes {
 
     static {
         for (FactoryTier tier : EnumUtils.FACTORY_TIERS) {
-            FACTORIES.put(tier, MMFactoryType.RECYCLING, MM_TILE_ENTITY_TYPES.register(MMBlocks.getMMFactory(tier, MMFactoryType.RECYCLING), (pos, state) -> new TileEntityRecyclingMMFactory(MMBlocks.getMMFactory(tier, MMFactoryType.RECYCLING), pos, state), TileEntityMekanism::tickServer, TileEntityMekanism::tickClient));
+            FACTORIES.put(tier, MMFactoryType.RECYCLING, MM_TILE_ENTITY_TYPES.register(MMBlocks.getMMFactory(tier, MMFactoryType.RECYCLING), (pos, state) -> new TileEntityRecyclingFactory(MMBlocks.getMMFactory(tier, MMFactoryType.RECYCLING), pos, state), TileEntityMekanism::tickServer, TileEntityMekanism::tickClient));
+            FACTORIES.put(tier, MMFactoryType.PLANTING, MM_TILE_ENTITY_TYPES.register(MMBlocks.getMMFactory(tier, MMFactoryType.PLANTING), (pos, state) -> new TileEntityPlantingFactory(MMBlocks.getMMFactory(tier, MMFactoryType.PLANTING), pos, state), TileEntityMekanism::tickServer, TileEntityMekanism::tickClient));
+            FACTORIES.put(tier, MMFactoryType.CNC_STAMPING, MM_TILE_ENTITY_TYPES.register(MMBlocks.getMMFactory(tier, MMFactoryType.CNC_STAMPING), (pos, state) -> new TileEntityStampingFactory(MMBlocks.getMMFactory(tier, MMFactoryType.CNC_STAMPING), pos, state), TileEntityMekanism::tickServer, TileEntityMekanism::tickClient));
+            FACTORIES.put(tier, MMFactoryType.CNC_LATHING, MM_TILE_ENTITY_TYPES.register(MMBlocks.getMMFactory(tier, MMFactoryType.CNC_LATHING), (pos, state) -> new MMTileEntityItemStackToItemStackFactory(MMBlocks.getMMFactory(tier, MMFactoryType.CNC_LATHING), pos, state), TileEntityMekanism::tickServer, TileEntityMekanism::tickClient));
+            FACTORIES.put(tier, MMFactoryType.CNC_ROLLING_MILL, MM_TILE_ENTITY_TYPES.register(MMBlocks.getMMFactory(tier, MMFactoryType.CNC_ROLLING_MILL), (pos, state) -> new MMTileEntityItemStackToItemStackFactory(MMBlocks.getMMFactory(tier, MMFactoryType.CNC_ROLLING_MILL), pos, state), TileEntityMekanism::tickServer, TileEntityMekanism::tickClient));
+            FACTORIES.put(tier, MMFactoryType.REPLICATING, MM_TILE_ENTITY_TYPES.register(MMBlocks.getMMFactory(tier, MMFactoryType.REPLICATING), (pos, state) -> new TileEntityRecyclingFactory(MMBlocks.getMMFactory(tier, MMFactoryType.REPLICATING), pos, state), TileEntityMekanism::tickServer, TileEntityMekanism::tickClient));
         }
     }
 
@@ -37,6 +41,9 @@ public class MMTileEntityTypes {
     public static final TileEntityTypeRegistryObject<TileEntityRollingMill> CNC_ROLLING_MILL = MM_TILE_ENTITY_TYPES.register(MMBlocks.CNC_ROLLING_MILL, TileEntityRollingMill::new, TileEntityMekanism::tickServer, TileEntityMekanism::tickClient);
 
     public static final TileEntityTypeRegistryObject<TileEntityReplicator> REPLICATOR = MM_TILE_ENTITY_TYPES.register(MMBlocks.REPLICATOR, TileEntityReplicator::new, TileEntityMekanism::tickServer, TileEntityMekanism::tickClient);
+    public static final TileEntityTypeRegistryObject<TileEntityFluidReplicator> FLUID_REPLICATOR = MM_TILE_ENTITY_TYPES.register(MMBlocks.FLUID_REPLICATOR, TileEntityFluidReplicator::new, TileEntityMekanism::tickServer, TileEntityMekanism::tickClient);
+
+    public static final TileEntityTypeRegistryObject<TileEntityAmbientGasCollector> AMBIENT_GAS_COLLECTOR = MM_TILE_ENTITY_TYPES.register(MMBlocks.AMBIENT_GAS_COLLECTOR, TileEntityAmbientGasCollector::new, TileEntityMekanism::tickServer, TileEntityMekanism::tickClient);
 
     public static TileEntityTypeRegistryObject<? extends TileEntityMMFactory<?>> getMMFactoryTile(FactoryTier tier, MMFactoryType type) {
         return FACTORIES.get(tier, type);

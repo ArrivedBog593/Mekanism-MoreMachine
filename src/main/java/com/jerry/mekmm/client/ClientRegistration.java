@@ -27,6 +27,9 @@ public class ClientRegistration {
             ClientRegistrationUtil.registerElectricScreen(MMContainerTypes.CNC_ROLLING_MILL);
 
             ClientRegistrationUtil.registerScreen(MMContainerTypes.REPLICATOR, GuiReplicator::new);
+            ClientRegistrationUtil.registerScreen(MMContainerTypes.FLUID_REPLICATOR, GuiFluidReplicator::new);
+
+            ClientRegistrationUtil.registerScreen(MMContainerTypes.AMBIENT_GAS_COLLECTOR, GuiAmbientGasCollector::new);
 
             ClientRegistrationUtil.registerScreen(MMContainerTypes.MM_FACTORY, GuiMMFactory::new);
             ClientRegistrationUtil.registerScreen(AFContainerTypes.ADVANCED_FACTORY, GuiAdvancedFactory::new);

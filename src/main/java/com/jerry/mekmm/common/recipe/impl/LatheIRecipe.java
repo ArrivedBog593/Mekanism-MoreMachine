@@ -1,10 +1,10 @@
-package com.jerry.mekmm.api.recipes.impl;
+package com.jerry.mekmm.common.recipe.impl;
 
-import com.jerry.mekmm.api.recipes.RecyclerRecipe;
 import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
 import com.jerry.mekmm.common.registries.MMBlocks;
 import com.jerry.mekmm.common.registries.MMRecipeSerializers;
 import mekanism.api.annotations.NothingNullByDefault;
+import mekanism.api.recipes.ItemStackToItemStackRecipe;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -12,29 +12,34 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 
 @NothingNullByDefault
-public class RecyclerIRecipe extends RecyclerRecipe {
+public class LatheIRecipe extends ItemStackToItemStackRecipe {
 
-    public RecyclerIRecipe(ResourceLocation id, ItemStackIngredient input, ItemStack chanceOutput, double chance) {
-        super(id, input, chanceOutput, chance);
+    /**
+     * @param id     Recipe name.
+     * @param input  Input.
+     * @param output Output.
+     */
+    public LatheIRecipe(ResourceLocation id, ItemStackIngredient input, ItemStack output) {
+        super(id, input, output);
     }
 
     @Override
-    public RecipeSerializer<RecyclerRecipe> getSerializer() {
-        return MMRecipeSerializers.RECYCLER.get();
+    public RecipeSerializer<?> getSerializer() {
+        return MMRecipeSerializers.LATHING.get();
     }
 
     @Override
-    public RecipeType<RecyclerRecipe> getType() {
-        return MoreMachineRecipeType.RECYCLING.get();
+    public RecipeType<?> getType() {
+        return MoreMachineRecipeType.LATHING.get();
     }
 
     @Override
     public String getGroup() {
-        return MMBlocks.RECYCLER.getName();
+        return MMBlocks.CNC_LATHE.getName();
     }
 
     @Override
     public ItemStack getToastSymbol() {
-        return MMBlocks.RECYCLER.getItemStack();
+        return MMBlocks.CNC_LATHE.getItemStack();
     }
 }

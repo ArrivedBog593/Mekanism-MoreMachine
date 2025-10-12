@@ -13,5 +13,8 @@ public class MoreMachineGas {
 
     public static final GasDeferredRegister MM_GASES = new GasDeferredRegister(Mekmm.MOD_ID);
 
+    public static final GasRegistryObject<Gas> NUTRITIONAL_PASTE = MM_GASES.register(MMChemicalConstants.NUTRITIONAL_PASTE);
+    public static final GasRegistryObject<Gas> NUTRIENT_SOLUTION = MM_GASES.register(MMChemicalConstants.NUTRIENT_SOLUTION);
     public static final GasRegistryObject<Gas> UU_MATTER = MM_GASES.register(MMChemicalConstants.UU_MATTER);
+    public static final GasRegistryObject<Gas> UNSTABLE_DIMENSIONAL_GAS = MM_GASES.register(MMChemicalConstants.UNSTABLE_DIMENSIONAL_GAS);
 }

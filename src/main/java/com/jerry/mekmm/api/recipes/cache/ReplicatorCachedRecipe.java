@@ -1,5 +1,6 @@
 package com.jerry.mekmm.api.recipes.cache;
 
+import com.jerry.mekmm.api.recipes.FluidStackGasToFluidStackRecipe;
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.chemical.gas.GasStack;
 import mekanism.api.recipes.ItemStackGasToItemStackRecipe;
@@ -10,6 +11,7 @@ import mekanism.api.recipes.ingredients.InputIngredient;
 import mekanism.api.recipes.inputs.IInputHandler;
 import mekanism.api.recipes.outputs.IOutputHandler;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -96,5 +98,12 @@ public class ReplicatorCachedRecipe<TYPE, RECIPE extends MekanismRecipe & BiPred
                    IInputHandler<@NotNull GasStack> chemicalInputHandler, IOutputHandler<@NotNull ItemStack> outputHandler) {
         return new ReplicatorCachedRecipe<>(recipe, recheckAllErrors, itemInputHandler, chemicalInputHandler, outputHandler, recipe::getItemInput, recipe::getChemicalInput,
                 recipe::getOutput, ItemStack::isEmpty, GasStack::isEmpty, ItemStack::isEmpty);
+    }
+
+    public static <RECIPE extends FluidStackGasToFluidStackRecipe> ReplicatorCachedRecipe<FluidStack, RECIPE>
+    fluidReplicator(RECIPE recipe, BooleanSupplier recheckAllErrors, IInputHandler<@NotNull FluidStack> fluidInputHandler,
+                   IInputHandler<@NotNull GasStack> chemicalInputHandler, IOutputHandler<@NotNull FluidStack> outputHandler) {
+        return new ReplicatorCachedRecipe<>(recipe, recheckAllErrors, fluidInputHandler, chemicalInputHandler, outputHandler, recipe::getFluidInput, recipe::getChemicalInput,
+                recipe::getOutput, FluidStack::isEmpty, GasStack::isEmpty, FluidStack::isEmpty);
     }
 }

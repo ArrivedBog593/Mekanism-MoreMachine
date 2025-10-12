@@ -1,10 +1,7 @@
 package com.jerry.mekmm.client.jei;
 
 import com.jerry.mekmm.Mekmm;
-import com.jerry.mekmm.client.jei.machine.PlantingRecipeCategory;
-import com.jerry.mekmm.client.jei.machine.RecyclerRecipeCategory;
-import com.jerry.mekmm.client.jei.machine.ReplicatorRecipeCategory;
-import com.jerry.mekmm.client.jei.machine.StamperRecipeCategory;
+import com.jerry.mekmm.client.jei.machine.*;
 import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
 import com.jerry.mekmm.common.registries.MMBlocks;
 import mekanism.client.jei.CatalystRegistryHelper;
@@ -32,26 +29,28 @@ public class MoreMachineJEI implements IModPlugin {
     public void registerCategories(IRecipeCategoryRegistration registration) {
         IGuiHelper guiHelper = registration.getJeiHelpers().getGuiHelper();
 
-        registration.addRecipeCategories(new RecyclerRecipeCategory(guiHelper, com.jerry.mekmm.client.jei.MoreMachineJEIRecipeType.RECYCLING));
-        registration.addRecipeCategories(new PlantingRecipeCategory(guiHelper, com.jerry.mekmm.client.jei.MoreMachineJEIRecipeType.PLANTING));
+        registration.addRecipeCategories(new RecyclerRecipeCategory(guiHelper, MoreMachineJEIRecipeType.RECYCLING));
+        registration.addRecipeCategories(new PlantingRecipeCategory(guiHelper, MoreMachineJEIRecipeType.PLANTING));
 
-        registration.addRecipeCategories(new StamperRecipeCategory(guiHelper, com.jerry.mekmm.client.jei.MoreMachineJEIRecipeType.CNC_STAMPING));
-        registration.addRecipeCategories(new ItemStackToItemStackRecipeCategory(guiHelper, com.jerry.mekmm.client.jei.MoreMachineJEIRecipeType.CNC_LATHING, MMBlocks.CNC_LATHE));
-        registration.addRecipeCategories(new ItemStackToItemStackRecipeCategory(guiHelper, com.jerry.mekmm.client.jei.MoreMachineJEIRecipeType.CNC_ROLLING_MILL, MMBlocks.CNC_ROLLING_MILL));
+        registration.addRecipeCategories(new StamperRecipeCategory(guiHelper, MoreMachineJEIRecipeType.CNC_STAMPING));
+        registration.addRecipeCategories(new ItemStackToItemStackRecipeCategory(guiHelper, MoreMachineJEIRecipeType.CNC_LATHING, MMBlocks.CNC_LATHE));
+        registration.addRecipeCategories(new ItemStackToItemStackRecipeCategory(guiHelper, MoreMachineJEIRecipeType.CNC_ROLLING_MILL, MMBlocks.CNC_ROLLING_MILL));
 
-        registration.addRecipeCategories(new ReplicatorRecipeCategory(guiHelper, com.jerry.mekmm.client.jei.MoreMachineJEIRecipeType.REPLICATOR));
+        registration.addRecipeCategories(new ReplicatorRecipeCategory(guiHelper, MoreMachineJEIRecipeType.REPLICATOR));
+        registration.addRecipeCategories(new FluidReplicatorRecipeCategory(guiHelper, MoreMachineJEIRecipeType.FLUID_REPLICATOR));
     }
 
     @Override
     public void registerRecipes(@NotNull IRecipeRegistration registry) {
-        RecipeRegistryHelper.register(registry, com.jerry.mekmm.client.jei.MoreMachineJEIRecipeType.RECYCLING, MoreMachineRecipeType.RECYCLING);
-        RecipeRegistryHelper.register(registry, com.jerry.mekmm.client.jei.MoreMachineJEIRecipeType.PLANTING, MoreMachineRecipeType.PLANTING);
+        RecipeRegistryHelper.register(registry, MoreMachineJEIRecipeType.RECYCLING, MoreMachineRecipeType.RECYCLING);
+        RecipeRegistryHelper.register(registry, MoreMachineJEIRecipeType.PLANTING, MoreMachineRecipeType.PLANTING);
 
-        RecipeRegistryHelper.register(registry, com.jerry.mekmm.client.jei.MoreMachineJEIRecipeType.CNC_STAMPING, MoreMachineRecipeType.STAMPING);
-        RecipeRegistryHelper.register(registry, com.jerry.mekmm.client.jei.MoreMachineJEIRecipeType.CNC_LATHING, MoreMachineRecipeType.LATHING);
+        RecipeRegistryHelper.register(registry, MoreMachineJEIRecipeType.CNC_STAMPING, MoreMachineRecipeType.STAMPING);
+        RecipeRegistryHelper.register(registry, MoreMachineJEIRecipeType.CNC_LATHING, MoreMachineRecipeType.LATHING);
         RecipeRegistryHelper.register(registry, MoreMachineJEIRecipeType.CNC_ROLLING_MILL, MoreMachineRecipeType.ROLLING_MILL);
 
         MoreMachineRecipeRegistryHelper.registerItemReplicator(registry);
+        MoreMachineRecipeRegistryHelper.registerFluidReplicator(registry);
     }
 
     @Override
@@ -64,5 +63,6 @@ public class MoreMachineJEI implements IModPlugin {
         CatalystRegistryHelper.register(registry, MMBlocks.CNC_ROLLING_MILL);
 
         CatalystRegistryHelper.register(registry, MMBlocks.REPLICATOR);
+        CatalystRegistryHelper.register(registry, MMBlocks.FLUID_REPLICATOR);
     }
 }
