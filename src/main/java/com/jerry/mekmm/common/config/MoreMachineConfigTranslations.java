@@ -44,7 +44,11 @@ public enum MoreMachineConfigTranslations implements IConfigTranslation {
     ENERGY_USAGE_ITEM_REPLICATOR(TranslationPreset.ENERGY_USAGE, "Item Replicator"),
     ENERGY_USAGE_FLUID_REPLICATOR(TranslationPreset.ENERGY_USAGE, "Fluid Replicator"),
     ENERGY_USAGE_CHEMICAL_REPLICATOR(TranslationPreset.ENERGY_USAGE, "Chemical Replicator"),
-    ENERGY_USAGE_LARGE_ROTARY_CONDENSENTRATOR(TranslationPreset.ENERGY_USAGE, "Large Rotary Condensentrator");
+    ENERGY_USAGE_LARGE_ROTARY_CONDENSENTRATOR(TranslationPreset.ENERGY_USAGE, "Large Rotary Condensentrator"),
+
+    //General Config
+    GEAR_WIRELESS_CHARGING_STATION("general.wireless_charging_station", "Wireless Charging Station", "Settings for configuring the Wireless Charging Station", "Edit Wireless Charging Station"),
+    WIRELESS_CHARGING_STATION_CHARGING_RATE("general.charging.rate", "Charge Rate", "Amount of Energy(joules) an item can receive per tick from a Wireless Charging Station.");
 
     private final String key;
     private final String title;

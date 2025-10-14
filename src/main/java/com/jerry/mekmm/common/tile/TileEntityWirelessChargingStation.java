@@ -1,5 +1,6 @@
 package com.jerry.mekmm.common.tile;
 
+import com.jerry.mekmm.common.config.MoreMachineConfig;
 import com.jerry.mekmm.common.registries.MoreMachineBlocks;
 import mekanism.api.Action;
 import mekanism.api.AutomationType;
@@ -95,7 +96,7 @@ public class TileEntityWirelessChargingStation extends TileEntityConfigurableMac
     }
 
     private void chargeSuit(Player player) {
-        long toCharge = Math.min(MekanismConfig.gear.mekaSuitInventoryChargeRate.get(), energyContainer.getEnergy());
+        long toCharge = Math.min(MoreMachineConfig.general.wirelessChargingStationChargingRate.get(), energyContainer.getEnergy());
         if (toCharge == 0L) {
             return;
         }
@@ -112,7 +113,7 @@ public class TileEntityWirelessChargingStation extends TileEntityConfigurableMac
     }
 
     private void chargeInventory(Player player) {
-        long toCharge = Math.min(MekanismConfig.gear.mekaSuitInventoryChargeRate.get(), energyContainer.getEnergy());
+        long toCharge = Math.min(MoreMachineConfig.general.wirelessChargingStationChargingRate.get(), energyContainer.getEnergy());
         if (toCharge == 0L) {
             return;
         }
@@ -135,7 +136,7 @@ public class TileEntityWirelessChargingStation extends TileEntityConfigurableMac
     }
 
     private void chargeCurios(Player player) {
-        long toCharge = Math.min(MekanismConfig.gear.mekaSuitInventoryChargeRate.get(), energyContainer.getEnergy());
+        long toCharge = Math.min(MoreMachineConfig.general.wirelessChargingStationChargingRate.get(), energyContainer.getEnergy());
         if (toCharge == 0L) {
             return;
         }
