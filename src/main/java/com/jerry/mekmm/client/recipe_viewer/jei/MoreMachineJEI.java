@@ -2,9 +2,9 @@ package com.jerry.mekmm.client.recipe_viewer.jei;
 
 import com.jerry.mekaf.client.recipe_viewer.jei.AFCatalystRegistryHelper;
 import com.jerry.mekmm.Mekmm;
-import com.jerry.mekmm.client.recipe_viewer.jei.machine.*;
 import com.jerry.mekmm.client.recipe_viewer.MMRecipeViewerRecipeType;
 import com.jerry.mekmm.client.recipe_viewer.MMRecipeViewerUtils;
+import com.jerry.mekmm.client.recipe_viewer.jei.machine.*;
 import com.jerry.mekmm.common.MoreMachineLang;
 import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
 import com.jerry.mekmm.common.registries.MoreMachineChemicals;

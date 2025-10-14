@@ -20,6 +20,7 @@ public class MoreMachineBlockShapes {
     public static final VoxelShape[] FULL_BLOCK_SHAPE = new VoxelShape[EnumUtils.HORIZONTAL_DIRECTIONS.length];
     //Factories
     public static final VoxelShape[] RECYCLER_FACTORY = new VoxelShape[EnumUtils.HORIZONTAL_DIRECTIONS.length];
+    public static final VoxelShape[] WIRELESS_CHARGING_STATION = new VoxelShape[EnumUtils.HORIZONTAL_DIRECTIONS.length];
     //Doll
     public static final VoxelShape[] AUTHOR_DOLL = new VoxelShape[EnumUtils.HORIZONTAL_DIRECTIONS.length];
 
@@ -38,6 +39,21 @@ public class MoreMachineBlockShapes {
         ), RECYCLER_FACTORY);
 
         VoxelShapeUtils.setShape(VoxelShapeUtils.combine(
+                box(4, -10, 4, 12, -4, 12),
+                box(4, 2, 4, 12, 32, 12),
+                box(1, -16, 1, 15, -10, 15),
+                box(3, -4, 3, 13, 2, 13),
+                box(0, -12, 4, 1, -4, 12),
+                box(15, -12, 4, 16, -4, 12),
+                box(4, -12, 15, 12, -4, 16),
+                box(4, -12, 0, 12, -4, 1),
+                box(1, -10, 6, 4, -6, 10),
+                box(12, -10, 6, 15, -6, 10),
+                box(6, -10, 12, 10, -6, 15),
+                box(6, -10, 1, 10, -6, 4)
+        ).move(0, 1, 0), WIRELESS_CHARGING_STATION);
+
+        VoxelShapeUtils.setShape(VoxelShapeUtils.combine(
                 box(4.35, 6.2, 7.35, 11.65, 13.5, 14.65), // head
                 box(5, 4.2, 7.08248, 6.5, 6.2, 13.08248), // left_arm
                 box(9.6, 4.54246, 6.979, 11.1, 6.54246, 12.979), // right_arm
@@ -49,7 +65,7 @@ public class MoreMachineBlockShapes {
 
     public static VoxelShape[] getShape(FactoryTier tier, MoreMachineFactoryType type) {
         return switch (type) {
-            case RECYCLING  -> BlockShapes.SMELTING_FACTORY;
+            case RECYCLING -> BlockShapes.SMELTING_FACTORY;
             case PLANTING_STATION -> BlockShapes.ENRICHING_FACTORY;
             case CNC_STAMPING -> BlockShapes.CRUSHING_FACTORY;
             case CNC_LATHING -> BlockShapes.COMPRESSING_FACTORY;

@@ -6,12 +6,15 @@ import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.common.attachments.component.MoreMachineAttachedSideConfig;
 import com.jerry.mekmm.common.block.BlockDoll;
 import com.jerry.mekmm.common.block.prefab.MMBlockFactoryMachine;
+import com.jerry.mekmm.common.block.prefab.MMBlockFactoryMachine.MMBlockFactory;
 import com.jerry.mekmm.common.content.blocktype.MoreMachineFactory;
 import com.jerry.mekmm.common.content.blocktype.MoreMachineFactoryType;
-import com.jerry.mekmm.common.content.blocktype.MoreMachineMachine;
+import com.jerry.mekmm.common.content.blocktype.MoreMachineMachine.MoreMachineFactoryMachine;
 import com.jerry.mekmm.common.item.block.ItemBlockDoll;
+import com.jerry.mekmm.common.item.block.ItemBlockWirelessChargingStation;
 import com.jerry.mekmm.common.item.block.machine.ItemBlockMoreMachineFactory;
 import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
+import com.jerry.mekmm.common.tile.TileEntityWirelessChargingStation;
 import com.jerry.mekmm.common.tile.factory.TileEntityMoreMachineFactory;
 import com.jerry.mekmm.common.tile.factory.TileEntityReplicatingFactory;
 import com.jerry.mekmm.common.tile.machine.*;
@@ -24,7 +27,7 @@ import mekanism.common.attachments.containers.chemical.ChemicalTanksBuilder;
 import mekanism.common.attachments.containers.fluid.FluidTanksBuilder;
 import mekanism.common.attachments.containers.item.ItemSlotsBuilder;
 import mekanism.common.block.attribute.AttributeTier;
-import mekanism.common.block.prefab.BlockTile;
+import mekanism.common.block.prefab.BlockTile.BlockTileModel;
 import mekanism.common.content.blocktype.Machine;
 import mekanism.common.item.block.ItemBlockTooltip;
 import mekanism.common.recipe.MekanismRecipeType;
@@ -68,7 +71,7 @@ public class MoreMachineBlocks {
         }
     }
 
-    public static final BlockRegistryObject<MMBlockFactoryMachine<TileEntityRecycler, MoreMachineMachine.MoreMachineFactoryMachine<TileEntityRecycler>>, ItemBlockTooltip<MMBlockFactoryMachine<TileEntityRecycler, MoreMachineMachine.MoreMachineFactoryMachine<TileEntityRecycler>>>> RECYCLER =
+    public static final BlockRegistryObject<MMBlockFactoryMachine<TileEntityRecycler, MoreMachineFactoryMachine<TileEntityRecycler>>, ItemBlockTooltip<MMBlockFactoryMachine<TileEntityRecycler, MoreMachineFactoryMachine<TileEntityRecycler>>>> RECYCLER =
             MM_BLOCKS.register("recycler", () -> new MMBlockFactoryMachine<>(MoreMachineBlockTypes.RECYCLER, properties -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor())),
                     (block, properties) -> new ItemBlockTooltip<>(block, true, properties
                             .component(MekanismDataComponents.EJECTOR, AttachedEjector.DEFAULT)
@@ -81,7 +84,7 @@ public class MoreMachineBlocks {
                     .build()
             ));
 
-    public static final BlockRegistryObject<MMBlockFactoryMachine<TileEntityPlantingStation, MoreMachineMachine.MoreMachineFactoryMachine<TileEntityPlantingStation>>, ItemBlockTooltip<MMBlockFactoryMachine<TileEntityPlantingStation, MoreMachineMachine.MoreMachineFactoryMachine<TileEntityPlantingStation>>>> PLANTING_STATION =
+    public static final BlockRegistryObject<MMBlockFactoryMachine<TileEntityPlantingStation, MoreMachineFactoryMachine<TileEntityPlantingStation>>, ItemBlockTooltip<MMBlockFactoryMachine<TileEntityPlantingStation, MoreMachineFactoryMachine<TileEntityPlantingStation>>>> PLANTING_STATION =
             MM_BLOCKS.register("planting_station", () -> new MMBlockFactoryMachine<>(MoreMachineBlockTypes.PLANTING_STATION, properties -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor())),
                     (block, properties) -> new ItemBlockTooltip<>(block, true, properties
                             .component(MekanismDataComponents.EJECTOR, AttachedEjector.DEFAULT)
@@ -99,9 +102,9 @@ public class MoreMachineBlocks {
                             .addEnergy()
                             .build()
                     )
-        );
+            );
 
-    public static final BlockRegistryObject<MMBlockFactoryMachine<TileEntityStamper, MoreMachineMachine.MoreMachineFactoryMachine<TileEntityStamper>>, ItemBlockTooltip<MMBlockFactoryMachine<TileEntityStamper, MoreMachineMachine.MoreMachineFactoryMachine<TileEntityStamper>>>> CNC_STAMPER =
+    public static final BlockRegistryObject<MMBlockFactoryMachine<TileEntityStamper, MoreMachineFactoryMachine<TileEntityStamper>>, ItemBlockTooltip<MMBlockFactoryMachine<TileEntityStamper, MoreMachineFactoryMachine<TileEntityStamper>>>> CNC_STAMPER =
             MM_BLOCKS.register("cnc_stamper", () -> new MMBlockFactoryMachine<>(MoreMachineBlockTypes.CNC_STAMPER, properties -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor())),
                     (block, properties) -> new ItemBlockTooltip<>(block, true, properties
                             .component(MekanismDataComponents.EJECTOR, AttachedEjector.DEFAULT)
@@ -115,7 +118,7 @@ public class MoreMachineBlocks {
                     .build()
             ));
 
-    public static final BlockRegistryObject<MMBlockFactoryMachine<TileEntityLathe, MoreMachineMachine.MoreMachineFactoryMachine<TileEntityLathe>>, ItemBlockTooltip<MMBlockFactoryMachine<TileEntityLathe, MoreMachineMachine.MoreMachineFactoryMachine<TileEntityLathe>>>> CNC_LATHE =
+    public static final BlockRegistryObject<MMBlockFactoryMachine<TileEntityLathe, MoreMachineFactoryMachine<TileEntityLathe>>, ItemBlockTooltip<MMBlockFactoryMachine<TileEntityLathe, MoreMachineFactoryMachine<TileEntityLathe>>>> CNC_LATHE =
             MM_BLOCKS.register("cnc_lathe", () -> new MMBlockFactoryMachine<>(MoreMachineBlockTypes.CNC_LATHE, properties -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor())),
                     (block, properties) -> new ItemBlockTooltip<>(block, true, properties
                             .component(MekanismDataComponents.EJECTOR, AttachedEjector.DEFAULT)
@@ -128,7 +131,7 @@ public class MoreMachineBlocks {
                     .build()
             ));
 
-    public static final BlockRegistryObject<MMBlockFactoryMachine<TileEntityRollingMill, MoreMachineMachine.MoreMachineFactoryMachine<TileEntityRollingMill>>, ItemBlockTooltip<MMBlockFactoryMachine<TileEntityRollingMill, MoreMachineMachine.MoreMachineFactoryMachine<TileEntityRollingMill>>>> CNC_ROLLING_MILL =
+    public static final BlockRegistryObject<MMBlockFactoryMachine<TileEntityRollingMill, MoreMachineFactoryMachine<TileEntityRollingMill>>, ItemBlockTooltip<MMBlockFactoryMachine<TileEntityRollingMill, MoreMachineFactoryMachine<TileEntityRollingMill>>>> CNC_ROLLING_MILL =
             MM_BLOCKS.register("cnc_rolling_mill", () -> new MMBlockFactoryMachine<>(MoreMachineBlockTypes.CNC_ROLLING_MILL, properties -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor())),
                     (block, properties) -> new ItemBlockTooltip<>(block, true, properties
                             .component(MekanismDataComponents.EJECTOR, AttachedEjector.DEFAULT)
@@ -141,7 +144,7 @@ public class MoreMachineBlocks {
                     .build()
             ));
 
-    public static final BlockRegistryObject<MMBlockFactoryMachine<TileEntityReplicator, MoreMachineMachine.MoreMachineFactoryMachine<TileEntityReplicator>>, ItemBlockTooltip<MMBlockFactoryMachine<TileEntityReplicator, MoreMachineMachine.MoreMachineFactoryMachine<TileEntityReplicator>>>> REPLICATOR =
+    public static final BlockRegistryObject<MMBlockFactoryMachine<TileEntityReplicator, MoreMachineFactoryMachine<TileEntityReplicator>>, ItemBlockTooltip<MMBlockFactoryMachine<TileEntityReplicator, MoreMachineFactoryMachine<TileEntityReplicator>>>> REPLICATOR =
             MM_BLOCKS.register("replicator", () -> new MMBlockFactoryMachine<>(MoreMachineBlockTypes.REPLICATOR, properties -> properties.mapColor(MapColor.METAL)),
                     (block, properties) -> new ItemBlockTooltip<>(block, true, properties
                             .component(MekanismDataComponents.EJECTOR, AttachedEjector.DEFAULT)
@@ -160,14 +163,14 @@ public class MoreMachineBlocks {
                     )
             );
 
-    public static final BlockRegistryObject<MMBlockFactoryMachine<TileEntityFluidReplicator, MoreMachineMachine.MoreMachineFactoryMachine<TileEntityFluidReplicator>>, ItemBlockTooltip<MMBlockFactoryMachine<TileEntityFluidReplicator, MoreMachineMachine.MoreMachineFactoryMachine<TileEntityFluidReplicator>>>> FLUID_REPLICATOR =
+    public static final BlockRegistryObject<MMBlockFactoryMachine<TileEntityFluidReplicator, MoreMachineFactoryMachine<TileEntityFluidReplicator>>, ItemBlockTooltip<MMBlockFactoryMachine<TileEntityFluidReplicator, MoreMachineFactoryMachine<TileEntityFluidReplicator>>>> FLUID_REPLICATOR =
             MM_BLOCKS.register("fluid_replicator", () -> new MMBlockFactoryMachine<>(MoreMachineBlockTypes.FLUID_REPLICATOR, properties -> properties.mapColor(MapColor.METAL)),
                     (block, properties) -> new ItemBlockTooltip<>(block, true, properties
                             .component(MekanismDataComponents.EJECTOR, AttachedEjector.DEFAULT)
                             .component(MekanismDataComponents.SIDE_CONFIG, MoreMachineAttachedSideConfig.FLUID_REPLICATOR)
                     )
             ).forItemHolder(holder -> holder
-                    .addAttachmentOnlyContainers(ContainerType.FLUID, ()-> FluidTanksBuilder.builder()
+                    .addAttachmentOnlyContainers(ContainerType.FLUID, () -> FluidTanksBuilder.builder()
                             .addBasic(FluidType.BUCKET_VOLUME, TileEntityFluidReplicator::isValidFluidInput)
                             .addBasic(TileEntityFluidReplicator.MAX_FLUID)
                             .build()
@@ -185,7 +188,7 @@ public class MoreMachineBlocks {
                     )
             );
 
-    public static final BlockRegistryObject<MMBlockFactoryMachine<TileEntityChemicalReplicator, MoreMachineMachine.MoreMachineFactoryMachine<TileEntityChemicalReplicator>>, ItemBlockTooltip<MMBlockFactoryMachine<TileEntityChemicalReplicator, MoreMachineMachine.MoreMachineFactoryMachine<TileEntityChemicalReplicator>>>> CHEMICAL_REPLICATOR =
+    public static final BlockRegistryObject<MMBlockFactoryMachine<TileEntityChemicalReplicator, MoreMachineFactoryMachine<TileEntityChemicalReplicator>>, ItemBlockTooltip<MMBlockFactoryMachine<TileEntityChemicalReplicator, MoreMachineFactoryMachine<TileEntityChemicalReplicator>>>> CHEMICAL_REPLICATOR =
             MM_BLOCKS.register("chemical_replicator", () -> new MMBlockFactoryMachine<>(MoreMachineBlockTypes.CHEMICAL_REPLICATOR, properties -> properties.mapColor(MapColor.METAL)),
                     (block, properties) -> new ItemBlockTooltip<>(block, true, properties
                             .component(MekanismDataComponents.EJECTOR, AttachedEjector.DEFAULT)
@@ -206,27 +209,30 @@ public class MoreMachineBlocks {
                     )
             );
 
-    private static <TILE extends TileEntityMoreMachineFactory<?>> BlockRegistryObject<MMBlockFactoryMachine.MMBlockFactory<?>, ItemBlockMoreMachineFactory> registerMMFactory(MoreMachineFactory<TILE> type) {
+    private static <TILE extends TileEntityMoreMachineFactory<?>> BlockRegistryObject<MMBlockFactory<?>, ItemBlockMoreMachineFactory> registerMMFactory(MoreMachineFactory<TILE> type) {
         FactoryTier tier = (FactoryTier) Objects.requireNonNull(type.get(AttributeTier.class)).tier();
-        BlockRegistryObject<MMBlockFactoryMachine.MMBlockFactory<?>, ItemBlockMoreMachineFactory> factory = registerTieredBlock(tier, "_" + type.getMMFactoryType().getRegistryNameComponent() + "_factory", () -> new MMBlockFactoryMachine.MMBlockFactory<>(type), ItemBlockMoreMachineFactory::new);
+        BlockRegistryObject<MMBlockFactory<?>, ItemBlockMoreMachineFactory> factory = registerTieredBlock(tier, "_" + type.getMMFactoryType().getRegistryNameComponent() + "_factory", () -> new MMBlockFactoryMachine.MMBlockFactory<>(type), ItemBlockMoreMachineFactory::new);
         factory.forItemHolder(holder -> {
             int processes = tier.processes;
             Predicate<ItemStack> recipeInputPredicate = switch (type.getMMFactoryType()) {
                 case RECYCLING -> s -> MoreMachineRecipeType.RECYCLING.getInputCache().containsInput(null, s);
-                case PLANTING_STATION -> s -> MoreMachineRecipeType.PLANTING_STATION.getInputCache().containsInputA(null, s);
+                case PLANTING_STATION ->
+                        s -> MoreMachineRecipeType.PLANTING_STATION.getInputCache().containsInputA(null, s);
                 case CNC_STAMPING -> s -> MoreMachineRecipeType.STAMPING.getInputCache().containsInputA(null, s);
                 case CNC_LATHING -> s -> MoreMachineRecipeType.LATHING.getInputCache().containsInput(null, s);
                 case CNC_ROLLING_MILL -> s -> MoreMachineRecipeType.ROLLING_MILL.getInputCache().containsInput(null, s);
                 case REPLICATING -> TileEntityReplicator::isValidItemInput;
             };
             switch (type.getMMFactoryType()) {
-                case CNC_STAMPING -> holder.addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
+                case CNC_STAMPING ->
+                        holder.addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
                                 .addBasicFactorySlots(processes, recipeInputPredicate)
                                 .addInput(MekanismRecipeType.COMBINING, InputRecipeCache.DoubleItem::containsInputB)
                                 .addEnergy()
                                 .build()
                         );
-                case CNC_LATHING, CNC_ROLLING_MILL, RECYCLING -> holder.addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
+                case CNC_LATHING, CNC_ROLLING_MILL, RECYCLING ->
+                        holder.addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
                                 .addBasicFactorySlots(processes, recipeInputPredicate)
                                 .addEnergy()
                                 .build()
@@ -235,7 +241,8 @@ public class MoreMachineBlocks {
                         .addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> ChemicalTanksBuilder.builder()
                                 .addBasic(TileEntityPlantingStation.MAX_GAS * processes, switch (type.getMMFactoryType()) {
                                     case PLANTING_STATION -> MoreMachineRecipeType.PLANTING_STATION;
-                                    default -> throw new IllegalStateException("Factory type doesn't have a known gas recipe.");
+                                    default ->
+                                            throw new IllegalStateException("Factory type doesn't have a known gas recipe.");
                                 }, InputRecipeCache.ItemChemical::containsInputB)
                                 .build()
                         ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
@@ -243,8 +250,9 @@ public class MoreMachineBlocks {
                                 .addChemicalFillOrConvertSlot(1)
                                 .addEnergy()
                                 .build()
-                );
-                case REPLICATING -> holder.addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> ChemicalTanksBuilder.builder()
+                        );
+                case REPLICATING ->
+                        holder.addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> ChemicalTanksBuilder.builder()
                                 .addBasic(TileEntityReplicatingFactory.MAX_GAS * processes, TileEntityReplicatingFactory::isValidChemicalInput)
                                 .build()
                         ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
@@ -258,8 +266,8 @@ public class MoreMachineBlocks {
         return factory;
     }
 
-    public static final BlockRegistryObject<BlockTile.BlockTileModel<TileEntityAmbientGasCollector, Machine<TileEntityAmbientGasCollector>>, ItemBlockTooltip<BlockTile.BlockTileModel<TileEntityAmbientGasCollector, Machine<TileEntityAmbientGasCollector>>>> AMBIENT_GAS_COLLECTOR =
-            MM_BLOCKS.registerDetails("ambient_gas_collector", () -> new BlockTile.BlockTileModel<>(MoreMachineBlockTypes.AMBIENT_GAS_COLLECTOR, properties -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor())))
+    public static final BlockRegistryObject<BlockTileModel<TileEntityAmbientGasCollector, Machine<TileEntityAmbientGasCollector>>, ItemBlockTooltip<BlockTileModel<TileEntityAmbientGasCollector, Machine<TileEntityAmbientGasCollector>>>> AMBIENT_GAS_COLLECTOR =
+            MM_BLOCKS.registerDetails("ambient_gas_collector", () -> new BlockTileModel<>(MoreMachineBlockTypes.AMBIENT_GAS_COLLECTOR, properties -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor())))
                     .forItemHolder(holder -> holder
                             .addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> ChemicalTanksBuilder.builder()
                                     .addBasic(TileEntityAmbientGasCollector.MAX_CHEMICAL)
@@ -267,6 +275,16 @@ public class MoreMachineBlocks {
                             ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
                                     .addChemicalDrainSlot(0)
                                     .addEnergy()
+                                    .build()
+                            )
+                    );
+
+    public static final BlockRegistryObject<BlockTileModel<TileEntityWirelessChargingStation, Machine<TileEntityWirelessChargingStation>>, ItemBlockWirelessChargingStation> WIRELESS_CHARGING_STATION =
+            MM_BLOCKS.register("wireless_charging_station", () -> new BlockTileModel<>(MoreMachineBlockTypes.WIRELESS_CHARGING_STATION, properties -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor())), ItemBlockWirelessChargingStation::new)
+                    .forItemHolder(holder ->
+                            holder.addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
+                                    .addEnergy()
+                                    .addDrainEnergy()
                                     .build()
                             )
                     );
@@ -284,7 +302,6 @@ public class MoreMachineBlocks {
      *
      * @param tier - tier to add to the Factory
      * @param type - recipe type to add to the Factory
-     *
      * @return factory with defined tier and recipe type
      */
     public static BlockRegistryObject<MMBlockFactoryMachine.MMBlockFactory<?>, ItemBlockMoreMachineFactory> getMMFactory(@NotNull FactoryTier tier, @NotNull MoreMachineFactoryType type) {

@@ -9,17 +9,25 @@ import com.jerry.mekmm.common.content.blocktype.MoreMachineFactory;
 import com.jerry.mekmm.common.content.blocktype.MoreMachineFactoryType;
 import com.jerry.mekmm.common.content.blocktype.MoreMachineMachine;
 import com.jerry.mekmm.common.tile.TileEntityDoll;
+import com.jerry.mekmm.common.tile.TileEntityWirelessChargingStation;
 import com.jerry.mekmm.common.tile.machine.*;
 import com.jerry.mekmm.common.util.MoreMachineEnumUtils;
 import mekanism.api.Upgrade;
 import mekanism.common.block.attribute.*;
+import mekanism.common.block.attribute.AttributeHasBounding.HandleBoundingBlock;
+import mekanism.common.block.attribute.AttributeHasBounding.TriBooleanFunction;
 import mekanism.common.content.blocktype.BlockShapes;
 import mekanism.common.content.blocktype.BlockTypeTile;
 import mekanism.common.content.blocktype.Machine;
+import mekanism.common.content.blocktype.Machine.MachineBuilder;
 import mekanism.common.lib.transmitter.TransmissionType;
 import mekanism.common.registries.MekanismSounds;
 import mekanism.common.tier.FactoryTier;
 import mekanism.common.util.EnumUtils;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.BlockPos.MutableBlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 public class MoreMachineBlockTypes {
@@ -117,13 +125,39 @@ public class MoreMachineBlockTypes {
     }
 
     // Ambient Gas Collector
-    public static final Machine<TileEntityAmbientGasCollector> AMBIENT_GAS_COLLECTOR = Machine.MachineBuilder
+    public static final Machine<TileEntityAmbientGasCollector> AMBIENT_GAS_COLLECTOR = MachineBuilder
             .createMachine(() -> MoreMachineTileEntityTypes.AMBIENT_GAS_COLLECTOR, MoreMachineLang.DESCRIPTION_AMBIENT_GAS_COLLECTOR)
             .withGui(() -> MoreMachineContainerTypes.AMBIENT_GAS_COLLECTOR)
             .withEnergyConfig(MoreMachineConfig.usage.ambientGasCollector, MoreMachineConfig.storage.ambientGasCollector)
             .withSupportedUpgrades(Upgrade.SPEED, Upgrade.ENERGY)
             .withCustomShape(BlockShapes.ELECTRIC_PUMP)
             .withComputerSupport("ambientGasCollector")
+            .replace(Attributes.ACTIVE)
+            .build();
+
+    // Wireless Charging Station
+    public static final Machine<TileEntityWirelessChargingStation> WIRELESS_CHARGING_STATION = MachineBuilder
+            .createMachine(() -> MoreMachineTileEntityTypes.WIRELESS_CHARGING_STATION, MoreMachineLang.DESCRIPTION_WIRELESS_CHARGING_STATION)
+            .withGui(() -> MoreMachineContainerTypes.WIRELESS_CHARGING_STATION)
+            .withEnergyConfig(MoreMachineConfig.storage.wirelessChargingStation)
+            .withSideConfig(TransmissionType.ITEM, TransmissionType.ENERGY)
+            .withCustomShape(MoreMachineBlockShapes.WIRELESS_CHARGING_STATION)
+            .with(AttributeCustomSelectionBox.JSON)
+            .without(AttributeUpgradeSupport.class)
+            .withBounding(new HandleBoundingBlock() {
+                @Override
+                public <DATA> boolean handle(Level level, BlockPos pos, BlockState state, DATA data, TriBooleanFunction<Level, BlockPos, DATA> consumer) {
+                    MutableBlockPos mutable = new MutableBlockPos();
+                    for (int i = 0; i < 3; i++) {
+                        mutable.setWithOffset(pos, 0, i + 1, 0);
+                        if (!consumer.accept(level, mutable, data)) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+            })
+            .withComputerSupport("wirelessChargingStation")
             .replace(Attributes.ACTIVE)
             .build();
 

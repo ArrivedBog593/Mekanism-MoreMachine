@@ -1,7 +1,7 @@
 package com.jerry.mekaf.client.gui.element.tab;
 
-import com.jerry.mekmm.common.network.to_server.MoreMachinePacketGuiInteract;
 import com.jerry.mekaf.common.tile.factory.TileEntityAdvancedFactoryBase;
+import com.jerry.mekmm.common.network.to_server.MoreMachinePacketGuiInteract;
 import mekanism.client.SpecialColors;
 import mekanism.client.gui.IGuiWrapper;
 import mekanism.client.gui.element.GuiInsetElement;
@@ -13,9 +13,9 @@ import mekanism.common.util.text.BooleanStateDisplay;
 import net.minecraft.client.gui.GuiGraphics;
 import org.jetbrains.annotations.NotNull;
 
-public class AFGuiSortingTab extends GuiInsetElement<TileEntityAdvancedFactoryBase<?>> {
+public class AdvancedFactoryGuiSortingTab extends GuiInsetElement<TileEntityAdvancedFactoryBase<?>> {
 
-    public AFGuiSortingTab(IGuiWrapper gui, TileEntityAdvancedFactoryBase<?> tile) {
+    public AdvancedFactoryGuiSortingTab(IGuiWrapper gui, TileEntityAdvancedFactoryBase<?> tile) {
         super(MekanismUtils.getResource(MekanismUtils.ResourceType.GUI, "sorting.png"), gui, tile, -26, 62, 35, 18, true);
         setTooltip(MekanismLang.AUTO_SORT);
     }

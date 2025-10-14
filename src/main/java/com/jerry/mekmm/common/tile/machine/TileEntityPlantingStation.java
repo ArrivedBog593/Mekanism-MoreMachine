@@ -2,8 +2,8 @@ package com.jerry.mekmm.common.tile.machine;
 
 import com.jerry.mekmm.api.recipes.PlantingRecipe;
 import com.jerry.mekmm.api.recipes.PlantingRecipe.PlantingStationRecipeOutput;
-import com.jerry.mekmm.api.recipes.cache.MoreMachineTwoInputCachedRecipe;
 import com.jerry.mekmm.api.recipes.cache.MMItemStackConstantChemicalToObjectCachedRecipe;
+import com.jerry.mekmm.api.recipes.cache.MoreMachineTwoInputCachedRecipe;
 import com.jerry.mekmm.api.recipes.outputs.MoreMachineOutputHelper;
 import com.jerry.mekmm.client.recipe_viewer.MMRecipeViewerRecipeType;
 import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;

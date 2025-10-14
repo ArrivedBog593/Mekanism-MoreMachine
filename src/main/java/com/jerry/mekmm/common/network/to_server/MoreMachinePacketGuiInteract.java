@@ -2,6 +2,7 @@ package com.jerry.mekmm.common.network.to_server;
 
 import com.jerry.mekaf.common.tile.factory.TileEntityAdvancedFactoryBase;
 import com.jerry.mekmm.Mekmm;
+import com.jerry.mekmm.common.tile.TileEntityWirelessChargingStation;
 import com.jerry.mekmm.common.tile.factory.TileEntityMoreMachineFactory;
 import com.jerry.mekmm.common.tile.machine.TileEntityReplicator;
 import io.netty.buffer.ByteBuf;
@@ -156,6 +157,22 @@ public class MoreMachinePacketGuiInteract implements IMekanismPacket {
             }
             if (tile instanceof TileEntityAdvancedFactoryBase<?> advancedFactory) {
                 advancedFactory.toggleSorting();
+            }
+        }),
+
+        CHARGING_EQUIPS((tile, player, extra) -> {
+            if (tile instanceof TileEntityWirelessChargingStation chargingStation) {
+                chargingStation.toggleChargeEquipment();
+            }
+        }),
+        CHARGING_INVENTORY((tile, player, extra) -> {
+            if (tile instanceof TileEntityWirelessChargingStation chargingStation) {
+                chargingStation.toggleChargeInventory();
+            }
+        }),
+        CHARGING_CURIOS((tile, player, extra) -> {
+            if (tile instanceof TileEntityWirelessChargingStation chargingStation) {
+                chargingStation.toggleChargeCurios();
             }
         });
 

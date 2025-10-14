@@ -1,7 +1,7 @@
 package com.jerry.mekmm.common.content.blocktype;
 
-import com.jerry.mekaf.common.content.blocktype.AdvancedFactoryType;
 import com.jerry.mekaf.common.block.attribute.AttributeAdvancedFactoryType;
+import com.jerry.mekaf.common.content.blocktype.AdvancedFactoryType;
 import com.jerry.mekaf.common.registries.AdvancedFactoryBlocks;
 import com.jerry.mekmm.common.block.attribute.MMAttributeFactoryType;
 import com.jerry.mekmm.common.registries.MoreMachineBlocks;

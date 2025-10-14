@@ -7,6 +7,7 @@ import com.jerry.mekmm.common.block.prefab.MMBlockFactoryMachine;
 import com.jerry.mekmm.common.content.blocktype.MoreMachineFactoryType;
 import com.jerry.mekmm.common.item.block.machine.ItemBlockMoreMachineFactory;
 import com.jerry.mekmm.common.tile.TileEntityDoll;
+import com.jerry.mekmm.common.tile.TileEntityWirelessChargingStation;
 import com.jerry.mekmm.common.tile.factory.*;
 import com.jerry.mekmm.common.tile.machine.*;
 import mekanism.common.capabilities.Capabilities;
@@ -39,15 +40,6 @@ public class MoreMachineTileEntityTypes {
             registerFactory(tier, MoreMachineFactoryType.CNC_LATHING, TileEntityItemStackToItemStackMMFactory::new);
             registerFactory(tier, MoreMachineFactoryType.CNC_ROLLING_MILL, TileEntityItemStackToItemStackMMFactory::new);
             registerFactory(tier, MoreMachineFactoryType.REPLICATING, TileEntityReplicatingFactory::new);
-//            registerFactory(tier, FactoryType.COMBINING, TileEntityCombiningFactory::new);
-//            registerFactory(tier, FactoryType.COMPRESSING, TileEntityItemStackChemicalToItemStackFactory::new);
-//            registerFactory(tier, FactoryType.CRUSHING, TileEntityItemStackToItemStackFactory::new);
-//            registerFactory(tier, FactoryType.ENRICHING, TileEntityItemStackToItemStackFactory::new);
-//            registerFactory(tier, FactoryType.INFUSING, TileEntityItemStackChemicalToItemStackFactory::new);
-//            registerFactory(tier, FactoryType.INJECTING, TileEntityItemStackChemicalToItemStackFactory::new);
-//            registerFactory(tier, FactoryType.PURIFYING, TileEntityItemStackChemicalToItemStackFactory::new);
-//            registerFactory(tier, FactoryType.SAWING, TileEntitySawingFactory::new);
-//            registerFactory(tier, FactoryType.SMELTING, TileEntityItemStackToItemStackFactory::new);
         }
     }
 
@@ -114,6 +106,13 @@ public class MoreMachineTileEntityTypes {
 
     public static final TileEntityTypeRegistryObject<TileEntityAmbientGasCollector> AMBIENT_GAS_COLLECTOR = MM_TILE_ENTITY_TYPES
             .mekBuilder(MoreMachineBlocks.AMBIENT_GAS_COLLECTOR, TileEntityAmbientGasCollector::new)
+            .clientTicker(TileEntityMekanism::tickClient)
+            .serverTicker(TileEntityMekanism::tickServer)
+            .withSimple(Capabilities.CONFIGURABLE)
+            .build();
+
+    public static final TileEntityTypeRegistryObject<TileEntityWirelessChargingStation> WIRELESS_CHARGING_STATION = MM_TILE_ENTITY_TYPES
+            .mekBuilder(MoreMachineBlocks.WIRELESS_CHARGING_STATION, TileEntityWirelessChargingStation::new)
             .clientTicker(TileEntityMekanism::tickClient)
             .serverTicker(TileEntityMekanism::tickServer)
             .withSimple(Capabilities.CONFIGURABLE)

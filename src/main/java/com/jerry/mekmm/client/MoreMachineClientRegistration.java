@@ -6,7 +6,9 @@ import com.jerry.meklm.client.gui.machine.GuiLargeRotaryCondensentrator;
 import com.jerry.meklm.common.registries.LargeMachineBlocks;
 import com.jerry.meklm.common.registries.LargeMachineContainerTypes;
 import com.jerry.mekmm.Mekmm;
+import com.jerry.mekmm.client.gui.GuiWirelessChargingStation;
 import com.jerry.mekmm.client.gui.machine.*;
+import com.jerry.mekmm.common.registries.MoreMachineBlocks;
 import com.jerry.mekmm.common.registries.MoreMachineContainerTypes;
 import mekanism.client.ClientRegistrationUtil;
 import mekanism.client.model.baked.ExtensionBakedModel;
@@ -24,6 +26,8 @@ public class MoreMachineClientRegistration {
 
     @SubscribeEvent
     public static void init(FMLClientSetupEvent event) {
+        addCustomModel(MoreMachineBlocks.WIRELESS_CHARGING_STATION, (orig, evt) -> new ExtensionBakedModel.TransformedBakedModel<Void>(orig,
+                QuadTransformation.translate(0, 1, 0)));
         addCustomModel(LargeMachineBlocks.LARGE_ROTARY_CONDENSENTRATOR, (orig, evt) -> new ExtensionBakedModel.TransformedBakedModel<Void>(orig,
                 QuadTransformation.translate(0, 1, 0)));
     }
@@ -39,6 +43,7 @@ public class MoreMachineClientRegistration {
         ClientRegistrationUtil.registerScreen(event, MoreMachineContainerTypes.FLUID_REPLICATOR, GuiFluidReplicator::new);
         ClientRegistrationUtil.registerScreen(event, MoreMachineContainerTypes.CHEMIcAL_REPLICATOR, GuiChemicalReplicator::new);
         ClientRegistrationUtil.registerScreen(event, MoreMachineContainerTypes.AMBIENT_GAS_COLLECTOR, GuiAmbientGasCollector::new);
+        ClientRegistrationUtil.registerScreen(event, MoreMachineContainerTypes.WIRELESS_CHARGING_STATION, GuiWirelessChargingStation::new);
         ClientRegistrationUtil.registerScreen(event, MoreMachineContainerTypes.MM_FACTORY, GuiMMFactory::new);
 
         //Advanced Factory

@@ -1,8 +1,8 @@
 package com.jerry.mekaf.common.block.prefab;
 
 import com.jerry.mekaf.common.content.blocktype.AdvancedFactory;
-import com.jerry.mekmm.common.content.blocktype.MoreMachineMachine;
 import com.jerry.mekaf.common.tile.factory.TileEntityAdvancedFactoryBase;
+import com.jerry.mekmm.common.content.blocktype.MoreMachineMachine;
 import mekanism.common.block.prefab.BlockTile;
 import mekanism.common.block.states.IStateFluidLoggable;
 import mekanism.common.resource.BlockResourceInfo;

@@ -1,4 +1,4 @@
-// 1.21.1	2025-07-29T10:46:34.190652	Loot Tables
+// 1.21.1	2025-10-15T00:09:39.8168843	Loot Tables
 ba163e60e37323c1f62b565db2a77b33678b769b data/mekmm/loot_table/blocks/advanced_centrifuging_factory.json
 63c4d761fd9169b921897e6f778c3dc8327864e1 data/mekmm/loot_table/blocks/advanced_chemical_infusing_factory.json
 caccff34d1a0a1fbdd1fd7697ab8b60b761e0e7a data/mekmm/loot_table/blocks/advanced_crystallizing_factory.json
@@ -65,3 +65,4 @@ e0a965385b60f63a4626871b922622d57dc8aa1c data/mekmm/loot_table/blocks/ultimate_p
 034a837e2e693afed32f78da4f772646aa20c1a5 data/mekmm/loot_table/blocks/ultimate_rolling_mill_factory.json
 857ed0390b95cdcbe8795061eeb366fc9727542d data/mekmm/loot_table/blocks/ultimate_stamping_factory.json
 ac3ac2250e8ac7f31e714a845e3e5a2f4ad19f09 data/mekmm/loot_table/blocks/ultimate_washing_factory.json
+f73de804937d25b986a56c2b68a857b71e2669fe data/mekmm/loot_table/blocks/wireless_charging_station.json

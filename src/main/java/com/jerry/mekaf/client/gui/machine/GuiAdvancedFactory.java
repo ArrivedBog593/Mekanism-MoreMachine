@@ -1,6 +1,6 @@
 package com.jerry.mekaf.client.gui.machine;
 
-import com.jerry.mekaf.client.gui.element.tab.AFGuiSortingTab;
+import com.jerry.mekaf.client.gui.element.tab.AdvancedFactoryGuiSortingTab;
 import com.jerry.mekaf.common.tile.factory.*;
 import mekanism.api.recipes.cache.CachedRecipe;
 import mekanism.client.SpecialColors;
@@ -60,7 +60,7 @@ public class GuiAdvancedFactory extends GuiConfigurableTile<TileEntityAdvancedFa
         if (tile instanceof TileEntityWashingFactory) {
             addRenderableWidget(new GuiDownArrow(this, imageWidth + 8, 90));
         }
-        addRenderableWidget(new AFGuiSortingTab(this, tile));
+        addRenderableWidget(new AdvancedFactoryGuiSortingTab(this, tile));
         addRenderableWidget(new GuiVerticalPowerBar(this, tile.getEnergyContainer(), imageWidth - 12, 16,
                 tile instanceof TileEntityItemToChemicalFactory<?> || tile instanceof TileEntityChemicalToItemFactory<?> ? 65 : tile instanceof TileEntityChemicalToChemicalFactory<?> ? 78 : 52))
                 .warning(WarningTracker.WarningType.NOT_ENOUGH_ENERGY, tile.getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_ENERGY, 0));

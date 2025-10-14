@@ -1,8 +1,8 @@
 package com.jerry.mekaf.common.registries;
 
 import com.jerry.mekaf.common.inventory.container.tile.AdvancedFactoryContainer;
-import com.jerry.mekmm.Mekmm;
 import com.jerry.mekaf.common.tile.factory.TileEntityAdvancedFactoryBase;
+import com.jerry.mekmm.Mekmm;
 import mekanism.common.inventory.container.tile.MekanismTileContainer;
 import mekanism.common.registration.impl.ContainerTypeDeferredRegister;
 import mekanism.common.registration.impl.ContainerTypeRegistryObject;

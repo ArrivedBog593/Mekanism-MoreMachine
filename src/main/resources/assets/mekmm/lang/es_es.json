@@ -72,6 +72,7 @@
   "block.mekmm.fluid_replicator": "Replicador de fluidos",
   "block.mekmm.chemical_replicator": "Replicador químico",
   "block.mekmm.ambient_gas_collector": "Colector de gas ambiental",
+  "block.mekmm.wireless_charging_station": "Wireless Charging Station",
   "block.mekmm.author_doll": "Muñeca del autor",
 
   "block.mekmm.large_gas_burning_generator": "Generador de gas grande",
@@ -149,11 +150,16 @@
   "container.mekmm.fluid_replicator": "Replicador de fluidos",
   "container.mekmm.chemical_replicator": "Replicador químico",
   "container.mekmm.ambient_gas_collector": "Colector de gas ambiental",
+  "container.mekmm.wireless_charging_station": "Wireless Charging Station",
 
   "container.mekmm.large_gas_burning_generator": "Generador de gas grande",
   "container.mekmm.large_electrolytic_separator": "Separador electrolítico grande",
   "container.mekmm.large_chemical_washer": "Lavadora química grande",
   "container.mekmm.large_rotary_condensentrator": "Condensador giratorio grande",
+
+  "charging.mekmm.equips": "Charging Equips",
+  "charging.mekmm.inventory": "Charging Inventory",
+  "charging.mekmm.curios": "Charging Curios",
 
   "factory.mekmm.recycling": "Reciclando",
   "factory.mekmm.planting": "Plantando",
@@ -179,6 +185,7 @@
   "description.mekmm.fluid_replicator": "Una máquina que viola las leyes de la física y puede replicar fluidos usando una cierta sustancia.",
   "description.mekmm.chemical_replicator": "Una máquina que viola las leyes de la física y puede replicar productos químicos usando una cierta sustancia.",
   "description.mekmm.ambient_gas_collector": "Una máquina que extrae sustancias misteriosas de la atmósfera.",
+  "description.mekmm.wireless_charging_station": "A machine for wireless charging of inventory and armor (including Curios, if you have one).",
   "description.mekmm.author_doll": "Una muñeca con la skin del autor.",
 
   "tooltip.mekmm.is_blocking": "Bloqueado encima de la máquina",

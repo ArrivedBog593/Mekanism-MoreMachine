@@ -3,7 +3,7 @@ package com.jerry.mekmm.api.recipes.cache;
 import com.jerry.mekmm.api.recipes.RecyclerRecipe;
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.functions.ConstantPredicates;
-import mekanism.api.recipes.*;
+import mekanism.api.recipes.MekanismRecipe;
 import mekanism.api.recipes.cache.OneInputCachedRecipe;
 import mekanism.api.recipes.ingredients.InputIngredient;
 import mekanism.api.recipes.inputs.IInputHandler;
@@ -11,7 +11,10 @@ import mekanism.api.recipes.outputs.IOutputHandler;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.function.*;
+import java.util.function.BooleanSupplier;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 /**
  * Base class to help implement handling of recipes with one input.

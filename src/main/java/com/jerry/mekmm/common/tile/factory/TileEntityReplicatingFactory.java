@@ -46,7 +46,10 @@ import net.neoforged.neoforge.fluids.FluidType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 public class TileEntityReplicatingFactory extends TileEntityItemToItemMMFactory<MMBasicItemStackChemicalToItemStackRecipe> implements IHasDumpButton,
         ItemChemicalRecipeLookupHandler<MMBasicItemStackChemicalToItemStackRecipe> {

@@ -33,7 +33,8 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.fluids.FluidType;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 import java.util.function.BiFunction;
 
 import static mekanism.client.recipe_viewer.emi.MekanismEmi.registerItemSubtypes;
@@ -68,7 +69,7 @@ public class MoreMachineEMI implements EmiPlugin {
     public static <RECIPE extends MekanismRecipe<?>, TYPE extends IRecipeViewerRecipeType<RECIPE> & IMekanismRecipeTypeProvider<?, RECIPE, ?>> void addCategoryAndRecipes(
             EmiRegistry registry, TYPE recipeType, BiFunction<MekanismEmiRecipeCategory, RecipeHolder<RECIPE>, MekanismEmiRecipe<RECIPE>> recipeCreator) {
         MekanismEmiRecipeCategory category = addCategory(registry, recipeType);
-        for (RecipeHolder<RECIPE> recipe : recipeType.getRecipes(registry.getRecipeManager(), null)) {
+        for (RecipeHolder<RECIPE> recipe : recipeType.getRecipes(registry.getRecipeManager())) {
             registry.addRecipe(recipeCreator.apply(category, recipe));
         }
     }
