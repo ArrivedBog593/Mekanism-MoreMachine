@@ -266,5 +266,5 @@
   "mekmm.configuration.section.mekanismmoremachine.machine.usage.toml.title": "Mekanism: MoreMachine - Configuración de uso",
   "mekmm.configuration.title": "Configuración de Mekanism: MoreMachine",
 
-  "fml.menu.mods.info.description.mekmm": "Usa un colector de gas de dimensión inestable para la recolección, y ten cuidado de no colocar bloques encima de la máquina"
+  "fml.menu.mods.info.description.mekmm": "Add more machines and factories to mekanism"
 }
