@@ -1,0 +1,16 @@
+{
+  "type": "mekmm:planting",
+  "itemInput": {
+    "ingredient": {
+      "item": "minecraft:cocoa_beans"
+    }
+  },
+  "gasInput": {
+    "amount": 1,
+    "gas": "mekmm:nutrient_solution"
+  },
+  "mainOutput": {
+    "count": 4,
+    "item": "minecraft:cocoa_beans"
+  }
+}

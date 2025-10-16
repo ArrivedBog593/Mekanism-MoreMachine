@@ -1,0 +1,18 @@
+{
+  "type": "mekmm:planting",
+  "itemInput": {
+    "ingredient": {
+      "item": "minecraft:beetroot_seeds"
+    }
+  },
+  "gasInput": {
+    "amount": 1,
+    "gas": "mekmm:nutrient_solution"
+  },
+  "mainOutput": {
+    "item": "minecraft:beetroot_seeds"
+  },
+  "secondaryOutput": {
+    "item": "minecraft:beetroot"
+  }
+}

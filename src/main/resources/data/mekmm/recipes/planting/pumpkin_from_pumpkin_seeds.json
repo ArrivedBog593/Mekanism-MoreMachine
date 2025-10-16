@@ -1,0 +1,18 @@
+{
+  "type": "mekmm:planting",
+  "itemInput": {
+    "ingredient": {
+      "item": "minecraft:pumpkin_seeds"
+    }
+  },
+  "gasInput": {
+    "amount": 1,
+    "gas": "mekmm:nutrient_solution"
+  },
+  "mainOutput": {
+    "item": "minecraft:pumpkin_seeds"
+  },
+  "secondaryOutput": {
+    "item": "minecraft:pumpkin"
+  }
+}

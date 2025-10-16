@@ -33,7 +33,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Set;
 
-public class TileEntityStampingFactory extends MMTileEntityItemToItemFactory<StamperRecipe> implements DoubleItemRecipeLookupHandler<StamperRecipe> {
+public class TileEntityStampingFactory extends MMTileEntityItemToItemMMFactory<StamperRecipe> implements DoubleItemRecipeLookupHandler<StamperRecipe> {
 
     private static final List<RecipeError> TRACKED_ERROR_TYPES = List.of(
             RecipeError.NOT_ENOUGH_ENERGY,

@@ -1,0 +1,7 @@
+{
+  "parent": "mekmm:block/large_machine/large_rotary_condensentrator/base",
+  "textures": {
+    "0": "mekmm:block/models/large_rotary_condensentrator_off",
+    "particle": "mekmm:block/models/large_rotary_condensentrator_off"
+  }
+}

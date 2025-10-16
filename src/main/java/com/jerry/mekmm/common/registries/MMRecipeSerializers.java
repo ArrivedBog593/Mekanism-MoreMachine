@@ -20,7 +20,7 @@ public class MMRecipeSerializers {
 
     public static final RecipeSerializerDeferredRegister MM_RECIPE_SERIALIZERS = new RecipeSerializerDeferredRegister(Mekmm.MOD_ID);
 
-    public static final RecipeSerializerRegistryObject<RecyclerRecipe> RECYCLER = MM_RECIPE_SERIALIZERS.register("recycling", () -> new RecyclerRecipeSerializer<>(RecyclerIRecipe::new));
+    public static final RecipeSerializerRegistryObject<RecyclerRecipe> RECYCLER = MM_RECIPE_SERIALIZERS.register("recycler", () -> new RecyclerRecipeSerializer<>(RecyclerIRecipe::new));
     public static final RecipeSerializerRegistryObject<PlantingRecipe> PLANTING = MM_RECIPE_SERIALIZERS.register("planting", () -> new PlantingRecipeSerializer<>(PlantingIRecipe::new));
     public static final RecipeSerializerRegistryObject<StamperRecipe> STAMPING = MM_RECIPE_SERIALIZERS.register("stamper", () -> new StamperRecipeSerializer<>(StamperIRecipe::new));
     public static final RecipeSerializerRegistryObject<ItemStackToItemStackRecipe> LATHING = MM_RECIPE_SERIALIZERS.register("lathe", () -> new ItemStackToItemStackRecipeSerializer<>(LatheIRecipe::new));

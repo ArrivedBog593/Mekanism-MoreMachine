@@ -1,0 +1,17 @@
+{
+  "type": "mekanism:nucleosynthesizing",
+  "gasInput": {
+    "amount": 2,
+    "gas": "mekanism:antimatter"
+  },
+  "duration": 5000,
+  "itemInput": {
+    "amount": 64,
+    "ingredient": {
+      "item": "mekmm:empty_crystal"
+    }
+  },
+  "output": {
+    "item": "mekmm:uu_matter"
+  }
+}

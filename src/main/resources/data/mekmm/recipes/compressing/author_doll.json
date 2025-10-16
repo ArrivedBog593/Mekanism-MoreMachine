@@ -1,0 +1,16 @@
+{
+  "type": "mekanism:compressing",
+  "chemicalInput": {
+    "amount": 1,
+    "gas": "mekanism:antimatter"
+  },
+  "itemInput": {
+    "amount": 64,
+    "ingredient": {
+      "item": "mekmm:uu_matter"
+    }
+  },
+  "output": {
+    "item": "mekmm:author_doll"
+  }
+}

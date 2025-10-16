@@ -1,0 +1,12 @@
+{
+  "type": "mekmm:recycler",
+  "input": {
+    "ingredient": {
+      "item": "mekanism:substrate"
+    }
+  },
+  "chance": 0.43,
+  "output": {
+    "item": "mekmm:scrap"
+  }
+}

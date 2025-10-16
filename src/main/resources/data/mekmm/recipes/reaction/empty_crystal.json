@@ -1,0 +1,25 @@
+{
+  "type": "mekanism:reaction",
+  "gasInput": {
+    "amount": 10000,
+    "gas": "mekmm:unstable_dimensional_gas"
+  },
+  "gasOutput": {
+    "amount": 1000,
+    "gas": "mekanism:nuclear_waste"
+  },
+  "duration": 1500,
+  "fluidInput": {
+    "amount": 10000,
+    "tag": "forge:fusion_fuel"
+  },
+  "itemInput": {
+    "amount": 64,
+    "ingredient": {
+      "item": "mekmm:scrap_box"
+    }
+  },
+  "itemOutput": {
+    "item": "mekmm:empty_crystal"
+  }
+}

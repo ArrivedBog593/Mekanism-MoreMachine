@@ -1,0 +1,18 @@
+{
+  "type": "mekmm:planting",
+  "itemInput": {
+    "ingredient": {
+      "item": "minecraft:wheat_seeds"
+    }
+  },
+  "gasInput": {
+    "amount": 1,
+    "gas": "mekmm:nutrient_solution"
+  },
+  "mainOutput": {
+    "item": "minecraft:wheat_seeds"
+  },
+  "secondaryOutput": {
+    "item": "minecraft:wheat"
+  }
+}

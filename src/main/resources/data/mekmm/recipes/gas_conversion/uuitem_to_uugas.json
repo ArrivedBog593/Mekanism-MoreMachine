@@ -1,0 +1,12 @@
+{
+  "type": "mekanism:gas_conversion",
+  "input": {
+    "ingredient": {
+      "item": "mekmm:uu_matter"
+    }
+  },
+  "output": {
+    "amount": 500,
+    "gas": "mekmm:uu_matter"
+  }
+}
