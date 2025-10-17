@@ -1,10 +1,11 @@
-package com.jerry.datagen;
+package com.jerry.datagen.common;
 
 import com.electronwill.nightconfig.core.CommentedConfig;
 import com.google.common.hash.Hashing;
 import com.google.common.hash.HashingOutputStream;
 import com.google.gson.JsonElement;
 import com.jerry.datagen.common.loot.MoreMachineLootProvider;
+import com.jerry.datagen.common.recipe.impl.MoreMachineRecipeProvider;
 import com.jerry.mekmm.Mekmm;
 import mekanism.common.Mekanism;
 import net.minecraft.Util;
@@ -42,6 +43,8 @@ public class MekmmDataGenerator {
 
         //Server side data generators
         addProvider(gen, event.includeServer(), MoreMachineLootProvider::new);
+        MoreMachineRecipeProvider recipeProvider = new MoreMachineRecipeProvider(output, existingFileHelper);
+        gen.addProvider(event.includeServer(), recipeProvider);
     }
 
     public static <PROVIDER extends DataProvider> void addProvider(DataGenerator gen, boolean run, DataProvider.Factory<PROVIDER> factory) {

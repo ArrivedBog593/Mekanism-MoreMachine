@@ -5,6 +5,7 @@ import com.jerry.mekaf.common.tile.base.TileEntityAdvancedFactoryBase;
 import com.jerry.mekaf.common.upgrade.PRCUpgradeData;
 import mekanism.api.Action;
 import mekanism.api.IContentsListener;
+import mekanism.api.RelativeSide;
 import mekanism.api.Upgrade;
 import mekanism.api.chemical.ChemicalTankBuilder;
 import mekanism.api.chemical.attribute.ChemicalAttributeValidator;
@@ -112,11 +113,14 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
         addSupported(TransmissionType.FLUID, TransmissionType.GAS);
         configComponent.setupItemIOConfig(inputItemSlots, outputItemSlots, energySlot, false);
         configComponent.setupInputConfig(TransmissionType.FLUID, inputFluidTank);
-        ConfigInfo config = configComponent.getConfig(TransmissionType.GAS);
-        if (config != null) {
-            config.addSlotInfo(DataType.INPUT, new ChemicalSlotInfo.GasSlotInfo(true, true, inputGasTank));
-            config.addSlotInfo(DataType.OUTPUT, new ChemicalSlotInfo.GasSlotInfo(false, true, outputGasTank));
-            config.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo.GasSlotInfo(true, true, List.of(inputGasTank, outputGasTank)));
+        ConfigInfo gasConfig = configComponent.getConfig(TransmissionType.GAS);
+        if (gasConfig != null) {
+            gasConfig.addSlotInfo(DataType.INPUT, new ChemicalSlotInfo.GasSlotInfo(true, true, inputGasTank));
+            gasConfig.addSlotInfo(DataType.OUTPUT, new ChemicalSlotInfo.GasSlotInfo(false, true, outputGasTank));
+            gasConfig.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo.GasSlotInfo(true, true, List.of(inputGasTank, outputGasTank)));
+            gasConfig.fill(DataType.INPUT);
+            gasConfig.setDataType(DataType.OUTPUT, RelativeSide.RIGHT);
+            gasConfig.setEjecting(true);
         }
 
         ejectorComponent = new TileComponentEjector(this);

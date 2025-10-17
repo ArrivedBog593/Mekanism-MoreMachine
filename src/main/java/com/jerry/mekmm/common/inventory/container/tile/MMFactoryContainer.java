@@ -2,6 +2,7 @@ package com.jerry.mekmm.common.inventory.container.tile;
 
 import com.jerry.mekmm.common.registries.MMContainerTypes;
 import com.jerry.mekmm.common.tile.factory.TileEntityMMFactory;
+import com.jerry.mekmm.common.tile.factory.TileEntityPlantingFactory;
 import mekanism.common.inventory.container.tile.MekanismTileContainer;
 import mekanism.common.tier.FactoryTier;
 import net.minecraft.world.entity.player.Inventory;
@@ -15,8 +16,7 @@ public class MMFactoryContainer extends MekanismTileContainer<TileEntityMMFactor
     @Override
     protected int getInventoryYOffset() {
         if (tile.hasSecondaryResourceBar()) {
-//            return tile instanceof TileEntityPlantingFactory ? 115 : 95;
-            return 95;
+            return tile instanceof TileEntityPlantingFactory ? 115 : 95;
         }
         return 85;
     }

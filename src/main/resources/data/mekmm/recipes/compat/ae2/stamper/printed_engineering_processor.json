@@ -1,0 +1,22 @@
+{
+  "forge:conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "ae2"
+    }
+  ],
+  "type": "mekmm:stamper",
+  "input": {
+    "ingredient": {
+      "tag": "forge:gems/diamond"
+    }
+  },
+  "mold": {
+    "ingredient": {
+      "item": "ae2:engineering_processor_press"
+    }
+  },
+  "output": {
+    "item": "ae2:printed_engineering_processor"
+  }
+}

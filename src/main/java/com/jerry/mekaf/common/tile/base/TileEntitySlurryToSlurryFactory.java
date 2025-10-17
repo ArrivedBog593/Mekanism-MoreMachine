@@ -2,6 +2,7 @@ package com.jerry.mekaf.common.tile.base;
 
 import com.jerry.mekaf.common.upgrade.SlurryToSlurryUpgradeData;
 import mekanism.api.IContentsListener;
+import mekanism.api.RelativeSide;
 import mekanism.api.chemical.ChemicalTankBuilder;
 import mekanism.api.chemical.slurry.ISlurryTank;
 import mekanism.api.chemical.slurry.Slurry;
@@ -19,7 +20,7 @@ import mekanism.common.lib.transmitter.TransmissionType;
 import mekanism.common.tile.component.ITileComponent;
 import mekanism.common.tile.component.config.ConfigInfo;
 import mekanism.common.tile.component.config.DataType;
-import mekanism.common.tile.component.config.slot.ChemicalSlotInfo;
+import mekanism.common.tile.component.config.slot.ChemicalSlotInfo.SlurrySlotInfo;
 import mekanism.common.tile.component.config.slot.InventorySlotInfo;
 import mekanism.common.upgrade.IUpgradeData;
 import net.minecraft.core.BlockPos;
@@ -55,9 +56,12 @@ public abstract class TileEntitySlurryToSlurryFactory<RECIPE extends MekanismRec
 
         configComponent.addSupported(TransmissionType.SLURRY);
 
-        ConfigInfo config = configComponent.getConfig(TransmissionType.SLURRY);
-        if (config != null) {
-            config.addSlotInfo(DataType.OUTPUT, new ChemicalSlotInfo.SlurrySlotInfo(false, true, outputSlurryTanks));
+        ConfigInfo slurryConfig = configComponent.getConfig(TransmissionType.SLURRY);
+        if (slurryConfig != null) {
+            slurryConfig.addSlotInfo(DataType.OUTPUT, new SlurrySlotInfo(false, true, outputSlurryTanks));
+            slurryConfig.fill(DataType.INPUT);
+            slurryConfig.setDataType(DataType.OUTPUT, RelativeSide.RIGHT);
+            slurryConfig.setEjecting(true);
         }
 
         ConfigInfo itemConfig = configComponent.getConfig(TransmissionType.ITEM);

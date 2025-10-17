@@ -57,14 +57,16 @@ public abstract class TileEntityGasToGasFactory<RECIPE extends MekanismRecipe> e
 
         configComponent.addSupported(TransmissionType.GAS);
 
-        ConfigInfo config = configComponent.getConfig(TransmissionType.GAS);
-        if (config != null) {
-            config.addSlotInfo(DataType.OUTPUT, new ChemicalSlotInfo.GasSlotInfo(false, true, outputGasTanks));
+        ConfigInfo gasConfig = configComponent.getConfig(TransmissionType.GAS);
+        if (gasConfig != null) {
+            gasConfig.addSlotInfo(DataType.OUTPUT, new ChemicalSlotInfo.GasSlotInfo(false, true, outputGasTanks));
         }
 
         ConfigInfo itemConfig = configComponent.getConfig(TransmissionType.ITEM);
         if (itemConfig != null) {
             itemConfig.addSlotInfo(DataType.ENERGY, new InventorySlotInfo(true, true, energySlot));
+            //TODO:或许这玩意并不需要
+            itemConfig.fill(DataType.ENERGY);
         }
     }
 

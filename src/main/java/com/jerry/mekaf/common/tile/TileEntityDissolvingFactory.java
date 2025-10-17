@@ -45,6 +45,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -80,11 +81,12 @@ public class TileEntityDissolvingFactory extends TileEntityItemToMergedFactory<C
             itemConfig.addSlotInfo(DataType.EXTRA, new InventorySlotInfo(true, true, gasInputSlot));
             itemConfig.setDefaults();
         }
-        ConfigInfo chemicalConfig = configComponent.getConfig(TransmissionType.GAS);
-        if (chemicalConfig != null) {
-            chemicalConfig.addSlotInfo(DataType.INPUT, new GasSlotInfo(true, false, injectTank));
-            outputGasTanks.add(injectTank);
-            chemicalConfig.addSlotInfo(DataType.INPUT_OUTPUT, new GasSlotInfo(true, true, outputGasTanks));
+        ConfigInfo gasConfig = configComponent.getConfig(TransmissionType.GAS);
+        if (gasConfig != null) {
+            gasConfig.addSlotInfo(DataType.INPUT, new GasSlotInfo(true, false, injectTank));
+            List<IGasTank> ioTank = new ArrayList<>(List.of(injectTank));
+            ioTank.addAll(outputGasTanks);
+            gasConfig.addSlotInfo(DataType.INPUT_OUTPUT, new GasSlotInfo(true, true, ioTank));
         }
 
         ejectorComponent = new TileComponentEjector(this);

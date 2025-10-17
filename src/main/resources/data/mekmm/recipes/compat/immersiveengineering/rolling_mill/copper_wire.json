@@ -1,0 +1,18 @@
+{
+  "forge:conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "immersiveengineering"
+    }
+  ],
+  "type": "mekmm:rolling_mill",
+  "input": {
+    "ingredient": {
+      "tag": "forge:ingots/copper"
+    }
+  },
+  "output": {
+    "count": 2,
+    "item": "immersiveengineering:wire_copper"
+  }
+}

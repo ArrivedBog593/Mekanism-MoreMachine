@@ -4,6 +4,8 @@ import com.jerry.mekmm.api.recipes.StamperRecipe;
 import com.jerry.mekmm.api.recipes.cache.StamperCachedRecipe;
 import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
 import com.jerry.mekmm.common.registries.MMBlocks;
+import com.jerry.mekmm.common.upgrade.StamperUpgradeData;
+import com.jerry.mekmm.common.util.MMUtils;
 import mekanism.api.IContentsListener;
 import mekanism.api.recipes.cache.CachedRecipe;
 import mekanism.api.recipes.cache.CachedRecipe.OperationTracker.RecipeError;
@@ -34,6 +36,7 @@ import mekanism.common.util.MekanismUtils;
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -133,5 +136,15 @@ public class TileEntityStamper extends TileEntityProgressMachine<StamperRecipe> 
 
     public MachineEnergyContainer<TileEntityStamper> getEnergyContainer() {
         return energyContainer;
+    }
+
+    @Override
+    public boolean isConfigurationDataCompatible(BlockEntityType<?> type) {
+        return super.isConfigurationDataCompatible(type) || MMUtils.isSameMMTypeFactory(getBlockType(), type);
+    }
+
+    @Override
+    public @Nullable StamperUpgradeData getUpgradeData() {
+        return new StamperUpgradeData(redstone, getControlType(), getEnergyContainer(), getOperatingTicks(), energySlot, moldSlot, inputSlot, outputSlot, getComponents());
     }
 }

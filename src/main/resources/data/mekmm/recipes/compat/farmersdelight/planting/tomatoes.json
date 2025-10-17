@@ -1,0 +1,25 @@
+{
+  "forge:conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "farmersdelight"
+    }
+  ],
+  "type": "mekmm:planting",
+  "itemInput": {
+    "ingredient": {
+      "item": "farmersdelight:tomato_seeds"
+    }
+  },
+  "gasInput": {
+    "amount": 1,
+    "gas": "mekmm:nutrient_solution"
+  },
+  "mainOutput": {
+    "item": "farmersdelight:tomato_seeds"
+  },
+  "secondaryOutput": {
+    "count": 3,
+    "item": "farmersdelight:tomato"
+  }
+}

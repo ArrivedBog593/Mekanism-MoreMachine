@@ -1,0 +1,22 @@
+{
+  "forge:conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "megacells"
+    }
+  ],
+  "type": "mekmm:stamper",
+  "input": {
+    "ingredient": {
+      "tag": "forge:ingots/sky_steel"
+    }
+  },
+  "mold": {
+    "ingredient": {
+      "item": "megacells:accumulation_processor_press"
+    }
+  },
+  "output": {
+    "item": "megacells:printed_accumulation_processor"
+  }
+}

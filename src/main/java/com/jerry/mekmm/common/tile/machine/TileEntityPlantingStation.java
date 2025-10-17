@@ -6,10 +6,11 @@ import com.jerry.mekmm.api.recipes.cache.PlantingCacheRecipe;
 import com.jerry.mekmm.api.recipes.outputs.MMOutputHelper;
 import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
 import com.jerry.mekmm.common.registries.MMBlocks;
+import com.jerry.mekmm.common.upgrade.PlantingUpgradeData;
+import com.jerry.mekmm.common.util.MMUtils;
 import mekanism.api.IContentsListener;
 import mekanism.api.NBTConstants;
 import mekanism.api.RelativeSide;
-import mekanism.api.Upgrade;
 import mekanism.api.chemical.ChemicalTankBuilder;
 import mekanism.api.chemical.gas.Gas;
 import mekanism.api.chemical.gas.GasStack;
@@ -43,7 +44,6 @@ import mekanism.common.tile.component.TileComponentConfig;
 import mekanism.common.tile.component.TileComponentEjector;
 import mekanism.common.tile.prefab.TileEntityProgressMachine;
 import mekanism.common.util.MekanismUtils;
-import mekanism.common.util.StatUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
@@ -71,7 +71,6 @@ public class TileEntityPlantingStation extends TileEntityProgressMachine<Plantin
     public static final long MAX_GAS = 210;
 
     private final ChemicalUsageMultiplier gasUsageMultiplier;
-    private double gasPerTickMeanMultiplier = 1;
     private long baseTotalUsage;
     private long usedSoFar;
 
@@ -96,11 +95,7 @@ public class TileEntityPlantingStation extends TileEntityProgressMachine<Plantin
         configComponent.setupItemIOExtraConfig(inputSlot, mainOutputSlot, gasSlot, energySlot);
         configComponent.setupItemIOConfig(Collections.singletonList(inputSlot), List.of(mainOutputSlot, secondaryOutputSlot), energySlot, false);
 
-        if (allowExtractingChemical()) {
-            configComponent.setupIOConfig(TransmissionType.GAS, gasTank, RelativeSide.RIGHT).setCanEject(false);
-        } else {
-            configComponent.setupInputConfig(TransmissionType.GAS, gasTank);
-        }
+        configComponent.setupIOConfig(TransmissionType.GAS, gasTank, RelativeSide.RIGHT).setCanEject(false);
         configComponent.setupInputConfig(TransmissionType.ENERGY, energyContainer);
 
         ejectorComponent = new TileComponentEjector(this);
@@ -110,31 +105,25 @@ public class TileEntityPlantingStation extends TileEntityProgressMachine<Plantin
         gasInputHandler = InputHelper.getConstantInputHandler(gasTank);
         outputHandler = MMOutputHelper.getOutputHandler(mainOutputSlot, RecipeError.NOT_ENOUGH_OUTPUT_SPACE, secondaryOutputSlot, NOT_ENOUGH_SPACE_SECONDARY_OUTPUT_ERROR);
         baseTotalUsage = baseTicksRequired;
-        if (useStatisticalMechanics()) {
-            //Note: Statistical mechanics works best by just using the mean gas usage we want to target
-            // rather than adjusting the mean each time to try and reach a given target
-            gasUsageMultiplier = (usedSoFar, operatingTicks) -> StatUtils.inversePoisson(gasPerTickMeanMultiplier);
-        } else {
-            gasUsageMultiplier = (usedSoFar, operatingTicks) -> {
-                long baseRemaining = baseTotalUsage - usedSoFar;
-                int remainingTicks = getTicksRequired() - operatingTicks;
-                if (baseRemaining < remainingTicks) {
-                    //If we already used more than we would need to use (due to removing speed upgrades or adding gas upgrades)
-                    // then just don't use any gas this tick
-                    return 0;
-                } else if (baseRemaining == remainingTicks) {
-                    return 1;
-                }
-                return Math.max(MathUtils.clampToLong(baseRemaining / (double) remainingTicks), 0);
-            };
-        }
+        gasUsageMultiplier = (usedSoFar, operatingTicks) -> {
+            long baseRemaining = baseTotalUsage - usedSoFar;
+            int remainingTicks = getTicksRequired() - operatingTicks;
+            if (baseRemaining < remainingTicks) {
+                //If we already used more than we would need to use (due to removing speed upgrades or adding gas upgrades)
+                // then just don't use any gas this tick
+                return 0;
+            } else if (baseRemaining == remainingTicks) {
+                return 1;
+            }
+            return Math.max(MathUtils.clampToLong(baseRemaining / (double) remainingTicks), 0);
+        };
     }
 
     @NotNull
     @Override
     public IChemicalTankHolder<Gas, GasStack, IGasTank> getInitialGasTanks(IContentsListener listener, IContentsListener recipeCacheListener) {
         ChemicalTankHelper<Gas, GasStack, IGasTank> builder = ChemicalTankHelper.forSideGasWithConfig(this::getDirection, this::getConfig);
-        builder.addTank(gasTank = ChemicalTankBuilder.GAS.create(MAX_GAS, allowExtractingChemical() ? ChemicalTankBuilder.GAS.alwaysTrueBi : ChemicalTankBuilder.GAS.notExternal,
+        builder.addTank(gasTank = ChemicalTankBuilder.GAS.create(MAX_GAS, ChemicalTankBuilder.GAS.alwaysTrueBi,
                 (gas, automationType) -> containsRecipeBA(inputSlot.getStack(), gas), this::containsRecipeB, recipeCacheListener));
         return builder.build();
     }
@@ -157,10 +146,6 @@ public class TileEntityPlantingStation extends TileEntityProgressMachine<Plantin
         builder.addSlot(secondaryOutputSlot = OutputInventorySlot.at(listener, 132, 35));
         builder.addSlot(energySlot = EnergyInventorySlot.fillOrConvert(energyContainer, this::getLevel, listener, 31, 35));
         return builder.build();
-    }
-
-    protected boolean allowExtractingChemical() {
-        return !useStatisticalMechanics();
     }
 
     protected boolean useStatisticalMechanics() {
@@ -198,18 +183,6 @@ public class TileEntityPlantingStation extends TileEntityProgressMachine<Plantin
                 .setOperatingTicksChanged(this::setOperatingTicks);
     }
 
-    @Override
-    public void recalculateUpgrades(Upgrade upgrade) {
-        super.recalculateUpgrades(upgrade);
-        if (upgrade == Upgrade.SPEED || (upgrade == Upgrade.GAS && supportsUpgrade(Upgrade.GAS))) {
-            if (useStatisticalMechanics()) {
-                gasPerTickMeanMultiplier = MekanismUtils.getGasPerTickMeanMultiplier(this);
-            } else {
-                baseTotalUsage = MekanismUtils.getBaseUsage(this, baseTicksRequired);
-            }
-        }
-    }
-
     public MachineEnergyContainer<TileEntityPlantingStation> getEnergyContainer() {
         return energyContainer;
     }
@@ -217,7 +190,12 @@ public class TileEntityPlantingStation extends TileEntityProgressMachine<Plantin
     @Override
     public boolean isConfigurationDataCompatible(BlockEntityType<?> tileType) {
         //Allow exact match or factories of the same type (as we will just ignore the extra data)
-        return super.isConfigurationDataCompatible(tileType) || MekanismUtils.isSameTypeFactory(getBlockType(), tileType);
+        return super.isConfigurationDataCompatible(tileType) || MMUtils.isSameMMTypeFactory(getBlockType(), tileType);
+    }
+
+    @Override
+    public @Nullable PlantingUpgradeData getUpgradeData() {
+        return new PlantingUpgradeData(redstone, getControlType(), getEnergyContainer(), getOperatingTicks(), usedSoFar, gasTank, energySlot, gasSlot, inputSlot, mainOutputSlot, secondaryOutputSlot, getComponents());
     }
 
     @Override

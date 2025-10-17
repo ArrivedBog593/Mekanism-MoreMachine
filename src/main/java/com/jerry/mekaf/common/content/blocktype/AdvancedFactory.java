@@ -37,7 +37,9 @@ public class AdvancedFactory<TILE extends TileEntityAdvancedFactoryBase<?>> exte
     private void setMachineData(FactoryTier tier) {
         setFrom(origMachine, AttributeSound.class, AttributeAdvancedFactoryType.class, AttributeUpgradeSupport.class);
         AttributeEnergy origEnergy = origMachine.get(AttributeEnergy.class);
-        add(new AttributeEnergy(origEnergy::getUsage, () -> origEnergy.getConfigStorage().multiply(0.5).max(origEnergy.getUsage()).multiply(tier.processes)));
+        if (origEnergy != null) {
+            add(new AttributeEnergy(origEnergy::getUsage, () -> origEnergy.getConfigStorage().max(origEnergy.getUsage()).multiply(tier.processes)));
+        }
     }
 
     public static class AdvancedFactoryBuilder<FACTORY extends AdvancedFactory<TILE>, TILE extends TileEntityAdvancedFactoryBase<?>, T extends MMMachineBuilder<FACTORY, TILE, T>>
@@ -57,6 +59,9 @@ public class AdvancedFactory<TILE extends TileEntityAdvancedFactoryBase<?>> exte
             // assign the value here, and then return the builder itself as it is the same object
             builder.withComputerSupport(tier, type.getRegistryNameComponentCapitalized() + "Factory");
             builder.withCustomShape(MMBlockShapes.getShape(tier, type));
+            if (type == AdvancedFactoryType.CENTRIFUGING) {
+                builder.withBounding((pos, state, builderPos) -> builderPos.add(pos.above()));
+            }
             builder.replace(new AttributeParticleFX().addDense(ParticleTypes.SMOKE, 5, rand -> new Pos3D(
                     rand.nextFloat() * 0.7F - 0.3F,
                     rand.nextFloat() * 0.1F + 0.7F,

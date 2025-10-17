@@ -1,0 +1,23 @@
+{
+  "forge:conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "immersiveengineering"
+    }
+  ],
+  "type": "mekmm:stamper",
+  "input": {
+    "ingredient": {
+      "tag": "forge:ingots/electrum"
+    }
+  },
+  "mold": {
+    "ingredient": {
+      "item": "immersiveengineering:mold_wire"
+    }
+  },
+  "output": {
+    "count": 2,
+    "item": "immersiveengineering:wire_electrum"
+  }
+}

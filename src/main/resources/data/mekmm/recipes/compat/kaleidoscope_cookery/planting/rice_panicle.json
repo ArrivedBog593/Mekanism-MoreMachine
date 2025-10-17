@@ -1,0 +1,26 @@
+{
+  "forge:conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "kaleidoscope_cookery"
+    }
+  ],
+  "type": "mekmm:planting",
+  "itemInput": {
+    "ingredient": {
+      "item": "kaleidoscope_cookery:wild_rice"
+    }
+  },
+  "gasInput": {
+    "amount": 1,
+    "gas": "mekmm:nutrient_solution"
+  },
+  "mainOutput": {
+    "count": 2,
+    "item": "kaleidoscope_cookery:wild_rice"
+  },
+  "secondaryOutput": {
+    "count": 3,
+    "item": "kaleidoscope_cookery:rice_panicle"
+  }
+}

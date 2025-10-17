@@ -53,12 +53,17 @@ public class TileEntityCentrifugingFactory extends TileEntityGasToGasFactory<Gas
 
     public TileEntityCentrifugingFactory(IBlockProvider blockProvider, BlockPos pos, BlockState state) {
         super(blockProvider, pos, state, TRACKED_ERROR_TYPES, GLOBAL_ERROR_TYPES);
-        ConfigInfo config = configComponent.getConfig(TransmissionType.GAS);
-        if (config != null) {
-            config.addSlotInfo(DataType.INPUT, new ChemicalSlotInfo.GasSlotInfo(true, false, inputGasTanks));
+
+
+        ConfigInfo gasConfig = configComponent.getConfig(TransmissionType.GAS);
+        if (gasConfig != null) {
+            gasConfig.addSlotInfo(DataType.INPUT, new ChemicalSlotInfo.GasSlotInfo(true, false, inputGasTanks));
             List<IGasTank> ioTank = outputGasTanks;
             ioTank.addAll(inputGasTanks);
-            config.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo.GasSlotInfo(true, true, ioTank));
+            gasConfig.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo.GasSlotInfo(true, true, ioTank));
+            gasConfig.fill(DataType.INPUT);
+            gasConfig.setDataType(DataType.OUTPUT, RelativeSide.FRONT);
+            gasConfig.setEjecting(true);
         }
         configComponent.addDisabledSides(RelativeSide.TOP);
 

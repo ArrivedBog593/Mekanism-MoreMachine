@@ -11,7 +11,6 @@ import com.jerry.mekmm.common.upgrade.PlantingUpgradeData;
 import mekanism.api.IContentsListener;
 import mekanism.api.NBTConstants;
 import mekanism.api.RelativeSide;
-import mekanism.api.Upgrade;
 import mekanism.api.chemical.ChemicalTankBuilder;
 import mekanism.api.chemical.gas.Gas;
 import mekanism.api.chemical.gas.GasStack;
@@ -44,7 +43,6 @@ import mekanism.common.tile.prefab.TileEntityAdvancedElectricMachine;
 import mekanism.common.upgrade.IUpgradeData;
 import mekanism.common.util.InventoryUtils;
 import mekanism.common.util.MekanismUtils;
-import mekanism.common.util.StatUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -82,7 +80,6 @@ public class TileEntityPlantingFactory extends TileEntityMMFactory<PlantingRecip
     IGasTank gasTank;
 
     private final ChemicalUsageMultiplier chemicalUsageMultiplier;
-    private double chemicalPerTickMeanMultiplier = 1;
     private long baseTotalUsage;
     private final long[] usedSoFar;
 
@@ -90,31 +87,22 @@ public class TileEntityPlantingFactory extends TileEntityMMFactory<PlantingRecip
         super(blockProvider, pos, state, TRACKED_ERROR_TYPES, GLOBAL_ERROR_TYPES);
         configComponent.addSupported(TransmissionType.GAS);
         configComponent.setupInputConfig(TransmissionType.GAS, gasTank);
-        if (allowExtractingChemical()) {
-            configComponent.setupIOConfig(TransmissionType.GAS, gasTank, RelativeSide.RIGHT).setCanEject(false);
-        } else {
-            configComponent.setupInputConfig(TransmissionType.GAS, gasTank);
-        }
+        configComponent.setupIOConfig(TransmissionType.GAS, gasTank, RelativeSide.RIGHT).setCanEject(false);
+
         baseTotalUsage = BASE_TICKS_REQUIRED;
         usedSoFar = new long[tier.processes];
-        if (useStatisticalMechanics()) {
-            //Note: Statistical mechanics works best by just using the mean gas usage we want to target
-            // rather than adjusting the mean each time to try and reach a given target
-            chemicalUsageMultiplier = (usedSoFar, operatingTicks) -> StatUtils.inversePoisson(chemicalPerTickMeanMultiplier);
-        } else {
-            chemicalUsageMultiplier = (usedSoFar, operatingTicks) -> {
-                long baseRemaining = baseTotalUsage - usedSoFar;
-                int remainingTicks = getTicksRequired() - operatingTicks;
-                if (baseRemaining < remainingTicks) {
-                    //If we already used more than we would need to use (due to removing speed upgrades or adding gas upgrades)
-                    // then just don't use any gas this tick
-                    return 0;
-                } else if (baseRemaining == remainingTicks) {
-                    return 1;
-                }
-                return Math.max(MathUtils.clampToLong(baseRemaining / (double) remainingTicks), 0);
-            };
-        }
+        chemicalUsageMultiplier = (usedSoFar, operatingTicks) -> {
+            long baseRemaining = baseTotalUsage - usedSoFar;
+            int remainingTicks = getTicksRequired() - operatingTicks;
+            if (baseRemaining < remainingTicks) {
+                //If we already used more than we would need to use (due to removing speed upgrades or adding gas upgrades)
+                // then just don't use any gas this tick
+                return 0;
+            } else if (baseRemaining == remainingTicks) {
+                return 1;
+            }
+            return Math.max(MathUtils.clampToLong(baseRemaining / (double) remainingTicks), 0);
+        };
 
         gasInputHandler = InputHelper.getConstantInputHandler(gasTank);
     }
@@ -122,13 +110,8 @@ public class TileEntityPlantingFactory extends TileEntityMMFactory<PlantingRecip
     @Override
     public @Nullable IChemicalTankHolder<Gas, GasStack, IGasTank> getInitialGasTanks(IContentsListener listener) {
         ChemicalTankHelper<Gas, GasStack, IGasTank> builder = ChemicalTankHelper.forSideGasWithConfig(this::getDirection, this::getConfig);
-        if (allowExtractingChemical()) {
-            gasTank = ChemicalTankBuilder.GAS.create(TileEntityAdvancedElectricMachine.MAX_GAS * tier.processes, this::containsRecipeB,
-                    markAllMonitorsChanged(listener));
-        } else {
-            gasTank = ChemicalTankBuilder.GAS.input(TileEntityAdvancedElectricMachine.MAX_GAS * tier.processes, this::containsRecipeB,
-                    markAllMonitorsChanged(listener));
-        }
+        gasTank = ChemicalTankBuilder.GAS.create(TileEntityAdvancedElectricMachine.MAX_GAS * tier.processes, this::containsRecipeB,
+                markAllMonitorsChanged(listener));
         builder.addTank(gasTank);
         return builder.build();
     }
@@ -156,14 +139,6 @@ public class TileEntityPlantingFactory extends TileEntityMMFactory<PlantingRecip
             processInfoSlots[i] = new ProcessInfo(i, inputSlot, outputSlot, secondaryOutputSlot);
         }
         builder.addSlot(gasSlot = GasInventorySlot.fillOrConvert(gasTank, this::getLevel, listener, 7, 77));
-    }
-
-    private boolean allowExtractingChemical() {
-        return false;
-    }
-
-    protected boolean useStatisticalMechanics() {
-        return true;
     }
 
     public IGasTank getGasTank() {
@@ -267,18 +242,6 @@ public class TileEntityPlantingFactory extends TileEntityMMFactory<PlantingRecip
     @Override
     public long getSavedUsedSoFar(int cacheIndex) {
         return usedSoFar[cacheIndex];
-    }
-
-    @Override
-    public void recalculateUpgrades(Upgrade upgrade) {
-        super.recalculateUpgrades(upgrade);
-        if (upgrade == Upgrade.SPEED || upgrade == Upgrade.GAS && supportsUpgrade(Upgrade.GAS)) {
-            if (useStatisticalMechanics()) {
-                chemicalPerTickMeanMultiplier = MekanismUtils.getGasPerTickMeanMultiplier(this);
-            } else {
-                baseTotalUsage = MekanismUtils.getBaseUsage(this, BASE_TICKS_REQUIRED);
-            }
-        }
     }
 
     @Override

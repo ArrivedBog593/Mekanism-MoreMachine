@@ -14,6 +14,7 @@ import mekanism.client.jei.BaseRecipeCategory;
 import mekanism.client.jei.MekanismJEI;
 import mekanism.client.jei.MekanismJEIRecipeType;
 import mekanism.common.inventory.container.slot.SlotOverlay;
+import mekanism.common.tile.prefab.TileEntityAdvancedElectricMachine;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
@@ -45,8 +46,15 @@ public class PlantingRecipeCategory extends BaseRecipeCategory<PlantingRecipe> {
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, PlantingRecipe recipe, IFocusGroup focuses) {
         initItem(builder, RecipeIngredientRole.INPUT, input, recipe.getItemInput().getRepresentations());
-        List<GasStack> scaledChemicals = recipe.getGasInput().getRepresentations();
-        initChemical(builder, MekanismJEI.TYPE_GAS, RecipeIngredientRole.INPUT, chemicalInput, scaledChemicals);
+        List<ItemStack> gasItemProviders = new ArrayList<>();
+        List<GasStack> scaledGases = new ArrayList<>();
+        for (GasStack gas : recipe.getGasInput().getRepresentations()) {
+            //额外
+            gasItemProviders.addAll(MekanismJEI.GAS_STACK_HELPER.getStacksFor(gas.getType(), true));
+            //While we are already looping the gases ensure we scale it to get the average amount that will get used over all
+            scaledGases.add(new GasStack(gas, gas.getAmount() * TileEntityAdvancedElectricMachine.BASE_TICKS_REQUIRED));
+        }
+        initChemical(builder, MekanismJEI.TYPE_GAS, RecipeIngredientRole.INPUT, chemicalInput, scaledGases);
 
         List<ItemStack> firstOutputs = new ArrayList<>();
         List<ItemStack> secondOutputs = new ArrayList<>();
@@ -59,11 +67,7 @@ public class PlantingRecipeCategory extends BaseRecipeCategory<PlantingRecipe> {
         if (!secondOutputs.stream().allMatch(ItemStack::isEmpty)) {
             initItem(builder, RecipeIngredientRole.OUTPUT, output.getX() + 48, output.getY() + 20, secondOutputs);
         }
-        // 额外
-        List<ItemStack> gasItemProviders = new ArrayList<>();
-        for (GasStack gasStack : scaledChemicals) {
-            gasItemProviders.addAll(MekanismJEI.GAS_STACK_HELPER.getStacksFor(gasStack.getType(), true));
-        }
+
         initItem(builder, RecipeIngredientRole.CATALYST, extra, gasItemProviders);
     }
 }

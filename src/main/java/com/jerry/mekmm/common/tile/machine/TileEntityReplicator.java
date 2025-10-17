@@ -39,6 +39,7 @@ import mekanism.common.recipe.IMekanismRecipeTypeProvider;
 import mekanism.common.tile.component.TileComponentConfig;
 import mekanism.common.tile.component.TileComponentEjector;
 import mekanism.common.tile.prefab.TileEntityProgressMachine;
+import mekanism.common.upgrade.AdvancedMachineUpgradeData;
 import mekanism.common.util.MekanismUtils;
 import mekanism.common.util.RegistryUtils;
 import net.minecraft.SharedConstants;
@@ -198,5 +199,11 @@ public class TileEntityReplicator extends TileEntityProgressMachine<ItemStackGas
     @Override
     public boolean isConfigurationDataCompatible(BlockEntityType<?> type) {
         return super.isConfigurationDataCompatible(type) || MMUtils.isSameMMTypeFactory(getBlockType(), type);
+    }
+
+    @Override
+    public @Nullable AdvancedMachineUpgradeData getUpgradeData() {
+        return new AdvancedMachineUpgradeData(redstone, getControlType(), getEnergyContainer(), getOperatingTicks(), 0, gasTank, gasSlot, energySlot,
+                inputSlot, outputSlot, getComponents());
     }
 }

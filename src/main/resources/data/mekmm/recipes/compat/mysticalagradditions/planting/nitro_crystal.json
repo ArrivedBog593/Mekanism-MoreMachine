@@ -1,0 +1,24 @@
+{
+  "forge:conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "mysticalagradditions"
+    }
+  ],
+  "type": "mekmm:planting",
+  "gasInput": {
+    "amount": 1,
+    "gas": "mekmm:nutrient_solution"
+  },
+  "itemInput": {
+    "ingredient": {
+      "item": "mysticalagriculture:nitro_crystal_seeds"
+    }
+  },
+  "mainOutput": {
+    "item": "mysticalagriculture:nitro_crystal_seeds"
+  },
+  "secondaryOutput": {
+    "item": "mysticalagriculture:nitro_crystal_essence"
+  }
+}

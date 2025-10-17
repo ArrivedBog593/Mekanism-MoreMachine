@@ -73,20 +73,23 @@ public class TileEntityWashingFactory extends TileEntitySlurryToSlurryFactory<Fl
 
     public TileEntityWashingFactory(IBlockProvider blockProvider, BlockPos pos, BlockState state) {
         super(blockProvider, pos, state, TRACKED_ERROR_TYPES, GLOBAL_ERROR_TYPES);
-        configComponent.addSupported(TransmissionType.FLUID);
+        addSupported(TransmissionType.FLUID);
+
         ConfigInfo itemConfig = configComponent.getConfig(TransmissionType.ITEM);
         if (itemConfig != null) {
             itemConfig.addSlotInfo(DataType.INPUT, new InventorySlotInfo(true, false, fluidInputSlot));
             itemConfig.addSlotInfo(DataType.OUTPUT, new InventorySlotInfo(false, true, fluidOutputSlot));
             itemConfig.addSlotInfo(DataType.INPUT_OUTPUT, new InventorySlotInfo(true, true, fluidInputSlot, fluidOutputSlot));
+            itemConfig.setDefaults();
         }
-        ConfigInfo config = configComponent.getConfig(TransmissionType.SLURRY);
-        if (config != null) {
-            config.addSlotInfo(DataType.INPUT, new ChemicalSlotInfo.SlurrySlotInfo(true, false, inputSlurryTanks));
+        ConfigInfo slurryConfig = configComponent.getConfig(TransmissionType.SLURRY);
+        if (slurryConfig != null) {
+            slurryConfig.addSlotInfo(DataType.INPUT, new ChemicalSlotInfo.SlurrySlotInfo(true, false, inputSlurryTanks));
             List<ISlurryTank> ioTank = outputSlurryTanks;
             ioTank.addAll(inputSlurryTanks);
-            config.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo.SlurrySlotInfo(true, true, ioTank));
+            slurryConfig.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo.SlurrySlotInfo(true, true, ioTank));
         }
+        configComponent.setupInputConfig(TransmissionType.FLUID, fluidTank);
 
         ejectorComponent = new TileComponentEjector(this);
         ejectorComponent.setOutputData(configComponent, TransmissionType.ITEM, TransmissionType.SLURRY)

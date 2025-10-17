@@ -132,9 +132,13 @@ mixin {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
-    flatDir { dirs 'libs' }
+    flatDir {
+        dirs 'libs'
+    }
 
-    maven { url 'https://modmaven.dev/' }
+    maven {
+        url 'https://modmaven.dev/'
+    }
 
     maven {
         name = "Jared's maven"
@@ -143,6 +147,18 @@ repositories {
 
     maven {
         url "https://cursemaven.com"
+    }
+
+    mavenLocal()
+
+    maven {
+        url "https://maven.squiddev.cc"
+        content {
+            includeGroup("cc.tweaked")
+        }
+    }
+    maven {
+        url 'https://maven.blakesmods.com'
     }
 }
 
@@ -158,14 +174,10 @@ dependencies {
     // jei
     implementation fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
 
-    // Example mod dependency using a mod jar from ./libs with a flat dir repository
-    // This maps to ./libs/coolmod-${mc_version}-${coolmod_version}.jar
-    // The group id is ignored when searching -- in this case, it is "blank"
-    // implementation fg.deobf("blank:coolmod-${mc_version}:${coolmod_version}")
+    implementation fg.deobf("curse.maven:immersive-engineering-231951:6206989")
 
-    // For more info:
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
+    runtimeOnly fg.deobf("com.blakebr0.cucumber:Cucumber:${minecraft_version}-${cucumber_version}")
+    implementation fg.deobf("com.blakebr0.mysticalagriculture:MysticalAgriculture:${minecraft_version}-${mysticalagriculture_version}")
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 

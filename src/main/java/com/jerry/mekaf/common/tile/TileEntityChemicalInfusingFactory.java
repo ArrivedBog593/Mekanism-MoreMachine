@@ -3,6 +3,7 @@ package com.jerry.mekaf.common.tile;
 import com.jerry.mekaf.common.tile.base.TileEntityGasToGasFactory;
 import com.jerry.mekaf.common.upgrade.GasGasToGasUpgradeData;
 import mekanism.api.IContentsListener;
+import mekanism.api.RelativeSide;
 import mekanism.api.chemical.ChemicalTankBuilder;
 import mekanism.api.chemical.gas.Gas;
 import mekanism.api.chemical.gas.GasStack;
@@ -76,6 +77,8 @@ public class TileEntityChemicalInfusingFactory extends TileEntityGasToGasFactory
         if (itemConfig != null) {
             itemConfig.addSlotInfo(DataType.EXTRA, new InventorySlotInfo(true, false, rightInputSlot));
             itemConfig.addSlotInfo(DataType.INPUT_OUTPUT, new InventorySlotInfo(true, true, rightInputSlot));
+            itemConfig.setDataType(DataType.EXTRA, RelativeSide.BOTTOM);
+            itemConfig.setDataType(DataType.ENERGY, RelativeSide.BACK);
         }
         ConfigInfo chemicalConfig = configComponent.getConfig(TransmissionType.GAS);
         if (chemicalConfig != null) {
@@ -84,6 +87,10 @@ public class TileEntityChemicalInfusingFactory extends TileEntityGasToGasFactory
             List<IGasTank> ioTank = new ArrayList<>(List.of(rightTank));
             ioTank.addAll(inputGasTanks);
             chemicalConfig.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo.GasSlotInfo(true, true, ioTank));
+            chemicalConfig.setDataType(DataType.INPUT_1, RelativeSide.LEFT);
+            chemicalConfig.setDataType(DataType.INPUT_2, RelativeSide.RIGHT);
+            chemicalConfig.setDataType(DataType.OUTPUT, RelativeSide.FRONT);
+            chemicalConfig.setEjecting(true);
         }
 
         ejectorComponent = new TileComponentEjector(this);

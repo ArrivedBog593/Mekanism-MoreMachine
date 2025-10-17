@@ -1,0 +1,26 @@
+{
+  "forge:conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "kaleidoscope_cookery"
+    }
+  ],
+  "type": "mekmm:planting",
+  "itemInput": {
+    "ingredient": {
+      "item": "kaleidoscope_cookery:lettuce_seed"
+    }
+  },
+  "gasInput": {
+    "amount": 1,
+    "gas": "mekmm:nutrient_solution"
+  },
+  "mainOutput": {
+    "count": 1,
+    "item": "kaleidoscope_cookery:lettuce_seed"
+  },
+  "secondaryOutput": {
+    "count": 1,
+    "item": "kaleidoscope_cookery:lettuce"
+  }
+}

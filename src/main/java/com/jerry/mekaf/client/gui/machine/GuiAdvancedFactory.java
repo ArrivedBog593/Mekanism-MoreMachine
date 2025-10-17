@@ -63,9 +63,13 @@ public class GuiAdvancedFactory extends GuiConfigurableTile<TileEntityAdvancedFa
             addRenderableWidget(GuiSideHolder.create(this, imageWidth, 66, 57, false, true, SpecialColors.TAB_CHEMICAL_WASHER));
         }
         super.addGuiElements();
-        addRenderableWidget(new AFGuiSortingTab(this, tile));
-        addRenderableWidget(new GuiVerticalPowerBar(this, tile.getEnergyContainer(), imageWidth - 12, 16, 52))
+        //由于没有合适的API因此化学品输入的工厂不能自动整理
+        if (tile instanceof TileEntityItemToGasFactory<?> || tile instanceof TileEntityItemToMergedFactory<?> || tile instanceof TileEntityItemToFluidFactory<?> || tile instanceof TileEntityPressurizedReactingFactory) {
+            addRenderableWidget(new AFGuiSortingTab(this, tile));
+        }
+        addRenderableWidget(new GuiVerticalPowerBar(this, tile.getEnergyContainer(), imageWidth - 12, 16, getEnergyHeight()))
                 .warning(WarningTracker.WarningType.NOT_ENOUGH_ENERGY, tile.getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_ENERGY, 0));
+        //左下角能量面板
         addRenderableWidget(new GuiEnergyTab(this, tile.getEnergyContainer(), tile::getLastUsage));
 
         if (tile.hasExtrasResourceBar()) {
@@ -162,6 +166,16 @@ public class GuiAdvancedFactory extends GuiConfigurableTile<TileEntityAdvancedFa
             addProgress(new GuiProgress(() -> tile.getScaledProgress(1, cacheIndex), ProgressType.DOWN, this, 4 + tile.getXPos(i), getProgressYPos()))
                     //Only can happen if recipes change because inputs are sanitized in the factory based on the output
                     .warning(WarningTracker.WarningType.INPUT_DOESNT_PRODUCE_OUTPUT, tile.getWarningCheck(CachedRecipe.OperationTracker.RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT, cacheIndex));
+        }
+    }
+
+    private int getEnergyHeight() {
+        if (tile instanceof TileEntityGasToGasFactory<?> || tile instanceof TileEntitySlurryToSlurryFactory<?>) {
+            return 78;
+        } else if (tile instanceof TileEntityMergedToItemFactory<?> || tile instanceof TileEntityItemToMergedFactory<?> || tile instanceof TileEntityItemToGasFactory<?> || tile instanceof TileEntityItemToFluidFactory<?>) {
+            return 65;
+        } else {
+            return 52;
         }
     }
 

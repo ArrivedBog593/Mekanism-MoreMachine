@@ -27,7 +27,7 @@ import mekanism.common.lib.transmitter.TransmissionType;
 import mekanism.common.tile.component.ITileComponent;
 import mekanism.common.tile.component.config.ConfigInfo;
 import mekanism.common.tile.component.config.DataType;
-import mekanism.common.tile.component.config.slot.ChemicalSlotInfo;
+import mekanism.common.tile.component.config.slot.ChemicalSlotInfo.GasSlotInfo;
 import mekanism.common.upgrade.IUpgradeData;
 import mekanism.common.util.MekanismUtils;
 import net.minecraft.core.BlockPos;
@@ -66,13 +66,13 @@ public abstract class TileEntityItemToGasFactory<RECIPE extends MekanismRecipe> 
             outputGasTanks.add(info.outputTank());
         }
 
-        configComponent.addSupported(TransmissionType.GAS);
+        addSupported(TransmissionType.GAS);
 
         ConfigInfo gasConfig = configComponent.getConfig(TransmissionType.GAS);
         if (gasConfig != null) {
-            gasConfig.addSlotInfo(DataType.OUTPUT, new ChemicalSlotInfo.GasSlotInfo(false, true, outputGasTanks));
+            gasConfig.addSlotInfo(DataType.OUTPUT, new GasSlotInfo(false, true, outputGasTanks));
             gasConfig.setDataType(DataType.OUTPUT, RelativeSide.RIGHT);
-            gasConfig.setCanEject(true);
+            gasConfig.setEjecting(true);
         }
 
         configComponent.setupItemIOConfig(inputItemSlots, Collections.emptyList(), energySlot, false);

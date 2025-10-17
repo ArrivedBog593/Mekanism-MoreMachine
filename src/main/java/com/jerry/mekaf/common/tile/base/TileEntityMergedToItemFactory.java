@@ -85,21 +85,28 @@ public abstract class TileEntityMergedToItemFactory<RECIPE extends MekanismRecip
         if (gasConfig != null) {
             gasConfig.addSlotInfo(DataType.INPUT, new ChemicalSlotInfo.GasSlotInfo(false, true, inputGasTanks));
             gasConfig.setDataType(DataType.INPUT, RelativeSide.RIGHT);
+            gasConfig.fill(DataType.INPUT);
+            gasConfig.setCanEject(false);
         }
         ConfigInfo infusionConfig = configComponent.getConfig(TransmissionType.INFUSION);
         if (infusionConfig != null) {
             infusionConfig.addSlotInfo(DataType.INPUT, new ChemicalSlotInfo.InfusionSlotInfo(false, true, inputInfusionTanks));
-            infusionConfig.setDataType(DataType.INPUT, RelativeSide.RIGHT);
+            infusionConfig.fill(DataType.INPUT);
+            infusionConfig.setCanEject(false);
         }
         ConfigInfo pigmentConfig = configComponent.getConfig(TransmissionType.PIGMENT);
         if (pigmentConfig != null) {
             pigmentConfig.addSlotInfo(DataType.INPUT, new ChemicalSlotInfo.PigmentSlotInfo(false, true, inputPigmentTanks));
             pigmentConfig.setDataType(DataType.INPUT, RelativeSide.RIGHT);
+            pigmentConfig.fill(DataType.INPUT);
+            pigmentConfig.setCanEject(false);
         }
         ConfigInfo slurryConfig = configComponent.getConfig(TransmissionType.SLURRY);
         if (slurryConfig != null) {
             slurryConfig.addSlotInfo(DataType.INPUT, new ChemicalSlotInfo.SlurrySlotInfo(false, true, inputSlurryTanks));
             slurryConfig.setDataType(DataType.INPUT, RelativeSide.RIGHT);
+            slurryConfig.fill(DataType.INPUT);
+            slurryConfig.setCanEject(false);
         }
         configComponent.setupItemIOConfig(Collections.emptyList(), outputItemSlots, energySlot, false);
     }

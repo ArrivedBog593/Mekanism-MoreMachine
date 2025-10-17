@@ -1,6 +1,7 @@
 package com.jerry.mekmm.common.content.blocktype;
 
 import com.jerry.mekmm.common.block.attribute.MMAttributeFactoryType;
+import com.jerry.mekmm.common.content.blocktype.MMMachine.MMFactoryMachine;
 import com.jerry.mekmm.common.registries.MMBlocks;
 import com.jerry.mekmm.common.registries.MMContainerTypes;
 import com.jerry.mekmm.common.tile.factory.TileEntityMMFactory;
@@ -16,7 +17,7 @@ import net.minecraft.core.particles.ParticleTypes;
 
 import java.util.function.Supplier;
 
-public class MMFactory<TILE extends TileEntityMMFactory<?>> extends MMMachine.MMFactoryMachine<TILE> {
+public class MMFactory<TILE extends TileEntityMMFactory<?>> extends MMFactoryMachine<TILE> {
 
     private final MMFactoryMachine<?> origMachine;
 
@@ -35,7 +36,9 @@ public class MMFactory<TILE extends TileEntityMMFactory<?>> extends MMMachine.MM
     private void setMachineData(FactoryTier tier) {
         setFrom(origMachine, AttributeSound.class, MMAttributeFactoryType.class, AttributeUpgradeSupport.class);
         AttributeEnergy origEnergy = origMachine.get(AttributeEnergy.class);
-        add(new AttributeEnergy(origEnergy::getUsage, () -> origEnergy.getConfigStorage().multiply(0.5).max(origEnergy.getUsage()).multiply(tier.processes)));
+        if (origEnergy != null) {
+            add(new AttributeEnergy(origEnergy::getUsage, () -> origEnergy.getConfigStorage().multiply(0.5).max(origEnergy.getUsage()).multiply(tier.processes)));
+        }
     }
 
     public static class MMFactoryBuilder<FACTORY extends MMFactory<TILE>, TILE extends TileEntityMMFactory<?>, T extends MMMachineBuilder<FACTORY, TILE, T>>

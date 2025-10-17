@@ -70,7 +70,7 @@ public abstract class TileEntityItemToFluidFactory<RECIPE extends MekanismRecipe
         if (gasConfig != null) {
             gasConfig.addSlotInfo(DataType.OUTPUT, new FluidSlotInfo(false, true, outputFluidTanks));
             gasConfig.setDataType(DataType.OUTPUT, RelativeSide.RIGHT);
-            gasConfig.setCanEject(true);
+            gasConfig.setEjecting(true);
         }
         configComponent.setupItemIOConfig(inputItemSlots, Collections.emptyList(), energySlot, false);
     }

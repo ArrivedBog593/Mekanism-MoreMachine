@@ -48,11 +48,6 @@ public class TileEntityLiquifyingFactory extends TileEntityItemToFluidFactory<It
         ejectorComponent.setOutputData(configComponent, TransmissionType.FLUID);
     }
 
-//    public static boolean isValidInputStatic(ItemStack stack) {
-//        FoodProperties food = stack.getFoodProperties(null);
-//        return food != null && food.getNutrition() > 0;
-//    }
-
     @Override
     protected boolean isCachedRecipeValid(@Nullable CachedRecipe<ItemStackToFluidRecipe> cached, @NotNull ItemStack stack) {
         return cached != null && isValidInputItem(stack);

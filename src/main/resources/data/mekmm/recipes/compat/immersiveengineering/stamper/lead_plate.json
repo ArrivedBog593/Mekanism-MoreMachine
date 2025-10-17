@@ -1,0 +1,22 @@
+{
+  "forge:conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "immersiveengineering"
+    }
+  ],
+  "type": "mekmm:stamper",
+  "input": {
+    "ingredient": {
+      "tag": "forge:ingots/lead"
+    }
+  },
+  "mold": {
+    "ingredient": {
+      "item": "immersiveengineering:mold_plate"
+    }
+  },
+  "output": {
+    "item": "immersiveengineering:plate_lead"
+  }
+}

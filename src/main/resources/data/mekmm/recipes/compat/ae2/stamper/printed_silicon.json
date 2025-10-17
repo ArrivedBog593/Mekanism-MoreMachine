@@ -1,0 +1,22 @@
+{
+  "forge:conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "ae2"
+    }
+  ],
+  "type": "mekmm:stamper",
+  "input": {
+    "ingredient": {
+      "tag": "forge:silicon"
+    }
+  },
+  "mold": {
+    "ingredient": {
+      "item": "ae2:silicon_press"
+    }
+  },
+  "output": {
+    "item": "ae2:printed_silicon"
+  }
+}

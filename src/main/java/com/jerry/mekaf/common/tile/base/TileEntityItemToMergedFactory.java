@@ -96,22 +96,25 @@ public abstract class TileEntityItemToMergedFactory<RECIPE extends MekanismRecip
             gasConfig.addSlotInfo(DataType.OUTPUT, new ChemicalSlotInfo.GasSlotInfo(false, true, outputGasTanks));
             gasConfig.fill(DataType.INPUT);
             gasConfig.setDataType(DataType.OUTPUT, RelativeSide.RIGHT);
-            gasConfig.setCanEject(true);
+            gasConfig.setEjecting(true);
         }
         ConfigInfo infusionConfig = configComponent.getConfig(TransmissionType.INFUSION);
         if (infusionConfig != null) {
             infusionConfig.addSlotInfo(DataType.OUTPUT, new ChemicalSlotInfo.InfusionSlotInfo(false, true, outputInfusionTanks));
             infusionConfig.setDataType(DataType.OUTPUT, RelativeSide.RIGHT);
+            infusionConfig.setEjecting(true);
         }
         ConfigInfo pigmentConfig = configComponent.getConfig(TransmissionType.PIGMENT);
         if (pigmentConfig != null) {
             pigmentConfig.addSlotInfo(DataType.OUTPUT, new ChemicalSlotInfo.PigmentSlotInfo(false, true, outputPigmentTanks));
             pigmentConfig.setDataType(DataType.OUTPUT, RelativeSide.RIGHT);
+            pigmentConfig.setEjecting(true);
         }
         ConfigInfo slurryConfig = configComponent.getConfig(TransmissionType.SLURRY);
         if (slurryConfig != null) {
             slurryConfig.addSlotInfo(DataType.OUTPUT, new ChemicalSlotInfo.SlurrySlotInfo(false, true, outputSlurryTanks));
             slurryConfig.setDataType(DataType.OUTPUT, RelativeSide.RIGHT);
+            slurryConfig.setEjecting(true);
         }
         configComponent.setupItemIOConfig(inputItemSlots, Collections.emptyList(), energySlot, false);
     }
