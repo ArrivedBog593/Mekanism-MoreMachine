@@ -29,10 +29,10 @@ public class PlantingStationRecipeBuilder extends MekanismRecipeBuilder<Planting
      * Creates a planting recipe builder.
      * 创建一个种植站的配方生成器。
      *
-     * @param itemInput ItemInput
+     * @param itemInput     ItemInput
      * @param chemicalInput ChemicalInput
-     * @param mainOutput MainOutput
-     * @param perTickUsage PerTickUsage
+     * @param mainOutput    MainOutput
+     * @param perTickUsage  PerTickUsage
      */
     public static PlantingStationRecipeBuilder planting(ItemStackIngredient itemInput, ChemicalStackIngredient chemicalInput, ItemStack mainOutput, boolean perTickUsage) {
         if (mainOutput.isEmpty()) {
@@ -45,11 +45,11 @@ public class PlantingStationRecipeBuilder extends MekanismRecipeBuilder<Planting
      * Creates a planting recipe builder.
      * 创建一个种植站的配方生成器。
      *
-     * @param itemInput ItemInput
-     * @param chemicalInput ChemicalInput
-     * @param mainOutput MainOutput
+     * @param itemInput       ItemInput
+     * @param chemicalInput   ChemicalInput
+     * @param mainOutput      MainOutput
      * @param secondaryOutput SecondaryOutput
-     * @param perTickUsage PerTickUsage
+     * @param perTickUsage    PerTickUsage
      */
     public static PlantingStationRecipeBuilder planting(ItemStackIngredient itemInput, ChemicalStackIngredient chemicalInput, ItemStack mainOutput, ItemStack secondaryOutput, boolean perTickUsage) {
         if (mainOutput.isEmpty() || secondaryOutput.isEmpty()) {

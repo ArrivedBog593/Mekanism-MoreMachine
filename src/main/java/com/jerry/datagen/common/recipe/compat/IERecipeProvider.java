@@ -10,15 +10,17 @@ import mekanism.api.recipes.ingredients.creator.IngredientCreatorAccess;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
-public class IERecipeProvider extends CompatRecipeProvider{
+public class IERecipeProvider extends CompatRecipeProvider {
 
-    public IERecipeProvider(String modid) {
-        super(modid);
+    public IERecipeProvider(String modId) {
+        super(modId);
     }
 
     @Override
@@ -76,5 +78,12 @@ public class IERecipeProvider extends CompatRecipeProvider{
                 IngredientCreatorAccess.item().from(IEItems.Molds.MOLD_WIRE),
                 new ItemStack(IEItems.Ingredients.WIRE_COPPER, 2)
         ).addCondition(modLoaded).build(consumer, Mekmm.rl(basePath + "stamper/copper_wire"));
+
+
+        StamperRecipeBuilder.stamping(
+                IngredientCreatorAccess.item().from(Blocks.MELON),
+                IngredientCreatorAccess.item().from(IEItems.Molds.MOLD_UNPACKING),
+                new ItemStack(Items.MELON_SLICE, 9)
+        ).addCondition(modLoaded).build(consumer, Mekmm.rl(basePath + "stamper/melon"));
     }
 }

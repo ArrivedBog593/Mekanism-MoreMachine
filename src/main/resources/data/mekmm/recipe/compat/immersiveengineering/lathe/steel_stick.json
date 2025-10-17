@@ -5,14 +5,10 @@
       "modid": "immersiveengineering"
     }
   ],
-  "type": "mekmm:stamper",
-  "main_input": {
+  "type": "mekmm:lathe",
+  "input": {
     "count": 1,
     "tag": "c:ingots/steel"
-  },
-  "mold": {
-    "count": 1,
-    "item": "immersiveengineering:mold_rod"
   },
   "output": {
     "count": 2,

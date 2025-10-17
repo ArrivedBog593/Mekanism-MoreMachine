@@ -1,4 +1,4 @@
-// 1.21.1	2025-08-15T11:17:41.9136688	Recipes
+// 1.21.1	2025-10-17T22:12:34.3848911	Recipes
 668d08ca0292b7e4dec48a9a265a5e6207e8d3fb data/mekmm/recipe/ambient_gas_collector.json
 bd9805149f56d2638d69a40e4aa278ca7b7f1857 data/mekmm/recipe/chemical_replicator.json
 aef0da9a0aaf6eb03afda113c8088ef323394e0e data/mekmm/recipe/cnc_lathe.json
@@ -11,6 +11,7 @@ eabce324f3bbce195a1744df148c4003049bfd26 data/mekmm/recipe/compat/immersiveengin
 fbe4a1beac34b3091d09878f63d3e17debf8974c data/mekmm/recipe/compat/immersiveengineering/stamper/gold_plate.json
 6efa9788540b757a0a297c15ea3f7040158bd886 data/mekmm/recipe/compat/immersiveengineering/stamper/iron_plate.json
 a428bf56883e9f018664ff1f515faf2e85a1d42b data/mekmm/recipe/compat/immersiveengineering/stamper/iron_stick.json
+8bb83e00b700d79381619754d1a973e5e42ac93d data/mekmm/recipe/compat/immersiveengineering/stamper/melon.json
 c27fa62c08eecf87dc0055f4f7bb91c07a7491a3 data/mekmm/recipe/compat/immersiveengineering/stamper/netherite_stick.json
 97b8dcac2062f26f4dbafc8488374257d18c574c data/mekmm/recipe/compat/mysticalagriculture/air.json
 3a1216be8024aea33e646c755ed16446155358e2 data/mekmm/recipe/compat/mysticalagriculture/aluminum.json

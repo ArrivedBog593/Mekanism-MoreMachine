@@ -11,33 +11,33 @@ import net.minecraft.world.item.ItemStack;
 @NothingNullByDefault
 public class StamperRecipeBuilder extends MekanismRecipeBuilder<StamperRecipeBuilder> {
 
-    private final ItemStackIngredient mainInput;
-    private final ItemStackIngredient extraInput;
+    private final ItemStackIngredient input;
+    private final ItemStackIngredient mold;
     private final ItemStack output;
 
-    protected StamperRecipeBuilder(ItemStackIngredient mainInput, ItemStackIngredient extraInput, ItemStack output) {
-        this.mainInput = mainInput;
-        this.extraInput = extraInput;
+    protected StamperRecipeBuilder(ItemStackIngredient input, ItemStackIngredient mold, ItemStack output) {
+        this.input = input;
+        this.mold = mold;
         this.output = output;
     }
 
     /**
      * Creates a Stamping recipe builder.
      *
-     * @param mainInput  Main Input.
-     * @param extraInput Extra/Secondary Input.
-     * @param output     Output.
+     * @param input  Input.
+     * @param mold   Mold Input.
+     * @param output Output.
      */
-    public static StamperRecipeBuilder stamping(ItemStackIngredient mainInput, ItemStackIngredient extraInput, ItemStack output) {
+    public static StamperRecipeBuilder stamping(ItemStackIngredient input, ItemStackIngredient mold, ItemStack output) {
         if (output.isEmpty()) {
             throw new IllegalArgumentException("This stamping recipe requires a non empty item output.");
         }
-        return new StamperRecipeBuilder(mainInput, extraInput, output);
+        return new StamperRecipeBuilder(input, mold, output);
     }
 
     @Override
     protected StamperRecipe asRecipe() {
-        return new BasicStamperRecipe(mainInput, extraInput, output);
+        return new BasicStamperRecipe(input, mold, output);
     }
 
     /**
