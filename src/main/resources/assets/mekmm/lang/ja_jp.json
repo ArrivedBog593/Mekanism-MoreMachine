@@ -195,7 +195,7 @@
   "general.fluid_replicator.recipes": "Recipe for Fluid Replicator",
   "general.chemical_replicator.recipes": "Recipe for Chemical Replicator",
 
-  "info.mekmm.jei.unstable_dimensional_gas": "Use an Ambient Gas Collector for collection, and be careful not to place blocks above the machine.",
+  "info.mekmm.jei.unstable_dimensional_gas": "Use an Ambient Gas Collector for collection(%1$smb/t), and be careful not to place blocks above the machine.",
 
   "configuration.mekmm.general.chemical_replicator.recipes": "Add Chemical Replicator Recipes",
   "configuration.mekmm.general.chemical_replicator.recipes.tooltip": "The recipes added here will be added to the chemical replicator. Write using modid:registeredName#amount, # followed by the amount(not null or zero) of UU matter consumed. For example:[\"mekanism:oxygen#10\",\"mekanism:hydrogen#100\"]",
