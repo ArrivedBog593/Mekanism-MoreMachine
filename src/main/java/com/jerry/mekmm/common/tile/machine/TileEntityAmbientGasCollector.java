@@ -1,5 +1,6 @@
 package com.jerry.mekmm.common.tile.machine;
 
+import com.jerry.mekmm.common.config.MoreMachineConfig;
 import com.jerry.mekmm.common.registries.MoreMachineBlocks;
 import com.jerry.mekmm.common.registries.MoreMachineChemicals;
 import mekanism.api.*;
@@ -145,7 +146,7 @@ public class TileEntityAmbientGasCollector extends TileEntityMekanism implements
     }
 
     public int estimateIncrementAmount() {
-        return 1;
+        return MoreMachineConfig.general.gasCollectAmount.get();
     }
 
     private boolean suck(BlockPos pos) {
@@ -154,8 +155,8 @@ public class TileEntityAmbientGasCollector extends TileEntityMekanism implements
             BlockState blockState = state.get();
             Block block = blockState.getBlock();
             if (isAir(block)) {
-                ChemicalStack chemicalStack = new ChemicalStack(MoreMachineChemicals.UNSTABLE_DIMENSIONAL_GAS, 1);
-                activeType = chemicalStack.copyWithAmount(1);
+                ChemicalStack chemicalStack = new ChemicalStack(MoreMachineChemicals.UNSTABLE_DIMENSIONAL_GAS, estimateIncrementAmount());
+                activeType = chemicalStack.copyWithAmount(estimateIncrementAmount());
                 chemicalTank.insert(chemicalStack, Action.EXECUTE, AutomationType.INTERNAL);
                 return true;
             }
