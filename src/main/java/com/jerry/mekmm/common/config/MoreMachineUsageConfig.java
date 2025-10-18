@@ -25,16 +25,16 @@ public class MoreMachineUsageConfig extends BaseMekanismConfig {
         builder.comment("Machine Energy Usage Config. This config is synced from server to client.").push("usage");
 
         //
-        recycler = CachedFloatingLongValue.define(this, builder, "Energy per operation tick (Joules).", "recycler", FloatingLong.createConst(20_000L));
-        plantingStation = CachedFloatingLongValue.define(this, builder, "Energy per operation tick (Joules).", "plantingStation", FloatingLong.createConst(80_000L));
-        cnc_stamper = CachedFloatingLongValue.define(this, builder, "Energy per operation tick (Joules).", "cnc_stamper", FloatingLong.createConst(20_000L));
-        cnc_lathe = CachedFloatingLongValue.define(this, builder, "Energy per operation tick (Joules).", "cnc_lathe", FloatingLong.createConst(20_000L));
-        cnc_rollingMill = CachedFloatingLongValue.define(this, builder, "Energy per operation tick (Joules).", "cnc_rollingMill", FloatingLong.createConst(20_000L));
-        ambientGasCollector = CachedFloatingLongValue.define(this, builder, "Energy per operation tick (Joules).", "ambientGasCollector", FloatingLong.createConst(40_000L));
+        recycler = CachedFloatingLongValue.define(this, builder, "Energy per operation tick (Joules).", "recycler", FloatingLong.createConst(50L));
+        plantingStation = CachedFloatingLongValue.define(this, builder, "Energy per operation tick (Joules).", "plantingStation", FloatingLong.createConst(200L));
+        cnc_stamper = CachedFloatingLongValue.define(this, builder, "Energy per operation tick (Joules).", "cnc_stamper", FloatingLong.createConst(50L));
+        cnc_lathe = CachedFloatingLongValue.define(this, builder, "Energy per operation tick (Joules).", "cnc_lathe", FloatingLong.createConst(50L));
+        cnc_rollingMill = CachedFloatingLongValue.define(this, builder, "Energy per operation tick (Joules).", "cnc_rollingMill", FloatingLong.createConst(50L));
+        ambientGasCollector = CachedFloatingLongValue.define(this, builder, "Energy per operation tick (Joules).", "ambientGasCollector", FloatingLong.createConst(100L));
 
         builder.comment("Settings for configuring Replicator Energy Usage").push("replicator");
-        itemReplicator = CachedFloatingLongValue.define(this, builder, "Energy per operation tick (Joules).", "itemReplicator", FloatingLong.createConst(102_400_000L));
-        fluidReplicator = CachedFloatingLongValue.define(this, builder, "Energy per operation tick (Joules).", "fluidReplicator", FloatingLong.createConst(102_400_000L));
+        itemReplicator = CachedFloatingLongValue.define(this, builder, "Energy per operation tick (Joules).", "itemReplicator", FloatingLong.createConst(102_400L));
+        fluidReplicator = CachedFloatingLongValue.define(this, builder, "Energy per operation tick (Joules).", "fluidReplicator", FloatingLong.createConst(102_400L));
         builder.pop();
 
         //Large Machine

@@ -36,13 +36,13 @@ class MoreMachineFactoryRecipeProvider implements ISubRecipeProvider {
         String ultimatePath = basePath + "ultimate/";
         TagKey<Item> osmiumIngot = MekanismTags.Items.PROCESSED_RESOURCES.get(ResourceType.INGOT, PrimaryResource.OSMIUM);
         for (MoreMachineFactoryType type : MoreMachineEnumUtils.MM_FACTORY_TYPES) {
-            BlockRegistryObject<BlockMoreMachineFactory<?>, ItemBlockMoreMachineFactory> basicFactory = MoreMachineBlocks.getMMFactory(FactoryTier.BASIC, type);
-            BlockRegistryObject<BlockMoreMachineFactory<?>, ItemBlockMoreMachineFactory> advancedFactory = MoreMachineBlocks.getMMFactory(FactoryTier.ADVANCED, type);
-            BlockRegistryObject<BlockMoreMachineFactory<?>, ItemBlockMoreMachineFactory> eliteFactory = MoreMachineBlocks.getMMFactory(FactoryTier.ELITE, type);
+            BlockRegistryObject<BlockMoreMachineFactory<?>, ItemBlockMoreMachineFactory> basicFactory = MoreMachineBlocks.getMoreMachineFactory(FactoryTier.BASIC, type);
+            BlockRegistryObject<BlockMoreMachineFactory<?>, ItemBlockMoreMachineFactory> advancedFactory = MoreMachineBlocks.getMoreMachineFactory(FactoryTier.ADVANCED, type);
+            BlockRegistryObject<BlockMoreMachineFactory<?>, ItemBlockMoreMachineFactory> eliteFactory = MoreMachineBlocks.getMoreMachineFactory(FactoryTier.ELITE, type);
             addFactoryRecipe(consumer, basicPath, basicFactory, type.getBaseBlock(), Tags.Items.INGOTS_IRON, MekanismTags.Items.ALLOYS_BASIC, MekanismTags.Items.CIRCUITS_BASIC);
             addFactoryRecipe(consumer, advancedPath, advancedFactory, basicFactory, osmiumIngot, MekanismTags.Items.ALLOYS_INFUSED, MekanismTags.Items.CIRCUITS_ADVANCED);
             addFactoryRecipe(consumer, elitePath, eliteFactory, advancedFactory, Tags.Items.INGOTS_GOLD, MekanismTags.Items.ALLOYS_REINFORCED, MekanismTags.Items.CIRCUITS_ELITE);
-            addFactoryRecipe(consumer, ultimatePath, MoreMachineBlocks.getMMFactory(FactoryTier.ULTIMATE, type), eliteFactory, Tags.Items.GEMS_DIAMOND, MekanismTags.Items.ALLOYS_ATOMIC, MekanismTags.Items.CIRCUITS_ULTIMATE);
+            addFactoryRecipe(consumer, ultimatePath, MoreMachineBlocks.getMoreMachineFactory(FactoryTier.ULTIMATE, type), eliteFactory, Tags.Items.GEMS_DIAMOND, MekanismTags.Items.ALLOYS_ATOMIC, MekanismTags.Items.CIRCUITS_ULTIMATE);
         }
     }
 

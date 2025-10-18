@@ -29,7 +29,7 @@ public class MoreMachineFactory<TILE extends TileEntityMoreMachineFactory<?>> ex
         add(new AttributeGui(containerRegistrar, null), new AttributeTier<>(tier));
 
         if (tier.ordinal() < EnumUtils.FACTORY_TIERS.length - 1) {
-            add(new AttributeUpgradeable(() -> MoreMachineBlocks.getMMFactory(EnumUtils.FACTORY_TIERS[tier.ordinal() + 1], origMachine.getMMFactoryType())));
+            add(new AttributeUpgradeable(() -> MoreMachineBlocks.getMoreMachineFactory(EnumUtils.FACTORY_TIERS[tier.ordinal() + 1], origMachine.getMMFactoryType())));
         }
     }
 

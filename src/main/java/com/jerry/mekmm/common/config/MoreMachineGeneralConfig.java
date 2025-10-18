@@ -3,7 +3,9 @@ package com.jerry.mekmm.common.config;
 import com.jerry.mekmm.common.util.ValidatorUtils;
 import mekanism.common.config.BaseMekanismConfig;
 import mekanism.common.config.value.CachedConfigValue;
+import mekanism.common.config.value.CachedIntValue;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fml.config.ModConfig;
 
 import java.util.ArrayList;
@@ -17,6 +19,8 @@ public class MoreMachineGeneralConfig extends BaseMekanismConfig {
     public final CachedConfigValue<List<? extends String>> itemReplicatorRecipe;
     public final CachedConfigValue<List<? extends String>> fluidReplicatorRecipe;
 
+    public final CachedIntValue gasCollectAmount;
+
     MoreMachineGeneralConfig() {
         ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
         builder.comment("General Config. This config is synced from server to client.").push("general");
@@ -27,6 +31,9 @@ public class MoreMachineGeneralConfig extends BaseMekanismConfig {
         fluidReplicatorRecipe = CachedConfigValue.wrap(this, builder.comment("The recipes added here will be added to the fluid replicator. Write using modid:registeredName#amount, # followed by the amount(not null or zero) of UU matter consumed. For example:[\"minecraft:water#10\",\"mekanism:heavy_water#100\"]")
                 .defineListAllowEmpty("fluidReplicatorRecipe", ArrayList::new, e -> e instanceof String list && ValidatorUtils.validateList(list)));
         builder.pop();
+
+        gasCollectAmount = CachedIntValue.wrap(this, builder.comment("mB of Unstable Dimensional Gas collected by the Ambient Gas Collector.")
+                .defineInRange("gasCollectAmount", 1, 1, FluidType.BUCKET_VOLUME));
 
         builder.pop();
         configSpec = builder.build();

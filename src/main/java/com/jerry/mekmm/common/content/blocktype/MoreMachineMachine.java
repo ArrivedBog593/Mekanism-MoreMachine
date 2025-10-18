@@ -35,7 +35,7 @@ public class MoreMachineMachine<TILE extends TileEntityMekanism> extends BlockTy
 
         public MoreMachineFactoryMachine(Supplier<TileEntityTypeRegistryObject<TILE>> tileEntitySupplier, ILangEntry description, MoreMachineFactoryType factoryType) {
             super(tileEntitySupplier, description);
-            add(new AttributeMoreMachineFactoryType(factoryType), new AttributeUpgradeable(() -> MoreMachineBlocks.getMMFactory(FactoryTier.BASIC, getMMFactoryType())));
+            add(new AttributeMoreMachineFactoryType(factoryType), new AttributeUpgradeable(() -> MoreMachineBlocks.getMoreMachineFactory(FactoryTier.BASIC, getMMFactoryType())));
         }
 
         public MoreMachineFactoryMachine(Supplier<TileEntityTypeRegistryObject<TILE>> tileEntitySupplier, ILangEntry description, AdvancedFactoryType factoryType) {

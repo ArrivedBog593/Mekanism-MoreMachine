@@ -25,20 +25,20 @@ public class MoreMachineStorageConfig extends BaseMekanismConfig {
         ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
         builder.comment("Machine Energy Storage Config. This config is synced from server to client.").push("storage");
 
-        recycler = CachedFloatingLongValue.define(this, builder, "Base energy storage (Joules).", "recycler", FloatingLong.createConst(50L));
-        plantingStation = CachedFloatingLongValue.define(this, builder, "Base energy storage (Joules).", "plantingStation", FloatingLong.createConst(50L));
-        cnc_stamper = CachedFloatingLongValue.define(this, builder, "Base energy storage (Joules).", "cnc_stamper", FloatingLong.createConst(50L));
-        cnc_lathe = CachedFloatingLongValue.define(this, builder, "Base energy storage (Joules).", "cnc_lathe", FloatingLong.createConst(50L));
-        cnc_rollingMill = CachedFloatingLongValue.define(this, builder, "Base energy storage (Joules).", "cnc_rollingMill", FloatingLong.createConst(50L));
-        ambientGasCollector = CachedFloatingLongValue.define(this, builder, "Base energy storage (Joules).", "ambientGasCollector", FloatingLong.createConst(100L));
+        recycler = CachedFloatingLongValue.define(this, builder, "Base energy storage (Joules).", "recycler", FloatingLong.createConst(20_000L));
+        plantingStation = CachedFloatingLongValue.define(this, builder, "Base energy storage (Joules).", "plantingStation", FloatingLong.createConst(80_000L));
+        cnc_stamper = CachedFloatingLongValue.define(this, builder, "Base energy storage (Joules).", "cnc_stamper", FloatingLong.createConst(20_000L));
+        cnc_lathe = CachedFloatingLongValue.define(this, builder, "Base energy storage (Joules).", "cnc_lathe", FloatingLong.createConst(20_000L));
+        cnc_rollingMill = CachedFloatingLongValue.define(this, builder, "Base energy storage (Joules).", "cnc_rollingMill", FloatingLong.createConst(20_000L));
+        ambientGasCollector = CachedFloatingLongValue.define(this, builder, "Base energy storage (Joules).", "ambientGasCollector", FloatingLong.createConst(40_000L));
         wirelessChargingStation = CachedFloatingLongValue.define(this, builder, "Base energy storage (Joules).", "wirelessChargingStation", FloatingLong.createConst(10_000_000L));
 
         builder.comment("Settings for configuring Replicator Energy Storage").push("replicator");
-        itemReplicator = CachedFloatingLongValue.define(this, builder, "Base energy storage (Joules).", "itemReplicator", FloatingLong.createConst(102_400L));
-        fluidReplicator = CachedFloatingLongValue.define(this, builder, "Base energy storage (Joules).", "fluidReplicator", FloatingLong.createConst(102_400L));
+        itemReplicator = CachedFloatingLongValue.define(this, builder, "Base energy storage (Joules).", "itemReplicator", FloatingLong.createConst(102_400_000L));
+        fluidReplicator = CachedFloatingLongValue.define(this, builder, "Base energy storage (Joules).", "fluidReplicator", FloatingLong.createConst(102_400_000L));
         builder.pop();
 
-//        largeRotaryCondensentrator = CachedFloatingLongValue.define(this, builder, "Base energy storage (Joules).", "largeRotaryCondensentrator", FloatingLong.createConst(50L));
+//        largeRotaryCondensentrator = CachedFloatingLongValue.define(this, builder, "Base energy storage (Joules).", "largeRotaryCondensentrator", FloatingLong.createConst(20_000L));
 
         builder.pop();
         configSpec = builder.build();

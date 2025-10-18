@@ -33,7 +33,7 @@ public class MoreMachineCatalystRegistryHelper {
         if (mekanismItem instanceof IBlockProvider mekanismBlock) {
             Attribute.ifPresent(mekanismBlock.getBlock(), AttributeMoreMachineFactoryType.class, attr -> {
                 for (FactoryTier tier : EnumUtils.FACTORY_TIERS) {
-                    registry.addRecipeCatalyst(MoreMachineBlocks.getMMFactory(tier, attr.getMMFactoryType()).getItemStack(), categories);
+                    registry.addRecipeCatalyst(MoreMachineBlocks.getMoreMachineFactory(tier, attr.getMMFactoryType()).getItemStack(), categories);
                 }
             });
         }

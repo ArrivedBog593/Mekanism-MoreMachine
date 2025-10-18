@@ -25,12 +25,12 @@ public class MoreMachineTileEntityTypes {
 
     static {
         for (FactoryTier tier : EnumUtils.FACTORY_TIERS) {
-            FACTORIES.put(tier, MoreMachineFactoryType.RECYCLING, MM_TILE_ENTITY_TYPES.register(MoreMachineBlocks.getMMFactory(tier, MoreMachineFactoryType.RECYCLING), (pos, state) -> new TileEntityRecyclingFactory(MoreMachineBlocks.getMMFactory(tier, MoreMachineFactoryType.RECYCLING), pos, state), TileEntityMekanism::tickServer, TileEntityMekanism::tickClient));
-            FACTORIES.put(tier, MoreMachineFactoryType.PLANTING, MM_TILE_ENTITY_TYPES.register(MoreMachineBlocks.getMMFactory(tier, MoreMachineFactoryType.PLANTING), (pos, state) -> new TileEntityPlantingFactory(MoreMachineBlocks.getMMFactory(tier, MoreMachineFactoryType.PLANTING), pos, state), TileEntityMekanism::tickServer, TileEntityMekanism::tickClient));
-            FACTORIES.put(tier, MoreMachineFactoryType.CNC_STAMPING, MM_TILE_ENTITY_TYPES.register(MoreMachineBlocks.getMMFactory(tier, MoreMachineFactoryType.CNC_STAMPING), (pos, state) -> new TileEntityStampingFactory(MoreMachineBlocks.getMMFactory(tier, MoreMachineFactoryType.CNC_STAMPING), pos, state), TileEntityMekanism::tickServer, TileEntityMekanism::tickClient));
-            FACTORIES.put(tier, MoreMachineFactoryType.CNC_LATHING, MM_TILE_ENTITY_TYPES.register(MoreMachineBlocks.getMMFactory(tier, MoreMachineFactoryType.CNC_LATHING), (pos, state) -> new TileEntityItemStackToItemStackMoreMachineFactory(MoreMachineBlocks.getMMFactory(tier, MoreMachineFactoryType.CNC_LATHING), pos, state), TileEntityMekanism::tickServer, TileEntityMekanism::tickClient));
-            FACTORIES.put(tier, MoreMachineFactoryType.CNC_ROLLING_MILL, MM_TILE_ENTITY_TYPES.register(MoreMachineBlocks.getMMFactory(tier, MoreMachineFactoryType.CNC_ROLLING_MILL), (pos, state) -> new TileEntityItemStackToItemStackMoreMachineFactory(MoreMachineBlocks.getMMFactory(tier, MoreMachineFactoryType.CNC_ROLLING_MILL), pos, state), TileEntityMekanism::tickServer, TileEntityMekanism::tickClient));
-            FACTORIES.put(tier, MoreMachineFactoryType.REPLICATING, MM_TILE_ENTITY_TYPES.register(MoreMachineBlocks.getMMFactory(tier, MoreMachineFactoryType.REPLICATING), (pos, state) -> new TileEntityRecyclingFactory(MoreMachineBlocks.getMMFactory(tier, MoreMachineFactoryType.REPLICATING), pos, state), TileEntityMekanism::tickServer, TileEntityMekanism::tickClient));
+            FACTORIES.put(tier, MoreMachineFactoryType.RECYCLING, MM_TILE_ENTITY_TYPES.register(MoreMachineBlocks.getMoreMachineFactory(tier, MoreMachineFactoryType.RECYCLING), (pos, state) -> new TileEntityRecyclingFactory(MoreMachineBlocks.getMoreMachineFactory(tier, MoreMachineFactoryType.RECYCLING), pos, state), TileEntityMekanism::tickServer, TileEntityMekanism::tickClient));
+            FACTORIES.put(tier, MoreMachineFactoryType.PLANTING, MM_TILE_ENTITY_TYPES.register(MoreMachineBlocks.getMoreMachineFactory(tier, MoreMachineFactoryType.PLANTING), (pos, state) -> new TileEntityPlantingFactory(MoreMachineBlocks.getMoreMachineFactory(tier, MoreMachineFactoryType.PLANTING), pos, state), TileEntityMekanism::tickServer, TileEntityMekanism::tickClient));
+            FACTORIES.put(tier, MoreMachineFactoryType.CNC_STAMPING, MM_TILE_ENTITY_TYPES.register(MoreMachineBlocks.getMoreMachineFactory(tier, MoreMachineFactoryType.CNC_STAMPING), (pos, state) -> new TileEntityStampingFactory(MoreMachineBlocks.getMoreMachineFactory(tier, MoreMachineFactoryType.CNC_STAMPING), pos, state), TileEntityMekanism::tickServer, TileEntityMekanism::tickClient));
+            FACTORIES.put(tier, MoreMachineFactoryType.CNC_LATHING, MM_TILE_ENTITY_TYPES.register(MoreMachineBlocks.getMoreMachineFactory(tier, MoreMachineFactoryType.CNC_LATHING), (pos, state) -> new TileEntityItemStackToItemStackMoreMachineFactory(MoreMachineBlocks.getMoreMachineFactory(tier, MoreMachineFactoryType.CNC_LATHING), pos, state), TileEntityMekanism::tickServer, TileEntityMekanism::tickClient));
+            FACTORIES.put(tier, MoreMachineFactoryType.CNC_ROLLING_MILL, MM_TILE_ENTITY_TYPES.register(MoreMachineBlocks.getMoreMachineFactory(tier, MoreMachineFactoryType.CNC_ROLLING_MILL), (pos, state) -> new TileEntityItemStackToItemStackMoreMachineFactory(MoreMachineBlocks.getMoreMachineFactory(tier, MoreMachineFactoryType.CNC_ROLLING_MILL), pos, state), TileEntityMekanism::tickServer, TileEntityMekanism::tickClient));
+            FACTORIES.put(tier, MoreMachineFactoryType.REPLICATING, MM_TILE_ENTITY_TYPES.register(MoreMachineBlocks.getMoreMachineFactory(tier, MoreMachineFactoryType.REPLICATING), (pos, state) -> new TileEntityRecyclingFactory(MoreMachineBlocks.getMoreMachineFactory(tier, MoreMachineFactoryType.REPLICATING), pos, state), TileEntityMekanism::tickServer, TileEntityMekanism::tickClient));
         }
     }
 
@@ -50,12 +50,12 @@ public class MoreMachineTileEntityTypes {
             .builder(MoreMachineBlocks.AUTHOR_DOLL, TileEntityDoll::new)
             .build();
 
-    public static TileEntityTypeRegistryObject<? extends TileEntityMoreMachineFactory<?>> getMMFactoryTile(FactoryTier tier, MoreMachineFactoryType type) {
+    public static TileEntityTypeRegistryObject<? extends TileEntityMoreMachineFactory<?>> getMoreMachineFactoryTile(FactoryTier tier, MoreMachineFactoryType type) {
         return FACTORIES.get(tier, type);
     }
 
     @SuppressWarnings("unchecked")
-    public static TileEntityTypeRegistryObject<? extends TileEntityMoreMachineFactory<?>>[] getFactoryTiles() {
+    public static TileEntityTypeRegistryObject<? extends TileEntityMoreMachineFactory<?>>[] getMoreMachineFactoryTiles() {
         return FACTORIES.values().toArray(new TileEntityTypeRegistryObject[0]);
     }
 }

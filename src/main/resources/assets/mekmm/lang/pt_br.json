@@ -194,7 +194,7 @@
   "general.item_replicator.recipes": "Receita para o Replicador de Itens",
   "general.fluid_replicator.recipes": "Receita para o Replicador de Fluidos",
 
-  "info.mekmm.jei.unstable_dimensional_gas": "Use um Coletor de Gás Ambiente para coletar, e tome cuidado para não colocar blocos acima da máquina.",
+  "info.mekmm.jei.unstable_dimensional_gas": "Use um Coletor de Gás Ambiente para coletar(%1$s mb/t), e tome cuidado para não colocar blocos acima da máquina.",
 
   "fml.menu.mods.info.description.mekmm": "Adicionados mais máquinas e fábricas ao Mekanism."
 }

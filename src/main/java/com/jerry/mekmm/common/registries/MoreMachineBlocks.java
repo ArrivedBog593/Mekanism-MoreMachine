@@ -7,6 +7,7 @@ import com.jerry.mekmm.common.block.BlockDoll;
 import com.jerry.mekmm.common.block.prefab.BlockMoreMachineFactoryMachine;
 import com.jerry.mekmm.common.content.blocktype.MoreMachineFactory;
 import com.jerry.mekmm.common.content.blocktype.MoreMachineFactoryType;
+import com.jerry.mekmm.common.content.blocktype.MoreMachineMachine;
 import com.jerry.mekmm.common.content.blocktype.MoreMachineMachine.MoreMachineFactoryMachine;
 import com.jerry.mekmm.common.item.block.ItemBlockDoll;
 import com.jerry.mekmm.common.item.block.machine.ItemBlockMoreMachineFactory;
@@ -17,7 +18,6 @@ import mekanism.api.tier.ITier;
 import mekanism.common.block.attribute.AttributeTier;
 import mekanism.common.block.prefab.BlockTile.BlockTileModel;
 import mekanism.common.content.blocktype.BlockType;
-import mekanism.common.content.blocktype.Machine;
 import mekanism.common.item.block.machine.ItemBlockMachine;
 import mekanism.common.registration.impl.BlockDeferredRegister;
 import mekanism.common.registration.impl.BlockRegistryObject;
@@ -47,7 +47,7 @@ public class MoreMachineBlocks {
         // factories
         for (FactoryTier tier : EnumUtils.FACTORY_TIERS) {
             for (MoreMachineFactoryType type : MoreMachineEnumUtils.MM_FACTORY_TYPES) {
-                FACTORIES.put(tier, type, registerFactory(MoreMachineBlockTypes.getMMFactory(tier, type)));
+                FACTORIES.put(tier, type, registerFactory(MoreMachineBlockTypes.getMoreMachineFactory(tier, type)));
             }
         }
     }
@@ -62,7 +62,7 @@ public class MoreMachineBlocks {
     public static final BlockRegistryObject<BlockMoreMachineFactoryMachine<TileEntityReplicator, MoreMachineFactoryMachine<TileEntityReplicator>>, ItemBlockMachine> REPLICATOR = MM_BLOCKS.register("replicator", () -> new BlockMoreMachineFactoryMachine<>(MoreMachineBlockTypes.REPLICATOR, properties -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor())), ItemBlockMachine::new);
     public static final BlockRegistryObject<BlockMoreMachineFactoryMachine<TileEntityFluidReplicator, MoreMachineFactoryMachine<TileEntityFluidReplicator>>, ItemBlockMachine> FLUID_REPLICATOR = MM_BLOCKS.register("fluid_replicator", () -> new BlockMoreMachineFactoryMachine<>(MoreMachineBlockTypes.FLUID_REPLICATOR, properties -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor())), ItemBlockMachine::new);
 
-    public static final BlockRegistryObject<BlockTileModel<TileEntityAmbientGasCollector, Machine<TileEntityAmbientGasCollector>>, ItemBlockMachine> AMBIENT_GAS_COLLECTOR = MM_BLOCKS.register("ambient_gas_collector", () -> new BlockTileModel<>(MoreMachineBlockTypes.AMBIENT_GAS_COLLECTOR, properties -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor())), ItemBlockMachine::new);
+    public static final BlockRegistryObject<BlockTileModel<TileEntityAmbientGasCollector, MoreMachineMachine<TileEntityAmbientGasCollector>>, ItemBlockMachine> AMBIENT_GAS_COLLECTOR = MM_BLOCKS.register("ambient_gas_collector", () -> new BlockTileModel<>(MoreMachineBlockTypes.AMBIENT_GAS_COLLECTOR, properties -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor())), ItemBlockMachine::new);
 
     public static final BlockRegistryObject<BlockDoll, ItemBlockDoll> AUTHOR_DOLL = MM_BLOCKS.register("author_doll",
             () -> new BlockDoll(MoreMachineBlockTypes.AUTHOR_DOLL, BlockBehaviour.Properties.of().sound(SoundType.WOOL).destroyTime(0).strength(0)), ItemBlockDoll::new);
@@ -88,12 +88,12 @@ public class MoreMachineBlocks {
      * @param type - recipe type to add to the Factory
      * @return factory with defined tier and recipe type
      */
-    public static BlockRegistryObject<BlockMoreMachineFactoryMachine.BlockMoreMachineFactory<?>, ItemBlockMoreMachineFactory> getMMFactory(@NotNull FactoryTier tier, @NotNull MoreMachineFactoryType type) {
+    public static BlockRegistryObject<BlockMoreMachineFactoryMachine.BlockMoreMachineFactory<?>, ItemBlockMoreMachineFactory> getMoreMachineFactory(@NotNull FactoryTier tier, @NotNull MoreMachineFactoryType type) {
         return FACTORIES.get(tier, type);
     }
 
     @SuppressWarnings("unchecked")
-    public static BlockRegistryObject<BlockMoreMachineFactoryMachine.BlockMoreMachineFactory<?>, ItemBlockMoreMachineFactory>[] getMMFactoryBlocks() {
+    public static BlockRegistryObject<BlockMoreMachineFactoryMachine.BlockMoreMachineFactory<?>, ItemBlockMoreMachineFactory>[] getMoreMachineFactoryBlocks() {
         return FACTORIES.values().toArray(new BlockRegistryObject[0]);
     }
 }

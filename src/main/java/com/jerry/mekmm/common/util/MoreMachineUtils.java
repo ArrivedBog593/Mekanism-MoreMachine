@@ -17,7 +17,7 @@ public class MoreMachineUtils {
             MoreMachineFactoryType factoryType = attribute.getMMFactoryType();
             //Check all factory types
             for (FactoryTier factoryTier : EnumUtils.FACTORY_TIERS) {
-                if (MoreMachineTileEntityTypes.getMMFactoryTile(factoryTier, factoryType).get() == factoryTileType) {
+                if (MoreMachineTileEntityTypes.getMoreMachineFactoryTile(factoryTier, factoryType).get() == factoryTileType) {
                     return true;
                 }
             }

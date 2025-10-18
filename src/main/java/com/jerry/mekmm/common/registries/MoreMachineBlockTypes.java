@@ -7,20 +7,18 @@ import com.jerry.mekmm.common.config.MoreMachineConfig;
 import com.jerry.mekmm.common.content.blocktype.MoreMachineBlockShapes;
 import com.jerry.mekmm.common.content.blocktype.MoreMachineFactory;
 import com.jerry.mekmm.common.content.blocktype.MoreMachineFactoryType;
+import com.jerry.mekmm.common.content.blocktype.MoreMachineMachine;
 import com.jerry.mekmm.common.content.blocktype.MoreMachineMachine.MoreMachineFactoryMachine;
 import com.jerry.mekmm.common.content.blocktype.MoreMachineMachine.MoreMachineMachineBuilder;
 import com.jerry.mekmm.common.tile.TileEntityDoll;
 import com.jerry.mekmm.common.tile.machine.*;
 import com.jerry.mekmm.common.util.MoreMachineEnumUtils;
 import mekanism.api.Upgrade;
-import mekanism.common.MekanismLang;
 import mekanism.common.block.attribute.AttributeCustomSelectionBox;
 import mekanism.common.block.attribute.AttributeStateFacing;
 import mekanism.common.block.attribute.Attributes;
 import mekanism.common.content.blocktype.BlockShapes;
 import mekanism.common.content.blocktype.BlockTypeTile;
-import mekanism.common.content.blocktype.Machine;
-import mekanism.common.content.blocktype.Machine.MachineBuilder;
 import mekanism.common.registries.MekanismSounds;
 import mekanism.common.tier.FactoryTier;
 import mekanism.common.util.EnumUtils;
@@ -94,8 +92,8 @@ public class MoreMachineBlockTypes {
             .withComputerSupport("fluidReplicator")
             .build();
     // Ambient Gas Collector
-    public static final Machine<TileEntityAmbientGasCollector> AMBIENT_GAS_COLLECTOR = MachineBuilder
-            .createMachine(() -> MoreMachineTileEntityTypes.AMBIENT_GAS_COLLECTOR, MekanismLang.DESCRIPTION_PRECISION_SAWMILL)
+    public static final MoreMachineMachine<TileEntityAmbientGasCollector> AMBIENT_GAS_COLLECTOR = MoreMachineMachineBuilder
+            .createMMMachine(() -> MoreMachineTileEntityTypes.AMBIENT_GAS_COLLECTOR, MoreMachineLang.DESCRIPTION_AMBIENT_GAS_COLLECTOR)
             .withGui(() -> MoreMachineContainerTypes.AMBIENT_GAS_COLLECTOR)
             .withEnergyConfig(MoreMachineConfig.usage.ambientGasCollector, MoreMachineConfig.storage.ambientGasCollector)
             .withSupportedUpgrades(EnumSet.of(Upgrade.SPEED, Upgrade.ENERGY))
@@ -114,12 +112,12 @@ public class MoreMachineBlockTypes {
     static {
         for (FactoryTier tier : EnumUtils.FACTORY_TIERS) {
             for (MoreMachineFactoryType type : MoreMachineEnumUtils.MM_FACTORY_TYPES) {
-                FACTORIES.put(tier, type, MoreMachineFactory.MoreMachineFactoryBuilder.createMMFactory(() -> MoreMachineTileEntityTypes.getMMFactoryTile(tier, type), type, tier).build());
+                FACTORIES.put(tier, type, MoreMachineFactory.MoreMachineFactoryBuilder.createMMFactory(() -> MoreMachineTileEntityTypes.getMoreMachineFactoryTile(tier, type), type, tier).build());
             }
         }
     }
 
-    public static MoreMachineFactory<?> getMMFactory(FactoryTier tier, MoreMachineFactoryType type) {
+    public static MoreMachineFactory<?> getMoreMachineFactory(FactoryTier tier, MoreMachineFactoryType type) {
         return FACTORIES.get(tier, type);
     }
 }

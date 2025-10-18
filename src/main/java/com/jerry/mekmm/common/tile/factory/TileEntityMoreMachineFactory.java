@@ -429,7 +429,7 @@ public abstract class TileEntityMoreMachineFactory<RECIPE extends MekanismRecipe
         }
         //Then check other factory tiers
         for (FactoryTier factoryTier : EnumUtils.FACTORY_TIERS) {
-            if (factoryTier != tier && MoreMachineTileEntityTypes.getMMFactoryTile(factoryTier, type).get() == tileType) {
+            if (factoryTier != tier && MoreMachineTileEntityTypes.getMoreMachineFactoryTile(factoryTier, type).get() == tileType) {
                 return true;
             }
         }

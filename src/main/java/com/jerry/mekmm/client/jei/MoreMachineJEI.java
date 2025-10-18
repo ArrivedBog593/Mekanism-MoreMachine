@@ -52,6 +52,10 @@ public class MoreMachineJEI implements IModPlugin {
 
         MoreMachineRecipeRegistryHelper.registerItemReplicator(registry);
         MoreMachineRecipeRegistryHelper.registerFluidReplicator(registry);
+
+        //这玩意写在这没用，我也不知道为什么，但使用mixin可以使这行代码生效。
+//        registry.addIngredientInfo(MoreMachineGas.UNSTABLE_DIMENSIONAL_GAS.getStack(FluidType.BUCKET_VOLUME), MekanismJEI.TYPE_GAS,
+//                MoreMachineLang.JEI_INFO_UNSTABLE_DIMENSIONAL_GAS.translate(MoreMachineConfig.general.gasCollectAmount.get()));
     }
 
     @Override

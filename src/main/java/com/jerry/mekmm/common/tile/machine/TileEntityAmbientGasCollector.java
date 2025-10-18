@@ -1,5 +1,6 @@
 package com.jerry.mekmm.common.tile.machine;
 
+import com.jerry.mekmm.common.config.MoreMachineConfig;
 import com.jerry.mekmm.common.registries.MoreMachineBlocks;
 import com.jerry.mekmm.common.registries.MoreMachineGas;
 import mekanism.api.*;
@@ -145,7 +146,7 @@ public class TileEntityAmbientGasCollector extends TileEntityMekanism implements
             BlockState blockState = state.get();
             Block block = blockState.getBlock();
             if (isAir(block)) {
-                GasStack gasStack = new GasStack(MoreMachineGas.UNSTABLE_DIMENSIONAL_GAS, 1);
+                GasStack gasStack = new GasStack(MoreMachineGas.UNSTABLE_DIMENSIONAL_GAS, MoreMachineConfig.general.gasCollectAmount.get());
                 activeType = gasStack;
                 chemicalTank.insert(gasStack, Action.EXECUTE, AutomationType.INTERNAL);
                 return true;

@@ -34,11 +34,10 @@ public enum MoreMachineLang implements ILangEntry {
     DESCRIPTION_CNC_ROLLING_MILL("description", "cnc_rolling_mill"),
     DESCRIPTION_REPLICATOR("description", "replicator"),
     DESCRIPTION_FLUID_REPLICATOR("description", "fluid_replicator"),
-    DESCRIPTION_CHEMicAL_REPLICATOR("description", "chemical_replicator"),
     DESCRIPTION_AMBIENT_GAS_COLLECTOR("description", "ambient_gas_collector"),
     AUTHOR_DOLL("description", "author_doll"),
     //JEI
-    RECIPE_VIEWER_INFO_UNSTABLE_DIMENSIONAL_GAS("info", "jei.unstable_dimensional_gas"),
+    JEI_INFO_UNSTABLE_DIMENSIONAL_GAS("info", "jei.unstable_dimensional_gas"),
     //Tooltip stuff
     IS_BLOCKING("tooltip", "is_blocking"),
     NO_BLOCKING("tooltip", "no_blocking");

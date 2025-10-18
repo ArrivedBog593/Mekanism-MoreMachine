@@ -194,7 +194,7 @@
   "general.item_replicator.recipes": "物品复制机配方",
   "general.fluid_replicator.recipes": "液体复制机配方",
 
-  "info.mekmm.jei.unstable_dimensional_gas": "使用环境气体收集器获取，注意不要在机器上方放置方块。",
+  "info.mekmm.jei.unstable_dimensional_gas": "使用环境气体收集器获取（%1$smb/t），注意不要在机器上方放置方块。",
 
   "fml.menu.mods.info.description.mekmm": "为通用机械添加更多机器和工厂"
 }
