@@ -6,7 +6,6 @@ import mekanism.api.IContentsListener;
 import mekanism.api.chemical.slurry.ISlurryTank;
 import mekanism.api.chemical.slurry.Slurry;
 import mekanism.api.chemical.slurry.SlurryStack;
-import mekanism.api.math.FloatingLong;
 import mekanism.api.math.MathUtils;
 import mekanism.api.providers.IBlockProvider;
 import mekanism.api.recipes.FluidSlurryToSlurryRecipe;
@@ -63,8 +62,6 @@ public class TileEntityWashingFactory extends TileEntitySlurryToSlurryFactory<Fl
     private static final int MAX_FLUID = 10_000;
 
     public BasicFluidTank fluidTank;
-
-    private FloatingLong clientEnergyUsed = FloatingLong.ZERO;
 
     private final IInputHandler<@NotNull FluidStack> fluidInputHandler;
 

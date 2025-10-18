@@ -7,7 +7,6 @@ import mekanism.api.RelativeSide;
 import mekanism.api.chemical.gas.Gas;
 import mekanism.api.chemical.gas.GasStack;
 import mekanism.api.chemical.gas.IGasTank;
-import mekanism.api.math.FloatingLong;
 import mekanism.api.math.MathUtils;
 import mekanism.api.providers.IBlockProvider;
 import mekanism.api.recipes.GasToGasRecipe;
@@ -15,8 +14,6 @@ import mekanism.api.recipes.cache.CachedRecipe;
 import mekanism.api.recipes.cache.CachedRecipe.OperationTracker.RecipeError;
 import mekanism.api.recipes.cache.OneInputCachedRecipe;
 import mekanism.common.capabilities.holder.slot.InventorySlotHelper;
-import mekanism.common.inventory.container.MekanismContainer;
-import mekanism.common.inventory.container.sync.SyncableFloatingLong;
 import mekanism.common.lib.transmitter.TransmissionType;
 import mekanism.common.recipe.IMekanismRecipeTypeProvider;
 import mekanism.common.recipe.MekanismRecipeType;
@@ -48,8 +45,6 @@ public class TileEntityCentrifugingFactory extends TileEntityGasToGasFactory<Gas
             RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT
     );
     private static final Set<RecipeError> GLOBAL_ERROR_TYPES = Set.of(RecipeError.NOT_ENOUGH_ENERGY);
-
-    private FloatingLong clientEnergyUsed = FloatingLong.ZERO;
 
     public TileEntityCentrifugingFactory(IBlockProvider blockProvider, BlockPos pos, BlockState state) {
         super(blockProvider, pos, state, TRACKED_ERROR_TYPES, GLOBAL_ERROR_TYPES);
@@ -98,10 +93,6 @@ public class TileEntityCentrifugingFactory extends TileEntityGasToGasFactory<Gas
         return MathUtils.clampToInt(recipe.getInput().getNeededAmount(inputStack));
     }
 
-    public FloatingLong getEnergyUsed() {
-        return clientEnergyUsed;
-    }
-
     @Override
     protected void addSlots(InventorySlotHelper builder, IContentsListener listener, IContentsListener updateSortingListener) {
 
@@ -137,12 +128,6 @@ public class TileEntityCentrifugingFactory extends TileEntityGasToGasFactory<Gas
     @Override
     protected boolean makesComparatorDirty(@Nullable SubstanceType type) {
         return type == SubstanceType.GAS;
-    }
-
-    @Override
-    public void addContainerTrackers(MekanismContainer container) {
-        super.addContainerTrackers(container);
-        container.track(SyncableFloatingLong.create(this::getEnergyUsed, value -> clientEnergyUsed = value));
     }
 
     @Override

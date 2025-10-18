@@ -8,7 +8,6 @@ import mekanism.api.chemical.ChemicalTankBuilder;
 import mekanism.api.chemical.gas.Gas;
 import mekanism.api.chemical.gas.GasStack;
 import mekanism.api.chemical.gas.IGasTank;
-import mekanism.api.math.FloatingLong;
 import mekanism.api.math.MathUtils;
 import mekanism.api.providers.IBlockProvider;
 import mekanism.api.recipes.ChemicalInfuserRecipe;
@@ -20,10 +19,8 @@ import mekanism.api.recipes.inputs.InputHelper;
 import mekanism.common.Mekanism;
 import mekanism.common.capabilities.holder.chemical.ChemicalTankHelper;
 import mekanism.common.capabilities.holder.slot.InventorySlotHelper;
-import mekanism.common.inventory.container.MekanismContainer;
 import mekanism.common.inventory.container.slot.ContainerSlotType;
 import mekanism.common.inventory.container.slot.SlotOverlay;
-import mekanism.common.inventory.container.sync.SyncableFloatingLong;
 import mekanism.common.inventory.slot.chemical.GasInventorySlot;
 import mekanism.common.lib.transmitter.TransmissionType;
 import mekanism.common.recipe.IMekanismRecipeTypeProvider;
@@ -65,8 +62,6 @@ public class TileEntityChemicalInfusingFactory extends TileEntityGasToGasFactory
 
     public IGasTank rightTank;
 
-    private FloatingLong clientEnergyUsed = FloatingLong.ZERO;
-
     private final IInputHandler<@NotNull GasStack> rightInputHandler;
 
     GasInventorySlot rightInputSlot;
@@ -97,10 +92,6 @@ public class TileEntityChemicalInfusingFactory extends TileEntityGasToGasFactory
         ejectorComponent.setOutputData(configComponent, TransmissionType.ITEM, TransmissionType.GAS)
                 .setCanTankEject(outputGasTanks::contains);
         rightInputHandler = InputHelper.getInputHandler(rightTank, RecipeError.NOT_ENOUGH_RIGHT_INPUT);
-    }
-
-    public FloatingLong getEnergyUsed() {
-        return clientEnergyUsed;
     }
 
     @Override
@@ -201,12 +192,6 @@ public class TileEntityChemicalInfusingFactory extends TileEntityGasToGasFactory
     public @Nullable IUpgradeData getUpgradeData() {
         return new GasGasToGasUpgradeData(redstone, getControlType(), energyContainer, progress, null,
                 energySlot, rightInputSlot, inputGasTanks, rightTank, outputGasTanks, isSorting(), getComponents());
-    }
-
-    @Override
-    public void addContainerTrackers(MekanismContainer container) {
-        super.addContainerTrackers(container);
-        container.track(SyncableFloatingLong.create(this::getEnergyUsed, value -> clientEnergyUsed = value));
     }
 
     @Override
