@@ -1,13 +1,14 @@
 package com.jerry.mekmm.client.jei;
 
+import com.jerry.mekaf.client.jei.AdvancedFactoryCatalystRegistryHelper;
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.client.jei.machine.*;
 import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
 import com.jerry.mekmm.common.registries.MMBlocks;
-import mekanism.client.jei.CatalystRegistryHelper;
 import mekanism.client.jei.MekanismJEIRecipeType;
 import mekanism.client.jei.RecipeRegistryHelper;
 import mekanism.client.jei.machine.ItemStackToItemStackRecipeCategory;
+import mekanism.common.registries.MekanismBlocks;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.helpers.IGuiHelper;
@@ -55,14 +56,23 @@ public class MoreMachineJEI implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(@NotNull IRecipeCatalystRegistration registry) {
-        CatalystRegistryHelper.register(registry, MMBlocks.RECYCLER);
-        CatalystRegistryHelper.register(registry, MMBlocks.PLANTING_STATION, MekanismJEIRecipeType.GAS_CONVERSION);
+        MoreMachineCatalystRegistryHelper.register(registry, MMBlocks.RECYCLER);
+        MoreMachineCatalystRegistryHelper.register(registry, MMBlocks.PLANTING_STATION, MekanismJEIRecipeType.GAS_CONVERSION);
 
-        CatalystRegistryHelper.register(registry, MMBlocks.CNC_STAMPER);
-        CatalystRegistryHelper.register(registry, MMBlocks.CNC_LATHE);
-        CatalystRegistryHelper.register(registry, MMBlocks.CNC_ROLLING_MILL);
+        MoreMachineCatalystRegistryHelper.register(registry, MMBlocks.CNC_STAMPER);
+        MoreMachineCatalystRegistryHelper.register(registry, MMBlocks.CNC_LATHE);
+        MoreMachineCatalystRegistryHelper.register(registry, MMBlocks.CNC_ROLLING_MILL);
 
-        CatalystRegistryHelper.register(registry, MMBlocks.REPLICATOR);
-        CatalystRegistryHelper.register(registry, MMBlocks.FLUID_REPLICATOR);
+        MoreMachineCatalystRegistryHelper.register(registry, MMBlocks.REPLICATOR, MekanismJEIRecipeType.GAS_CONVERSION);
+        MoreMachineCatalystRegistryHelper.register(registry, MMBlocks.FLUID_REPLICATOR, MekanismJEIRecipeType.GAS_CONVERSION);
+
+        AdvancedFactoryCatalystRegistryHelper.register(registry, MekanismBlocks.CHEMICAL_OXIDIZER);
+        AdvancedFactoryCatalystRegistryHelper.register(registry, MekanismBlocks.CHEMICAL_INFUSER);
+        AdvancedFactoryCatalystRegistryHelper.register(registry, MekanismBlocks.CHEMICAL_DISSOLUTION_CHAMBER);
+        AdvancedFactoryCatalystRegistryHelper.register(registry, MekanismBlocks.CHEMICAL_WASHER);
+        AdvancedFactoryCatalystRegistryHelper.register(registry, MekanismBlocks.CHEMICAL_CRYSTALLIZER);
+        AdvancedFactoryCatalystRegistryHelper.register(registry, MekanismBlocks.PRESSURIZED_REACTION_CHAMBER);
+        AdvancedFactoryCatalystRegistryHelper.register(registry, MekanismBlocks.ISOTOPIC_CENTRIFUGE);
+        AdvancedFactoryCatalystRegistryHelper.register(registry, MekanismBlocks.NUTRITIONAL_LIQUIFIER);
     }
 }
