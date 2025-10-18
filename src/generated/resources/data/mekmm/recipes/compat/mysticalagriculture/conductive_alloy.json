@@ -1,0 +1,25 @@
+{
+  "type": "mekmm:planting",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "mysticalagriculture"
+    }
+  ],
+  "gasInput": {
+    "amount": 1,
+    "gas": "mekmm:nutrient_solution"
+  },
+  "itemInput": {
+    "ingredient": {
+      "item": "mysticalagriculture:conductive_alloy_seeds"
+    }
+  },
+  "mainOutput": {
+    "item": "mysticalagriculture:conductive_alloy_seeds"
+  },
+  "secondaryOutput": {
+    "count": 3,
+    "item": "mysticalagriculture:conductive_alloy_essence"
+  }
+}

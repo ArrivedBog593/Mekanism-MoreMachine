@@ -1,0 +1,19 @@
+{
+  "type": "mekmm:planting",
+  "gasInput": {
+    "amount": 1,
+    "gas": "mekmm:nutrient_solution"
+  },
+  "itemInput": {
+    "ingredient": {
+      "item": "minecraft:mangrove_propagule"
+    }
+  },
+  "mainOutput": {
+    "item": "minecraft:mangrove_propagule"
+  },
+  "secondaryOutput": {
+    "count": 6,
+    "item": "minecraft:mangrove_log"
+  }
+}

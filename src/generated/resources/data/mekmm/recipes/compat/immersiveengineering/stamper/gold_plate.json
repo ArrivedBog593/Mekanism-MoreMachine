@@ -1,0 +1,22 @@
+{
+  "type": "mekmm:stamper",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "immersiveengineering"
+    }
+  ],
+  "input": {
+    "ingredient": {
+      "tag": "forge:ingots/gold"
+    }
+  },
+  "mold": {
+    "ingredient": {
+      "item": "immersiveengineering:mold_plate"
+    }
+  },
+  "output": {
+    "item": "immersiveengineering:plate_gold"
+  }
+}

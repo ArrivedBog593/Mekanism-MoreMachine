@@ -1,0 +1,16 @@
+{
+  "type": "mekmm:planting",
+  "gasInput": {
+    "amount": 1,
+    "gas": "mekmm:nutrient_solution"
+  },
+  "itemInput": {
+    "ingredient": {
+      "item": "minecraft:red_tulip"
+    }
+  },
+  "mainOutput": {
+    "count": 3,
+    "item": "minecraft:red_tulip"
+  }
+}

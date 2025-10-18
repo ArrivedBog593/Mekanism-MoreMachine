@@ -1,0 +1,16 @@
+{
+  "type": "mekmm:planting",
+  "gasInput": {
+    "amount": 1,
+    "gas": "mekmm:nutrient_solution"
+  },
+  "itemInput": {
+    "ingredient": {
+      "item": "minecraft:moss_block"
+    }
+  },
+  "mainOutput": {
+    "count": 4,
+    "item": "minecraft:moss_block"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "type": "mekmm:stamper",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "immersiveengineering"
+    }
+  ],
+  "input": {
+    "ingredient": {
+      "tag": "forge:ingots/copper"
+    }
+  },
+  "mold": {
+    "ingredient": {
+      "item": "immersiveengineering:mold_wire"
+    }
+  },
+  "output": {
+    "count": 2,
+    "item": "immersiveengineering:wire_copper"
+  }
+}

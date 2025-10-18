@@ -1,0 +1,19 @@
+{
+  "type": "mekmm:planting",
+  "gasInput": {
+    "amount": 1,
+    "gas": "mekmm:nutrient_solution"
+  },
+  "itemInput": {
+    "ingredient": {
+      "item": "minecraft:cherry_sapling"
+    }
+  },
+  "mainOutput": {
+    "item": "minecraft:cherry_sapling"
+  },
+  "secondaryOutput": {
+    "count": 6,
+    "item": "minecraft:cherry_log"
+  }
+}

@@ -30,6 +30,7 @@
     "mekmm:advanced_replicating_factory",
     "mekmm:elite_replicating_factory",
     "mekmm:ultimate_replicating_factory",
+    "mekmm:fluid_replicator",
     "mekmm:ambient_gas_collector",
     "mekmm:author_doll",
 

@@ -1,0 +1,23 @@
+{
+  "type": "mekmm:stamper",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "immersiveengineering"
+    }
+  ],
+  "input": {
+    "ingredient": {
+      "item": "minecraft:melon"
+    }
+  },
+  "mold": {
+    "ingredient": {
+      "item": "immersiveengineering:mold_unpacking"
+    }
+  },
+  "output": {
+    "count": 9,
+    "item": "minecraft:melon_slice"
+  }
+}

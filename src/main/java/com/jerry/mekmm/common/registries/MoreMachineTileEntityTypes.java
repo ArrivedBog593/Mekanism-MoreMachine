@@ -4,6 +4,7 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.common.content.blocktype.MoreMachineFactoryType;
+import com.jerry.mekmm.common.tile.TileEntityDoll;
 import com.jerry.mekmm.common.tile.factory.*;
 import com.jerry.mekmm.common.tile.machine.*;
 import mekanism.common.registration.impl.TileEntityTypeDeferredRegister;
@@ -44,6 +45,10 @@ public class MoreMachineTileEntityTypes {
     public static final TileEntityTypeRegistryObject<TileEntityFluidReplicator> FLUID_REPLICATOR = MM_TILE_ENTITY_TYPES.register(MoreMachineBlocks.FLUID_REPLICATOR, TileEntityFluidReplicator::new, TileEntityMekanism::tickServer, TileEntityMekanism::tickClient);
 
     public static final TileEntityTypeRegistryObject<TileEntityAmbientGasCollector> AMBIENT_GAS_COLLECTOR = MM_TILE_ENTITY_TYPES.register(MoreMachineBlocks.AMBIENT_GAS_COLLECTOR, TileEntityAmbientGasCollector::new, TileEntityMekanism::tickServer, TileEntityMekanism::tickClient);
+
+    public static final TileEntityTypeRegistryObject<TileEntityDoll> AUTHOR_DOLL = MM_TILE_ENTITY_TYPES
+            .builder(MoreMachineBlocks.AUTHOR_DOLL, TileEntityDoll::new)
+            .build();
 
     public static TileEntityTypeRegistryObject<? extends TileEntityMoreMachineFactory<?>> getMMFactoryTile(FactoryTier tier, MoreMachineFactoryType type) {
         return FACTORIES.get(tier, type);

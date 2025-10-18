@@ -1,0 +1,25 @@
+{
+  "type": "mekmm:planting",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "mysticalagriculture"
+    }
+  ],
+  "gasInput": {
+    "amount": 1,
+    "gas": "mekmm:nutrient_solution"
+  },
+  "itemInput": {
+    "ingredient": {
+      "item": "mysticalagriculture:marble_seeds"
+    }
+  },
+  "mainOutput": {
+    "item": "mysticalagriculture:marble_seeds"
+  },
+  "secondaryOutput": {
+    "count": 4,
+    "item": "mysticalagriculture:marble_essence"
+  }
+}

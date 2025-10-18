@@ -1,0 +1,25 @@
+{
+  "type": "mekmm:planting",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "mysticalagriculture"
+    }
+  ],
+  "gasInput": {
+    "amount": 1,
+    "gas": "mekmm:nutrient_solution"
+  },
+  "itemInput": {
+    "ingredient": {
+      "item": "mysticalagriculture:ghast_seeds"
+    }
+  },
+  "mainOutput": {
+    "item": "mysticalagriculture:ghast_seeds"
+  },
+  "secondaryOutput": {
+    "count": 2,
+    "item": "mysticalagriculture:ghast_essence"
+  }
+}

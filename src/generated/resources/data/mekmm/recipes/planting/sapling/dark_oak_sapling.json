@@ -1,0 +1,19 @@
+{
+  "type": "mekmm:planting",
+  "gasInput": {
+    "amount": 1,
+    "gas": "mekmm:nutrient_solution"
+  },
+  "itemInput": {
+    "ingredient": {
+      "item": "minecraft:dark_oak_sapling"
+    }
+  },
+  "mainOutput": {
+    "item": "minecraft:dark_oak_sapling"
+  },
+  "secondaryOutput": {
+    "count": 6,
+    "item": "minecraft:dark_oak_log"
+  }
+}

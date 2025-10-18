@@ -1,0 +1,25 @@
+{
+  "type": "mekmm:planting",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "mysticalagriculture"
+    }
+  ],
+  "gasInput": {
+    "amount": 1,
+    "gas": "mekmm:nutrient_solution"
+  },
+  "itemInput": {
+    "ingredient": {
+      "item": "mysticalagriculture:air_seeds"
+    }
+  },
+  "mainOutput": {
+    "item": "mysticalagriculture:air_seeds"
+  },
+  "secondaryOutput": {
+    "count": 5,
+    "item": "mysticalagriculture:air_essence"
+  }
+}

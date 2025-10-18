@@ -3,10 +3,12 @@ package com.jerry.mekmm.common.registries;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.jerry.mekmm.Mekmm;
+import com.jerry.mekmm.common.block.BlockDoll;
 import com.jerry.mekmm.common.block.prefab.BlockMoreMachineFactoryMachine;
 import com.jerry.mekmm.common.content.blocktype.MoreMachineFactory;
 import com.jerry.mekmm.common.content.blocktype.MoreMachineFactoryType;
 import com.jerry.mekmm.common.content.blocktype.MoreMachineMachine.MoreMachineFactoryMachine;
+import com.jerry.mekmm.common.item.block.ItemBlockDoll;
 import com.jerry.mekmm.common.item.block.machine.ItemBlockMoreMachineFactory;
 import com.jerry.mekmm.common.tile.factory.TileEntityMoreMachineFactory;
 import com.jerry.mekmm.common.tile.machine.*;
@@ -24,6 +26,8 @@ import mekanism.common.tier.FactoryTier;
 import mekanism.common.util.EnumUtils;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
@@ -59,6 +63,9 @@ public class MoreMachineBlocks {
     public static final BlockRegistryObject<BlockMoreMachineFactoryMachine<TileEntityFluidReplicator, MoreMachineFactoryMachine<TileEntityFluidReplicator>>, ItemBlockMachine> FLUID_REPLICATOR = MM_BLOCKS.register("fluid_replicator", () -> new BlockMoreMachineFactoryMachine<>(MoreMachineBlockTypes.FLUID_REPLICATOR, properties -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor())), ItemBlockMachine::new);
 
     public static final BlockRegistryObject<BlockTileModel<TileEntityAmbientGasCollector, Machine<TileEntityAmbientGasCollector>>, ItemBlockMachine> AMBIENT_GAS_COLLECTOR = MM_BLOCKS.register("ambient_gas_collector", () -> new BlockTileModel<>(MoreMachineBlockTypes.AMBIENT_GAS_COLLECTOR, properties -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor())), ItemBlockMachine::new);
+
+    public static final BlockRegistryObject<BlockDoll, ItemBlockDoll> AUTHOR_DOLL = MM_BLOCKS.register("author_doll",
+            () -> new BlockDoll(MoreMachineBlockTypes.AUTHOR_DOLL, BlockBehaviour.Properties.of().sound(SoundType.WOOL).destroyTime(0).strength(0)), ItemBlockDoll::new);
 
     private static <TILE extends TileEntityMoreMachineFactory<?>> BlockRegistryObject<BlockMoreMachineFactoryMachine.BlockMoreMachineFactory<?>, ItemBlockMoreMachineFactory> registerFactory(MoreMachineFactory<TILE> type) {
         return registerTieredBlock(type, "_" + type.getMMFactoryType().getRegistryNameComponent() + "_factory", () -> new BlockMoreMachineFactoryMachine.BlockMoreMachineFactory<>(type), ItemBlockMoreMachineFactory::new);

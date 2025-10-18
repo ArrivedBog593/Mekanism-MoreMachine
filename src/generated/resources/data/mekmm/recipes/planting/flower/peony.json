@@ -1,0 +1,16 @@
+{
+  "type": "mekmm:planting",
+  "gasInput": {
+    "amount": 1,
+    "gas": "mekmm:nutrient_solution"
+  },
+  "itemInput": {
+    "ingredient": {
+      "item": "minecraft:peony"
+    }
+  },
+  "mainOutput": {
+    "count": 2,
+    "item": "minecraft:peony"
+  }
+}

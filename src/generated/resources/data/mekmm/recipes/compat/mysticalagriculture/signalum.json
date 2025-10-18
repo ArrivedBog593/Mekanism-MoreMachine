@@ -1,0 +1,25 @@
+{
+  "type": "mekmm:planting",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "mysticalagriculture"
+    }
+  ],
+  "gasInput": {
+    "amount": 1,
+    "gas": "mekmm:nutrient_solution"
+  },
+  "itemInput": {
+    "ingredient": {
+      "item": "mysticalagriculture:signalum_seeds"
+    }
+  },
+  "mainOutput": {
+    "item": "mysticalagriculture:signalum_seeds"
+  },
+  "secondaryOutput": {
+    "count": 2,
+    "item": "mysticalagriculture:signalum_essence"
+  }
+}

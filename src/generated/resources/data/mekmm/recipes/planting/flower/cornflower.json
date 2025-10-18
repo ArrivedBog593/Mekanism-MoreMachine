@@ -1,0 +1,16 @@
+{
+  "type": "mekmm:planting",
+  "gasInput": {
+    "amount": 1,
+    "gas": "mekmm:nutrient_solution"
+  },
+  "itemInput": {
+    "ingredient": {
+      "item": "minecraft:cornflower"
+    }
+  },
+  "mainOutput": {
+    "count": 3,
+    "item": "minecraft:cornflower"
+  }
+}

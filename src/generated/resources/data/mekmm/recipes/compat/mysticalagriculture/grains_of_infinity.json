@@ -1,0 +1,25 @@
+{
+  "type": "mekmm:planting",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "mysticalagriculture"
+    }
+  ],
+  "gasInput": {
+    "amount": 1,
+    "gas": "mekmm:nutrient_solution"
+  },
+  "itemInput": {
+    "ingredient": {
+      "item": "mysticalagriculture:grains_of_infinity_seeds"
+    }
+  },
+  "mainOutput": {
+    "item": "mysticalagriculture:grains_of_infinity_seeds"
+  },
+  "secondaryOutput": {
+    "count": 4,
+    "item": "mysticalagriculture:grains_of_infinity_essence"
+  }
+}

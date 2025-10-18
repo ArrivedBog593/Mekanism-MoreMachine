@@ -1,0 +1,25 @@
+{
+  "type": "mekmm:planting",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "immersiveengineering"
+    }
+  ],
+  "gasInput": {
+    "amount": 1,
+    "gas": "mekmm:nutrient_solution"
+  },
+  "itemInput": {
+    "ingredient": {
+      "item": "immersiveengineering:seed"
+    }
+  },
+  "mainOutput": {
+    "count": 3,
+    "item": "immersiveengineering:seed"
+  },
+  "secondaryOutput": {
+    "item": "immersiveengineering:hemp_fiber"
+  }
+}

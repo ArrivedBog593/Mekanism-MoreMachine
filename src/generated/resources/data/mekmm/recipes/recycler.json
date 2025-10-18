@@ -1,0 +1,25 @@
+{
+  "type": "mekanism:mek_data",
+  "key": {
+    "#": {
+      "item": "mekanism:crusher"
+    },
+    "A": {
+      "tag": "forge:alloys/advanced"
+    },
+    "C": {
+      "tag": "forge:circuits/advanced"
+    },
+    "O": {
+      "tag": "forge:ingots/osmium"
+    }
+  },
+  "pattern": [
+    "ACA",
+    "O#O",
+    "ACA"
+  ],
+  "result": {
+    "item": "mekmm:recycler"
+  }
+}

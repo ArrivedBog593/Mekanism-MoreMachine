@@ -1,0 +1,18 @@
+{
+  "type": "mekmm:planting",
+  "gasInput": {
+    "amount": 1,
+    "gas": "mekmm:nutrient_solution"
+  },
+  "itemInput": {
+    "ingredient": {
+      "item": "minecraft:pitcher_pod"
+    }
+  },
+  "mainOutput": {
+    "item": "minecraft:pitcher_pod"
+  },
+  "secondaryOutput": {
+    "item": "minecraft:pitcher_plant"
+  }
+}

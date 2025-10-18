@@ -1,0 +1,25 @@
+{
+  "type": "mekmm:planting",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "mysticalagriculture"
+    }
+  ],
+  "gasInput": {
+    "amount": 1,
+    "gas": "mekmm:nutrient_solution"
+  },
+  "itemInput": {
+    "ingredient": {
+      "item": "mysticalagriculture:sky_stone_seeds"
+    }
+  },
+  "mainOutput": {
+    "item": "mysticalagriculture:sky_stone_seeds"
+  },
+  "secondaryOutput": {
+    "count": 3,
+    "item": "mysticalagriculture:sky_stone_essence"
+  }
+}

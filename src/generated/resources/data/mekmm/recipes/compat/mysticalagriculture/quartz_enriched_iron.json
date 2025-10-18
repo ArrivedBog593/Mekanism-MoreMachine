@@ -1,0 +1,25 @@
+{
+  "type": "mekmm:planting",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "mysticalagriculture"
+    }
+  ],
+  "gasInput": {
+    "amount": 1,
+    "gas": "mekmm:nutrient_solution"
+  },
+  "itemInput": {
+    "ingredient": {
+      "item": "mysticalagriculture:quartz_enriched_iron_seeds"
+    }
+  },
+  "mainOutput": {
+    "item": "mysticalagriculture:quartz_enriched_iron_seeds"
+  },
+  "secondaryOutput": {
+    "count": 3,
+    "item": "mysticalagriculture:quartz_enriched_iron_essence"
+  }
+}

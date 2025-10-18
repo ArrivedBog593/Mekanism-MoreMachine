@@ -1,0 +1,23 @@
+{
+  "type": "mekmm:stamper",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "immersiveengineering"
+    }
+  ],
+  "input": {
+    "ingredient": {
+      "tag": "forge:ingots/iron"
+    }
+  },
+  "mold": {
+    "ingredient": {
+      "item": "immersiveengineering:mold_rod"
+    }
+  },
+  "output": {
+    "count": 2,
+    "item": "immersiveengineering:stick_iron"
+  }
+}
