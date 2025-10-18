@@ -1,8 +1,8 @@
 package com.jerry.mekmm.common.recipe.impl;
 
 import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
-import com.jerry.mekmm.common.registries.MMBlocks;
-import com.jerry.mekmm.common.registries.MMRecipeSerializers;
+import com.jerry.mekmm.common.registries.MoreMachineBlocks;
+import com.jerry.mekmm.common.registries.MoreMachineRecipeSerializers;
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.recipes.ItemStackToItemStackRecipe;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
@@ -25,7 +25,7 @@ public class RollingMillIRecipe extends ItemStackToItemStackRecipe {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return MMRecipeSerializers.ROLLING_MILL.get();
+        return MoreMachineRecipeSerializers.ROLLING_MILL.get();
     }
 
     @Override
@@ -35,11 +35,11 @@ public class RollingMillIRecipe extends ItemStackToItemStackRecipe {
 
     @Override
     public String getGroup() {
-        return MMBlocks.CNC_ROLLING_MILL.getName();
+        return MoreMachineBlocks.CNC_ROLLING_MILL.getName();
     }
 
     @Override
     public ItemStack getToastSymbol() {
-        return MMBlocks.CNC_ROLLING_MILL.getItemStack();
+        return MoreMachineBlocks.CNC_ROLLING_MILL.getItemStack();
     }
 }

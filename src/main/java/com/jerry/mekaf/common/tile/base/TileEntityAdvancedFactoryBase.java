@@ -3,7 +3,7 @@ package com.jerry.mekaf.common.tile.base;
 import com.jerry.mekaf.common.block.attribute.AttributeAdvancedFactoryType;
 import com.jerry.mekaf.common.capabilities.energy.AdvancedFactoryEnergyContainer;
 import com.jerry.mekaf.common.content.blocktype.AdvancedFactoryType;
-import com.jerry.mekaf.common.registries.AFTileEntityTypes;
+import com.jerry.mekaf.common.registries.AdvancedFactoryTileEntityTypes;
 import it.unimi.dsi.fastutil.ints.IntArraySet;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
@@ -474,7 +474,7 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
         }
         //Then check other factory tiers
         for (FactoryTier factoryTier : EnumUtils.FACTORY_TIERS) {
-            if (factoryTier != tier && AFTileEntityTypes.getAdvancedFactoryTile(factoryTier, type).get() == tileType) {
+            if (factoryTier != tier && AdvancedFactoryTileEntityTypes.getAdvancedFactoryTile(factoryTier, type).get() == tileType) {
                 return true;
             }
         }

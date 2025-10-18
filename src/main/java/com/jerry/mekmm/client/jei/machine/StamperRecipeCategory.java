@@ -1,7 +1,7 @@
 package com.jerry.mekmm.client.jei.machine;
 
 import com.jerry.mekmm.api.recipes.StamperRecipe;
-import com.jerry.mekmm.common.registries.MMBlocks;
+import com.jerry.mekmm.common.registries.MoreMachineBlocks;
 import mekanism.client.gui.element.GuiDownArrow;
 import mekanism.client.gui.element.bar.GuiVerticalPowerBar;
 import mekanism.client.gui.element.progress.ProgressType;
@@ -23,7 +23,7 @@ public class StamperRecipeCategory extends BaseRecipeCategory<StamperRecipe> {
     private final GuiSlot output;
 
     public StamperRecipeCategory(IGuiHelper helper, MekanismJEIRecipeType<StamperRecipe> recipeType) {
-        super(helper, recipeType, MMBlocks.CNC_STAMPER, 28, 16, 144, 54);
+        super(helper, recipeType, MoreMachineBlocks.CNC_STAMPER, 28, 16, 144, 54);
         addElement(new GuiDownArrow(this, 68, 38));
         input = addSlot(SlotType.INPUT, 64, 17);
         extra = addSlot(SlotType.EXTRA, 64, 53);

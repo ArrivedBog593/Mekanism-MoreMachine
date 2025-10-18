@@ -1,6 +1,6 @@
 package com.jerry.mekaf.common.inventory.container.tile;
 
-import com.jerry.mekaf.common.registries.AFContainerTypes;
+import com.jerry.mekaf.common.registries.AdvancedFactoryContainerTypes;
 import com.jerry.mekaf.common.tile.TileEntityPressurizedReactingFactory;
 import com.jerry.mekaf.common.tile.base.TileEntityAdvancedFactoryBase;
 import com.jerry.mekaf.common.tile.base.TileEntityGasToGasFactory;
@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 public class AdvancedFactoryContainer extends MekanismTileContainer<TileEntityAdvancedFactoryBase<?>> {
 
     public AdvancedFactoryContainer(int id, Inventory inv, @NotNull TileEntityAdvancedFactoryBase<?> tile) {
-        super(AFContainerTypes.ADVANCED_FACTORY, id, inv, tile);
+        super(AdvancedFactoryContainerTypes.ADVANCED_FACTORY, id, inv, tile);
     }
 
     @Override

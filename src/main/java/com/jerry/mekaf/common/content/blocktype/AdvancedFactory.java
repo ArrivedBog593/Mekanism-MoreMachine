@@ -1,11 +1,11 @@
 package com.jerry.mekaf.common.content.blocktype;
 
 import com.jerry.mekaf.common.block.attribute.AttributeAdvancedFactoryType;
-import com.jerry.mekaf.common.registries.AFBlocks;
-import com.jerry.mekaf.common.registries.AFContainerTypes;
+import com.jerry.mekaf.common.registries.AdvancedFactoryBlocks;
+import com.jerry.mekaf.common.registries.AdvancedFactoryContainerTypes;
 import com.jerry.mekaf.common.tile.base.TileEntityAdvancedFactoryBase;
-import com.jerry.mekmm.common.content.blocktype.MMBlockShapes;
-import com.jerry.mekmm.common.content.blocktype.MMMachine.MMFactoryMachine;
+import com.jerry.mekmm.common.content.blocktype.MoreMachineBlockShapes;
+import com.jerry.mekmm.common.content.blocktype.MoreMachineMachine.MoreMachineFactoryMachine;
 import mekanism.common.MekanismLang;
 import mekanism.common.block.attribute.*;
 import mekanism.common.inventory.container.MekanismContainer;
@@ -18,19 +18,19 @@ import net.minecraft.core.particles.ParticleTypes;
 
 import java.util.function.Supplier;
 
-public class AdvancedFactory<TILE extends TileEntityAdvancedFactoryBase<?>> extends MMFactoryMachine<TILE> {
+public class AdvancedFactory<TILE extends TileEntityAdvancedFactoryBase<?>> extends MoreMachineFactoryMachine<TILE> {
 
-    private final MMFactoryMachine<?> origMachine;
+    private final MoreMachineFactoryMachine<?> origMachine;
 
     public AdvancedFactory(Supplier<TileEntityTypeRegistryObject<TILE>> tileEntityRegistrar, Supplier<ContainerTypeRegistryObject<? extends MekanismContainer>> containerRegistrar,
-                           MMFactoryMachine<?> origMachine, FactoryTier tier) {
+                           MoreMachineFactoryMachine<?> origMachine, FactoryTier tier) {
         super(tileEntityRegistrar, MekanismLang.DESCRIPTION_FACTORY, origMachine.getAdvancedFactoryType());
         this.origMachine = origMachine;
         setMachineData(tier);
         add(new AttributeGui(containerRegistrar, null), new AttributeTier<>(tier));
 
         if (tier.ordinal() < EnumUtils.FACTORY_TIERS.length - 1) {
-            add(new AttributeUpgradeable(() -> AFBlocks.getAdvancedFactory(EnumUtils.FACTORY_TIERS[tier.ordinal() + 1], origMachine.getAdvancedFactoryType())));
+            add(new AttributeUpgradeable(() -> AdvancedFactoryBlocks.getAdvancedFactory(EnumUtils.FACTORY_TIERS[tier.ordinal() + 1], origMachine.getAdvancedFactoryType())));
         }
     }
 
@@ -42,7 +42,7 @@ public class AdvancedFactory<TILE extends TileEntityAdvancedFactoryBase<?>> exte
         }
     }
 
-    public static class AdvancedFactoryBuilder<FACTORY extends AdvancedFactory<TILE>, TILE extends TileEntityAdvancedFactoryBase<?>, T extends MMMachineBuilder<FACTORY, TILE, T>>
+    public static class AdvancedFactoryBuilder<FACTORY extends AdvancedFactory<TILE>, TILE extends TileEntityAdvancedFactoryBase<?>, T extends MoreMachineMachineBuilder<FACTORY, TILE, T>>
             extends BlockTileBuilder<FACTORY, TILE, T> {
 
         protected AdvancedFactoryBuilder(FACTORY holder) {
@@ -54,11 +54,11 @@ public class AdvancedFactory<TILE extends TileEntityAdvancedFactoryBase<?>> exte
                                                                                                                              FactoryTier tier) {
             // this is dirty but unfortunately necessary for things to play right
             AdvancedFactoryBuilder<AdvancedFactory<TILE>, TILE, ?> builder = new AdvancedFactoryBuilder<>(new AdvancedFactory<>((Supplier<TileEntityTypeRegistryObject<TILE>>) tileEntityRegistrar,
-                    () -> AFContainerTypes.ADVANCED_FACTORY, type.getBaseMachine(), tier));
+                    () -> AdvancedFactoryContainerTypes.ADVANCED_FACTORY, type.getBaseMachine(), tier));
             //Note, we can't just return the builder here as then it gets all confused about object types, so we just
             // assign the value here, and then return the builder itself as it is the same object
             builder.withComputerSupport(tier, type.getRegistryNameComponentCapitalized() + "Factory");
-            builder.withCustomShape(MMBlockShapes.getShape(tier, type));
+            builder.withCustomShape(MoreMachineBlockShapes.getShape(tier, type));
             if (type == AdvancedFactoryType.CENTRIFUGING) {
                 builder.withBounding((pos, state, builderPos) -> builderPos.add(pos.above()));
             }

@@ -2,7 +2,7 @@ package com.jerry.mekmm.common.recipe.impl;
 
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.api.recipes.FluidStackGasToFluidStackRecipe;
-import com.jerry.mekmm.common.registries.MMBlocks;
+import com.jerry.mekmm.common.registries.MoreMachineBlocks;
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.recipes.ingredients.ChemicalStackIngredient.GasStackIngredient;
 import mekanism.api.recipes.ingredients.FluidStackIngredient;
@@ -37,11 +37,11 @@ public class FluidReplicatorIRecipe extends FluidStackGasToFluidStackRecipe {
 
     @Override
     public String getGroup() {
-        return MMBlocks.FLUID_REPLICATOR.getName();
+        return MoreMachineBlocks.FLUID_REPLICATOR.getName();
     }
 
     @Override
     public ItemStack getToastSymbol() {
-        return MMBlocks.FLUID_REPLICATOR.getItemStack();
+        return MoreMachineBlocks.FLUID_REPLICATOR.getItemStack();
     }
 }

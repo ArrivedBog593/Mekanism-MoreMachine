@@ -1,7 +1,7 @@
 package com.jerry.mekmm.client.jei.machine;
 
 import com.jerry.mekmm.api.recipes.RecyclerRecipe;
-import com.jerry.mekmm.common.registries.MMBlocks;
+import com.jerry.mekmm.common.registries.MoreMachineBlocks;
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.client.SpecialColors;
 import mekanism.client.gui.element.GuiUpArrow;
@@ -27,7 +27,7 @@ public class RecyclerRecipeCategory extends BaseRecipeCategory<RecyclerRecipe> {
     private final GuiSlot output;
 
     public RecyclerRecipeCategory(IGuiHelper helper, MekanismJEIRecipeType<RecyclerRecipe> recipeType) {
-        super(helper, recipeType, MMBlocks.RECYCLER, 28, 16, 144, 54);
+        super(helper, recipeType, MoreMachineBlocks.RECYCLER, 28, 16, 144, 54);
         addElement(new GuiUpArrow(this, 68, 38));
         input = addSlot(SlotType.INPUT, 64, 17);
         output = addSlot(SlotType.OUTPUT, 116, 35);

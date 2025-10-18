@@ -46,7 +46,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-public class TileEntityReplicatingFactory extends MMTileEntityItemToItemMMFactory<ItemStackGasToItemStackRecipe> implements IHasDumpButton,
+public class TileEntityReplicatingFactory extends TileEntityItemToItemMoreMachineFactory<ItemStackGasToItemStackRecipe> implements IHasDumpButton,
         IDoubleRecipeLookupHandler.ItemChemicalRecipeLookupHandler<Gas, GasStack, ItemStackGasToItemStackRecipe> {
     private static final List<RecipeError> TRACKED_ERROR_TYPES = List.of(
             RecipeError.NOT_ENOUGH_ENERGY,

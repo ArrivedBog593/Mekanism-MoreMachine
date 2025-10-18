@@ -3,9 +3,9 @@ package com.jerry.mekmm.common.tile.machine;
 import com.jerry.mekmm.api.recipes.StamperRecipe;
 import com.jerry.mekmm.api.recipes.cache.StamperCachedRecipe;
 import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
-import com.jerry.mekmm.common.registries.MMBlocks;
+import com.jerry.mekmm.common.registries.MoreMachineBlocks;
 import com.jerry.mekmm.common.upgrade.StamperUpgradeData;
-import com.jerry.mekmm.common.util.MMUtils;
+import com.jerry.mekmm.common.util.MoreMachineUtils;
 import mekanism.api.IContentsListener;
 import mekanism.api.recipes.cache.CachedRecipe;
 import mekanism.api.recipes.cache.CachedRecipe.OperationTracker.RecipeError;
@@ -69,7 +69,7 @@ public class TileEntityStamper extends TileEntityProgressMachine<StamperRecipe> 
     EnergyInventorySlot energySlot;
 
     public TileEntityStamper(BlockPos pos, BlockState state) {
-        super(MMBlocks.CNC_STAMPER, pos, state, TRACKED_ERROR_TYPES, BASE_TICKS_REQUIRED);
+        super(MoreMachineBlocks.CNC_STAMPER, pos, state, TRACKED_ERROR_TYPES, BASE_TICKS_REQUIRED);
         configComponent = new TileComponentConfig(this, TransmissionType.ITEM, TransmissionType.ENERGY);
         configComponent.setupItemIOExtraConfig(inputSlot, outputSlot, moldSlot, energySlot);
         configComponent.setupInputConfig(TransmissionType.ENERGY, energyContainer);
@@ -140,7 +140,7 @@ public class TileEntityStamper extends TileEntityProgressMachine<StamperRecipe> 
 
     @Override
     public boolean isConfigurationDataCompatible(BlockEntityType<?> type) {
-        return super.isConfigurationDataCompatible(type) || MMUtils.isSameMMTypeFactory(getBlockType(), type);
+        return super.isConfigurationDataCompatible(type) || MoreMachineUtils.isSameMMTypeFactory(getBlockType(), type);
     }
 
     @Override

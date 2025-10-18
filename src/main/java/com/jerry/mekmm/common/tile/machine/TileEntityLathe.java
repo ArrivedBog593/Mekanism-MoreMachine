@@ -1,7 +1,7 @@
 package com.jerry.mekmm.common.tile.machine;
 
 import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
-import com.jerry.mekmm.common.registries.MMBlocks;
+import com.jerry.mekmm.common.registries.MoreMachineBlocks;
 import mekanism.api.recipes.ItemStackToItemStackRecipe;
 import mekanism.common.recipe.IMekanismRecipeTypeProvider;
 import mekanism.common.recipe.lookup.cache.InputRecipeCache;
@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 public class TileEntityLathe extends TileEntityElectricMachine {
 
     public TileEntityLathe(BlockPos pos, BlockState state) {
-        super(MMBlocks.CNC_LATHE, pos, state, 200);
+        super(MoreMachineBlocks.CNC_LATHE, pos, state, 200);
     }
 
     @Override

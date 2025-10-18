@@ -1,11 +1,11 @@
 package com.jerry.mekmm.common.tile.machine;
 
 import com.jerry.mekmm.api.recipes.RecyclerRecipe;
-import com.jerry.mekmm.api.recipes.cache.MMOneInputCachedRecipe;
-import com.jerry.mekmm.api.recipes.outputs.MMOutputHelper;
+import com.jerry.mekmm.api.recipes.cache.MoreMachineOneInputCachedRecipe;
+import com.jerry.mekmm.api.recipes.outputs.MoreMachineOutputHelper;
 import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
-import com.jerry.mekmm.common.registries.MMBlocks;
-import com.jerry.mekmm.common.util.MMUtils;
+import com.jerry.mekmm.common.registries.MoreMachineBlocks;
+import com.jerry.mekmm.common.util.MoreMachineUtils;
 import mekanism.api.IContentsListener;
 import mekanism.api.recipes.cache.CachedRecipe;
 import mekanism.api.recipes.inputs.IInputHandler;
@@ -61,7 +61,7 @@ public class TileEntityRecycler extends TileEntityProgressMachine<RecyclerRecipe
     EnergyInventorySlot energySlot;
 
     public TileEntityRecycler(BlockPos pos, BlockState state) {
-        super(MMBlocks.RECYCLER, pos, state, TRACKED_ERROR_TYPES, BASE_TICKS_REQUIRED);
+        super(MoreMachineBlocks.RECYCLER, pos, state, TRACKED_ERROR_TYPES, BASE_TICKS_REQUIRED);
         configComponent = new TileComponentConfig(this, TransmissionType.ITEM, TransmissionType.ENERGY);
         configComponent.setupItemIOConfig(Collections.singletonList(inputSlot), Collections.singletonList(chanceOutputSlot), energySlot, false);
         configComponent.setupInputConfig(TransmissionType.ENERGY, energyContainer);
@@ -70,7 +70,7 @@ public class TileEntityRecycler extends TileEntityProgressMachine<RecyclerRecipe
         ejectorComponent.setOutputData(configComponent, TransmissionType.ITEM);
 
         inputHandler = InputHelper.getInputHandler(inputSlot, CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT);
-        chanceOutputHandler = MMOutputHelper.getOutputHandler(chanceOutputSlot, CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE);
+        chanceOutputHandler = MoreMachineOutputHelper.getOutputHandler(chanceOutputSlot, CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE);
     }
 
     @NotNull
@@ -115,7 +115,7 @@ public class TileEntityRecycler extends TileEntityProgressMachine<RecyclerRecipe
     @NotNull
     @Override
     public CachedRecipe<RecyclerRecipe> createNewCachedRecipe(@NotNull RecyclerRecipe recipe, int cacheIndex) {
-        return MMOneInputCachedRecipe.recycler(recipe, recheckAllRecipeErrors, inputHandler, chanceOutputHandler)
+        return MoreMachineOneInputCachedRecipe.recycler(recipe, recheckAllRecipeErrors, inputHandler, chanceOutputHandler)
                 .setErrorsChanged(this::onErrorsChanged)
                 .setCanHolderFunction(() -> MekanismUtils.canFunction(this))
                 .setActive(this::setActive)
@@ -131,7 +131,7 @@ public class TileEntityRecycler extends TileEntityProgressMachine<RecyclerRecipe
 
     @Override
     public boolean isConfigurationDataCompatible(BlockEntityType<?> tileType) {
-        return super.isConfigurationDataCompatible(tileType) || MMUtils.isSameMMTypeFactory(getBlockType(), tileType);
+        return super.isConfigurationDataCompatible(tileType) || MoreMachineUtils.isSameMMTypeFactory(getBlockType(), tileType);
     }
 
     @NotNull

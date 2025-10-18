@@ -7,9 +7,9 @@ import com.jerry.mekaf.common.block.attribute.AttributeAdvancedFactoryType;
 import com.jerry.mekaf.common.block.prefab.BlockAdvancedFactoryMachine.BlockAdvancedFactory;
 import com.jerry.mekaf.common.content.blocktype.AdvancedFactoryType;
 import com.jerry.mekaf.common.item.ItemBlockAdvancedFactory;
-import com.jerry.mekaf.common.registries.AFBlocks;
+import com.jerry.mekaf.common.registries.AdvancedFactoryBlocks;
 import com.jerry.mekmm.Mekmm;
-import com.jerry.mekmm.common.util.MMEnumUtils;
+import com.jerry.mekmm.common.util.MoreMachineEnumUtils;
 import mekanism.api.providers.IItemProvider;
 import mekanism.common.block.attribute.Attribute;
 import mekanism.common.registration.impl.BlockRegistryObject;
@@ -34,14 +34,14 @@ class AdvancedFactoryRecipeProvider implements ISubRecipeProvider {
         String elitePath = basePath + "elite/";
         String ultimatePath = basePath + "ultimate/";
         TagKey<Item> osmiumIngot = MekanismTags.Items.PROCESSED_RESOURCES.get(ResourceType.INGOT, PrimaryResource.OSMIUM);
-        for (AdvancedFactoryType type : MMEnumUtils.ADVANCED_FACTORY_TYPES) {
-            BlockRegistryObject<BlockAdvancedFactory<?>, ItemBlockAdvancedFactory> basicFactory = AFBlocks.getAdvancedFactory(FactoryTier.BASIC, type);
-            BlockRegistryObject<BlockAdvancedFactory<?>, ItemBlockAdvancedFactory> advancedFactory = AFBlocks.getAdvancedFactory(FactoryTier.ADVANCED, type);
-            BlockRegistryObject<BlockAdvancedFactory<?>, ItemBlockAdvancedFactory> eliteFactory = AFBlocks.getAdvancedFactory(FactoryTier.ELITE, type);
+        for (AdvancedFactoryType type : MoreMachineEnumUtils.ADVANCED_FACTORY_TYPES) {
+            BlockRegistryObject<BlockAdvancedFactory<?>, ItemBlockAdvancedFactory> basicFactory = AdvancedFactoryBlocks.getAdvancedFactory(FactoryTier.BASIC, type);
+            BlockRegistryObject<BlockAdvancedFactory<?>, ItemBlockAdvancedFactory> advancedFactory = AdvancedFactoryBlocks.getAdvancedFactory(FactoryTier.ADVANCED, type);
+            BlockRegistryObject<BlockAdvancedFactory<?>, ItemBlockAdvancedFactory> eliteFactory = AdvancedFactoryBlocks.getAdvancedFactory(FactoryTier.ELITE, type);
             addFactoryRecipe(consumer, basicPath, basicFactory, type.getBaseBlock(), Tags.Items.INGOTS_IRON, MekanismTags.Items.ALLOYS_BASIC, MekanismTags.Items.CIRCUITS_BASIC);
             addFactoryRecipe(consumer, advancedPath, advancedFactory, basicFactory, osmiumIngot, MekanismTags.Items.ALLOYS_INFUSED, MekanismTags.Items.CIRCUITS_ADVANCED);
             addFactoryRecipe(consumer, elitePath, eliteFactory, advancedFactory, Tags.Items.INGOTS_GOLD, MekanismTags.Items.ALLOYS_REINFORCED, MekanismTags.Items.CIRCUITS_ELITE);
-            addFactoryRecipe(consumer, ultimatePath, AFBlocks.getAdvancedFactory(FactoryTier.ULTIMATE, type), eliteFactory, Tags.Items.GEMS_DIAMOND, MekanismTags.Items.ALLOYS_ATOMIC, MekanismTags.Items.CIRCUITS_ULTIMATE);
+            addFactoryRecipe(consumer, ultimatePath, AdvancedFactoryBlocks.getAdvancedFactory(FactoryTier.ULTIMATE, type), eliteFactory, Tags.Items.GEMS_DIAMOND, MekanismTags.Items.ALLOYS_ATOMIC, MekanismTags.Items.CIRCUITS_ULTIMATE);
         }
     }
 

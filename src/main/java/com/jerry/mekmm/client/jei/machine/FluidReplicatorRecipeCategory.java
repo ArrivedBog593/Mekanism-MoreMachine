@@ -1,7 +1,7 @@
 package com.jerry.mekmm.client.jei.machine;
 
 import com.jerry.mekmm.api.recipes.FluidStackGasToFluidStackRecipe;
-import com.jerry.mekmm.common.registries.MMBlocks;
+import com.jerry.mekmm.common.registries.MoreMachineBlocks;
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.chemical.gas.GasStack;
 import mekanism.api.math.FloatingLong;
@@ -32,7 +32,7 @@ public class FluidReplicatorRecipeCategory extends BaseRecipeCategory<FluidStack
     private final GuiSlot extra;
 
     public FluidReplicatorRecipeCategory(IGuiHelper helper, MekanismJEIRecipeType<FluidStackGasToFluidStackRecipe> recipeType) {
-        super(helper, recipeType, MMBlocks.FLUID_REPLICATOR, 3, 3, 170, 79);
+        super(helper, recipeType, MoreMachineBlocks.FLUID_REPLICATOR, 3, 3, 170, 79);
         GaugeType type1 = GaugeType.STANDARD.with(DataType.INPUT);
         GaugeType output = GaugeType.STANDARD.with(DataType.OUTPUT);
         gasInputGauge = addElement(GuiGasGauge.getDummy(type1, this, 7, 4));

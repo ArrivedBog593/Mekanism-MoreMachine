@@ -1,7 +1,7 @@
 package com.jerry.mekmm.common.network.to_server;
 
 import com.jerry.mekaf.common.tile.base.TileEntityAdvancedFactoryBase;
-import com.jerry.mekmm.common.tile.factory.TileEntityMMFactory;
+import com.jerry.mekmm.common.tile.factory.TileEntityMoreMachineFactory;
 import mekanism.api.functions.TriConsumer;
 import mekanism.common.network.IMekanismPacket;
 import mekanism.common.tile.base.TileEntityMekanism;
@@ -72,7 +72,7 @@ public class MoreMachinePacketGuiInteract implements IMekanismPacket {
         AUTO_SORT_BUTTON((tile, player, extra) -> {
             if (tile instanceof TileEntityAdvancedFactoryBase<?> factory) {
                 factory.toggleSorting();
-            } else if (tile instanceof TileEntityMMFactory<?> factory) {
+            } else if (tile instanceof TileEntityMoreMachineFactory<?> factory) {
                 factory.toggleSorting();
             }
         });

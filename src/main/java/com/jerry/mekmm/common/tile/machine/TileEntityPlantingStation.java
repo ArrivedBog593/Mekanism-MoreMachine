@@ -3,11 +3,11 @@ package com.jerry.mekmm.common.tile.machine;
 import com.jerry.mekmm.api.recipes.PlantingRecipe;
 import com.jerry.mekmm.api.recipes.PlantingRecipe.PlantingStationRecipeOutput;
 import com.jerry.mekmm.api.recipes.cache.PlantingCacheRecipe;
-import com.jerry.mekmm.api.recipes.outputs.MMOutputHelper;
+import com.jerry.mekmm.api.recipes.outputs.MoreMachineOutputHelper;
 import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
-import com.jerry.mekmm.common.registries.MMBlocks;
+import com.jerry.mekmm.common.registries.MoreMachineBlocks;
 import com.jerry.mekmm.common.upgrade.PlantingUpgradeData;
-import com.jerry.mekmm.common.util.MMUtils;
+import com.jerry.mekmm.common.util.MoreMachineUtils;
 import mekanism.api.IContentsListener;
 import mekanism.api.NBTConstants;
 import mekanism.api.RelativeSide;
@@ -90,7 +90,7 @@ public class TileEntityPlantingStation extends TileEntityProgressMachine<Plantin
     EnergyInventorySlot energySlot;
 
     public TileEntityPlantingStation(BlockPos pos, BlockState state) {
-        super(MMBlocks.PLANTING_STATION, pos, state, TRACKED_ERROR_TYPES, BASE_TICKS_REQUIRED);
+        super(MoreMachineBlocks.PLANTING_STATION, pos, state, TRACKED_ERROR_TYPES, BASE_TICKS_REQUIRED);
         configComponent = new TileComponentConfig(this, TransmissionType.ITEM, TransmissionType.GAS, TransmissionType.ENERGY);
         configComponent.setupItemIOExtraConfig(inputSlot, mainOutputSlot, gasSlot, energySlot);
         configComponent.setupItemIOConfig(Collections.singletonList(inputSlot), List.of(mainOutputSlot, secondaryOutputSlot), energySlot, false);
@@ -103,7 +103,7 @@ public class TileEntityPlantingStation extends TileEntityProgressMachine<Plantin
 
         itemInputHandler = InputHelper.getInputHandler(inputSlot, RecipeError.NOT_ENOUGH_INPUT);
         gasInputHandler = InputHelper.getConstantInputHandler(gasTank);
-        outputHandler = MMOutputHelper.getOutputHandler(mainOutputSlot, RecipeError.NOT_ENOUGH_OUTPUT_SPACE, secondaryOutputSlot, NOT_ENOUGH_SPACE_SECONDARY_OUTPUT_ERROR);
+        outputHandler = MoreMachineOutputHelper.getOutputHandler(mainOutputSlot, RecipeError.NOT_ENOUGH_OUTPUT_SPACE, secondaryOutputSlot, NOT_ENOUGH_SPACE_SECONDARY_OUTPUT_ERROR);
         baseTotalUsage = baseTicksRequired;
         gasUsageMultiplier = (usedSoFar, operatingTicks) -> {
             long baseRemaining = baseTotalUsage - usedSoFar;
@@ -190,7 +190,7 @@ public class TileEntityPlantingStation extends TileEntityProgressMachine<Plantin
     @Override
     public boolean isConfigurationDataCompatible(BlockEntityType<?> tileType) {
         //Allow exact match or factories of the same type (as we will just ignore the extra data)
-        return super.isConfigurationDataCompatible(tileType) || MMUtils.isSameMMTypeFactory(getBlockType(), tileType);
+        return super.isConfigurationDataCompatible(tileType) || MoreMachineUtils.isSameMMTypeFactory(getBlockType(), tileType);
     }
 
     @Override

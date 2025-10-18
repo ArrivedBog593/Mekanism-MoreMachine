@@ -1,7 +1,7 @@
 package com.jerry.mekaf.client.jei;
 
 import com.jerry.mekaf.common.content.blocktype.AdvancedFactoryType;
-import com.jerry.mekaf.common.registries.AFBlocks;
+import com.jerry.mekaf.common.registries.AdvancedFactoryBlocks;
 import mekanism.api.providers.IBlockProvider;
 import mekanism.api.providers.IItemProvider;
 import mekanism.client.jei.MekanismJEI;
@@ -29,21 +29,21 @@ public class AdvancedFactoryCatalystRegistryHelper {
         if (mekanismItem instanceof IBlockProvider mekanismBlock) {
             for (FactoryTier tier : EnumUtils.FACTORY_TIERS) {
                 if (mekanismBlock == MekanismBlocks.CHEMICAL_OXIDIZER) {
-                    registry.addRecipeCatalyst(AFBlocks.getAdvancedFactory(tier, AdvancedFactoryType.OXIDIZING).getItemStack(), categories);
+                    registry.addRecipeCatalyst(AdvancedFactoryBlocks.getAdvancedFactory(tier, AdvancedFactoryType.OXIDIZING).getItemStack(), categories);
                 } else if (mekanismBlock == MekanismBlocks.CHEMICAL_INFUSER) {
-                    registry.addRecipeCatalyst(AFBlocks.getAdvancedFactory(tier, AdvancedFactoryType.CHEMICAL_INFUSING).getItemStack(), categories);
+                    registry.addRecipeCatalyst(AdvancedFactoryBlocks.getAdvancedFactory(tier, AdvancedFactoryType.CHEMICAL_INFUSING).getItemStack(), categories);
                 } else if (mekanismBlock == MekanismBlocks.CHEMICAL_DISSOLUTION_CHAMBER) {
-                    registry.addRecipeCatalyst(AFBlocks.getAdvancedFactory(tier, AdvancedFactoryType.DISSOLVING).getItemStack(), categories);
+                    registry.addRecipeCatalyst(AdvancedFactoryBlocks.getAdvancedFactory(tier, AdvancedFactoryType.DISSOLVING).getItemStack(), categories);
                 } else if (mekanismBlock == MekanismBlocks.CHEMICAL_WASHER) {
-                    registry.addRecipeCatalyst(AFBlocks.getAdvancedFactory(tier, AdvancedFactoryType.WASHING).getItemStack(), categories);
+                    registry.addRecipeCatalyst(AdvancedFactoryBlocks.getAdvancedFactory(tier, AdvancedFactoryType.WASHING).getItemStack(), categories);
                 } else if (mekanismBlock == MekanismBlocks.CHEMICAL_CRYSTALLIZER) {
-                    registry.addRecipeCatalyst(AFBlocks.getAdvancedFactory(tier, AdvancedFactoryType.CRYSTALLIZING).getItemStack(), categories);
+                    registry.addRecipeCatalyst(AdvancedFactoryBlocks.getAdvancedFactory(tier, AdvancedFactoryType.CRYSTALLIZING).getItemStack(), categories);
                 } else if (mekanismBlock == MekanismBlocks.PRESSURIZED_REACTION_CHAMBER) {
-                    registry.addRecipeCatalyst(AFBlocks.getAdvancedFactory(tier, AdvancedFactoryType.PRESSURISED_REACTING).getItemStack(), categories);
+                    registry.addRecipeCatalyst(AdvancedFactoryBlocks.getAdvancedFactory(tier, AdvancedFactoryType.PRESSURISED_REACTING).getItemStack(), categories);
                 } else if (mekanismBlock == MekanismBlocks.ISOTOPIC_CENTRIFUGE) {
-                    registry.addRecipeCatalyst(AFBlocks.getAdvancedFactory(tier, AdvancedFactoryType.CENTRIFUGING).getItemStack(), categories);
+                    registry.addRecipeCatalyst(AdvancedFactoryBlocks.getAdvancedFactory(tier, AdvancedFactoryType.CENTRIFUGING).getItemStack(), categories);
                 } else if (mekanismBlock == MekanismBlocks.NUTRITIONAL_LIQUIFIER) {
-                    registry.addRecipeCatalyst(AFBlocks.getAdvancedFactory(tier, AdvancedFactoryType.LIQUIFYING).getItemStack(), categories);
+                    registry.addRecipeCatalyst(AdvancedFactoryBlocks.getAdvancedFactory(tier, AdvancedFactoryType.LIQUIFYING).getItemStack(), categories);
                 }
             }
         }

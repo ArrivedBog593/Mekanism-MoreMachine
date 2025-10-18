@@ -2,8 +2,8 @@ package com.jerry.mekmm.common.recipe.impl;
 
 import com.jerry.mekmm.api.recipes.StamperRecipe;
 import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
-import com.jerry.mekmm.common.registries.MMBlocks;
-import com.jerry.mekmm.common.registries.MMRecipeSerializers;
+import com.jerry.mekmm.common.registries.MoreMachineBlocks;
+import com.jerry.mekmm.common.registries.MoreMachineRecipeSerializers;
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
 import net.minecraft.resources.ResourceLocation;
@@ -25,7 +25,7 @@ public class StamperIRecipe extends StamperRecipe {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return MMRecipeSerializers.STAMPING.get();
+        return MoreMachineRecipeSerializers.STAMPING.get();
     }
 
     @Override
@@ -35,11 +35,11 @@ public class StamperIRecipe extends StamperRecipe {
 
     @Override
     public String getGroup() {
-        return MMBlocks.CNC_STAMPER.getName();
+        return MoreMachineBlocks.CNC_STAMPER.getName();
     }
 
     @Override
     public ItemStack getToastSymbol() {
-        return MMBlocks.CNC_STAMPER.getItemStack();
+        return MoreMachineBlocks.CNC_STAMPER.getItemStack();
     }
 }

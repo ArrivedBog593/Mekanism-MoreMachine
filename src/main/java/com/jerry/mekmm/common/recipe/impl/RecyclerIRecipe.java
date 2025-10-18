@@ -2,8 +2,8 @@ package com.jerry.mekmm.common.recipe.impl;
 
 import com.jerry.mekmm.api.recipes.RecyclerRecipe;
 import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
-import com.jerry.mekmm.common.registries.MMBlocks;
-import com.jerry.mekmm.common.registries.MMRecipeSerializers;
+import com.jerry.mekmm.common.registries.MoreMachineBlocks;
+import com.jerry.mekmm.common.registries.MoreMachineRecipeSerializers;
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
 import net.minecraft.resources.ResourceLocation;
@@ -20,7 +20,7 @@ public class RecyclerIRecipe extends RecyclerRecipe {
 
     @Override
     public RecipeSerializer<RecyclerRecipe> getSerializer() {
-        return MMRecipeSerializers.RECYCLER.get();
+        return MoreMachineRecipeSerializers.RECYCLER.get();
     }
 
     @Override
@@ -30,11 +30,11 @@ public class RecyclerIRecipe extends RecyclerRecipe {
 
     @Override
     public String getGroup() {
-        return MMBlocks.RECYCLER.getName();
+        return MoreMachineBlocks.RECYCLER.getName();
     }
 
     @Override
     public ItemStack getToastSymbol() {
-        return MMBlocks.RECYCLER.getItemStack();
+        return MoreMachineBlocks.RECYCLER.getItemStack();
     }
 }

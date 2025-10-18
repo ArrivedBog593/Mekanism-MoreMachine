@@ -1,6 +1,6 @@
 package com.jerry.mekmm.common.tile.machine;
 
-import com.jerry.mekmm.common.registries.MMBlocks;
+import com.jerry.mekmm.common.registries.MoreMachineBlocks;
 import com.jerry.mekmm.common.registries.MoreMachineGas;
 import mekanism.api.*;
 import mekanism.api.chemical.ChemicalTankBuilder;
@@ -72,7 +72,7 @@ public class TileEntityAmbientGasCollector extends TileEntityMekanism implements
     EnergyInventorySlot energySlot;
 
     public TileEntityAmbientGasCollector(BlockPos pos, BlockState state) {
-        super(MMBlocks.AMBIENT_GAS_COLLECTOR, pos, state);
+        super(MoreMachineBlocks.AMBIENT_GAS_COLLECTOR, pos, state);
     }
 
     @Override

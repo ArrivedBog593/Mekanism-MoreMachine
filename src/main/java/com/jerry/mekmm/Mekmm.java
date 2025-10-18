@@ -1,10 +1,10 @@
 package com.jerry.mekmm;
 
-import com.jerry.mekaf.common.registries.AFBlocks;
-import com.jerry.mekaf.common.registries.AFContainerTypes;
-import com.jerry.mekaf.common.registries.AFTileEntityTypes;
+import com.jerry.mekaf.common.registries.AdvancedFactoryBlocks;
+import com.jerry.mekaf.common.registries.AdvancedFactoryContainerTypes;
+import com.jerry.mekaf.common.registries.AdvancedFactoryTileEntityTypes;
 import com.jerry.mekmm.common.config.MoreMachineConfig;
-import com.jerry.mekmm.common.network.MMPacketHandler;
+import com.jerry.mekmm.common.network.MoreMachinePacketHandler;
 import com.jerry.mekmm.common.registries.*;
 import com.mojang.logging.LogUtils;
 import mekanism.common.Mekanism;
@@ -26,7 +26,7 @@ public class Mekmm implements IModModule {
     /**
      * Mekanism More Machine Packet Pipeline
      */
-    private final MMPacketHandler packetHandler;
+    private final MoreMachinePacketHandler packetHandler;
     /**
      * Mekanism More Machine mod instance
      */
@@ -43,20 +43,20 @@ public class Mekmm implements IModModule {
         MoreMachineConfig.registerConfigs(modContainer);
         versionNumber = new Version(modContainer);
 
-        MMItems.MM_ITEMS.register(modEventBus);
-        MMBlocks.MM_BLOCKS.register(modEventBus);
-        MMTileEntityTypes.MM_TILE_ENTITY_TYPES.register(modEventBus);
-        MMContainerTypes.MM_CONTAINER_TYPES.register(modEventBus);
-        MMCreativeTabs.MM_CREATIVE_TABS.register(modEventBus);
-        MMRecipeSerializers.MM_RECIPE_SERIALIZERS.register(modEventBus);
+        MoreMachineItems.MM_ITEMS.register(modEventBus);
+        MoreMachineBlocks.MM_BLOCKS.register(modEventBus);
+        MoreMachineTileEntityTypes.MM_TILE_ENTITY_TYPES.register(modEventBus);
+        MoreMachineContainerTypes.MM_CONTAINER_TYPES.register(modEventBus);
+        MoreMachineCreativeTabs.MM_CREATIVE_TABS.register(modEventBus);
+        MoreMachineRecipeSerializers.MM_RECIPE_SERIALIZERS.register(modEventBus);
         MoreMachineGas.MM_GASES.register(modEventBus);
 
         registerAdvancedFactory(modEventBus);
 
-        packetHandler = new MMPacketHandler();
+        packetHandler = new MoreMachinePacketHandler();
     }
 
-    public static MMPacketHandler packetHandler() {
+    public static MoreMachinePacketHandler packetHandler() {
         return instance.packetHandler;
     }
 
@@ -65,9 +65,9 @@ public class Mekmm implements IModModule {
     }
 
     private void registerAdvancedFactory(IEventBus modEventBus) {
-        AFBlocks.AF_BLOCKS.register(modEventBus);
-        AFTileEntityTypes.AF_TILE_ENTITY_TYPES.register(modEventBus);
-        AFContainerTypes.AF_CONTAINER_TYPES.register(modEventBus);
+        AdvancedFactoryBlocks.AF_BLOCKS.register(modEventBus);
+        AdvancedFactoryTileEntityTypes.AF_TILE_ENTITY_TYPES.register(modEventBus);
+        AdvancedFactoryContainerTypes.AF_CONTAINER_TYPES.register(modEventBus);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.jerry.mekmm.client.gui.machine;
 
-import com.jerry.mekmm.common.MMLang;
+import com.jerry.mekmm.common.MoreMachineLang;
 import com.jerry.mekmm.common.tile.machine.TileEntityAmbientGasCollector;
 import mekanism.api.chemical.gas.GasStack;
 import mekanism.client.gui.GuiMekanismTile;
@@ -39,9 +39,9 @@ public class GuiAmbientGasCollector extends GuiMekanismTile<TileEntityAmbientGas
             List<Component> list = new ArrayList<>();
             list.add(EnergyDisplay.of(tile.getEnergyContainer()).getTextComponent());
             if (tile.getNotBlocking()) {
-                list.add(MMLang.NO_BLOCKING.translate());
+                list.add(MoreMachineLang.NO_BLOCKING.translate());
             } else {
-                list.add(MMLang.IS_BLOCKING.translate());
+                list.add(MoreMachineLang.IS_BLOCKING.translate());
             }
             GasStack gasStack = tile.chemicalTank.getStack();
             if (gasStack.isEmpty()) {

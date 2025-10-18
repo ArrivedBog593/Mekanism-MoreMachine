@@ -1,8 +1,8 @@
 package com.jerry.mekmm.common.recipe.impl;
 
 import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
-import com.jerry.mekmm.common.registries.MMBlocks;
-import com.jerry.mekmm.common.registries.MMRecipeSerializers;
+import com.jerry.mekmm.common.registries.MoreMachineBlocks;
+import com.jerry.mekmm.common.registries.MoreMachineRecipeSerializers;
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.recipes.ItemStackToItemStackRecipe;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
@@ -25,7 +25,7 @@ public class LatheIRecipe extends ItemStackToItemStackRecipe {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return MMRecipeSerializers.LATHING.get();
+        return MoreMachineRecipeSerializers.LATHING.get();
     }
 
     @Override
@@ -35,11 +35,11 @@ public class LatheIRecipe extends ItemStackToItemStackRecipe {
 
     @Override
     public String getGroup() {
-        return MMBlocks.CNC_LATHE.getName();
+        return MoreMachineBlocks.CNC_LATHE.getName();
     }
 
     @Override
     public ItemStack getToastSymbol() {
-        return MMBlocks.CNC_LATHE.getItemStack();
+        return MoreMachineBlocks.CNC_LATHE.getItemStack();
     }
 }

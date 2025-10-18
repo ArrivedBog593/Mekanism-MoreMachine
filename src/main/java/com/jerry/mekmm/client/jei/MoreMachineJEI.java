@@ -4,7 +4,7 @@ import com.jerry.mekaf.client.jei.AdvancedFactoryCatalystRegistryHelper;
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.client.jei.machine.*;
 import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
-import com.jerry.mekmm.common.registries.MMBlocks;
+import com.jerry.mekmm.common.registries.MoreMachineBlocks;
 import mekanism.client.jei.MekanismJEIRecipeType;
 import mekanism.client.jei.RecipeRegistryHelper;
 import mekanism.client.jei.machine.ItemStackToItemStackRecipeCategory;
@@ -34,8 +34,8 @@ public class MoreMachineJEI implements IModPlugin {
         registration.addRecipeCategories(new PlantingRecipeCategory(guiHelper, MoreMachineJEIRecipeType.PLANTING));
 
         registration.addRecipeCategories(new StamperRecipeCategory(guiHelper, MoreMachineJEIRecipeType.CNC_STAMPING));
-        registration.addRecipeCategories(new ItemStackToItemStackRecipeCategory(guiHelper, MoreMachineJEIRecipeType.CNC_LATHING, MMBlocks.CNC_LATHE));
-        registration.addRecipeCategories(new ItemStackToItemStackRecipeCategory(guiHelper, MoreMachineJEIRecipeType.CNC_ROLLING_MILL, MMBlocks.CNC_ROLLING_MILL));
+        registration.addRecipeCategories(new ItemStackToItemStackRecipeCategory(guiHelper, MoreMachineJEIRecipeType.CNC_LATHING, MoreMachineBlocks.CNC_LATHE));
+        registration.addRecipeCategories(new ItemStackToItemStackRecipeCategory(guiHelper, MoreMachineJEIRecipeType.CNC_ROLLING_MILL, MoreMachineBlocks.CNC_ROLLING_MILL));
 
         registration.addRecipeCategories(new ReplicatorRecipeCategory(guiHelper, MoreMachineJEIRecipeType.REPLICATOR));
         registration.addRecipeCategories(new FluidReplicatorRecipeCategory(guiHelper, MoreMachineJEIRecipeType.FLUID_REPLICATOR));
@@ -56,15 +56,15 @@ public class MoreMachineJEI implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(@NotNull IRecipeCatalystRegistration registry) {
-        MoreMachineCatalystRegistryHelper.register(registry, MMBlocks.RECYCLER);
-        MoreMachineCatalystRegistryHelper.register(registry, MMBlocks.PLANTING_STATION, MekanismJEIRecipeType.GAS_CONVERSION);
+        MoreMachineCatalystRegistryHelper.register(registry, MoreMachineBlocks.RECYCLER);
+        MoreMachineCatalystRegistryHelper.register(registry, MoreMachineBlocks.PLANTING_STATION, MekanismJEIRecipeType.GAS_CONVERSION);
 
-        MoreMachineCatalystRegistryHelper.register(registry, MMBlocks.CNC_STAMPER);
-        MoreMachineCatalystRegistryHelper.register(registry, MMBlocks.CNC_LATHE);
-        MoreMachineCatalystRegistryHelper.register(registry, MMBlocks.CNC_ROLLING_MILL);
+        MoreMachineCatalystRegistryHelper.register(registry, MoreMachineBlocks.CNC_STAMPER);
+        MoreMachineCatalystRegistryHelper.register(registry, MoreMachineBlocks.CNC_LATHE);
+        MoreMachineCatalystRegistryHelper.register(registry, MoreMachineBlocks.CNC_ROLLING_MILL);
 
-        MoreMachineCatalystRegistryHelper.register(registry, MMBlocks.REPLICATOR, MekanismJEIRecipeType.GAS_CONVERSION);
-        MoreMachineCatalystRegistryHelper.register(registry, MMBlocks.FLUID_REPLICATOR, MekanismJEIRecipeType.GAS_CONVERSION);
+        MoreMachineCatalystRegistryHelper.register(registry, MoreMachineBlocks.REPLICATOR, MekanismJEIRecipeType.GAS_CONVERSION);
+        MoreMachineCatalystRegistryHelper.register(registry, MoreMachineBlocks.FLUID_REPLICATOR, MekanismJEIRecipeType.GAS_CONVERSION);
 
         AdvancedFactoryCatalystRegistryHelper.register(registry, MekanismBlocks.CHEMICAL_OXIDIZER);
         AdvancedFactoryCatalystRegistryHelper.register(registry, MekanismBlocks.CHEMICAL_INFUSER);

@@ -1,7 +1,7 @@
 package com.jerry.mekmm.common.recipe.impl;
 
 import com.jerry.mekmm.Mekmm;
-import com.jerry.mekmm.common.registries.MMBlocks;
+import com.jerry.mekmm.common.registries.MoreMachineBlocks;
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.recipes.ItemStackGasToItemStackRecipe;
 import mekanism.api.recipes.ingredients.ChemicalStackIngredient.GasStackIngredient;
@@ -36,11 +36,11 @@ public class ReplicatorIRecipe extends ItemStackGasToItemStackRecipe {
 
     @Override
     public String getGroup() {
-        return MMBlocks.REPLICATOR.getName();
+        return MoreMachineBlocks.REPLICATOR.getName();
     }
 
     @Override
     public ItemStack getToastSymbol() {
-        return MMBlocks.REPLICATOR.getItemStack();
+        return MoreMachineBlocks.REPLICATOR.getItemStack();
     }
 }

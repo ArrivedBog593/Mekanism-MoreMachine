@@ -1,7 +1,7 @@
 package com.jerry.mekmm.client.jei;
 
-import com.jerry.mekmm.common.block.attribute.MMAttributeFactoryType;
-import com.jerry.mekmm.common.registries.MMBlocks;
+import com.jerry.mekmm.common.block.attribute.AttributeMoreMachineFactoryType;
+import com.jerry.mekmm.common.registries.MoreMachineBlocks;
 import mekanism.api.providers.IBlockProvider;
 import mekanism.api.providers.IItemProvider;
 import mekanism.client.jei.MekanismJEI;
@@ -31,9 +31,9 @@ public class MoreMachineCatalystRegistryHelper {
     public static void registerRecipeItem(IRecipeCatalystRegistration registry, IItemProvider mekanismItem, RecipeType<?>... categories) {
         registry.addRecipeCatalyst(mekanismItem.getItemStack(), categories);
         if (mekanismItem instanceof IBlockProvider mekanismBlock) {
-            Attribute.ifPresent(mekanismBlock.getBlock(), MMAttributeFactoryType.class, attr -> {
+            Attribute.ifPresent(mekanismBlock.getBlock(), AttributeMoreMachineFactoryType.class, attr -> {
                 for (FactoryTier tier : EnumUtils.FACTORY_TIERS) {
-                    registry.addRecipeCatalyst(MMBlocks.getMMFactory(tier, attr.getMMFactoryType()).getItemStack(), categories);
+                    registry.addRecipeCatalyst(MoreMachineBlocks.getMMFactory(tier, attr.getMMFactoryType()).getItemStack(), categories);
                 }
             });
         }

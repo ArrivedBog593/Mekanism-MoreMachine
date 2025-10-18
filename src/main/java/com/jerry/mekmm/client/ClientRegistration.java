@@ -1,10 +1,10 @@
 package com.jerry.mekmm.client;
 
 import com.jerry.mekaf.client.gui.machine.GuiAdvancedFactory;
-import com.jerry.mekaf.common.registries.AFContainerTypes;
+import com.jerry.mekaf.common.registries.AdvancedFactoryContainerTypes;
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.client.gui.machine.*;
-import com.jerry.mekmm.common.registries.MMContainerTypes;
+import com.jerry.mekmm.common.registries.MoreMachineContainerTypes;
 import mekanism.client.ClientRegistrationUtil;
 import net.minecraft.core.registries.Registries;
 import net.minecraftforge.api.distmarker.Dist;
@@ -19,20 +19,20 @@ public class ClientRegistration {
     @SubscribeEvent(priority = EventPriority.LOW)
     public static void registerContainers(RegisterEvent event) {
         event.register(Registries.MENU, helper -> {
-            ClientRegistrationUtil.registerScreen(MMContainerTypes.RECYCLER, GuiRecycler::new);
-            ClientRegistrationUtil.registerScreen(MMContainerTypes.PLANTING_STATION, GuiPlantingStation::new);
+            ClientRegistrationUtil.registerScreen(MoreMachineContainerTypes.RECYCLER, GuiRecycler::new);
+            ClientRegistrationUtil.registerScreen(MoreMachineContainerTypes.PLANTING_STATION, GuiPlantingStation::new);
 
-            ClientRegistrationUtil.registerScreen(MMContainerTypes.CNC_STAMPER, GuiStamper::new);
-            ClientRegistrationUtil.registerElectricScreen(MMContainerTypes.CNC_LATHE);
-            ClientRegistrationUtil.registerElectricScreen(MMContainerTypes.CNC_ROLLING_MILL);
+            ClientRegistrationUtil.registerScreen(MoreMachineContainerTypes.CNC_STAMPER, GuiStamper::new);
+            ClientRegistrationUtil.registerElectricScreen(MoreMachineContainerTypes.CNC_LATHE);
+            ClientRegistrationUtil.registerElectricScreen(MoreMachineContainerTypes.CNC_ROLLING_MILL);
 
-            ClientRegistrationUtil.registerScreen(MMContainerTypes.REPLICATOR, GuiReplicator::new);
-            ClientRegistrationUtil.registerScreen(MMContainerTypes.FLUID_REPLICATOR, GuiFluidReplicator::new);
+            ClientRegistrationUtil.registerScreen(MoreMachineContainerTypes.REPLICATOR, GuiReplicator::new);
+            ClientRegistrationUtil.registerScreen(MoreMachineContainerTypes.FLUID_REPLICATOR, GuiFluidReplicator::new);
 
-            ClientRegistrationUtil.registerScreen(MMContainerTypes.AMBIENT_GAS_COLLECTOR, GuiAmbientGasCollector::new);
+            ClientRegistrationUtil.registerScreen(MoreMachineContainerTypes.AMBIENT_GAS_COLLECTOR, GuiAmbientGasCollector::new);
 
-            ClientRegistrationUtil.registerScreen(MMContainerTypes.MM_FACTORY, GuiMMFactory::new);
-            ClientRegistrationUtil.registerScreen(AFContainerTypes.ADVANCED_FACTORY, GuiAdvancedFactory::new);
+            ClientRegistrationUtil.registerScreen(MoreMachineContainerTypes.MM_FACTORY, GuiMoreMachineFactory::new);
+            ClientRegistrationUtil.registerScreen(AdvancedFactoryContainerTypes.ADVANCED_FACTORY, GuiAdvancedFactory::new);
         });
     }
 }

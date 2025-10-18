@@ -2,8 +2,8 @@ package com.jerry.mekmm.common.recipe.impl;
 
 import com.jerry.mekmm.api.recipes.PlantingRecipe;
 import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
-import com.jerry.mekmm.common.registries.MMBlocks;
-import com.jerry.mekmm.common.registries.MMRecipeSerializers;
+import com.jerry.mekmm.common.registries.MoreMachineBlocks;
+import com.jerry.mekmm.common.registries.MoreMachineRecipeSerializers;
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.recipes.ingredients.ChemicalStackIngredient;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
@@ -21,7 +21,7 @@ public class PlantingIRecipe extends PlantingRecipe {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return MMRecipeSerializers.PLANTING.get();
+        return MoreMachineRecipeSerializers.PLANTING.get();
     }
 
     @Override
@@ -31,11 +31,11 @@ public class PlantingIRecipe extends PlantingRecipe {
 
     @Override
     public String getGroup() {
-        return MMBlocks.PLANTING_STATION.getName();
+        return MoreMachineBlocks.PLANTING_STATION.getName();
     }
 
     @Override
     public ItemStack getToastSymbol() {
-        return MMBlocks.PLANTING_STATION.getItemStack();
+        return MoreMachineBlocks.PLANTING_STATION.getItemStack();
     }
 }

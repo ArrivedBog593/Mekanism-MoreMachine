@@ -1,7 +1,7 @@
 package com.jerry.mekmm.client.jei.machine;
 
 import com.jerry.mekmm.api.recipes.PlantingRecipe;
-import com.jerry.mekmm.common.registries.MMBlocks;
+import com.jerry.mekmm.common.registries.MoreMachineBlocks;
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.chemical.gas.GasStack;
 import mekanism.client.gui.element.bar.GuiBar;
@@ -33,7 +33,7 @@ public class PlantingRecipeCategory extends BaseRecipeCategory<PlantingRecipe> {
     private final GuiSlot output;
 
     public PlantingRecipeCategory(IGuiHelper helper, MekanismJEIRecipeType<PlantingRecipe> recipeType) {
-        super(helper, recipeType, MMBlocks.PLANTING_STATION, 28, 16, 144, 54);
+        super(helper, recipeType, MoreMachineBlocks.PLANTING_STATION, 28, 16, 144, 54);
         input = addSlot(SlotType.INPUT, 56, 17);
         extra = addSlot(SlotType.EXTRA, 56, 53);
         addSlot(SlotType.POWER, 31, 35).with(SlotOverlay.POWER);
