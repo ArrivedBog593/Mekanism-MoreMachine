@@ -30,6 +30,12 @@ public enum MoreMachineLang implements ILangEntry {
     PRESSURISED_REACTING("factory", "pressurised_reacting"),
     CENTRIFUGING("factory", "centrifuging"),
     LIQUIFYING("factory", "liquifying"),
+    //Connector
+    CONNECTOR_FROM("connector", "from"),
+    CONNECTOR_TO("connector", "to"),
+    CONNECTOR_DISCONNECT("connector", "disconnect"),
+    CONNECTOR_FAIL("connector", "fail"),
+    CONNECTOR_CLEARED("connector", "cleared"),
     //Descriptions
     DESCRIPTION_RECYCLER("description", "recycler"),
     DESCRIPTION_PLANTING_STATION("description", "planting_station"),

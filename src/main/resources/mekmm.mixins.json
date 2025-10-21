@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "mekmm.refmap.json",
   "mixins": [
+    "MixinTileEntityMekanism",
     "recipe.MixinMekanismRecipeType"
   ],
   "client": [

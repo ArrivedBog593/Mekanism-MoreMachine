@@ -10,6 +10,7 @@ import com.jerry.mekmm.common.content.blocktype.MoreMachineFactoryType;
 import com.jerry.mekmm.common.content.blocktype.MoreMachineMachine;
 import com.jerry.mekmm.common.tile.TileEntityDoll;
 import com.jerry.mekmm.common.tile.TileEntityWirelessChargingStation;
+import com.jerry.mekmm.common.tile.TileEntityWirelessTransmissionStation;
 import com.jerry.mekmm.common.tile.machine.*;
 import com.jerry.mekmm.common.util.MoreMachineEnumUtils;
 import mekanism.api.Upgrade;
@@ -140,6 +141,7 @@ public class MoreMachineBlockTypes {
             .createMachine(() -> MoreMachineTileEntityTypes.WIRELESS_CHARGING_STATION, MoreMachineLang.DESCRIPTION_WIRELESS_CHARGING_STATION)
             .withGui(() -> MoreMachineContainerTypes.WIRELESS_CHARGING_STATION)
             .withEnergyConfig(MoreMachineConfig.storage.wirelessChargingStation)
+//            .with(AttributeUpgradeSupport.ANCHOR_ONLY)
             .withSideConfig(TransmissionType.ITEM, TransmissionType.ENERGY)
             .withCustomShape(MoreMachineBlockShapes.WIRELESS_CHARGING_STATION)
             .with(AttributeCustomSelectionBox.JSON)
@@ -158,6 +160,32 @@ public class MoreMachineBlockTypes {
                 }
             })
             .withComputerSupport("wirelessChargingStation")
+            .replace(Attributes.ACTIVE)
+            .build();
+
+    // Wireless Transmission Station
+    public static final Machine<TileEntityWirelessTransmissionStation> WIRELESS_TRANSMISSION_STATION = MachineBuilder
+            .createMachine(() -> MoreMachineTileEntityTypes.WIRELESS_TRANSMISSION_STATION, MoreMachineLang.DESCRIPTION_WIRELESS_CHARGING_STATION)
+            .withGui(() -> MoreMachineContainerTypes.WIRELESS_TRANSMISSION_STATION)
+            .withEnergyConfig(MoreMachineConfig.storage.wirelessChargingStation)
+            .withSideConfig(TransmissionType.ITEM, TransmissionType.CHEMICAL, TransmissionType.FLUID, TransmissionType.ENERGY)
+            .withCustomShape(MoreMachineBlockShapes.WIRELESS_CHARGING_STATION)
+            .with(AttributeCustomSelectionBox.JSON)
+            .without(AttributeUpgradeSupport.class)
+            .withBounding(new HandleBoundingBlock() {
+                @Override
+                public <DATA> boolean handle(Level level, BlockPos pos, BlockState state, DATA data, TriBooleanFunction<Level, BlockPos, DATA> consumer) {
+                    MutableBlockPos mutable = new MutableBlockPos();
+                    for (int i = 0; i < 3; i++) {
+                        mutable.setWithOffset(pos, 0, i + 1, 0);
+                        if (!consumer.accept(level, mutable, data)) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+            })
+            .withComputerSupport("wirelessTransmissionStation")
             .replace(Attributes.ACTIVE)
             .build();
 

@@ -191,6 +191,12 @@
   "tooltip.mekmm.is_blocking": "Bloqueado encima de la máquina",
   "tooltip.mekmm.no_blocking": "No bloqueado encima de la máquina",
 
+  "connector.mekmm.from": "Connect from %1$s",
+  "connector.mekmm.to": "Connect to %1$s's %2$s side",
+  "connector.mekmm.disconnect": "Disconnect from %1$s's %2$s side",
+  "connector.mekmm.fail": "Can't connect to %1$s's %2$s side",
+  "connector.mekmm.cleared": "Connection terminated",
+
   "general.item_replicator.recipes": "Receta para el replicador de objetos ",
   "general.fluid_replicator.recipes": "Receta para el replicador de fluidos",
   "general.chemical_replicator.recipes": "Receta para el replicador químico",

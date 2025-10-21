@@ -8,6 +8,7 @@ import com.jerry.mekmm.common.content.blocktype.MoreMachineFactoryType;
 import com.jerry.mekmm.common.item.block.machine.ItemBlockMoreMachineFactory;
 import com.jerry.mekmm.common.tile.TileEntityDoll;
 import com.jerry.mekmm.common.tile.TileEntityWirelessChargingStation;
+import com.jerry.mekmm.common.tile.TileEntityWirelessTransmissionStation;
 import com.jerry.mekmm.common.tile.factory.*;
 import com.jerry.mekmm.common.tile.machine.*;
 import mekanism.common.capabilities.Capabilities;
@@ -113,6 +114,13 @@ public class MoreMachineTileEntityTypes {
 
     public static final TileEntityTypeRegistryObject<TileEntityWirelessChargingStation> WIRELESS_CHARGING_STATION = MM_TILE_ENTITY_TYPES
             .mekBuilder(MoreMachineBlocks.WIRELESS_CHARGING_STATION, TileEntityWirelessChargingStation::new)
+            .clientTicker(TileEntityMekanism::tickClient)
+            .serverTicker(TileEntityMekanism::tickServer)
+            .withSimple(Capabilities.CONFIGURABLE)
+            .build();
+
+    public static final TileEntityTypeRegistryObject<TileEntityWirelessTransmissionStation> WIRELESS_TRANSMISSION_STATION = MM_TILE_ENTITY_TYPES
+            .mekBuilder(MoreMachineBlocks.WIRELESS_TRANSMISSION_STATION, TileEntityWirelessTransmissionStation::new)
             .clientTicker(TileEntityMekanism::tickClient)
             .serverTicker(TileEntityMekanism::tickServer)
             .withSimple(Capabilities.CONFIGURABLE)

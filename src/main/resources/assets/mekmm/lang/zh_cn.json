@@ -191,6 +191,12 @@
   "tooltip.mekmm.is_blocking": "机器上方有阻挡物",
   "tooltip.mekmm.no_blocking": "机器上方无阻挡物",
 
+  "connector.mekmm.from": "从%1$s连接",
+  "connector.mekmm.to": "连接到%1$s的%2$s方",
+  "connector.mekmm.disconnect": "从%1$s的%2$s方断开连接",
+  "connector.mekmm.fail": "不能连接到%1$s的%2$s方",
+  "connector.mekmm.cleared": "连接终止",
+
   "general.item_replicator.recipes": "物品复制机配方",
   "general.fluid_replicator.recipes": "液体复制机配方",
   "general.chemical_replicator.recipes": "化学品复制机配方",

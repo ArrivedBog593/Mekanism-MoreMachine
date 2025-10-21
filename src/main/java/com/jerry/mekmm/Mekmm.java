@@ -45,6 +45,7 @@ public class Mekmm implements IModModule {
         MoreMachineRecipeSerializersInternal.MM_RECIPE_SERIALIZERS.register(modEventBus);
         MoreMachineChemicals.MM_CHEMICALS.register(modEventBus);
         MoreMachineCreativeTabs.MM_CREATIVE_TABS.register(modEventBus);
+        MoreMachineDataComponents.MM_DATA_COMPONENTS.register(modEventBus);
         modEventBus.addListener(MoreMachineConfig::onConfigLoad);
         // LargeMachine相关的注册
 //        LMConfig.registerConfigs(modContainer);

@@ -12,9 +12,11 @@ import com.jerry.mekmm.common.content.blocktype.MoreMachineFactoryType;
 import com.jerry.mekmm.common.content.blocktype.MoreMachineMachine.MoreMachineFactoryMachine;
 import com.jerry.mekmm.common.item.block.ItemBlockDoll;
 import com.jerry.mekmm.common.item.block.ItemBlockWirelessChargingStation;
+import com.jerry.mekmm.common.item.block.ItemBlockWirelessTransmissionStation;
 import com.jerry.mekmm.common.item.block.machine.ItemBlockMoreMachineFactory;
 import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
 import com.jerry.mekmm.common.tile.TileEntityWirelessChargingStation;
+import com.jerry.mekmm.common.tile.TileEntityWirelessTransmissionStation;
 import com.jerry.mekmm.common.tile.factory.TileEntityMoreMachineFactory;
 import com.jerry.mekmm.common.tile.factory.TileEntityReplicatingFactory;
 import com.jerry.mekmm.common.tile.machine.*;
@@ -283,6 +285,23 @@ public class MoreMachineBlocks {
             MM_BLOCKS.register("wireless_charging_station", () -> new BlockTileModel<>(MoreMachineBlockTypes.WIRELESS_CHARGING_STATION, properties -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor())), ItemBlockWirelessChargingStation::new)
                     .forItemHolder(holder ->
                             holder.addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
+                                    .addEnergy()
+                                    .addDrainEnergy()
+                                    .build()
+                            )
+                    );
+
+    public static final BlockRegistryObject<BlockTileModel<TileEntityWirelessTransmissionStation, Machine<TileEntityWirelessTransmissionStation>>, ItemBlockWirelessTransmissionStation> WIRELESS_TRANSMISSION_STATION =
+            MM_BLOCKS.register("wireless_transmission_station", () -> new BlockTileModel<>(MoreMachineBlockTypes.WIRELESS_TRANSMISSION_STATION, properties -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor())), ItemBlockWirelessTransmissionStation::new)
+                    .forItemHolder(holder -> holder
+                            .addAttachmentOnlyContainers(ContainerType.FLUID, () -> FluidTanksBuilder.builder()
+                                    .addBasic(TileEntityWirelessTransmissionStation.MAX_FLUID)
+                                    .build()
+                            ).addAttachmentOnlyContainers(ContainerType.CHEMICAL, ()-> ChemicalTanksBuilder.builder()
+                                    .addBasic(TileEntityWirelessTransmissionStation.MAX_CHEMICAL)
+                                    .build()
+                            )
+                            .addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
                                     .addEnergy()
                                     .addDrainEnergy()
                                     .build()
