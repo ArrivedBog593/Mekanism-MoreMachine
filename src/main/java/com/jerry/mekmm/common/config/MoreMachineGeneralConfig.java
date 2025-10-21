@@ -4,9 +4,11 @@ import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.common.util.ValidatorUtils;
 import mekanism.common.config.BaseMekanismConfig;
 import mekanism.common.config.value.CachedConfigValue;
+import mekanism.common.config.value.CachedIntValue;
 import mekanism.common.config.value.CachedLongValue;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.fluids.FluidType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,7 @@ public class MoreMachineGeneralConfig extends BaseMekanismConfig {
     public final CachedConfigValue<List<? extends String>> fluidReplicatorRecipe;
     public final CachedConfigValue<List<? extends String>> chemicalReplicatorRecipe;
 
+    public final CachedIntValue gasCollectAmount;
     public final CachedLongValue wirelessChargingStationChargingRate;
 
     MoreMachineGeneralConfig() {
@@ -34,9 +37,8 @@ public class MoreMachineGeneralConfig extends BaseMekanismConfig {
                 .defineListAllowEmpty("chemicalReplicatorRecipe", ArrayList::new, () -> Mekmm.MOD_ID, e -> e instanceof String list && ValidatorUtils.validateList(list)));
         builder.pop();
 
-        MoreMachineConfigTranslations.GEAR_WIRELESS_CHARGING_STATION.applyToBuilder(builder).push("wireless_charging_station");
+        gasCollectAmount = CachedIntValue.wrap(this, MoreMachineConfigTranslations.GAS_COLLECT_AMOUNT.applyToBuilder(builder).defineInRange("gasCollectAmount", 1, 1, FluidType.BUCKET_VOLUME));
         wirelessChargingStationChargingRate = CachedLongValue.definePositive(this, builder, MoreMachineConfigTranslations.WIRELESS_CHARGING_STATION_CHARGING_RATE, "wirelessChargingStationChargingRate", 100_000L);
-        builder.pop();
 
         configSpec = builder.build();
     }

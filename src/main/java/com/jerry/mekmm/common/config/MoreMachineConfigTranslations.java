@@ -47,7 +47,7 @@ public enum MoreMachineConfigTranslations implements IConfigTranslation {
     ENERGY_USAGE_LARGE_ROTARY_CONDENSENTRATOR(TranslationPreset.ENERGY_USAGE, "Large Rotary Condensentrator"),
 
     //General Config
-    GEAR_WIRELESS_CHARGING_STATION("general.wireless_charging_station", "Wireless Charging Station", "Settings for configuring the Wireless Charging Station", "Edit Wireless Charging Station"),
+    GAS_COLLECT_AMOUNT("general.collect.amount", "Gas Collect Amount", "mB of Unstable Dimensional Gas collected by the Ambient Gas Collector."),
     WIRELESS_CHARGING_STATION_CHARGING_RATE("general.charging.rate", "Charge Rate", "Amount of Energy(joules) an item can receive per tick from a Wireless Charging Station.");
 
     private final String key;

@@ -1,0 +1,26 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "kaleidoscope_cookery"
+    }
+  ],
+  "type": "mekmm:planting",
+  "item_input": {
+    "count": 1,
+    "item": "kaleidoscope_cookery:wild_rice"
+  },
+  "chemical_input": {
+    "amount": 1,
+    "chemical": "mekmm:nutrient_solution"
+  },
+  "main_output": {
+    "count": 2,
+    "id": "kaleidoscope_cookery:wild_rice"
+  },
+  "secondary_output": {
+    "count": 3,
+    "id": "kaleidoscope_cookery:rice_panicle"
+  },
+  "per_tick_usage":true
+}

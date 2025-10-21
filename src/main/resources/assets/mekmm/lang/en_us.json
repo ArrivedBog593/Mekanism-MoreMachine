@@ -195,7 +195,7 @@
   "general.fluid_replicator.recipes": "Recipe for Fluid Replicator",
   "general.chemical_replicator.recipes": "Recipe for Chemical Replicator",
 
-  "info.mekmm.jei.unstable_dimensional_gas": "Use an Ambient Gas Collector for collection, and be careful not to place blocks above the machine.",
+  "info.mekmm.jei.unstable_dimensional_gas": "Use an Ambient Gas Collector for collection(%1$smb/t), and be careful not to place blocks above the machine.",
 
   "configuration.mekmm.general.chemical_replicator.recipes": "Add Chemical Replicator Recipes",
   "configuration.mekmm.general.chemical_replicator.recipes.tooltip": "The recipes added here will be added to the chemical replicator. Write using modid:registeredName#amount, # followed by the amount(not null or zero) of UU matter consumed. For example:[\"mekanism:oxygen#10\",\"mekanism:hydrogen#100\"]",
@@ -207,9 +207,8 @@
   "configuration.mekmm.general.replicator.tooltip": "Custom Replicator Recipe",
   "configuration.mekmm.general.charging.rate": "Charge Rate",
   "configuration.mekmm.general.charging.rate.tooltip": "Amount of Energy(joules) an item can receive per tick from a Wireless Charging Station.",
-  "configuration.mekmm.general.wireless_charging_station": "Wireless Charging Station",
-  "configuration.mekmm.general.wireless_charging_station.button": "Edit Wireless Charging Station",
-  "configuration.mekmm.general.wireless_charging_station.tooltip": "Settings for configuring the Wireless Charging Station",
+  "configuration.mekmm.general.collect.amount": "Collect Amount",
+  "configuration.mekmm.general.collect.amount.tooltip": "mB of Unstable Dimensional Gas collected by the Ambient Gas Collector.",
   "configuration.mekmm.storage.wireless_charging_station.energy": "Wireless Charging Station Energy Storage",
   "configuration.mekmm.storage.wireless_charging_station.energy.tooltip": "Base energy storage in Joules of: Wireless Charging Station",
   "configuration.mekmm.storage.ambient_gas_collector.energy": "Ambient Gas Collector Energy Storage",

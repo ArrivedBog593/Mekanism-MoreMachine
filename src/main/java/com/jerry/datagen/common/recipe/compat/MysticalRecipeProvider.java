@@ -15,8 +15,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @ParametersAreNonnullByDefault
 public class MysticalRecipeProvider extends CompatRecipeProvider {
 
-    public MysticalRecipeProvider(String modid) {
-        super(modid);
+    public MysticalRecipeProvider(String modId) {
+        super(modId);
     }
 
     @Override

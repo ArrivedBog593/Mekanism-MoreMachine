@@ -195,7 +195,7 @@
   "general.fluid_replicator.recipes": "Receta para el replicador de fluidos",
   "general.chemical_replicator.recipes": "Receta para el replicador químico",
 
-  "info.mekmm.jei.unstable_dimensional_gas": "Usa un colector de gas ambiental para la recolección, y ten cuidado de no colocar bloques encima de la máquina.",
+  "info.mekmm.jei.unstable_dimensional_gas": "Usa un colector de gas ambiental para la recolección(%1$smb/t), y ten cuidado de no colocar bloques encima de la máquina.",
 
   "configuration.mekmm.general.chemical_replicator.recipes": "Agregar recetas del replicador químico",
   "configuration.mekmm.general.chemical_replicator.recipes.tooltip": "Las recetas añadidas aquí se agregarán al replicador químico. Escribe usando modid:registeredName#amount, # seguido de la cantidad (no nula ni cero) de materia UU consumida. Por ejemplo: [\"mekanism:oxygen#10\",\"mekanism:hydrogen#100\"]",
@@ -207,9 +207,8 @@
   "configuration.mekmm.general.replicator.tooltip": "Receta personalizada del replicador",
   "configuration.mekmm.general.charging.rate": "Tasa de carga",
   "configuration.mekmm.general.charging.rate.tooltip": "Cantidad de energía (julios) que un objeto puede recibir por tic de una estación de carga inalámbrica.",
-  "configuration.mekmm.general.wireless_charging_station": "Estación de carga inalámbrica",
-  "configuration.mekmm.general.wireless_charging_station.button": "Editar estación de carga inalámbrica",
-  "configuration.mekmm.general.wireless_charging_station.tooltip": "Configuraciones para la estación de carga inalámbrica",
+  "configuration.mekmm.general.collect.amount": "Collect Amount",
+  "configuration.mekmm.general.collect.amount.tooltip": "mB of Unstable Dimensional Gas collected by the Ambient Gas Collector.",
   "configuration.mekmm.storage.wireless_charging_station.energy": "Almacenamiento de energía de la estación de carga inalámbrica",
   "configuration.mekmm.storage.wireless_charging_station.energy.tooltip": "Almacenamiento base de energía en julios de la: Estación de carga inalámbrica",
   "configuration.mekmm.storage.ambient_gas_collector.energy": "Almacenamiento de energía del colector de gas ambiental",
