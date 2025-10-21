@@ -207,8 +207,8 @@
   "configuration.mekmm.general.replicator.tooltip": "Receta personalizada del replicador",
   "configuration.mekmm.general.charging.rate": "Tasa de carga",
   "configuration.mekmm.general.charging.rate.tooltip": "Cantidad de energía (julios) que un objeto puede recibir por tic de una estación de carga inalámbrica.",
-  "configuration.mekmm.general.collect.amount": "Collect Amount",
-  "configuration.mekmm.general.collect.amount.tooltip": "mB of Unstable Dimensional Gas collected by the Ambient Gas Collector.",
+  "configuration.mekmm.general.collect.amount": "Cantidad de recolección",
+  "configuration.mekmm.general.collect.amount.tooltip": "mB de gas dimensional inestable recolectado por el colector de gas ambiental.",
   "configuration.mekmm.storage.wireless_charging_station.energy": "Almacenamiento de energía de la estación de carga inalámbrica",
   "configuration.mekmm.storage.wireless_charging_station.energy.tooltip": "Almacenamiento base de energía en julios de la: Estación de carga inalámbrica",
   "configuration.mekmm.storage.ambient_gas_collector.energy": "Almacenamiento de energía del colector de gas ambiental",
@@ -265,5 +265,5 @@
   "mekmm.configuration.section.mekanismmoremachine.machine.usage.toml.title": "Mekanism: MoreMachine - Configuración de uso",
   "mekmm.configuration.title": "Configuración de Mekanism: MoreMachine",
 
-  "fml.menu.mods.info.description.mekmm": "Add more machines and factories to mekanism"
+  "fml.menu.mods.info.description.mekmm": "Agrega más máquinas y fábricas a mekanism"
 }
