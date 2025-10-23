@@ -2,6 +2,7 @@ package com.jerry.mekmm.common.registries;
 
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.common.inventory.container.tile.MoreMachineFactoryContainer;
+import com.jerry.mekmm.common.inventory.container.tile.WirelessTransmissionStationContainer;
 import com.jerry.mekmm.common.tile.TileEntityWirelessChargingStation;
 import com.jerry.mekmm.common.tile.TileEntityWirelessTransmissionStation;
 import com.jerry.mekmm.common.tile.factory.TileEntityMoreMachineFactory;
@@ -29,7 +30,7 @@ public class MoreMachineContainerTypes {
 
     public static final ContainerTypeRegistryObject<MekanismTileContainer<TileEntityAmbientGasCollector>> AMBIENT_GAS_COLLECTOR = MM_CONTAINER_TYPES.register(MoreMachineBlocks.AMBIENT_GAS_COLLECTOR, TileEntityAmbientGasCollector.class);
     public static final ContainerTypeRegistryObject<MekanismTileContainer<TileEntityWirelessChargingStation>> WIRELESS_CHARGING_STATION = MM_CONTAINER_TYPES.register(MoreMachineBlocks.WIRELESS_CHARGING_STATION, TileEntityWirelessChargingStation.class);
-    public static final ContainerTypeRegistryObject<MekanismTileContainer<TileEntityWirelessTransmissionStation>> WIRELESS_TRANSMISSION_STATION = MM_CONTAINER_TYPES.register(MoreMachineBlocks.WIRELESS_TRANSMISSION_STATION, TileEntityWirelessTransmissionStation.class);
+    public static final ContainerTypeRegistryObject<WirelessTransmissionStationContainer> WIRELESS_TRANSMISSION_STATION = MM_CONTAINER_TYPES.register(MoreMachineBlocks.WIRELESS_TRANSMISSION_STATION, TileEntityWirelessTransmissionStation.class, WirelessTransmissionStationContainer::new);
 
     public static final ContainerTypeRegistryObject<MekanismTileContainer<TileEntityMoreMachineFactory<?>>> MM_FACTORY = MM_CONTAINER_TYPES.register("factory", factoryClass(), MoreMachineFactoryContainer::new);
 

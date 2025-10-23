@@ -27,6 +27,7 @@ import mekanism.common.attachments.component.AttachedSideConfig;
 import mekanism.common.attachments.containers.ContainerType;
 import mekanism.common.attachments.containers.chemical.ChemicalTanksBuilder;
 import mekanism.common.attachments.containers.fluid.FluidTanksBuilder;
+import mekanism.common.attachments.containers.heat.HeatCapacitorsBuilder;
 import mekanism.common.attachments.containers.item.ItemSlotsBuilder;
 import mekanism.common.block.attribute.AttributeTier;
 import mekanism.common.block.prefab.BlockTile.BlockTileModel;
@@ -300,10 +301,12 @@ public class MoreMachineBlocks {
                             ).addAttachmentOnlyContainers(ContainerType.CHEMICAL, ()-> ChemicalTanksBuilder.builder()
                                     .addBasic(TileEntityWirelessTransmissionStation.MAX_CHEMICAL)
                                     .build()
-                            )
-                            .addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
+                            ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
                                     .addEnergy()
                                     .addDrainEnergy()
+                                    .build()
+                            ).addAttachmentOnlyContainers(ContainerType.HEAT, () -> HeatCapacitorsBuilder.builder()
+                                    .addBasic(TileEntityWirelessTransmissionStation.HEAT_CAPACITY, TileEntityWirelessTransmissionStation.INVERSE_CONDUCTION_COEFFICIENT, TileEntityWirelessTransmissionStation.INVERSE_INSULATION_COEFFICIENT)
                                     .build()
                             )
                     );

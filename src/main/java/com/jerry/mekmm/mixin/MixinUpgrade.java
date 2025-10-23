@@ -1,6 +1,6 @@
 package com.jerry.mekmm.mixin;
 
-import com.jerry.mekmm.api.MMUpgrade;
+import com.jerry.mekmm.api.MoreMachineUpgrade;
 import com.jerry.mekmm.api.text.APIMoreMachineLang;
 import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
@@ -57,7 +57,7 @@ public class MixinUpgrade {
 
     @Inject(method = "<clinit>",at = @At("TAIL"))
     private static void upgradeClinit(CallbackInfo ci) {
-        MMUpgrade.THREAD = mekanismMoreMachine$addVariant("THREAD", APIMoreMachineLang.UPGRADE_THREAD, APIMoreMachineLang.UPGRADE_THREAD_DESCRIPTION, 8, EnumColor.BRIGHT_PINK);
+        MoreMachineUpgrade.THREAD = mekanismMoreMachine$addVariant("THREAD", APIMoreMachineLang.UPGRADE_THREAD, APIMoreMachineLang.UPGRADE_THREAD_DESCRIPTION, 8, EnumColor.BRIGHT_PINK);
 
         // 重新初始化静态参数，这非常重要
         mekanismMoreMachine$reinitializeByIdMap();

@@ -111,6 +111,7 @@ public class ItemConnector extends Item implements IRadialModeItem<ItemConnector
             } else {
                 GlobalPos globalPos = stack.get(MoreMachineDataComponents.CONNECT_FROM);
                 if (globalPos != null && world.dimension() == globalPos.dimension()) {
+                    //TODO:应该换成ITileConnect
                     TileEntityWirelessTransmissionStation linkTile = WorldUtils.getTileEntity(TileEntityWirelessTransmissionStation.class, world, globalPos.pos(), true);
                     if (linkTile != null) {
                         switch (linkTile.connectOrCut(pos, side, getMode(stack).transmissionType)) {
@@ -123,11 +124,14 @@ public class ItemConnector extends Item implements IRadialModeItem<ItemConnector
                                 return InteractionResult.SUCCESS;
                             }
                             case CONNECT_FAIL -> {
+                                //连接到没有能力或者不能连接的方块上时发出的消息
                                 player.displayClientMessage(MoreMachineLang.CONNECTOR_FAIL.translate(EnumColor.DARK_RED, TextComponentUtil.translate(block.getDescriptionId()), EnumColor.DARK_RED, side), true);
                                 return InteractionResult.SUCCESS;
                             }
                         }
                         return InteractionResult.PASS;
+                    } else {
+                        player.displayClientMessage(MoreMachineLang.CONNECTOR_LOSE.translate(EnumColor.DARK_RED, globalPos.pos()), true);
                     }
                 }
             }

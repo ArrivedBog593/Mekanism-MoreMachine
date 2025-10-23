@@ -1,5 +1,6 @@
 package com.jerry.mekmm.common.recipe.serializer;
 
+import com.jerry.mekmm.api.MoreMachineSerializationConstants;
 import com.jerry.mekmm.api.recipes.StamperRecipe;
 import com.jerry.mekmm.api.recipes.basic.BasicStamperRecipe;
 import com.mojang.datafixers.util.Function3;
@@ -20,7 +21,7 @@ public record MoreMachineRecipeSerializer<RECIPE extends Recipe<?>>(MapCodec<REC
     public static MekanismRecipeSerializer<BasicStamperRecipe> stamping(Function3<ItemStackIngredient, ItemStackIngredient, ItemStack, BasicStamperRecipe> factory) {
         return new MekanismRecipeSerializer<>(RecordCodecBuilder.mapCodec(instance -> instance.group(
                 ItemStackIngredient.CODEC.fieldOf(SerializationConstants.INPUT).forGetter(StamperRecipe::getInput),
-                ItemStackIngredient.CODEC.fieldOf("mold").forGetter(StamperRecipe::getMold),
+                ItemStackIngredient.CODEC.fieldOf(MoreMachineSerializationConstants.MOLD).forGetter(StamperRecipe::getMold),
                 ItemStack.CODEC.fieldOf(SerializationConstants.OUTPUT).forGetter(BasicStamperRecipe::getOutputRaw)
         ).apply(instance, factory)), StreamCodec.composite(
                 ItemStackIngredient.STREAM_CODEC, BasicStamperRecipe::getInput,

@@ -90,7 +90,7 @@ public class TileEntityFluidReplicator extends TileEntityProgressMachine<BasicFl
 
     FluidInventorySlot lFluidInputSlot;
     FluidInventorySlot rFluidInputSlot;
-    //流体储罐输入输出物品槽
+    //流体储罐输入输出物品槽(GUI外的两个槽)
     FluidInventorySlot fluidInputSlot;
     OutputInventorySlot fluidOutputSlot;
     //气罐槽
@@ -229,7 +229,7 @@ public class TileEntityFluidReplicator extends TileEntityProgressMachine<BasicFl
         if (customRecipeMap != null) {
             Holder<Fluid> fluidHolder = fluidStack.getFluidHolder();
             //如果为空则赋值为0
-            int amount = customRecipeMap.getOrDefault(RegistryUtils.getName(fluidHolder).toString(), 0);
+            int amount = customRecipeMap.getOrDefault(Objects.requireNonNull(RegistryUtils.getName(fluidHolder)).toString(), 0);
             //防止null和配置文件中出现0
             if (amount == 0) return null;
             return new FluidReplicatorIRecipeSingle(

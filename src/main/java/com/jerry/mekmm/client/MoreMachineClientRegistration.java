@@ -32,6 +32,8 @@ public class MoreMachineClientRegistration {
     public static void init(FMLClientSetupEvent event) {
         addCustomModel(MoreMachineBlocks.WIRELESS_CHARGING_STATION, (orig, evt) -> new ExtensionBakedModel.TransformedBakedModel<Void>(orig,
                 QuadTransformation.translate(0, 1, 0)));
+        addCustomModel(MoreMachineBlocks.WIRELESS_TRANSMISSION_STATION, (orig, evt) -> new ExtensionBakedModel.TransformedBakedModel<Void>(orig,
+                QuadTransformation.translate(0, 1, 0)));
         addCustomModel(LargeMachineBlocks.LARGE_ROTARY_CONDENSENTRATOR, (orig, evt) -> new ExtensionBakedModel.TransformedBakedModel<Void>(orig,
                 QuadTransformation.translate(0, 1, 0)));
     }

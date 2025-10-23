@@ -26,4 +26,8 @@ public class MoreMachineDataComponents {
                     .networkSynchronized(GlobalPos.STREAM_CODEC)
     );
 
+    public static final MekanismDeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> CHARGE_EQUIPMENT = MM_DATA_COMPONENTS.registerBoolean("charge_equipment");
+    public static final MekanismDeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> CHARGE_INVENTORY = MM_DATA_COMPONENTS.registerBoolean("charge_inventory");
+    public static final MekanismDeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> CHARGE_CURIOS = MM_DATA_COMPONENTS.registerBoolean("charge_curios");
+
 }

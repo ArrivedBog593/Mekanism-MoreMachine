@@ -73,6 +73,7 @@
   "block.mekmm.chemical_replicator": "化学品复制机",
   "block.mekmm.ambient_gas_collector": "环境气体收集器",
   "block.mekmm.wireless_charging_station": "无线充电站",
+  "block.mekmm.wireless_transmission_station": "无线传输站",
   "block.mekmm.author_doll": "作者玩偶",
 
   "block.mekmm.large_gas_burning_generator": "大型燃气发电机",
@@ -151,6 +152,7 @@
   "container.mekmm.chemical_replicator": "化学品复制机",
   "container.mekmm.ambient_gas_collector": "环境气体收集器",
   "container.mekmm.wireless_charging_station": "无线充电站",
+  "container.mekmm.wireless_transmission_station": "无线传输站",
 
   "container.mekmm.large_gas_burning_generator": "大型燃气发电机",
   "container.mekmm.large_electrolytic_separator": "大型电解分离机",
@@ -196,6 +198,7 @@
   "connector.mekmm.disconnect": "从%1$s的%2$s方断开连接",
   "connector.mekmm.fail": "不能连接到%1$s的%2$s方",
   "connector.mekmm.cleared": "连接终止",
+  "connector.mekmm.lose": "%1$s处没有方块，或该方块不是连接前的方块",
 
   "general.item_replicator.recipes": "物品复制机配方",
   "general.fluid_replicator.recipes": "液体复制机配方",

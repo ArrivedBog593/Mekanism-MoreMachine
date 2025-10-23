@@ -150,7 +150,7 @@ public class MoreMachineBlockTypes {
                 @Override
                 public <DATA> boolean handle(Level level, BlockPos pos, BlockState state, DATA data, TriBooleanFunction<Level, BlockPos, DATA> consumer) {
                     MutableBlockPos mutable = new MutableBlockPos();
-                    for (int i = 0; i < 3; i++) {
+                    for (int i = 0; i < 2; i++) {
                         mutable.setWithOffset(pos, 0, i + 1, 0);
                         if (!consumer.accept(level, mutable, data)) {
                             return false;
@@ -168,7 +168,7 @@ public class MoreMachineBlockTypes {
             .createMachine(() -> MoreMachineTileEntityTypes.WIRELESS_TRANSMISSION_STATION, MoreMachineLang.DESCRIPTION_WIRELESS_CHARGING_STATION)
             .withGui(() -> MoreMachineContainerTypes.WIRELESS_TRANSMISSION_STATION)
             .withEnergyConfig(MoreMachineConfig.storage.wirelessChargingStation)
-            .withSideConfig(TransmissionType.ITEM, TransmissionType.CHEMICAL, TransmissionType.FLUID, TransmissionType.ENERGY)
+            .withSideConfig(TransmissionType.ITEM, TransmissionType.CHEMICAL, TransmissionType.FLUID, TransmissionType.ENERGY, TransmissionType.HEAT)
             .withCustomShape(MoreMachineBlockShapes.WIRELESS_CHARGING_STATION)
             .with(AttributeCustomSelectionBox.JSON)
             .without(AttributeUpgradeSupport.class)
@@ -176,7 +176,7 @@ public class MoreMachineBlockTypes {
                 @Override
                 public <DATA> boolean handle(Level level, BlockPos pos, BlockState state, DATA data, TriBooleanFunction<Level, BlockPos, DATA> consumer) {
                     MutableBlockPos mutable = new MutableBlockPos();
-                    for (int i = 0; i < 3; i++) {
+                    for (int i = 0; i < 2; i++) {
                         mutable.setWithOffset(pos, 0, i + 1, 0);
                         if (!consumer.accept(level, mutable, data)) {
                             return false;

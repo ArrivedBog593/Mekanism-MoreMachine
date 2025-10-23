@@ -8,7 +8,6 @@ import mekanism.api.chemical.BasicChemicalTank;
 import mekanism.api.chemical.ChemicalStack;
 import mekanism.api.chemical.IChemicalHandler;
 import mekanism.api.chemical.IChemicalTank;
-import mekanism.common.MekanismLang;
 import mekanism.common.attachments.containers.ContainerType;
 import mekanism.common.capabilities.Capabilities;
 import mekanism.common.capabilities.energy.MachineEnergyContainer;
@@ -32,8 +31,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -46,7 +43,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-public class TileEntityAmbientGasCollector extends TileEntityMekanism implements IConfigurable {
+public class TileEntityAmbientGasCollector extends TileEntityMekanism {
     /**
      * How many ticks it takes to run an operation.
      */
@@ -189,18 +186,6 @@ public class TileEntityAmbientGasCollector extends TileEntityMekanism implements
         super.loadAdditional(nbt, provider);
         operatingTicks = nbt.getInt(SerializationConstants.PROGRESS);
         NBTUtils.setChemicalStackIfPresent(provider, nbt, SerializationConstants.CHEMICAL, chemical -> activeType = chemical);
-    }
-
-    @Override
-    public InteractionResult onSneakRightClick(Player player) {
-        reset();
-        player.displayClientMessage(MekanismLang.PUMP_RESET.translate(), true);
-        return InteractionResult.SUCCESS;
-    }
-
-    @Override
-    public InteractionResult onRightClick(Player player) {
-        return InteractionResult.PASS;
     }
 
     @Override

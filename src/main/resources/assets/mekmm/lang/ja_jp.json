@@ -73,6 +73,7 @@
   "block.mekmm.chemical_replicator": "Chemical Replicator",
   "block.mekmm.ambient_gas_collector": "環境ガス収集機",
   "block.mekmm.wireless_charging_station": "Wireless Charging Station",
+  "block.mekmm.wireless_transmission_station": "Wireless Transmission Station",
   "block.mekmm.author_doll": "作者のぬいぐるみ",
 
   "block.mekmm.large_gas_burning_generator": "大型ガス燃焼発電機",
@@ -156,6 +157,7 @@
   "container.mekmm.large_electrolytic_separator": "大型電解分離機",
   "container.mekmm.large_chemical_washer": "大型化学洗浄機",
   "container.mekmm.large_rotary_condensentrator": "Large Rotary Condensentrator",
+  "container.mekmm.wireless_transmission_station": "Wireless Transmission Station",
 
   "charging.mekmm.equips": "Charging Equips",
   "charging.mekmm.inventory": "Charging Inventory",
@@ -196,6 +198,7 @@
   "connector.mekmm.disconnect": "Disconnect from %1$s's %2$s side",
   "connector.mekmm.fail": "Can't connect to %1$s's %2$s side",
   "connector.mekmm.cleared": "Connection terminated",
+  "connector.mekmm.lose": "There is no block at %1$s, or the block is not the one before connecting",
 
   "general.item_replicator.recipes": "Recipe for Item Replicator ",
   "general.fluid_replicator.recipes": "Recipe for Fluid Replicator",

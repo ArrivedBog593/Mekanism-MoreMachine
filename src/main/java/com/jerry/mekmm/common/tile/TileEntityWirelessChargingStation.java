@@ -1,7 +1,9 @@
 package com.jerry.mekmm.common.tile;
 
+import com.jerry.mekmm.api.MoreMachineSerializationConstants;
 import com.jerry.mekmm.common.config.MoreMachineConfig;
 import com.jerry.mekmm.common.registries.MoreMachineBlocks;
+import com.jerry.mekmm.common.registries.MoreMachineDataComponents;
 import mekanism.api.Action;
 import mekanism.api.AutomationType;
 import mekanism.api.IContentsListener;
@@ -25,8 +27,12 @@ import mekanism.common.lib.transmitter.TransmissionType;
 import mekanism.common.tile.component.TileComponentEjector;
 import mekanism.common.tile.interfaces.IBoundingBlock;
 import mekanism.common.tile.prefab.TileEntityConfigurableMachine;
+import mekanism.common.util.NBTUtils;
 import mekanism.common.util.StorageUtils;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -52,6 +58,7 @@ public class TileEntityWirelessChargingStation extends TileEntityConfigurableMac
         super(MoreMachineBlocks.WIRELESS_CHARGING_STATION, pos, state);
         configComponent.setupIOConfig(TransmissionType.ITEM, chargeSlot, dischargeSlot, RelativeSide.FRONT, true);
         configComponent.setupIOConfig(TransmissionType.ENERGY, energyContainer, RelativeSide.FRONT);
+        configComponent.addDisabledSides(RelativeSide.TOP);
         ejectorComponent = new TileComponentEjector(this);
         ejectorComponent.setOutputData(configComponent, TransmissionType.ITEM, TransmissionType.ENERGY).setCanEject(type -> canFunction());
     }
@@ -170,6 +177,22 @@ public class TileEntityWirelessChargingStation extends TileEntityConfigurableMac
         return amount;
     }
 
+    @Override
+    public void writeSustainedData(HolderLookup.Provider provider, CompoundTag data) {
+        super.writeSustainedData(provider, data);
+        data.putBoolean(MoreMachineSerializationConstants.CHARGE_EQUIPMENT, getChargeEquipment());
+        data.putBoolean(MoreMachineSerializationConstants.CHARGE_INVENTORY, getChargeInventory());
+        data.putBoolean(MoreMachineSerializationConstants.CHARGE_CURIOS, getChargeCurios());
+    }
+
+    @Override
+    public void readSustainedData(HolderLookup.Provider provider, CompoundTag data) {
+        super.readSustainedData(provider, data);
+        NBTUtils.setBooleanIfPresent(data, MoreMachineSerializationConstants.CHARGE_EQUIPMENT, value -> chargeEquipment = value);
+        NBTUtils.setBooleanIfPresent(data, MoreMachineSerializationConstants.CHARGE_INVENTORY, value -> chargeInventory = value);
+        NBTUtils.setBooleanIfPresent(data, MoreMachineSerializationConstants.CHARGE_CURIOS, value -> chargeCurios = value);
+    }
+
     public void toggleChargeEquipment() {
         chargeEquipment = !chargeEquipment;
         markForSave();
@@ -203,6 +226,22 @@ public class TileEntityWirelessChargingStation extends TileEntityConfigurableMac
 
     public long getOutput() {
         return Math.min(MekanismConfig.gear.mekaSuitInventoryChargeRate.get(), energyContainer.getEnergy());
+    }
+
+    @Override
+    protected void collectImplicitComponents(DataComponentMap.@NotNull Builder builder) {
+        super.collectImplicitComponents(builder);
+        builder.set(MoreMachineDataComponents.CHARGE_EQUIPMENT, getChargeEquipment());
+        builder.set(MoreMachineDataComponents.CHARGE_INVENTORY, getChargeInventory());
+        builder.set(MoreMachineDataComponents.CHARGE_CURIOS, getChargeCurios());
+    }
+
+    @Override
+    protected void applyImplicitComponents(@NotNull DataComponentInput input) {
+        super.applyImplicitComponents(input);
+        chargeEquipment = input.getOrDefault(MoreMachineDataComponents.CHARGE_EQUIPMENT, chargeEquipment);
+        chargeInventory = input.getOrDefault(MoreMachineDataComponents.CHARGE_INVENTORY, chargeInventory);
+        chargeCurios = input.getOrDefault(MoreMachineDataComponents.CHARGE_CURIOS, chargeCurios);
     }
 
     @Override

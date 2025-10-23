@@ -36,6 +36,7 @@ public enum MoreMachineLang implements ILangEntry {
     CONNECTOR_DISCONNECT("connector", "disconnect"),
     CONNECTOR_FAIL("connector", "fail"),
     CONNECTOR_CLEARED("connector", "cleared"),
+    CONNECTOR_LOSE("connector", "lose"),
     //Descriptions
     DESCRIPTION_RECYCLER("description", "recycler"),
     DESCRIPTION_PLANTING_STATION("description", "planting_station"),

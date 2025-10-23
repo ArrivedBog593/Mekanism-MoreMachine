@@ -73,6 +73,7 @@
   "block.mekmm.chemical_replicator": "Replicador Químico",
   "block.mekmm.ambient_gas_collector": "Coletor de Gás Ambiente",
   "block.mekmm.wireless_charging_station": "Wireless Charging Station",
+  "block.mekmm.wireless_transmission_station": "Wireless Transmission Station",
   "block.mekmm.author_doll": "Boneco do Autor",
 
   "block.mekmm.large_gas_burning_generator": "Grande Gerador a Gás",
@@ -151,6 +152,7 @@
   "container.mekmm.chemical_replicator": "Replicador Q.",
   "container.mekmm.ambient_gas_collector": "Coletor de Gás Ambiente",
   "container.mekmm.wireless_charging_station": "Wireless Charging Station",
+  "container.mekmm.wireless_transmission_station": "Wireless Transmission Station",
 
   "container.mekmm.large_gas_burning_generator": "Grande Gerador a Gás",
   "container.mekmm.large_electrolytic_separator": "Grande Separador Eletrolítico",
@@ -196,6 +198,7 @@
   "connector.mekmm.disconnect": "Disconnect from %1$s's %2$s side",
   "connector.mekmm.fail": "Can't connect to %1$s's %2$s side",
   "connector.mekmm.cleared": "Connection terminated",
+  "connector.mekmm.lose": "There is no block at %1$s, or the block is not the one before connecting",
 
   "general.item_replicator.recipes": "Receita para o Replicador de Itens",
   "general.fluid_replicator.recipes": "Receita para o Replicador de Fluidos",

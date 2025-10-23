@@ -109,13 +109,14 @@ public class MoreMachineTileEntityTypes {
             .mekBuilder(MoreMachineBlocks.AMBIENT_GAS_COLLECTOR, TileEntityAmbientGasCollector::new)
             .clientTicker(TileEntityMekanism::tickClient)
             .serverTicker(TileEntityMekanism::tickServer)
-            .withSimple(Capabilities.CONFIGURABLE)
+            .withSimple(Capabilities.CONFIG_CARD)
             .build();
 
     public static final TileEntityTypeRegistryObject<TileEntityWirelessChargingStation> WIRELESS_CHARGING_STATION = MM_TILE_ENTITY_TYPES
             .mekBuilder(MoreMachineBlocks.WIRELESS_CHARGING_STATION, TileEntityWirelessChargingStation::new)
             .clientTicker(TileEntityMekanism::tickClient)
             .serverTicker(TileEntityMekanism::tickServer)
+            .withSimple(Capabilities.CONFIG_CARD)
             .withSimple(Capabilities.CONFIGURABLE)
             .build();
 
@@ -123,6 +124,7 @@ public class MoreMachineTileEntityTypes {
             .mekBuilder(MoreMachineBlocks.WIRELESS_TRANSMISSION_STATION, TileEntityWirelessTransmissionStation::new)
             .clientTicker(TileEntityMekanism::tickClient)
             .serverTicker(TileEntityMekanism::tickServer)
+            .withSimple(Capabilities.CONFIG_CARD)
             .withSimple(Capabilities.CONFIGURABLE)
             .build();
 
