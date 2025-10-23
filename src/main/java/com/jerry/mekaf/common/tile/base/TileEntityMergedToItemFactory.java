@@ -83,27 +83,27 @@ public abstract class TileEntityMergedToItemFactory<RECIPE extends MekanismRecip
         }
         ConfigInfo gasConfig = configComponent.getConfig(TransmissionType.GAS);
         if (gasConfig != null) {
-            gasConfig.addSlotInfo(DataType.INPUT, new ChemicalSlotInfo.GasSlotInfo(false, true, inputGasTanks));
+            gasConfig.addSlotInfo(DataType.INPUT, new ChemicalSlotInfo.GasSlotInfo(true, false, inputGasTanks));
             gasConfig.setDataType(DataType.INPUT, RelativeSide.RIGHT);
             gasConfig.fill(DataType.INPUT);
             gasConfig.setCanEject(false);
         }
         ConfigInfo infusionConfig = configComponent.getConfig(TransmissionType.INFUSION);
         if (infusionConfig != null) {
-            infusionConfig.addSlotInfo(DataType.INPUT, new ChemicalSlotInfo.InfusionSlotInfo(false, true, inputInfusionTanks));
+            infusionConfig.addSlotInfo(DataType.INPUT, new ChemicalSlotInfo.InfusionSlotInfo(true, false, inputInfusionTanks));
             infusionConfig.fill(DataType.INPUT);
             infusionConfig.setCanEject(false);
         }
         ConfigInfo pigmentConfig = configComponent.getConfig(TransmissionType.PIGMENT);
         if (pigmentConfig != null) {
-            pigmentConfig.addSlotInfo(DataType.INPUT, new ChemicalSlotInfo.PigmentSlotInfo(false, true, inputPigmentTanks));
+            pigmentConfig.addSlotInfo(DataType.INPUT, new ChemicalSlotInfo.PigmentSlotInfo(true, false, inputPigmentTanks));
             pigmentConfig.setDataType(DataType.INPUT, RelativeSide.RIGHT);
             pigmentConfig.fill(DataType.INPUT);
             pigmentConfig.setCanEject(false);
         }
         ConfigInfo slurryConfig = configComponent.getConfig(TransmissionType.SLURRY);
         if (slurryConfig != null) {
-            slurryConfig.addSlotInfo(DataType.INPUT, new ChemicalSlotInfo.SlurrySlotInfo(false, true, inputSlurryTanks));
+            slurryConfig.addSlotInfo(DataType.INPUT, new ChemicalSlotInfo.SlurrySlotInfo(true, false, inputSlurryTanks));
             slurryConfig.setDataType(DataType.INPUT, RelativeSide.RIGHT);
             slurryConfig.fill(DataType.INPUT);
             slurryConfig.setCanEject(false);

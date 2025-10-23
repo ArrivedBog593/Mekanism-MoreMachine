@@ -80,7 +80,7 @@ public class TileEntityRecyclingFactory extends TileEntityMoreMachineFactory<Rec
 
     @Override
     protected @Nullable RecyclerRecipe findRecipe(int process, @NotNull ItemStack fallbackInput, @NotNull IInventorySlot chanceOutputSlot, @Nullable IInventorySlot outputSlot) {
-        ItemStack output = outputSlot.getStack();
+        ItemStack output = chanceOutputSlot.getStack();
         return getRecipeType().getInputCache().findTypeBasedRecipe(level, fallbackInput, recipe -> InventoryUtils.areItemsStackable(recipe.getOutput(fallbackInput).getMaxChanceOutput(), output));
     }
 
