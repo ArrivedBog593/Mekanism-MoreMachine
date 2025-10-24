@@ -1,0 +1,31 @@
+{
+  "type": "mekanism:mek_data",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "evolvedmekanism"
+    }
+  ],
+  "key": {
+    "A": {
+      "tag": "evolvedmekanism:alloys/creative"
+    },
+    "C": {
+      "tag": "forge:circuits/creative"
+    },
+    "I": {
+      "tag": "forge:nether_stars"
+    },
+    "P": {
+      "item": "mekmm:multiversal_rolling_mill_factory"
+    }
+  },
+  "pattern": [
+    "ACA",
+    "IPI",
+    "ACA"
+  ],
+  "result": {
+    "item": "mekmm:creative_rolling_mill_factory"
+  }
+}

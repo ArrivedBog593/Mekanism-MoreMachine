@@ -1,0 +1,31 @@
+{
+  "type": "mekanism:mek_data",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "evolvedmekanism"
+    }
+  ],
+  "key": {
+    "A": {
+      "tag": "forge:alloys/dense"
+    },
+    "C": {
+      "tag": "forge:circuits/dense"
+    },
+    "I": {
+      "tag": "forge:ingots/bronze"
+    },
+    "P": {
+      "item": "mekmm:quantum_pressurised_reacting_factory"
+    }
+  },
+  "pattern": [
+    "ACA",
+    "IPI",
+    "ACA"
+  ],
+  "result": {
+    "item": "mekmm:dense_pressurised_reacting_factory"
+  }
+}

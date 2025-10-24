@@ -1,0 +1,31 @@
+{
+  "type": "mekanism:mek_data",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "evolvedmekanism"
+    }
+  ],
+  "key": {
+    "A": {
+      "tag": "forge:alloys/multiversal"
+    },
+    "C": {
+      "tag": "forge:circuits/multiversal"
+    },
+    "I": {
+      "tag": "forge:ingots/netherite"
+    },
+    "P": {
+      "item": "mekmm:dense_dissolving_factory"
+    }
+  },
+  "pattern": [
+    "ACA",
+    "IPI",
+    "ACA"
+  ],
+  "result": {
+    "item": "mekmm:multiversal_dissolving_factory"
+  }
+}
