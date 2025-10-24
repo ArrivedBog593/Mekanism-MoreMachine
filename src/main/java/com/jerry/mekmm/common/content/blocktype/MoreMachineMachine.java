@@ -44,7 +44,7 @@ public class MoreMachineMachine<TILE extends TileEntityMekanism> extends BlockTy
         }
 
         public MoreMachineFactoryType getMMFactoryType() {
-            return Objects.requireNonNull(get(AttributeMoreMachineFactoryType.class)).getMMFactoryType();
+            return Objects.requireNonNull(get(AttributeMoreMachineFactoryType.class)).getMoreMachineFactoryType();
         }
 
         public AdvancedFactoryType getAdvancedFactoryType() {

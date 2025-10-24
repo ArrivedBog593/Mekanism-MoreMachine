@@ -5,6 +5,7 @@ import com.jerry.mekmm.client.jei.MoreMachineJEIRecipeType;
 import com.jerry.mekmm.common.tile.factory.TileEntityMoreMachineFactory;
 import com.jerry.mekmm.common.tile.factory.TileEntityPlantingFactory;
 import com.jerry.mekmm.common.tile.factory.TileEntityReplicatingFactory;
+import fr.iglee42.evolvedmekanism.tiers.EMFactoryTier;
 import mekanism.api.recipes.cache.CachedRecipe.OperationTracker.RecipeError;
 import mekanism.client.gui.GuiConfigurableTile;
 import mekanism.client.gui.element.GuiDumpButton;
@@ -21,6 +22,7 @@ import mekanism.common.tile.interfaces.IHasDumpButton;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraftforge.fml.ModList;
 import org.jetbrains.annotations.NotNull;
 
 public class GuiMoreMachineFactory extends GuiConfigurableTile<TileEntityMoreMachineFactory<?>, MekanismTileContainer<TileEntityMoreMachineFactory<?>>> {
@@ -42,8 +44,25 @@ public class GuiMoreMachineFactory extends GuiConfigurableTile<TileEntityMoreMac
             imageWidth += 34;
             inventoryLabelX = 26;
         }
+
+        //想尝试使用Emek的gui布局，但似乎有点麻烦，还是采用原始布局吧
+        if (isEMLoadAndTierOrdinalAboveOverLocked()) {
+            //这里采用mekE的布局公式，但要记得减去4，因为mekE是从0开始的
+            //这两个公式似乎并非完美，在index过大时可能会导致有细微的便宜，但未得到验证
+            int index = tile.tier.ordinal() - 4;
+            imageWidth += (36 * (index + 2)) + (2 * index);
+            inventoryLabelX = (22 * (index + 2)) - (3 * index);
+        }
         titleLabelY = 4;
         dynamicSlots = true;
+    }
+
+    //TODO:一定要写一个Hook
+    private boolean isEMLoadAndTierOrdinalAboveOverLocked() {
+        if (ModList.get().isLoaded("evolvedmekanism")) {
+            return tile.tier.ordinal() >= EMFactoryTier.OVERCLOCKED.ordinal();
+        }
+        return false;
     }
 
     @Override
@@ -57,15 +76,15 @@ public class GuiMoreMachineFactory extends GuiConfigurableTile<TileEntityMoreMac
         if (tile.hasSecondaryResourceBar()) {
             if (tile instanceof TileEntityPlantingFactory factory) {
                 addRenderableWidget(new GuiChemicalBar<>(this, GuiChemicalBar.getProvider(factory.getGasTank(), tile.getGasTanks(null)), 7, 96,
-                        tile.tier == FactoryTier.ULTIMATE ? 172 : 138, 4, true))
+                        getBarWidth(), 4, true))
                         .warning(WarningType.NO_MATCHING_RECIPE, tile.getWarningCheck(RecipeError.NOT_ENOUGH_SECONDARY_INPUT, 0));
-                addRenderableWidget(new GuiDumpButton<>(this, (TileEntityMoreMachineFactory<?> & IHasDumpButton) tile, tile.tier == FactoryTier.ULTIMATE ? 182 : 148, 96));
+                addRenderableWidget(new GuiDumpButton<>(this, (TileEntityMoreMachineFactory<?> & IHasDumpButton) tile, getButtonX(), 96));
             }
             if (tile instanceof TileEntityReplicatingFactory factory) {
                 addRenderableWidget(new GuiChemicalBar<>(this, GuiChemicalBar.getProvider(factory.getGasTank(), tile.getGasTanks(null)), 7, 76,
-                        tile.tier == FactoryTier.ULTIMATE ? 172 : 138, 4, true))
+                        getBarWidth(), 4, true))
                         .warning(WarningType.NO_MATCHING_RECIPE, tile.getWarningCheck(RecipeError.NOT_ENOUGH_SECONDARY_INPUT, 0));
-                addRenderableWidget(new GuiDumpButton<>(this, (TileEntityMoreMachineFactory<?> & IHasDumpButton) tile, tile.tier == FactoryTier.ULTIMATE ? 182 : 148, 76));
+                addRenderableWidget(new GuiDumpButton<>(this, (TileEntityMoreMachineFactory<?> & IHasDumpButton) tile, getButtonX(), 76));
             }
         }
 
@@ -89,6 +108,26 @@ public class GuiMoreMachineFactory extends GuiConfigurableTile<TileEntityMoreMac
             case REPLICATING -> MoreMachineJEIRecipeType.REPLICATOR;
         };
         return addRenderableWidget(progressBar.jeiCategories(jeiType));
+    }
+
+    private int getBarWidth() {
+        if (isEMLoadAndTierOrdinalAboveOverLocked()) {
+            //这里采用mekE的布局公式，但要记得减去4，因为mekE是从0开始的
+            //这两个公式似乎并非完美，在index过大时可能会导致有细微的便宜，但未得到验证
+            int index = tile.tier.ordinal() - 4;
+            return 210 + 38 * index;
+        }
+        return tile.tier == FactoryTier.ULTIMATE ? 172 : 138;
+    }
+
+    private int getButtonX() {
+        if (isEMLoadAndTierOrdinalAboveOverLocked()) {
+            //这里采用mekE的布局公式，但要记得减去4，因为mekE是从0开始的
+            //这两个公式似乎并非完美，在index过大时可能会导致有细微的便宜，但未得到验证
+            int index = tile.tier.ordinal() - 4;
+            return 220 + 38 * index;
+        }
+        return tile.tier == FactoryTier.ULTIMATE ? 182 : 148;
     }
 
     @Override

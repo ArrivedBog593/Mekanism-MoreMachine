@@ -14,7 +14,7 @@ public class MoreMachineUtils {
     //从MekanismUtils的isSameTypeFactory单拎出来的
     public static boolean isSameMMTypeFactory(Block block, BlockEntityType<?> factoryTileType) {
         return Attribute.matches(block, AttributeMoreMachineFactoryType.class, attribute -> {
-            MoreMachineFactoryType factoryType = attribute.getMMFactoryType();
+            MoreMachineFactoryType factoryType = attribute.getMoreMachineFactoryType();
             //Check all factory types
             for (FactoryTier factoryTier : EnumUtils.FACTORY_TIERS) {
                 if (MoreMachineTileEntityTypes.getMoreMachineFactoryTile(factoryTier, factoryType).get() == factoryTileType) {

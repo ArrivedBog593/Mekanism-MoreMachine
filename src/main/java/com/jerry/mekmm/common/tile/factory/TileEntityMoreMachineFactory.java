@@ -113,7 +113,7 @@ public abstract class TileEntityMoreMachineFactory<RECIPE extends MekanismRecipe
 
     protected TileEntityMoreMachineFactory(IBlockProvider blockProvider, BlockPos pos, BlockState state, List<RecipeError> errorTypes, Set<RecipeError> globalErrorTypes) {
         super(blockProvider, pos, state);
-        type = Objects.requireNonNull(Attribute.get(blockProvider, AttributeMoreMachineFactoryType.class)).getMMFactoryType();
+        type = Objects.requireNonNull(Attribute.get(blockProvider, AttributeMoreMachineFactoryType.class)).getMoreMachineFactoryType();
         configComponent = new TileComponentConfig(this, TransmissionType.ITEM, TransmissionType.ENERGY);
         inputSlots = new ArrayList<>();
         outputSlots = new ArrayList<>();

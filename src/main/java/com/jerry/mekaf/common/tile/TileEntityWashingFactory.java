@@ -2,6 +2,7 @@ package com.jerry.mekaf.common.tile;
 
 import com.jerry.mekaf.common.tile.base.TileEntitySlurryToSlurryFactory;
 import com.jerry.mekaf.common.upgrade.FluidSlurryToSlurryUpgradeData;
+import fr.iglee42.evolvedmekanism.tiers.EMFactoryTier;
 import mekanism.api.IContentsListener;
 import mekanism.api.chemical.slurry.ISlurryTank;
 import mekanism.api.chemical.slurry.Slurry;
@@ -39,6 +40,7 @@ import mekanism.common.util.MekanismUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.ModList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -104,9 +106,23 @@ public class TileEntityWashingFactory extends TileEntitySlurryToSlurryFactory<Fl
 
     @Override
     protected void addSlots(InventorySlotHelper builder, IContentsListener listener, IContentsListener updateSortingListener) {
-        builder.addSlot(fluidInputSlot = FluidInventorySlot.fill(fluidTank, listener, tier == FactoryTier.ULTIMATE ? 214 : 180, 71));
-        builder.addSlot(fluidOutputSlot = OutputInventorySlot.at(listener, tier == FactoryTier.ULTIMATE ? 214 : 180, 102));
+        builder.addSlot(fluidInputSlot = FluidInventorySlot.fill(fluidTank, listener, getFluidSlotX(), 71));
+        builder.addSlot(fluidOutputSlot = OutputInventorySlot.at(listener, getFluidSlotX(), 102));
         fluidInputSlot.setSlotOverlay(SlotOverlay.MINUS);
+    }
+
+    //TODO:一定要写一个Hook
+    private int getFluidSlotX() {
+        //想尝试使用Emek的gui布局，但似乎有点麻烦，还是采用原始布局吧
+        if (ModList.get().isLoaded("evolvedmekanism")) {
+            if (tier.ordinal() >= EMFactoryTier.OVERCLOCKED.ordinal()) {
+                //这里采用mekE的布局公式，但要记得减去4，因为mekE是从0开始的
+                //这个公式似乎并非完美，在index过大时可能会导致有细微的便宜，但未得到验证
+                int index = tier.ordinal() - 4;
+                return 180 + (36 * (index + 2)) + (2 * index);
+            }
+        }
+        return tier == FactoryTier.ULTIMATE ? 214 : 180;
     }
 
     public BasicFluidTank getFluidTankBar() {

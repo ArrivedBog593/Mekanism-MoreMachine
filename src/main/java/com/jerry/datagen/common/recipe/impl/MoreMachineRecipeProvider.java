@@ -4,6 +4,8 @@ import com.jerry.datagen.common.recipe.BaseRecipeProvider;
 import com.jerry.datagen.common.recipe.ISubRecipeProvider;
 import com.jerry.datagen.common.recipe.builder.ExtendedShapedRecipeBuilder;
 import com.jerry.datagen.common.recipe.builder.MoreMachineDataShapedRecipeBuilder;
+import com.jerry.datagen.common.recipe.compat.EMAdvancedFactoryRecipeProvider;
+import com.jerry.datagen.common.recipe.compat.EMMoreMachineFactoryRecipeProvider;
 import com.jerry.datagen.common.recipe.compat.IERecipeProvider;
 import com.jerry.datagen.common.recipe.compat.MysticalRecipeProvider;
 import com.jerry.datagen.common.recipe.pattern.Pattern;
@@ -41,7 +43,7 @@ public class MoreMachineRecipeProvider extends BaseRecipeProvider {
     static final char TELEPORTATION_CORE_CHAR = 'T';
 
     //TODO: Do we want to use same pattern for fluid tank and chemical tank at some point
-    static final RecipePattern TIER_PATTERN = RecipePattern.createPattern(
+    public static final RecipePattern TIER_PATTERN = RecipePattern.createPattern(
             RecipePattern.TripleLine.of(Pattern.ALLOY, Pattern.CIRCUIT, Pattern.ALLOY),
             RecipePattern.TripleLine.of(Pattern.INGOT, Pattern.PREVIOUS, Pattern.INGOT),
             RecipePattern.TripleLine.of(Pattern.ALLOY, Pattern.CIRCUIT, Pattern.ALLOY));
@@ -67,6 +69,8 @@ public class MoreMachineRecipeProvider extends BaseRecipeProvider {
         //Mod Compat Recipe providers
         checkCompat("mysticalagriculture", MysticalRecipeProvider::new);
         checkCompat("immersiveengineering", IERecipeProvider::new);
+        checkCompat("evolvedmekanism", EMAdvancedFactoryRecipeProvider::new);
+        checkCompat("evolvedmekanism", EMMoreMachineFactoryRecipeProvider::new);
     }
 
     private void checkCompat(String modid, Function<String, ISubRecipeProvider> providerCreator) {

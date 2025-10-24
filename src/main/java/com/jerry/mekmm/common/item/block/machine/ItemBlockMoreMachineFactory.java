@@ -30,7 +30,7 @@ public class ItemBlockMoreMachineFactory extends ItemBlockMachine {
     protected void addTypeDetails(@NotNull ItemStack stack, Level world, @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
         //Should always be present but validate it just in case
         Attribute.ifPresent(getBlock(), AttributeMoreMachineFactoryType.class, attribute -> tooltip.add(MekanismLang.FACTORY_TYPE.translateColored(EnumColor.INDIGO, EnumColor.GRAY,
-                attribute.getMMFactoryType())));
+                attribute.getMoreMachineFactoryType())));
         super.addTypeDetails(stack, world, tooltip, flag);
     }
 }

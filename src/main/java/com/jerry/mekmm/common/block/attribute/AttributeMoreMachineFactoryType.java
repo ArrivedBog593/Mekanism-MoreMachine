@@ -13,7 +13,7 @@ public class AttributeMoreMachineFactoryType implements Attribute {
     }
 
     @NotNull
-    public MoreMachineFactoryType getMMFactoryType() {
+    public MoreMachineFactoryType getMoreMachineFactoryType() {
         return type;
     }
 }

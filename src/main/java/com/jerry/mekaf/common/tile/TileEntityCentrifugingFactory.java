@@ -99,11 +99,6 @@ public class TileEntityCentrifugingFactory extends TileEntityGasToGasFactory<Gas
     }
 
     @Override
-    protected void sortInventoryOrTank() {
-
-    }
-
-    @Override
     public @NotNull IMekanismRecipeTypeProvider<GasToGasRecipe, InputRecipeCache.SingleChemical<Gas, GasStack, GasToGasRecipe>> getRecipeType() {
         return MekanismRecipeType.CENTRIFUGING;
     }

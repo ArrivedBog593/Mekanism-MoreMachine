@@ -54,6 +54,6 @@ class MoreMachineFactoryRecipeProvider implements ISubRecipeProvider {
               .key(Pattern.CIRCUIT, circuitTag)
               .key(Pattern.INGOT, ingotTag)
               .key(Pattern.ALLOY, alloyTag)
-              .build(consumer, Mekmm.rl(basePath + Objects.requireNonNull(Attribute.get(factory, AttributeMoreMachineFactoryType.class)).getMMFactoryType().getRegistryNameComponent()));
+              .build(consumer, Mekmm.rl(basePath + Objects.requireNonNull(Attribute.get(factory, AttributeMoreMachineFactoryType.class)).getMoreMachineFactoryType().getRegistryNameComponent()));
     }
 }
