@@ -1,5 +1,6 @@
 package com.jerry.mekmm.client.gui.machine;
 
+import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.client.gui.element.tab.MoreMachineGuiSortingTab;
 import com.jerry.mekmm.client.jei.MoreMachineJEIRecipeType;
 import com.jerry.mekmm.common.tile.factory.TileEntityMoreMachineFactory;
@@ -22,7 +23,6 @@ import mekanism.common.tile.interfaces.IHasDumpButton;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraftforge.fml.ModList;
 import org.jetbrains.annotations.NotNull;
 
 public class GuiMoreMachineFactory extends GuiConfigurableTile<TileEntityMoreMachineFactory<?>, MekanismTileContainer<TileEntityMoreMachineFactory<?>>> {
@@ -57,9 +57,8 @@ public class GuiMoreMachineFactory extends GuiConfigurableTile<TileEntityMoreMac
         dynamicSlots = true;
     }
 
-    //TODO:一定要写一个Hook
     private boolean isEMLoadAndTierOrdinalAboveOverLocked() {
-        if (ModList.get().isLoaded("evolvedmekanism")) {
+        if (Mekmm.hooks.EMLoaded) {
             return tile.tier.ordinal() >= EMFactoryTier.OVERCLOCKED.ordinal();
         }
         return false;

@@ -4,6 +4,7 @@ import com.jerry.mekaf.common.registries.AdvancedFactoryBlocks;
 import com.jerry.mekaf.common.registries.AdvancedFactoryContainerTypes;
 import com.jerry.mekaf.common.registries.AdvancedFactoryTileEntityTypes;
 import com.jerry.mekmm.common.config.MoreMachineConfig;
+import com.jerry.mekmm.common.integration.MoreMachineHooks;
 import com.jerry.mekmm.common.network.MoreMachinePacketHandler;
 import com.jerry.mekmm.common.registries.*;
 import com.mojang.logging.LogUtils;
@@ -14,6 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModContainer;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 
@@ -32,6 +34,10 @@ public class Mekmm implements IModModule {
      */
     public static Mekmm instance;
     /**
+     * Mekanism More Machine hooks instance
+     */
+    public static final MoreMachineHooks hooks = new MoreMachineHooks();
+    /**
      * Mekanism More Machine version number
      */
     public final Version versionNumber;
@@ -40,6 +46,7 @@ public class Mekmm implements IModModule {
         Mekanism.addModule(instance = this);
         IEventBus modEventBus = context.getModEventBus();
         ModContainer modContainer = context.getContainer();
+        modEventBus.addListener(this::commonSetup);
         MoreMachineConfig.registerConfigs(modContainer);
         versionNumber = new Version(modContainer);
 
@@ -62,6 +69,10 @@ public class Mekmm implements IModModule {
 
     public static ResourceLocation rl(String path) {
         return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
+    }
+
+    private void commonSetup(FMLCommonSetupEvent event) {
+        hooks.hookCommonSetup();
     }
 
     private void registerAdvancedFactory(IEventBus modEventBus) {

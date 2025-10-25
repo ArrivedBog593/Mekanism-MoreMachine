@@ -2,6 +2,7 @@ package com.jerry.mekaf.common.tile;
 
 import com.jerry.mekaf.common.tile.base.TileEntitySlurryToSlurryFactory;
 import com.jerry.mekaf.common.upgrade.FluidSlurryToSlurryUpgradeData;
+import com.jerry.mekmm.Mekmm;
 import fr.iglee42.evolvedmekanism.tiers.EMFactoryTier;
 import mekanism.api.IContentsListener;
 import mekanism.api.chemical.slurry.ISlurryTank;
@@ -40,7 +41,6 @@ import mekanism.common.util.MekanismUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.ModList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -111,10 +111,9 @@ public class TileEntityWashingFactory extends TileEntitySlurryToSlurryFactory<Fl
         fluidInputSlot.setSlotOverlay(SlotOverlay.MINUS);
     }
 
-    //TODO:一定要写一个Hook
     private int getFluidSlotX() {
         //想尝试使用Emek的gui布局，但似乎有点麻烦，还是采用原始布局吧
-        if (ModList.get().isLoaded("evolvedmekanism")) {
+        if (Mekmm.hooks.EMLoaded) {
             if (tier.ordinal() >= EMFactoryTier.OVERCLOCKED.ordinal()) {
                 //这里采用mekE的布局公式，但要记得减去4，因为mekE是从0开始的
                 //这个公式似乎并非完美，在index过大时可能会导致有细微的便宜，但未得到验证

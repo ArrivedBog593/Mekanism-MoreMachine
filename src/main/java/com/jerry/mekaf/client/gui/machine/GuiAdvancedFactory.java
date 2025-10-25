@@ -4,6 +4,7 @@ import com.jerry.mekaf.client.gui.element.tab.AFGuiSortingTab;
 import com.jerry.mekaf.common.tile.TileEntityPressurizedReactingFactory;
 import com.jerry.mekaf.common.tile.TileEntityWashingFactory;
 import com.jerry.mekaf.common.tile.base.*;
+import com.jerry.mekmm.Mekmm;
 import fr.iglee42.evolvedmekanism.tiers.EMFactoryTier;
 import mekanism.api.recipes.cache.CachedRecipe.OperationTracker.RecipeError;
 import mekanism.client.SpecialColors;
@@ -25,7 +26,6 @@ import mekanism.common.tile.interfaces.IHasDumpButton;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraftforge.fml.ModList;
 import org.jetbrains.annotations.NotNull;
 
 public class GuiAdvancedFactory extends GuiConfigurableTile<TileEntityAdvancedFactoryBase<?>, MekanismTileContainer<TileEntityAdvancedFactoryBase<?>>> {
@@ -67,9 +67,8 @@ public class GuiAdvancedFactory extends GuiConfigurableTile<TileEntityAdvancedFa
         dynamicSlots = true;
     }
 
-    //TODO:一定要写一个Hook
     private boolean isEMLoadAndTierOrdinalAboveOverLocked() {
-        if (ModList.get().isLoaded("evolvedmekanism")) {
+        if (Mekmm.hooks.EMLoaded) {
             return tile.tier.ordinal() >= EMFactoryTier.OVERCLOCKED.ordinal();
         }
         return false;
