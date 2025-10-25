@@ -52,16 +52,14 @@ public class AdvancedFactory<TILE extends TileEntityAdvancedFactoryBase<?>> exte
         @SuppressWarnings("unchecked")
         public static <TILE extends TileEntityAdvancedFactoryBase<?>> AdvancedFactoryBuilder<AdvancedFactory<TILE>, TILE, ?> createAdvancedFactory(Supplier<?> tileEntityRegistrar, AdvancedFactoryType type,
                                                                                                                              FactoryTier tier) {
-            // this is dirty but unfortunately necessary for things to play right
             AdvancedFactoryBuilder<AdvancedFactory<TILE>, TILE, ?> builder = new AdvancedFactoryBuilder<>(new AdvancedFactory<>((Supplier<TileEntityTypeRegistryObject<TILE>>) tileEntityRegistrar,
                     () -> AdvancedFactoryContainerTypes.ADVANCED_FACTORY, type.getBaseMachine(), tier));
-            //Note, we can't just return the builder here as then it gets all confused about object types, so we just
-            // assign the value here, and then return the builder itself as it is the same object
             builder.withComputerSupport(tier, type.getRegistryNameComponentCapitalized() + "Factory");
             builder.withCustomShape(MoreMachineBlockShapes.getShape(tier, type));
-            if (type == AdvancedFactoryType.CENTRIFUGING) {
-                builder.withBounding((pos, state, builderPos) -> builderPos.add(pos.above()));
-            }
+            //由于1.20.1Mek没有将BoundingBlock加入到ItemTierInstaller中，导致升级有BoundingBlock方块会导致直接消失
+//            if (type == AdvancedFactoryType.CENTRIFUGING) {
+//                builder.withBounding((pos, state, builderPos) -> builderPos.add(pos.above()));
+//            }
             builder.replace(new AttributeParticleFX().addDense(ParticleTypes.SMOKE, 5, rand -> new Pos3D(
                     rand.nextFloat() * 0.7F - 0.3F,
                     rand.nextFloat() * 0.1F + 0.7F,

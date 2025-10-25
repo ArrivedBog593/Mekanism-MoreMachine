@@ -152,11 +152,6 @@ public class TileEntityChemicalInfusingFactory extends TileEntityGasToGasFactory
     }
 
     @Override
-    protected void sortInventoryOrTank() {
-
-    }
-
-    @Override
     public @NotNull IMekanismRecipeTypeProvider<ChemicalInfuserRecipe, InputRecipeCache.EitherSideChemical<Gas, GasStack, ChemicalInfuserRecipe>> getRecipeType() {
         return MekanismRecipeType.CHEMICAL_INFUSING;
     }

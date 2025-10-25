@@ -34,8 +34,8 @@ import mekanism.common.inventory.slot.chemical.GasInventorySlot;
 import mekanism.common.inventory.warning.WarningTracker.WarningType;
 import mekanism.common.lib.transmitter.TransmissionType;
 import mekanism.common.recipe.IMekanismRecipeTypeProvider;
-import mekanism.common.recipe.lookup.IDoubleRecipeLookupHandler;
-import mekanism.common.recipe.lookup.IRecipeLookupHandler;
+import mekanism.common.recipe.lookup.IDoubleRecipeLookupHandler.ItemChemicalRecipeLookupHandler;
+import mekanism.common.recipe.lookup.IRecipeLookupHandler.ConstantUsageRecipeLookupHandler;
 import mekanism.common.recipe.lookup.cache.InputRecipeCache;
 import mekanism.common.tier.FactoryTier;
 import mekanism.common.tile.interfaces.IHasDumpButton;
@@ -55,8 +55,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-public class TileEntityPlantingFactory extends TileEntityMoreMachineFactory<PlantingRecipe> implements IHasDumpButton, IRecipeLookupHandler.ConstantUsageRecipeLookupHandler,
-        IDoubleRecipeLookupHandler.ItemChemicalRecipeLookupHandler<Gas, GasStack, PlantingRecipe> {
+public class TileEntityPlantingFactory extends TileEntityMoreMachineFactory<PlantingRecipe> implements IHasDumpButton, ConstantUsageRecipeLookupHandler,
+        ItemChemicalRecipeLookupHandler<Gas, GasStack, PlantingRecipe> {
 
     private static final List<RecipeError> TRACKED_ERROR_TYPES = List.of(
             RecipeError.NOT_ENOUGH_ENERGY,
