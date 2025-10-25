@@ -338,7 +338,7 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
     }
 
     public int getOperationsPerTick() {
-        return this.operationsPerTick;
+        return operationsPerTick;
     }
 
     public void setTicksRequired(int value) {

@@ -25,9 +25,11 @@ import mekanism.common.tile.component.config.DataType;
 import mekanism.common.tile.component.config.slot.ChemicalSlotInfo;
 import mekanism.common.tile.interfaces.IBoundingBlock;
 import mekanism.common.upgrade.IUpgradeData;
+import mekanism.common.util.UpgradeUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.util.TriPredicate;
@@ -120,7 +122,7 @@ public class TileEntityCentrifugingFactory extends TileEntityChemicalToChemicalF
                 .setActive(active -> setActiveState(active, cacheIndex))
                 .setOnFinish(this::markForSave)
                 .setEnergyRequirements(energyContainer::getEnergyPerTick, energyContainer)
-                .setBaselineMaxOperations(this::getOperationsPerTick);
+                .setBaselineMaxOperations(() -> baselineMaxOperations);
     }
 
     @Override
@@ -129,6 +131,13 @@ public class TileEntityCentrifugingFactory extends TileEntityChemicalToChemicalF
         if (upgrade == Upgrade.SPEED) {
             baselineMaxOperations = (int) Math.pow(2, upgradeComponent.getUpgrades(Upgrade.SPEED));
         }
+    }
+
+    //更改加速升级的显示的，默认是10x，气体工厂是256x
+    @NotNull
+    @Override
+    public List<Component> getInfo(@NotNull Upgrade upgrade) {
+        return UpgradeUtils.getExpScaledInfo(this, upgrade);
     }
 
     @Override
