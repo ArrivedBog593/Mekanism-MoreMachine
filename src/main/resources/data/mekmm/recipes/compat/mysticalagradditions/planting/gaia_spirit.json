@@ -12,13 +12,13 @@
   },
   "itemInput": {
     "ingredient": {
-      "item": "mysticalagriculture:nether_star_seeds"
+      "item": "mysticalagriculture:gaia_spirit_seeds"
     }
   },
   "mainOutput": {
-    "item": "mysticalagriculture:nether_star_seeds"
+    "item": "mysticalagriculture:gaia_spirit_seeds"
   },
   "secondaryOutput": {
-    "item": "mysticalagriculture:nether_star_essence"
+    "item": "mysticalagriculture:gaia_spirit_essence"
   }
 }

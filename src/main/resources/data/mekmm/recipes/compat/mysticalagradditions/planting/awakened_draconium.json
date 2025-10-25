@@ -12,13 +12,13 @@
   },
   "itemInput": {
     "ingredient": {
-      "item": "mysticalagriculture:nether_star_seeds"
+      "item": "mysticalagriculture:awakened_draconium_seeds"
     }
   },
   "mainOutput": {
-    "item": "mysticalagriculture:nether_star_seeds"
+    "item": "mysticalagriculture:awakened_draconium_seeds"
   },
   "secondaryOutput": {
-    "item": "mysticalagriculture:nether_star_essence"
+    "item": "mysticalagriculture:awakened_draconium_essence"
   }
 }

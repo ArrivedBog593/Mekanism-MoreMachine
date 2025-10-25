@@ -2,7 +2,7 @@
   "forge:conditions": [
     {
       "type": "forge:mod_loaded",
-      "modid": "mysticalagradditions"
+      "modid": "quark"
     }
   ],
   "type": "mekmm:planting",
@@ -12,13 +12,14 @@
   },
   "itemInput": {
     "ingredient": {
-      "item": "mysticalagriculture:nether_star_seeds"
+      "item": "quark:orange_blossom_sapling"
     }
   },
   "mainOutput": {
-    "item": "mysticalagriculture:nether_star_seeds"
+    "item": "quark:orange_blossom_sapling"
   },
   "secondaryOutput": {
-    "item": "mysticalagriculture:nether_star_essence"
+    "count": 6,
+    "item": "quark:blossom_log"
   }
 }
