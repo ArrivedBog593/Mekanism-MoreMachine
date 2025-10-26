@@ -2,6 +2,8 @@ package com.jerry.mekaf.client.gui.machine;
 
 import com.jerry.mekaf.client.gui.element.tab.AdvancedFactoryGuiSortingTab;
 import com.jerry.mekaf.common.tile.factory.*;
+import com.jerry.mekmm.Mekmm;
+import fr.iglee42.evolvedmekanism.tiers.EMFactoryTier;
 import mekanism.api.recipes.cache.CachedRecipe;
 import mekanism.client.SpecialColors;
 import mekanism.client.gui.GuiConfigurableTile;
@@ -47,8 +49,23 @@ public class GuiAdvancedFactory extends GuiConfigurableTile<TileEntityAdvancedFa
             imageWidth += 34;
             inventoryLabelX = 26;
         }
+        //想尝试使用Emek的gui布局，但似乎有点麻烦，还是采用原始布局吧
+        if (isEMLoadAndTierOrdinalAboveOverLocked()) {
+            //这里采用mekE的布局公式，但要记得减去4，因为mekE是从0开始的
+            //这两个公式似乎并非完美，在index过大时可能会导致有细微的便宜，但未得到验证
+            int index = tile.tier.ordinal() - 4;
+            imageWidth += (36 * (index + 2)) + (2 * index);
+            inventoryLabelX = (22 * (index + 2)) - (3 * index);
+        }
         titleLabelY = 4;
         dynamicSlots = true;
+    }
+
+    private boolean isEMLoadAndTierOrdinalAboveOverLocked() {
+        if (Mekmm.hooks.evolvedMekanism.isLoaded()) {
+            return tile.tier.ordinal() >= EMFactoryTier.OVERCLOCKED.ordinal();
+        }
+        return false;
     }
 
     @Override
@@ -69,29 +86,29 @@ public class GuiAdvancedFactory extends GuiConfigurableTile<TileEntityAdvancedFa
         if (tile.hasExtraResourceBar()) {
             if (tile instanceof TileEntityWashingFactory factory) {
                 addRenderableWidget(new GuiFluidBar(this, GuiFluidBar.getProvider(factory.getFluidTankBar(), tile.getFluidTanks(null)), 7, 102,
-                        tile.tier == FactoryTier.ULTIMATE ? 172 : 138, 4, true))
+                        getBarWidth(), 4, true))
                         .warning(WarningTracker.WarningType.NO_MATCHING_RECIPE, tile.getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_SECONDARY_INPUT, 0));
-                dumpButton = addRenderableWidget(new GuiDumpButton<>(this, (TileEntityAdvancedFactoryBase<?> & IHasDumpButton) tile, tile.tier == FactoryTier.ULTIMATE ? 182 : 148, 102));
+                dumpButton = addRenderableWidget(new GuiDumpButton<>(this, (TileEntityAdvancedFactoryBase<?> & IHasDumpButton) tile, getButtonX(), 102));
             } else if (tile instanceof TileEntityPressurizedReactingFactory factory) {
                 // 出输出化学储罐
                 addRenderableWidget(new GuiChemicalGauge(() -> factory.outputChemicalTank, () -> tile.getChemicalTanks(null), GaugeType.SMALL, this, 6, 44))
                         .warning(WarningTracker.WarningType.NO_SPACE_IN_OUTPUT, factory.getWarningCheck(TileEntityPressurizedReactingFactory.NOT_ENOUGH_SPACE_GAS_OUTPUT_ERROR, 0));
                 // 化学储罐条
                 addRenderableWidget(new GuiChemicalBar(this, GuiChemicalBar.getProvider(factory.getChemicalTankBar(), tile.getChemicalTanks(null)), 7, 76,
-                        tile.tier == FactoryTier.ULTIMATE ? 172 : 138, 4, true))
+                        getBarWidth(), 4, true))
                         .warning(WarningTracker.WarningType.NO_MATCHING_RECIPE, tile.getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_SECONDARY_INPUT, 0));
                 // 流体储罐条
                 addRenderableWidget(new GuiFluidBar(this, GuiFluidBar.getProvider(factory.getFluidTankBar(), tile.getFluidTanks(null)), 7, 84,
-                        tile.tier == FactoryTier.ULTIMATE ? 172 : 138, 4, true))
+                        getBarWidth(), 4, true))
                         .warning(WarningTracker.WarningType.NO_MATCHING_RECIPE, tile.getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_SECONDARY_INPUT, 0));
                 // dump按钮
-                dumpButton = addRenderableWidget(new GuiDumpButton<>(this, (TileEntityAdvancedFactoryBase<?> & IHasDumpButton) tile, tile.tier == FactoryTier.ULTIMATE ? 182 : 148, 76));
+                dumpButton = addRenderableWidget(new GuiDumpButton<>(this, (TileEntityAdvancedFactoryBase<?> & IHasDumpButton) tile, getButtonX(), 76));
             } else {
                 addRenderableWidget(new GuiChemicalBar(this, GuiChemicalBar.getProvider(tile.getChemicalTankBar(), tile.getChemicalTanks(null)),
                         7, tile instanceof TileEntityChemicalToChemicalFactory<?> ? 102 : 89,
-                        tile.tier == FactoryTier.ULTIMATE ? 172 : 138, 4, true))
+                        getBarWidth(), 4, true))
                         .warning(WarningTracker.WarningType.NO_MATCHING_RECIPE, tile.getWarningCheck(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_SECONDARY_INPUT, 0));
-                dumpButton = addRenderableWidget(new GuiDumpButton<>(this, (TileEntityAdvancedFactoryBase<?> & IHasDumpButton) tile, tile.tier == FactoryTier.ULTIMATE ? 182 : 148,
+                dumpButton = addRenderableWidget(new GuiDumpButton<>(this, (TileEntityAdvancedFactoryBase<?> & IHasDumpButton) tile, getButtonX(),
                         tile instanceof TileEntityChemicalToChemicalFactory<?> ? 102 : 89));
             }
         }
@@ -139,6 +156,26 @@ public class GuiAdvancedFactory extends GuiConfigurableTile<TileEntityAdvancedFa
                     //Only can happen if recipes change because inputs are sanitized in the factory based on the output
                     .warning(WarningTracker.WarningType.INPUT_DOESNT_PRODUCE_OUTPUT, tile.getWarningCheck(CachedRecipe.OperationTracker.RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT, cacheIndex));
         }
+    }
+
+    private int getBarWidth() {
+        if (isEMLoadAndTierOrdinalAboveOverLocked()) {
+            //这里采用mekE的布局公式，但要记得减去4，因为mekE是从0开始的
+            //这两个公式似乎并非完美，在index过大时可能会导致有细微的便宜，但未得到验证
+            int index = tile.tier.ordinal() - 4;
+            return 210 + 38 * index;
+        }
+        return tile.tier == FactoryTier.ULTIMATE ? 172 : 138;
+    }
+
+    private int getButtonX() {
+        if (isEMLoadAndTierOrdinalAboveOverLocked()) {
+            //这里采用mekE的布局公式，但要记得减去4，因为mekE是从0开始的
+            //这两个公式似乎并非完美，在index过大时可能会导致有细微的便宜，但未得到验证
+            int index = tile.tier.ordinal() - 4;
+            return 220 + 38 * index;
+        }
+        return tile.tier == FactoryTier.ULTIMATE ? 182 : 148;
     }
 
     @Override

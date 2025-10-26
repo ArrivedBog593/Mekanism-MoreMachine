@@ -7,6 +7,7 @@ import com.jerry.meklm.common.registries.LargeMachineBlocks;
 import com.jerry.meklm.common.registries.LargeMachineContainerTypes;
 import com.jerry.meklm.common.registries.LargeMachineTileEntityTypes;
 import com.jerry.mekmm.common.config.MoreMachineConfig;
+import com.jerry.mekmm.common.integration.MoreMachineHooks;
 import com.jerry.mekmm.common.network.MoreMachinePacketHandler;
 import com.jerry.mekmm.common.registries.*;
 import com.mojang.logging.LogUtils;
@@ -24,11 +25,21 @@ public class Mekmm implements IModModule {
     public static final String MOD_ID = "mekmm";
     public static final String MOD_NAME = "MekanismMoreMachine";
     public static final Logger LOGGER = LogUtils.getLogger();
-
+    /**
+     * Mekanism More Machine Packet Pipeline
+     */
     private final MoreMachinePacketHandler packetHandler;
-
+    /**
+     * Mekanism More Machine mod instance
+     */
     public static Mekmm instance;
-
+    /**
+     * Mekanism More Machine hooks instance
+     */
+    public static final MoreMachineHooks hooks = new MoreMachineHooks();
+    /**
+     * Mekanism More Machine version number
+     */
     public final Version versionNumber;
 
     public Mekmm(IEventBus modEventBus, ModContainer modContainer) {

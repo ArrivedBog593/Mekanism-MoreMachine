@@ -4,16 +4,16 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.jerry.mekaf.common.block.prefab.BlockAdvancedFactoryMachine;
 import com.jerry.mekaf.common.content.blocktype.AdvancedFactoryType;
-import com.jerry.mekaf.common.item.block.machine.AdvancedItemBlockFactory;
+import com.jerry.mekaf.common.item.block.machine.ItemBlockAdvancedFactory;
 import com.jerry.mekaf.common.tile.factory.*;
 import com.jerry.mekmm.Mekmm;
+import com.jerry.mekmm.common.util.MoreMachineUtils;
 import mekanism.common.capabilities.Capabilities;
 import mekanism.common.registration.impl.BlockRegistryObject;
 import mekanism.common.registration.impl.TileEntityTypeDeferredRegister;
 import mekanism.common.registration.impl.TileEntityTypeRegistryObject;
 import mekanism.common.tier.FactoryTier;
 import mekanism.common.tile.base.TileEntityMekanism;
-import mekanism.common.util.EnumUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.block.Block;
@@ -30,7 +30,7 @@ public class AdvancedFactoryTileEntityTypes {
     private static final Table<FactoryTier, AdvancedFactoryType, TileEntityTypeRegistryObject<? extends TileEntityAdvancedFactoryBase<?>>> AF_FACTORIES = HashBasedTable.create();
 
     static {
-        for (FactoryTier tier : EnumUtils.FACTORY_TIERS) {
+        for (FactoryTier tier : MoreMachineUtils.getFactoryTier()) {
             registerFactory(tier, AdvancedFactoryType.OXIDIZING, TileEntityOxidizingFactory::new);
             registerFactory(tier, AdvancedFactoryType.DISSOLVING, TileEntityDissolvingFactory::new);
             registerFactory(tier, AdvancedFactoryType.CHEMICAL_INFUSING, TileEntityChemicalInfusingFactory::new);
@@ -43,7 +43,7 @@ public class AdvancedFactoryTileEntityTypes {
     }
 
     private static void registerFactory(FactoryTier tier, AdvancedFactoryType type, AdvancedBlockEntityFactory<? extends TileEntityAdvancedFactoryBase<?>> factoryConstructor) {
-        BlockRegistryObject<BlockAdvancedFactoryMachine.BlockAdvancedFactory<?>, AdvancedItemBlockFactory> block = AdvancedFactoryBlocks.getAdvancedFactory(tier, type);
+        BlockRegistryObject<BlockAdvancedFactoryMachine.BlockAdvancedFactory<?>, ItemBlockAdvancedFactory> block = AdvancedFactoryBlocks.getAdvancedFactory(tier, type);
         TileEntityTypeRegistryObject<? extends TileEntityAdvancedFactoryBase<?>> tileRO = AF_TILE_ENTITY_TYPES.mekBuilder(block, (pos, state) -> factoryConstructor.create(block, pos, state))
                 .clientTicker(TileEntityMekanism::tickClient)
                 .serverTicker(TileEntityMekanism::tickServer)

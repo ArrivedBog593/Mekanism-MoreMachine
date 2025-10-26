@@ -56,7 +56,7 @@ public class MoreMachineClientRegistration {
         ClientRegistrationUtil.registerScreen(event, MoreMachineContainerTypes.AMBIENT_GAS_COLLECTOR, GuiAmbientGasCollector::new);
         ClientRegistrationUtil.registerScreen(event, MoreMachineContainerTypes.WIRELESS_CHARGING_STATION, GuiWirelessChargingStation::new);
         ClientRegistrationUtil.registerScreen(event, MoreMachineContainerTypes.WIRELESS_TRANSMISSION_STATION, GuiWirelessTransmissionStation::new);
-        ClientRegistrationUtil.registerScreen(event, MoreMachineContainerTypes.MM_FACTORY, GuiMMFactory::new);
+        ClientRegistrationUtil.registerScreen(event, MoreMachineContainerTypes.MM_FACTORY, GuiMoreMachineFactory::new);
 
         //Advanced Factory
         ClientRegistrationUtil.registerScreen(event, AdvancedFactoryContainerTypes.ADVANCED_FACTORY, GuiAdvancedFactory::new);

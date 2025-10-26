@@ -1,12 +1,12 @@
 package com.jerry.mekmm.client.recipe_viewer.jei;
 
-import com.jerry.mekmm.common.block.attribute.MMAttributeFactoryType;
+import com.jerry.mekmm.common.block.attribute.MoreMachineAttributeFactoryType;
 import com.jerry.mekmm.common.registries.MoreMachineBlocks;
+import com.jerry.mekmm.common.util.MoreMachineUtils;
 import mekanism.client.recipe_viewer.jei.MekanismJEI;
 import mekanism.client.recipe_viewer.type.IRecipeViewerRecipeType;
 import mekanism.common.block.attribute.Attribute;
 import mekanism.common.tier.FactoryTier;
-import mekanism.common.util.EnumUtils;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import net.minecraft.world.item.BlockItem;
@@ -41,10 +41,10 @@ public class MMCatalystRegistryHelper {
                 registry.addRecipeCatalyst(item, recipeType);
             }
             if (item instanceof BlockItem blockItem) {
-                MMAttributeFactoryType factoryType = Attribute.get(blockItem.getBlock(), MMAttributeFactoryType.class);
+                MoreMachineAttributeFactoryType factoryType = Attribute.get(blockItem.getBlock(), MoreMachineAttributeFactoryType.class);
                 if (factoryType != null) {
-                    for (FactoryTier tier : EnumUtils.FACTORY_TIERS) {
-                        registry.addRecipeCatalyst(MoreMachineBlocks.getMMFactory(tier, factoryType.getMMFactoryType()), recipeType);
+                    for (FactoryTier tier : MoreMachineUtils.getFactoryTier()) {
+                        registry.addRecipeCatalyst(MoreMachineBlocks.getMoreMachineFactory(tier, factoryType.getMoreMachineFactoryType()), recipeType);
                     }
                 }
             }

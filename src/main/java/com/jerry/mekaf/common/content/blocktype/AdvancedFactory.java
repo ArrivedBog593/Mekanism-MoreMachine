@@ -6,6 +6,7 @@ import com.jerry.mekaf.common.registries.AdvancedFactoryContainerTypes;
 import com.jerry.mekaf.common.tile.factory.TileEntityAdvancedFactoryBase;
 import com.jerry.mekmm.common.content.blocktype.MoreMachineBlockShapes;
 import com.jerry.mekmm.common.content.blocktype.MoreMachineMachine;
+import com.jerry.mekmm.common.util.MoreMachineUtils;
 import mekanism.api.math.MathUtils;
 import mekanism.common.MekanismLang;
 import mekanism.common.block.attribute.*;
@@ -15,7 +16,6 @@ import mekanism.common.lib.transmitter.TransmissionType;
 import mekanism.common.registration.impl.ContainerTypeRegistryObject;
 import mekanism.common.registration.impl.TileEntityTypeRegistryObject;
 import mekanism.common.tier.FactoryTier;
-import mekanism.common.util.EnumUtils;
 import net.minecraft.core.particles.ParticleTypes;
 
 import java.util.function.Supplier;
@@ -31,8 +31,8 @@ public class AdvancedFactory<TILE extends TileEntityAdvancedFactoryBase<?>> exte
         setMachineData(tier);
         add(new AttributeGui(containerRegistrar, null), new AttributeTier<>(tier));
 
-        if (tier.ordinal() < EnumUtils.FACTORY_TIERS.length - 1) {
-            add(new AttributeUpgradeable(() -> AdvancedFactoryBlocks.getAdvancedFactory(EnumUtils.FACTORY_TIERS[tier.ordinal() + 1], origMachine.getAdvancedFactoryType())));
+        if (tier.ordinal() < MoreMachineUtils.getFactoryTier().length - 1) {
+            add(new AttributeUpgradeable(() -> AdvancedFactoryBlocks.getAdvancedFactory(MoreMachineUtils.getFactoryTier()[tier.ordinal() + 1], origMachine.getAdvancedFactoryType())));
         }
     }
 

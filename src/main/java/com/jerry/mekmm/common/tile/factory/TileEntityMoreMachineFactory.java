@@ -1,6 +1,6 @@
 package com.jerry.mekmm.common.tile.factory;
 
-import com.jerry.mekmm.common.block.attribute.MMAttributeFactoryType;
+import com.jerry.mekmm.common.block.attribute.MoreMachineAttributeFactoryType;
 import com.jerry.mekmm.common.content.blocktype.MoreMachineFactoryType;
 import com.jerry.mekmm.common.inventory.slot.MoreMachineFactoryInputInventorySlot;
 import com.jerry.mekmm.common.util.MoreMachineUtils;
@@ -113,7 +113,7 @@ public abstract class TileEntityMoreMachineFactory<RECIPE extends MekanismRecipe
 
     protected TileEntityMoreMachineFactory(Holder<Block> blockProvider, BlockPos pos, BlockState state, List<RecipeError> errorTypes, Set<RecipeError> globalErrorTypes) {
         super(blockProvider, pos, state);
-        type = Attribute.getOrThrow(blockProvider, MMAttributeFactoryType.class).getMMFactoryType();
+        type = Attribute.getOrThrow(blockProvider, MoreMachineAttributeFactoryType.class).getMoreMachineFactoryType();
         inputSlots = new ArrayList<>();
         outputSlots = new ArrayList<>();
 

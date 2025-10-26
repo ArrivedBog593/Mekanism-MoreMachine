@@ -6,7 +6,7 @@ import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.common.attachments.component.MoreMachineAttachedSideConfig;
 import com.jerry.mekmm.common.block.BlockDoll;
 import com.jerry.mekmm.common.block.prefab.MMBlockFactoryMachine;
-import com.jerry.mekmm.common.block.prefab.MMBlockFactoryMachine.MMBlockFactory;
+import com.jerry.mekmm.common.block.prefab.MMBlockFactoryMachine.BlockMoreMachineFactory;
 import com.jerry.mekmm.common.content.blocktype.MoreMachineFactory;
 import com.jerry.mekmm.common.content.blocktype.MoreMachineFactoryType;
 import com.jerry.mekmm.common.content.blocktype.MoreMachineMachine.MoreMachineFactoryMachine;
@@ -21,6 +21,7 @@ import com.jerry.mekmm.common.tile.factory.TileEntityMoreMachineFactory;
 import com.jerry.mekmm.common.tile.factory.TileEntityReplicatingFactory;
 import com.jerry.mekmm.common.tile.machine.*;
 import com.jerry.mekmm.common.util.MoreMachineEnumUtils;
+import com.jerry.mekmm.common.util.MoreMachineUtils;
 import mekanism.api.tier.ITier;
 import mekanism.common.attachments.component.AttachedEjector;
 import mekanism.common.attachments.component.AttachedSideConfig;
@@ -41,7 +42,6 @@ import mekanism.common.registration.impl.BlockRegistryObject;
 import mekanism.common.registries.MekanismDataComponents;
 import mekanism.common.resource.BlockResourceInfo;
 import mekanism.common.tier.FactoryTier;
-import mekanism.common.util.EnumUtils;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -63,13 +63,13 @@ public class MoreMachineBlocks {
 
     public static final BlockDeferredRegister MM_BLOCKS = new BlockDeferredRegister(Mekmm.MOD_ID);
 
-    private static final Table<FactoryTier, MoreMachineFactoryType, BlockRegistryObject<MMBlockFactoryMachine.MMBlockFactory<?>, ItemBlockMoreMachineFactory>> MM_FACTORIES = HashBasedTable.create();
+    private static final Table<FactoryTier, MoreMachineFactoryType, BlockRegistryObject<BlockMoreMachineFactory<?>, ItemBlockMoreMachineFactory>> MM_FACTORIES = HashBasedTable.create();
 
     static {
         // factories
-        for (FactoryTier tier : EnumUtils.FACTORY_TIERS) {
+        for (FactoryTier tier : MoreMachineUtils.getFactoryTier()) {
             for (MoreMachineFactoryType type : MoreMachineEnumUtils.MM_FACTORY_TYPES) {
-                MM_FACTORIES.put(tier, type, registerMMFactory(MoreMachineBlockTypes.getMMFactory(tier, type)));
+                MM_FACTORIES.put(tier, type, registerMoreMachineFactory(MoreMachineBlockTypes.getMoreMachineFactory(tier, type)));
             }
         }
     }
@@ -212,12 +212,12 @@ public class MoreMachineBlocks {
                     )
             );
 
-    private static <TILE extends TileEntityMoreMachineFactory<?>> BlockRegistryObject<MMBlockFactory<?>, ItemBlockMoreMachineFactory> registerMMFactory(MoreMachineFactory<TILE> type) {
+    private static <TILE extends TileEntityMoreMachineFactory<?>> BlockRegistryObject<BlockMoreMachineFactory<?>, ItemBlockMoreMachineFactory> registerMoreMachineFactory(MoreMachineFactory<TILE> type) {
         FactoryTier tier = (FactoryTier) Objects.requireNonNull(type.get(AttributeTier.class)).tier();
-        BlockRegistryObject<MMBlockFactory<?>, ItemBlockMoreMachineFactory> factory = registerTieredBlock(tier, "_" + type.getMMFactoryType().getRegistryNameComponent() + "_factory", () -> new MMBlockFactoryMachine.MMBlockFactory<>(type), ItemBlockMoreMachineFactory::new);
+        BlockRegistryObject<BlockMoreMachineFactory<?>, ItemBlockMoreMachineFactory> factory = registerTieredBlock(tier, "_" + type.getMoreMachineFactoryType().getRegistryNameComponent() + "_factory", () -> new BlockMoreMachineFactory<>(type), ItemBlockMoreMachineFactory::new);
         factory.forItemHolder(holder -> {
             int processes = tier.processes;
-            Predicate<ItemStack> recipeInputPredicate = switch (type.getMMFactoryType()) {
+            Predicate<ItemStack> recipeInputPredicate = switch (type.getMoreMachineFactoryType()) {
                 case RECYCLING -> s -> MoreMachineRecipeType.RECYCLING.getInputCache().containsInput(null, s);
                 case PLANTING_STATION ->
                         s -> MoreMachineRecipeType.PLANTING_STATION.getInputCache().containsInputA(null, s);
@@ -226,7 +226,7 @@ public class MoreMachineBlocks {
                 case CNC_ROLLING_MILL -> s -> MoreMachineRecipeType.ROLLING_MILL.getInputCache().containsInput(null, s);
                 case REPLICATING -> TileEntityReplicator::isValidItemInput;
             };
-            switch (type.getMMFactoryType()) {
+            switch (type.getMoreMachineFactoryType()) {
                 case CNC_STAMPING ->
                         holder.addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
                                 .addBasicFactorySlots(processes, recipeInputPredicate)
@@ -242,7 +242,7 @@ public class MoreMachineBlocks {
                         );
                 case PLANTING_STATION -> holder
                         .addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> ChemicalTanksBuilder.builder()
-                                .addBasic(TileEntityPlantingStation.MAX_GAS * processes, switch (type.getMMFactoryType()) {
+                                .addBasic(TileEntityPlantingStation.MAX_GAS * processes, switch (type.getMoreMachineFactoryType()) {
                                     case PLANTING_STATION -> MoreMachineRecipeType.PLANTING_STATION;
                                     default ->
                                             throw new IllegalStateException("Factory type doesn't have a known gas recipe.");
@@ -298,7 +298,7 @@ public class MoreMachineBlocks {
                             .addAttachmentOnlyContainers(ContainerType.FLUID, () -> FluidTanksBuilder.builder()
                                     .addBasic(TileEntityWirelessTransmissionStation.MAX_FLUID)
                                     .build()
-                            ).addAttachmentOnlyContainers(ContainerType.CHEMICAL, ()-> ChemicalTanksBuilder.builder()
+                            ).addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> ChemicalTanksBuilder.builder()
                                     .addBasic(TileEntityWirelessTransmissionStation.MAX_CHEMICAL)
                                     .build()
                             ).addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
@@ -326,12 +326,12 @@ public class MoreMachineBlocks {
      * @param type - recipe type to add to the Factory
      * @return factory with defined tier and recipe type
      */
-    public static BlockRegistryObject<MMBlockFactoryMachine.MMBlockFactory<?>, ItemBlockMoreMachineFactory> getMMFactory(@NotNull FactoryTier tier, @NotNull MoreMachineFactoryType type) {
+    public static BlockRegistryObject<BlockMoreMachineFactory<?>, ItemBlockMoreMachineFactory> getMoreMachineFactory(@NotNull FactoryTier tier, @NotNull MoreMachineFactoryType type) {
         return MM_FACTORIES.get(tier, type);
     }
 
     @SuppressWarnings("unchecked")
-    public static BlockRegistryObject<MMBlockFactoryMachine.MMBlockFactory<?>, ItemBlockMoreMachineFactory>[] getMMFactoryBlocks() {
+    public static BlockRegistryObject<BlockMoreMachineFactory<?>, ItemBlockMoreMachineFactory>[] getMMFactoryBlocks() {
         return MM_FACTORIES.values().toArray(new BlockRegistryObject[0]);
     }
 }

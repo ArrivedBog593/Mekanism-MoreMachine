@@ -1,6 +1,6 @@
 package com.jerry.mekmm.common.item.block.machine;
 
-import com.jerry.mekmm.common.block.attribute.MMAttributeFactoryType;
+import com.jerry.mekmm.common.block.attribute.MoreMachineAttributeFactoryType;
 import com.jerry.mekmm.common.block.prefab.MMBlockFactoryMachine;
 import mekanism.api.text.EnumColor;
 import mekanism.common.MekanismLang;
@@ -21,8 +21,8 @@ import java.util.List;
 
 public class ItemBlockMoreMachineFactory extends ItemBlockTooltip<BlockTile<?, ?>> {
 
-    private static AttachedSideConfig getSideConfig(MMBlockFactoryMachine.MMBlockFactory<?> block) {
-        return switch (Attribute.getOrThrow(block.builtInRegistryHolder(), MMAttributeFactoryType.class).getMMFactoryType()) {
+    private static AttachedSideConfig getSideConfig(MMBlockFactoryMachine.BlockMoreMachineFactory<?> block) {
+        return switch (Attribute.getOrThrow(block.builtInRegistryHolder(), MoreMachineAttributeFactoryType.class).getMoreMachineFactoryType()) {
 //            case COMPRESSING, INFUSING -> AttachedSideConfig.ADVANCED_MACHINE;
 //            case COMBINING -> AttachedSideConfig.EXTRA_MACHINE;
 //            case PURIFYING, INJECTING -> AttachedSideConfig.ADVANCED_MACHINE_INPUT_ONLY;
@@ -32,7 +32,7 @@ public class ItemBlockMoreMachineFactory extends ItemBlockTooltip<BlockTile<?, ?
         };
     }
 
-    public ItemBlockMoreMachineFactory(MMBlockFactoryMachine.MMBlockFactory<?> block, Properties properties) {
+    public ItemBlockMoreMachineFactory(MMBlockFactoryMachine.BlockMoreMachineFactory<?> block, Properties properties) {
         super(block, true, properties
                 .component(MekanismDataComponents.SORTING, false)
                 .component(MekanismDataComponents.EJECTOR, AttachedEjector.DEFAULT)
@@ -48,9 +48,9 @@ public class ItemBlockMoreMachineFactory extends ItemBlockTooltip<BlockTile<?, ?
     @Override
     protected void addTypeDetails(@NotNull ItemStack stack, @NotNull Item.TooltipContext context, @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
         //Should always be present but validate it just in case
-        MMAttributeFactoryType factoryType = Attribute.get(getBlock(), MMAttributeFactoryType.class);
+        MoreMachineAttributeFactoryType factoryType = Attribute.get(getBlock(), MoreMachineAttributeFactoryType.class);
         if (factoryType != null) {
-            tooltip.add(MekanismLang.FACTORY_TYPE.translateColored(EnumColor.INDIGO, EnumColor.GRAY, factoryType.getMMFactoryType()));
+            tooltip.add(MekanismLang.FACTORY_TYPE.translateColored(EnumColor.INDIGO, EnumColor.GRAY, factoryType.getMoreMachineFactoryType()));
         }
         super.addTypeDetails(stack, context, tooltip, flag);
     }

@@ -6,6 +6,7 @@ import com.jerry.mekaf.common.content.blocktype.AdvancedFactory;
 import com.jerry.mekaf.common.content.blocktype.AdvancedFactoryType;
 import com.jerry.mekmm.common.content.blocktype.MoreMachineMachine;
 import com.jerry.mekmm.common.util.MoreMachineEnumUtils;
+import com.jerry.mekmm.common.util.MoreMachineUtils;
 import mekanism.common.MekanismLang;
 import mekanism.common.block.attribute.AttributeHasBounding;
 import mekanism.common.block.attribute.AttributeSideConfig;
@@ -18,7 +19,6 @@ import mekanism.common.registries.MekanismSounds;
 import mekanism.common.registries.MekanismTileEntityTypes;
 import mekanism.common.tier.FactoryTier;
 import mekanism.common.tile.machine.*;
-import mekanism.common.util.EnumUtils;
 
 public class AdvancedFactoryBlockTypes {
 
@@ -117,7 +117,7 @@ public class AdvancedFactoryBlockTypes {
             .build();
 
     static {
-        for (FactoryTier tier : EnumUtils.FACTORY_TIERS) {
+        for (FactoryTier tier : MoreMachineUtils.getFactoryTier()) {
             for (AdvancedFactoryType type : MoreMachineEnumUtils.ADVANCED_FACTORY_TYPES) {
                 AF_FACTORIES.put(tier, type, AdvancedFactory.AdvancedFactoryBuilder.createAdvancedFactory(() -> AdvancedFactoryTileEntityTypes.getAdvancedFactoryTile(tier, type), type, tier).build());
             }

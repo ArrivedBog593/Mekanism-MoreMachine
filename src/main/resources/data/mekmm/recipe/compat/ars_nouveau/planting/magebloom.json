@@ -20,7 +20,7 @@
   },
   "secondary_output": {
     "count": 1,
-    "id": "'ars_nouveau:magebloom"
+    "id": "ars_nouveau:magebloom"
   },
   "per_tick_usage":true
 }

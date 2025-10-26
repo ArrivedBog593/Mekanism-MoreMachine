@@ -23,9 +23,9 @@ public class MMBlockFactoryMachine<TILE extends TileEntityMekanism, MACHINE exte
         }
     }
 
-    public static class MMBlockFactory<TILE extends TileEntityMoreMachineFactory<?>> extends MMBlockFactoryMachineModel<TILE, MoreMachineFactory<TILE>> {
+    public static class BlockMoreMachineFactory<TILE extends TileEntityMoreMachineFactory<?>> extends MMBlockFactoryMachineModel<TILE, MoreMachineFactory<TILE>> {
 
-        public MMBlockFactory(MoreMachineFactory<TILE> factoryType) {
+        public BlockMoreMachineFactory(MoreMachineFactory<TILE> factoryType) {
             super(factoryType, properties -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor()));
         }
     }

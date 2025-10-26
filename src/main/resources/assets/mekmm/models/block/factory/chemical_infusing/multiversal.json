@@ -1,0 +1,6 @@
+{
+  "parent":"mekmm:block/factory/chemical_infusing/base",
+  "textures": {
+    "all": "mekmm:block/factory/chemical_infusing/chemical_infuser_multiversal"
+  }
+}

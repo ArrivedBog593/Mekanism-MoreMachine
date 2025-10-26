@@ -5,10 +5,11 @@ import com.jerry.mekmm.client.recipe_viewer.MMRecipeViewerRecipeType;
 import com.jerry.mekmm.client.recipe_viewer.MMRecipeViewerUtils;
 import com.jerry.mekmm.client.recipe_viewer.emi.recipe.*;
 import com.jerry.mekmm.common.MoreMachineLang;
-import com.jerry.mekmm.common.block.attribute.MMAttributeFactoryType;
+import com.jerry.mekmm.common.block.attribute.MoreMachineAttributeFactoryType;
 import com.jerry.mekmm.common.registries.MoreMachineBlocks;
 import com.jerry.mekmm.common.registries.MoreMachineChemicals;
 import com.jerry.mekmm.common.registries.MoreMachineItems;
+import com.jerry.mekmm.common.util.MoreMachineUtils;
 import dev.emi.emi.api.EmiEntrypoint;
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
@@ -25,7 +26,6 @@ import mekanism.client.recipe_viewer.type.IRecipeViewerRecipeType;
 import mekanism.common.block.attribute.Attribute;
 import mekanism.common.recipe.IMekanismRecipeTypeProvider;
 import mekanism.common.tier.FactoryTier;
-import mekanism.common.util.EnumUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -94,10 +94,10 @@ public class MoreMachineEMI implements EmiPlugin {
             Item item = workstation.asItem();
             registry.addWorkstation(category, EmiStack.of(item));
             if (item instanceof BlockItem blockItem) {
-                MMAttributeFactoryType factoryType = Attribute.get(blockItem.getBlock(), MMAttributeFactoryType.class);
+                MoreMachineAttributeFactoryType factoryType = Attribute.get(blockItem.getBlock(), MoreMachineAttributeFactoryType.class);
                 if (factoryType != null) {
-                    for (FactoryTier tier : EnumUtils.FACTORY_TIERS) {
-                        registry.addWorkstation(category, EmiStack.of(MoreMachineBlocks.getMMFactory(tier, factoryType.getMMFactoryType())));
+                    for (FactoryTier tier : MoreMachineUtils.getFactoryTier()) {
+                        registry.addWorkstation(category, EmiStack.of(MoreMachineBlocks.getMoreMachineFactory(tier, factoryType.getMoreMachineFactoryType())));
                     }
                 }
             }

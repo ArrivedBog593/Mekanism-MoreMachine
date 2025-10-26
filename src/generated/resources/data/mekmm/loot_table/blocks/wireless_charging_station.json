@@ -19,6 +19,9 @@
                 "mekanism:redstone_control",
                 "mekanism:security",
                 "mekanism:side_config",
+                "mekmm:charge_curios",
+                "mekmm:charge_equipment",
+                "mekmm:charge_inventory",
                 "mekanism:energy",
                 "mekanism:items"
               ],

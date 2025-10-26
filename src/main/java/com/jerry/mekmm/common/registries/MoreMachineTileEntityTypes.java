@@ -11,13 +11,13 @@ import com.jerry.mekmm.common.tile.TileEntityWirelessChargingStation;
 import com.jerry.mekmm.common.tile.TileEntityWirelessTransmissionStation;
 import com.jerry.mekmm.common.tile.factory.*;
 import com.jerry.mekmm.common.tile.machine.*;
+import com.jerry.mekmm.common.util.MoreMachineUtils;
 import mekanism.common.capabilities.Capabilities;
 import mekanism.common.registration.impl.BlockRegistryObject;
 import mekanism.common.registration.impl.TileEntityTypeDeferredRegister;
 import mekanism.common.registration.impl.TileEntityTypeRegistryObject;
 import mekanism.common.tier.FactoryTier;
 import mekanism.common.tile.base.TileEntityMekanism;
-import mekanism.common.util.EnumUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.block.Block;
@@ -34,7 +34,7 @@ public class MoreMachineTileEntityTypes {
     private static final Table<FactoryTier, MoreMachineFactoryType, TileEntityTypeRegistryObject<? extends TileEntityMoreMachineFactory<?>>> MM_FACTORIES = HashBasedTable.create();
 
     static {
-        for (FactoryTier tier : EnumUtils.FACTORY_TIERS) {
+        for (FactoryTier tier : MoreMachineUtils.getFactoryTier()) {
             registerFactory(tier, MoreMachineFactoryType.RECYCLING, TileEntityRecyclingFactory::new);
             registerFactory(tier, MoreMachineFactoryType.PLANTING_STATION, TileEntityPlantingFactory::new);
             registerFactory(tier, MoreMachineFactoryType.CNC_STAMPING, TileEntityStampingFactory::new);
@@ -45,7 +45,7 @@ public class MoreMachineTileEntityTypes {
     }
 
     private static void registerFactory(FactoryTier tier, MoreMachineFactoryType type, MMBlockEntityFactory<? extends TileEntityMoreMachineFactory<?>> factoryConstructor) {
-        BlockRegistryObject<MMBlockFactoryMachine.MMBlockFactory<?>, ItemBlockMoreMachineFactory> block = MoreMachineBlocks.getMMFactory(tier, type);
+        BlockRegistryObject<MMBlockFactoryMachine.BlockMoreMachineFactory<?>, ItemBlockMoreMachineFactory> block = MoreMachineBlocks.getMoreMachineFactory(tier, type);
         TileEntityTypeRegistryObject<? extends TileEntityMoreMachineFactory<?>> tileRO = MM_TILE_ENTITY_TYPES.mekBuilder(block, (pos, state) -> factoryConstructor.create(block, pos, state))
                 .clientTicker(TileEntityMekanism::tickClient)
                 .serverTicker(TileEntityMekanism::tickServer)
@@ -132,7 +132,7 @@ public class MoreMachineTileEntityTypes {
             .builder(MoreMachineBlocks.AUTHOR_DOLL, TileEntityDoll::new)
             .build();
 
-    public static TileEntityTypeRegistryObject<? extends TileEntityMoreMachineFactory<?>> getMMFactoryTile(FactoryTier tier, MoreMachineFactoryType type) {
+    public static TileEntityTypeRegistryObject<? extends TileEntityMoreMachineFactory<?>> getMoreMachineFactoryTile(FactoryTier tier, MoreMachineFactoryType type) {
         return MM_FACTORIES.get(tier, type);
     }
 

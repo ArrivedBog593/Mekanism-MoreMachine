@@ -3,7 +3,7 @@ package com.jerry.mekmm.common.content.blocktype;
 import com.jerry.mekaf.common.block.attribute.AttributeAdvancedFactoryType;
 import com.jerry.mekaf.common.content.blocktype.AdvancedFactoryType;
 import com.jerry.mekaf.common.registries.AdvancedFactoryBlocks;
-import com.jerry.mekmm.common.block.attribute.MMAttributeFactoryType;
+import com.jerry.mekmm.common.block.attribute.MoreMachineAttributeFactoryType;
 import com.jerry.mekmm.common.registries.MoreMachineBlocks;
 import mekanism.api.text.ILangEntry;
 import mekanism.common.block.attribute.*;
@@ -33,7 +33,7 @@ public class MoreMachineMachine<TILE extends TileEntityMekanism> extends BlockTy
 
         public MoreMachineFactoryMachine(Supplier<TileEntityTypeRegistryObject<TILE>> tileEntitySupplier, ILangEntry description, MoreMachineFactoryType factoryType) {
             super(tileEntitySupplier, description);
-            add(new MMAttributeFactoryType(factoryType), new AttributeUpgradeable(() -> MoreMachineBlocks.getMMFactory(FactoryTier.BASIC, getMMFactoryType())));
+            add(new MoreMachineAttributeFactoryType(factoryType), new AttributeUpgradeable(() -> MoreMachineBlocks.getMoreMachineFactory(FactoryTier.BASIC, getMoreMachineFactoryType())));
         }
 
         public MoreMachineFactoryMachine(Supplier<TileEntityTypeRegistryObject<TILE>> tileEntitySupplier, ILangEntry description, AdvancedFactoryType factoryType) {
@@ -41,8 +41,8 @@ public class MoreMachineMachine<TILE extends TileEntityMekanism> extends BlockTy
             add(new AttributeAdvancedFactoryType(factoryType), new AttributeUpgradeable(() -> AdvancedFactoryBlocks.getAdvancedFactory(FactoryTier.BASIC, getAdvancedFactoryType())));
         }
 
-        public MoreMachineFactoryType getMMFactoryType() {
-            return Objects.requireNonNull(get(MMAttributeFactoryType.class)).getMMFactoryType();
+        public MoreMachineFactoryType getMoreMachineFactoryType() {
+            return Objects.requireNonNull(get(MoreMachineAttributeFactoryType.class)).getMoreMachineFactoryType();
         }
 
         public AdvancedFactoryType getAdvancedFactoryType() {

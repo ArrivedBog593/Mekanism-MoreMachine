@@ -1,0 +1,33 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "evolvedmekanism"
+    }
+  ],
+  "type": "mekanism:mek_data",
+  "category": "misc",
+  "key": {
+    "A": {
+      "tag": "forge:alloys/overclocked"
+    },
+    "C": {
+      "tag": "forge:circuits/overclocked"
+    },
+    "I": {
+      "tag": "c:ingots/uranium"
+    },
+    "P": {
+      "item": "mekmm:ultimate_crystallizing_factory"
+    }
+  },
+  "pattern": [
+    "ACA",
+    "IPI",
+    "ACA"
+  ],
+  "result": {
+    "count": 1,
+    "id": "mekmm:overclocked_crystallizing_factory"
+  }
+}

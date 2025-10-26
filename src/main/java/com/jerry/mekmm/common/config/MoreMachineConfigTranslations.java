@@ -14,9 +14,9 @@ public enum MoreMachineConfigTranslations implements IConfigTranslation {
             "How much energy is produced per mB of Hydrogen, also affects Electrolytic Separator usage, Ethene burn rate and Gas-Burning Generator energy capacity."),
 
     GENERAL_REPLICATOR_RECIPES("general.replicator", "Replicator Recipes", "Custom Replicator Recipes"),
-    ITEM_RECIPES("general.item_replicator.recipes", "Add Item Replicator Recipes", "The recipes added here will be added to the item replicator. Write using modid:registeredName#amount, # followed by the amount(not null or zero) of UU matter consumed. For example:[\"minecraft:stone#10\",\"mekanism:basic_bin#100\"]"),
-    FLUID_RECIPES("general.fluid_replicator.recipes", "Add Fluid Replicator Recipes", "The recipes added here will be added to the fluid replicator. Write using modid:registeredName#amount, # followed by the amount(not null or zero) of UU matter consumed. For example:[\"minecraft:water#10\",\"mekanism:heavy_water#100\"]"),
-    CHEMICAL_RECIPES("general.chemical_replicator.recipes", "Add Chemical Replicator Recipes", "The recipes added here will be added to the chemical replicator. Write using modid:registeredName#amount, # followed by the amount(not null or zero) of UU matter consumed. For example:[\"mekanism:oxygen#10\",\"mekanism:hydrogen#100\"]"),
+    ITEM_RECIPES("general.item_replicator.recipes", "Add Item Replicator Recipes", "The recipes added here will be added to the item replicator. Write using modId:registeredName#amount, # followed by the amount(not null or zero) of UU matter consumed. For example:[\"minecraft:stone#10\",\"mekanism:basic_bin#100\"]"),
+    FLUID_RECIPES("general.fluid_replicator.recipes", "Add Fluid Replicator Recipes", "The recipes added here will be added to the fluid replicator. Write using modId:registeredName#amount, # followed by the amount(not null or zero) of UU matter consumed. For example:[\"minecraft:water#10\",\"mekanism:heavy_water#100\"]"),
+    CHEMICAL_RECIPES("general.chemical_replicator.recipes", "Add Chemical Replicator Recipes", "The recipes added here will be added to the chemical replicator. Write using modId:registeredName#amount, # followed by the amount(not null or zero) of UU matter consumed. For example:[\"mekanism:oxygen#10\",\"mekanism:hydrogen#100\"]"),
 
     //Storage Config
     ENERGY_STORAGE_RECYCLER(TranslationPreset.ENERGY_STORAGE, "Recycler"),

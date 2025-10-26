@@ -40,3 +40,9 @@ license = "${mod_license}"
     versionRange = "[10.7.17]"
     ordering = "AFTER"
     side = "BOTH"
+
+[[dependencies.${mod_id}]]
+    modId = "evolvedmekanism"
+    type = "optional"
+    ordering = "AFTER"
+    side = "BOTH"

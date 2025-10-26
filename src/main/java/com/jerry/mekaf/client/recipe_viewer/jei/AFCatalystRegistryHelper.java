@@ -2,11 +2,11 @@ package com.jerry.mekaf.client.recipe_viewer.jei;
 
 import com.jerry.mekaf.common.content.blocktype.AdvancedFactoryType;
 import com.jerry.mekaf.common.registries.AdvancedFactoryBlocks;
+import com.jerry.mekmm.common.util.MoreMachineUtils;
 import mekanism.client.recipe_viewer.jei.MekanismJEI;
 import mekanism.client.recipe_viewer.type.IRecipeViewerRecipeType;
 import mekanism.common.registries.MekanismBlocks;
 import mekanism.common.tier.FactoryTier;
-import mekanism.common.util.EnumUtils;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import net.minecraft.world.item.Item;
@@ -39,7 +39,7 @@ public class AFCatalystRegistryHelper {
             if (needOrdinary) {
                 registry.addRecipeCatalyst(item, recipeType);
             }
-            for (FactoryTier tier : EnumUtils.FACTORY_TIERS) {
+            for (FactoryTier tier : MoreMachineUtils.getFactoryTier()) {
                 if (workstation == MekanismBlocks.CHEMICAL_OXIDIZER) {
                     registry.addRecipeCatalyst(AdvancedFactoryBlocks.getAdvancedFactory(tier, AdvancedFactoryType.OXIDIZING), recipeType);
                 } else if (workstation == MekanismBlocks.CHEMICAL_INFUSER) {
