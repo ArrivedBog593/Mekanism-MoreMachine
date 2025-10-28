@@ -57,28 +57,13 @@ public class TileEntityCrystallizingFactory extends TileEntityMergedToItemFactor
         mergedInputHandlers = new BoxedChemicalInputHandler[tier.processes];
         for (int i = 0; i < tier.processes; i++) {
             inputTank[i] = MergedChemicalTank.create(
-                    ChemicalTankBuilder.GAS.input(MAX_CHEMICAL * tier.processes, gas -> getRecipeType().getInputCache().containsInput(level, gas), getRecipeCacheSaveOnlyListener(i)),
-                    ChemicalTankBuilder.INFUSION.input(MAX_CHEMICAL * tier.processes, infuseType -> getRecipeType().getInputCache().containsInput(level, infuseType), getRecipeCacheSaveOnlyListener(i)),
-                    ChemicalTankBuilder.PIGMENT.input(MAX_CHEMICAL * tier.processes, pigment -> getRecipeType().getInputCache().containsInput(level, pigment), getRecipeCacheSaveOnlyListener(i)),
-                    ChemicalTankBuilder.SLURRY.input(MAX_CHEMICAL * tier.processes, slurry -> getRecipeType().getInputCache().containsInput(level, slurry), getRecipeCacheSaveOnlyListener(i))
+                    ChemicalTankBuilder.GAS.input(MAX_CHEMICAL * tier.processes, gas -> getRecipeType().getInputCache().containsInput(level, gas), recipeCacheLookupMonitors[i]),
+                    ChemicalTankBuilder.INFUSION.input(MAX_CHEMICAL * tier.processes, infuseType -> getRecipeType().getInputCache().containsInput(level, infuseType), recipeCacheLookupMonitors[i]),
+                    ChemicalTankBuilder.PIGMENT.input(MAX_CHEMICAL * tier.processes, pigment -> getRecipeType().getInputCache().containsInput(level, pigment), recipeCacheLookupMonitors[i]),
+                    ChemicalTankBuilder.SLURRY.input(MAX_CHEMICAL * tier.processes, slurry -> getRecipeType().getInputCache().containsInput(level, slurry), recipeCacheLookupMonitors[i])
             );
             mergedInputHandlers[i] = new BoxedChemicalInputHandler(inputTank[i], RecipeError.NOT_ENOUGH_INPUT);
         }
-    }
-
-    protected IContentsListener getRecipeCacheSaveOnlyListener(int index) {
-        //If we don't support comparators we can just skip having a special one that only marks for save as our
-        // setChanged won't actually do anything so there is no reason to bother creating a save only listener
-        if (supportsComparator()) {
-            if (recipeCacheSaveOnlyListener == null) {
-                recipeCacheSaveOnlyListener = () -> {
-                    markForSave();
-                    recipeCacheLookupMonitors[index].onChange();
-                };
-            }
-            return recipeCacheSaveOnlyListener;
-        }
-        return recipeCacheLookupMonitors[index];
     }
 
     @Override
