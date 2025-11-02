@@ -8,7 +8,7 @@
   "type": "mekmm:stamper",
   "input": {
     "ingredient": {
-      "tag": "forge:gems/charged_redstone"
+      "item": "appflux:charged_redstone"
     }
   },
   "mold": {
