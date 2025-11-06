@@ -18,6 +18,7 @@ import mekanism.common.capabilities.energy.MachineEnergyContainer;
 import mekanism.common.capabilities.fluid.BasicFluidTank;
 import mekanism.common.capabilities.heat.BasicHeatCapacitor;
 import mekanism.common.capabilities.heat.CachedAmbientTemperature;
+import mekanism.common.capabilities.heat.ITileHeatHandler;
 import mekanism.common.capabilities.holder.chemical.ChemicalTankHelper;
 import mekanism.common.capabilities.holder.chemical.IChemicalTankHolder;
 import mekanism.common.capabilities.holder.energy.EnergyContainerHelper;
@@ -166,7 +167,7 @@ public class TileEntityWirelessTransmissionStation extends TileEntityConfigurabl
         energySlot.fillContainerOrConvert();
         //TODO:添加一个延时，不需要每tick都发送（2秒发送一次应该可以）
         //传输能量
-        if (energyCapabilityCache != null) CableUtils.emit(getEnergyCapabilityCache(), energyContainer, 1);
+        if (energyCapabilityCache != null) CableUtils.emit(getEnergyCapabilityCache(), energyContainer, 10000);
         //传输流体
         if (fluidCapabilityCache != null) FluidUtils.emit(getFluidCapabilityCache(), fluidTank, 1);
         //传输化学品
@@ -177,7 +178,8 @@ public class TileEntityWirelessTransmissionStation extends TileEntityConfigurabl
         HeatTransfer loss = simulate();
         //如果有无线交换热量缓存时要加上无线交换的热量损失
         //交换热量需要每tick进行
-        lastTransferLoss = loss.adjacentTransfer() + (heatCapabilityCache != null ? exchangeHeat() : 0);
+        //如果没有无线热量传递，则只计算相邻方块的热传导；如果有无线热量传递，则计算两者的加和
+        lastTransferLoss = loss.adjacentTransfer();
         lastEnvironmentLoss = loss.environmentTransfer();
         return sendUpdatePacket;
     }
@@ -270,7 +272,16 @@ public class TileEntityWirelessTransmissionStation extends TileEntityConfigurabl
         }
     }
 
-    //与ITileHeatHandler中的simulateAdjacent()相似
+    @Override
+    public double simulateAdjacent() {
+        return super.simulateAdjacent() + exchangeHeat();
+    }
+
+    /**
+     *与{@link ITileHeatHandler#simulateAdjacent()}相似
+     *
+     * @return double 与连接方块的热量传递值
+     */
     private double exchangeHeat() {
         double adjacentTransfer = 0;
         if (heatCapabilityCache != null) {
@@ -279,8 +290,6 @@ public class TileEntityWirelessTransmissionStation extends TileEntityConfigurabl
                     for (Direction direction : entry.getValue().rowKeySet()) {
                         var cap = entry.getValue().get(direction, TransmissionType.HEAT);
                         if (cap != null) {
-                            //相当于getAdjacentUnchecked(Direction side)
-                            adjacentHeatCaps.put(direction, cap);
                             //检查该方向是否有相邻的热处理系统
                             IHeatHandler sink = cap.getCapability();
                             //只有存在相邻系统时才进行热交换计算
@@ -299,7 +308,7 @@ public class TileEntityWirelessTransmissionStation extends TileEntityConfigurabl
                                 //将温度差转换为实际热量Q = ΔT × C
                                 double heatToTransfer = tempToTransfer * heatCapacity;
                                 //当前系统失去热量
-                                handleHeat(-heatToTransfer, direction);
+                                heatCapacitor.handleHeat(-heatToTransfer);
                                 //Note: Our sinks in mek are "lazy" but they will update the next tick if needed
                                 sink.handleHeat(heatToTransfer);
                                 adjacentTransfer = incrementAdjacentTransfer(adjacentTransfer, tempToTransfer, direction);
