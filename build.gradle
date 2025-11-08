@@ -133,7 +133,7 @@ dependencies {
     implementation "com.blakebr0.mysticalagriculture:MysticalAgriculture:${minecraft_version}-${mysticalagriculture_version}"
 
     runtimeOnly "curse.maven:iglee-library-541199:7000755"
-    implementation "curse.maven:evolved-mekanism-1230085:7117030"
+    implementation "curse.maven:evolved-mekanism-1230085:7161187"
 
     compileOnly("cc.tweaked:cc-tweaked-${minecraft_version}-forge-api:${cc_tweaked_version}")
 }

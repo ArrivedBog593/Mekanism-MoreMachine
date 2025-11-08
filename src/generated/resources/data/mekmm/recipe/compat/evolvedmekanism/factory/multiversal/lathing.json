@@ -9,10 +9,10 @@
   "category": "misc",
   "key": {
     "A": {
-      "tag": "forge:alloys/multiversal"
+      "tag": "c:alloys/multiversal"
     },
     "C": {
-      "tag": "forge:circuits/multiversal"
+      "tag": "c:circuits/multiversal"
     },
     "I": {
       "tag": "c:ingots/netherite"

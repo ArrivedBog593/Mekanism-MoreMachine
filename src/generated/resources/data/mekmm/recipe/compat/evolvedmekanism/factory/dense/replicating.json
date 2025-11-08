@@ -9,10 +9,10 @@
   "category": "misc",
   "key": {
     "A": {
-      "tag": "forge:alloys/dense"
+      "tag": "c:alloys/dense"
     },
     "C": {
-      "tag": "forge:circuits/dense"
+      "tag": "c:circuits/dense"
     },
     "I": {
       "tag": "c:ingots/bronze"

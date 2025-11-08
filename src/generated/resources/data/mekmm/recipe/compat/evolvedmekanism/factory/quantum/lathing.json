@@ -9,10 +9,10 @@
   "category": "misc",
   "key": {
     "A": {
-      "tag": "forge:alloys/quantum"
+      "tag": "c:alloys/quantum"
     },
     "C": {
-      "tag": "forge:circuits/quantum"
+      "tag": "c:circuits/quantum"
     },
     "I": {
       "tag": "c:ingots/tin"

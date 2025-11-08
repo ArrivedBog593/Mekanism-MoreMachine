@@ -9,10 +9,10 @@
   "category": "misc",
   "key": {
     "A": {
-      "tag": "forge:alloys/overclocked"
+      "tag": "c:alloys/overclocked"
     },
     "C": {
-      "tag": "forge:circuits/overclocked"
+      "tag": "c:circuits/overclocked"
     },
     "I": {
       "tag": "c:ingots/uranium"
