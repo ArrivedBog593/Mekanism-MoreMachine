@@ -40,6 +40,7 @@ public class MoreMachineClientRegistration {
 
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        System.out.println("=== REGISTERING WIRELESS STATION RENDERER ===");
         event.registerBlockEntityRenderer(MoreMachineTileEntityTypes.WIRELESS_TRANSMISSION_STATION.get(), RenderWirelessTransmissionStation::new);
     }
 
