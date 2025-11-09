@@ -6,6 +6,7 @@
   "item.mekmm.scrap_box": "Caja de chatarra",
   "item.mekmm.empty_crystal": "Cristal vacío",
   "item.mekmm.uu_matter": "Materia UU",
+  "item.mekmm.connector": "Connector",
 
   "block.mekmm.basic_oxidizing_factory": "Fábrica de oxidación básica",
   "block.mekmm.advanced_oxidizing_factory": "Fábrica de oxidación avanzada",
@@ -336,9 +337,12 @@
   "connector.mekmm.from": "Conectar desde %1$s",
   "connector.mekmm.to": "Conectar al lado %2$s de %1$s",
   "connector.mekmm.disconnect": "Desconectar del lado %2$s de %1$s",
+  "connector.mekmm.self": "Can't connect to self",
   "connector.mekmm.fail": "No se puede conectar al lado %2$s de %1$s",
+  "connector.mekmm.across_dimension": "Can't connect across dimensions",
   "connector.mekmm.cleared": "Conexión terminada",
   "connector.mekmm.lose": "No hay ningún bloque en %1$s, o el bloque no es el mismo que antes de conectar",
+  "connector.mekmm.detail": "Dimension: %1$s; BlockPos: %2$s",
 
   "general.item_replicator.recipes": "Receta para el replicador de objetos ",
   "general.fluid_replicator.recipes": "Receta para el replicador de fluidos",

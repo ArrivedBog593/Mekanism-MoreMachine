@@ -6,6 +6,7 @@
   "item.mekmm.scrap_box": "スクラップボックス",
   "item.mekmm.empty_crystal": "純粋なクリスタル",
   "item.mekmm.uu_matter": "UUマター",
+  "item.mekmm.connector": "Connector",
 
   "block.mekmm.basic_oxidizing_factory": "基本酸化ファクトリー",
   "block.mekmm.advanced_oxidizing_factory": "発展酸化ファクトリー",
@@ -336,9 +337,12 @@
   "connector.mekmm.from": "Connect from %1$s",
   "connector.mekmm.to": "Connect to %1$s's %2$s side",
   "connector.mekmm.disconnect": "Disconnect from %1$s's %2$s side",
+  "connector.mekmm.self": "Can't connect to self",
   "connector.mekmm.fail": "Can't connect to %1$s's %2$s side",
+  "connector.mekmm.across_dimension": "Can't connect across dimensions",
   "connector.mekmm.cleared": "Connection terminated",
   "connector.mekmm.lose": "There is no block at %1$s, or the block is not the one before connecting",
+  "connector.mekmm.detail": "Dimension: %1$s; BlockPos: %2$s",
 
   "general.item_replicator.recipes": "Recipe for Item Replicator ",
   "general.fluid_replicator.recipes": "Recipe for Fluid Replicator",

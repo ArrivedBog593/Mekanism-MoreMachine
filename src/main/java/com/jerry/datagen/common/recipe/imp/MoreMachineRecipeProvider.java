@@ -4,8 +4,6 @@ import com.jerry.datagen.common.recipe.BaseRecipeProvider;
 import com.jerry.datagen.common.recipe.ISubRecipeProvider;
 import com.jerry.datagen.common.recipe.builder.ExtendedShapedRecipeBuilder;
 import com.jerry.datagen.common.recipe.builder.MoreMachineDataShapedRecipeBuilder;
-import com.jerry.datagen.common.recipe.compat.EMAdvancedFactoryRecipeProvider;
-import com.jerry.datagen.common.recipe.compat.EMMoreMachineRecipeProvider;
 import com.jerry.datagen.common.recipe.compat.IERecipeProvider;
 import com.jerry.datagen.common.recipe.compat.MysticalRecipeProvider;
 import com.jerry.datagen.common.recipe.pattern.Pattern;
@@ -69,8 +67,8 @@ public class MoreMachineRecipeProvider extends BaseRecipeProvider {
         //Mod Compat Recipe providers
         checkCompat("mysticalagriculture", MysticalRecipeProvider::new);
         checkCompat("immersiveengineering", IERecipeProvider::new);
-        checkCompat("evolvedmekanism", EMMoreMachineRecipeProvider::new);
-        checkCompat("evolvedmekanism", EMAdvancedFactoryRecipeProvider::new);
+//        checkCompat("evolvedmekanism", EMMoreMachineRecipeProvider::new);
+//        checkCompat("evolvedmekanism", EMAdvancedFactoryRecipeProvider::new);
     }
 
     private void checkCompat(String modid, Function<String, ISubRecipeProvider> providerCreator) {

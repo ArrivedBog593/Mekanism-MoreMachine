@@ -3,7 +3,7 @@ package com.jerry.mekmm.common.tile;
 import com.jerry.mekmm.common.attachments.ConnectionConfig;
 import com.jerry.mekmm.common.attachments.WirelessConnectionManager;
 import com.jerry.mekmm.common.registries.MoreMachineBlocks;
-import com.jerry.mekmm.common.tile.interfaces.ITileConnect;
+import com.jerry.mekmm.common.tile.prefab.TileEntityConnectableMachine;
 import mekanism.api.Action;
 import mekanism.api.IContentsListener;
 import mekanism.api.RelativeSide;
@@ -43,7 +43,6 @@ import mekanism.common.lib.inventory.HandlerTransitRequest;
 import mekanism.common.lib.inventory.TransitRequest.TransitResponse;
 import mekanism.common.lib.transmitter.TransmissionType;
 import mekanism.common.tile.component.TileComponentEjector;
-import mekanism.common.tile.prefab.TileEntityConfigurableMachine;
 import mekanism.common.util.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -56,9 +55,9 @@ import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.List;
 
-public class TileEntityWirelessTransmissionStation extends TileEntityConfigurableMachine implements ITileConnect {
+public class TileEntityWirelessTransmissionStation extends TileEntityConnectableMachine {
 
     public final WirelessConnectionManager connectionManager = new WirelessConnectionManager(this);
 
@@ -158,11 +157,11 @@ public class TileEntityWirelessTransmissionStation extends TileEntityConfigurabl
         }
         //TODO:添加一个延时，不需要每tick都发送（2秒发送一次应该可以）
         //传输能量
-        CableUtils.emit(connectionManager.getEnergyCaches(), energyContainer, 10000);
+        CableUtils.emit(connectionManager.getEnergyCaches(), energyContainer, 100000);
         //传输流体
-        FluidUtils.emit(connectionManager.getFluidCaches(), fluidTank, 1);
+        FluidUtils.emit(connectionManager.getFluidCaches(), fluidTank, 2000);
         //传输化学品
-        ChemicalUtil.emit(connectionManager.getChemicalCaches(), chemicalTank, 2);
+        ChemicalUtil.emit(connectionManager.getChemicalCaches(), chemicalTank, 5000);
         //传输物品
         transportItems();
         //传输热量
@@ -247,8 +246,8 @@ public class TileEntityWirelessTransmissionStation extends TileEntityConfigurabl
     public ConnectStatus connectOrCut(BlockPos blockPos, Direction direction, TransmissionType type) {
         ConnectStatus status = connectionManager.connectOrCut(blockPos, direction, type);
         if (status != ConnectStatus.CONNECT_FAIL && !isRemote()) {
-            markForSave();
             sendUpdatePacket();
+            markForSave();
         }
         return status;
     }
@@ -305,11 +304,6 @@ public class TileEntityWirelessTransmissionStation extends TileEntityConfigurabl
         super.addContainerTrackers(container);
         container.track(SyncableDouble.create(this::getLastTransferLoss, value -> lastTransferLoss = value));
         container.track(SyncableDouble.create(this::getLastEnvironmentLoss, value -> lastEnvironmentLoss = value));
-    }
-
-    public enum ConnectStatus {
-        CONNECT,
-        DISCONNECT,
-        CONNECT_FAIL
+        container.track(SyncableInt.create(connectionManager::getConnectionCount, count -> {}));
     }
 }

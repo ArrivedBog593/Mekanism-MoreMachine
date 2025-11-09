@@ -6,6 +6,7 @@
   "item.mekmm.scrap_box": "废料盒",
   "item.mekmm.empty_crystal": "空晶体",
   "item.mekmm.uu_matter": "UU物质",
+  "item.mekmm.connector": "连接器",
 
   "block.mekmm.basic_oxidizing_factory": "基础氧化工厂",
   "block.mekmm.advanced_oxidizing_factory": "高级氧化工厂",
@@ -336,9 +337,12 @@
   "connector.mekmm.from": "从%1$s连接",
   "connector.mekmm.to": "连接到%1$s的%2$s方",
   "connector.mekmm.disconnect": "从%1$s的%2$s方断开连接",
+  "connector.mekmm.self": "不能连接到自身",
   "connector.mekmm.fail": "不能连接到%1$s的%2$s方",
+  "connector.mekmm.across_dimension": "Ciallo～(∠・ω< )⌒★，不能跨维度进行连接哦～～",
   "connector.mekmm.cleared": "连接终止",
   "connector.mekmm.lose": "%1$s处没有方块，或该方块不是连接前的方块",
+  "connector.mekmm.detail": "维度：%1$s；位置：%2$s",
 
   "general.item_replicator.recipes": "物品复制机配方",
   "general.fluid_replicator.recipes": "液体复制机配方",

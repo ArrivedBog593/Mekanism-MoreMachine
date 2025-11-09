@@ -10,8 +10,11 @@ import com.jerry.mekmm.client.gui.GuiWirelessChargingStation;
 import com.jerry.mekmm.client.gui.GuiWirelessTransmissionStation;
 import com.jerry.mekmm.client.gui.machine.*;
 import com.jerry.mekmm.client.render.tileentity.RenderWirelessTransmissionStation;
+import com.jerry.mekmm.common.item.ItemConnector;
+import com.jerry.mekmm.common.item.ItemConnector.ConnectorMode;
 import com.jerry.mekmm.common.registries.MoreMachineBlocks;
 import com.jerry.mekmm.common.registries.MoreMachineContainerTypes;
+import com.jerry.mekmm.common.registries.MoreMachineItems;
 import com.jerry.mekmm.common.registries.MoreMachineTileEntityTypes;
 import mekanism.client.ClientRegistrationUtil;
 import mekanism.client.model.baked.ExtensionBakedModel;
@@ -36,6 +39,17 @@ public class MoreMachineClientRegistration {
                 QuadTransformation.translate(0, 1, 0)));
         addCustomModel(LargeMachineBlocks.LARGE_ROTARY_CONDENSENTRATOR, (orig, evt) -> new ExtensionBakedModel.TransformedBakedModel<Void>(orig,
                 QuadTransformation.translate(0, 1, 0)));
+
+        ClientRegistrationUtil.setPropertyOverride(MoreMachineItems.CONNECTOR, Mekmm.rl("mode"), (stack, world, entity, seed) -> {
+            ConnectorMode mode = ((ItemConnector) stack.getItem()).getMode(stack);
+            return switch (mode) {
+                case ITEMS -> 1;
+                case FLUIDS -> 2;
+                case CHEMICALS -> 3;
+                case ENERGY -> 4;
+                case HEAT -> 5;
+            };
+        });
     }
 
     @SubscribeEvent

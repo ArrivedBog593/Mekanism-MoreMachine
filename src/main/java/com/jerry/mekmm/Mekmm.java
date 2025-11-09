@@ -6,6 +6,7 @@ import com.jerry.mekaf.common.registries.AdvancedFactoryTileEntityTypes;
 import com.jerry.meklm.common.registries.LargeMachineBlocks;
 import com.jerry.meklm.common.registries.LargeMachineContainerTypes;
 import com.jerry.meklm.common.registries.LargeMachineTileEntityTypes;
+import com.jerry.mekmm.common.MoreMachinePlayerTracker;
 import com.jerry.mekmm.common.config.MoreMachineConfig;
 import com.jerry.mekmm.common.integration.MoreMachineHooks;
 import com.jerry.mekmm.common.network.MoreMachinePacketHandler;
@@ -18,6 +19,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.common.NeoForge;
 import org.slf4j.Logger;
 
 @Mod(Mekmm.MOD_ID)
@@ -57,6 +60,7 @@ public class Mekmm implements IModModule {
         MoreMachineChemicals.MM_CHEMICALS.register(modEventBus);
         MoreMachineCreativeTabs.MM_CREATIVE_TABS.register(modEventBus);
         MoreMachineDataComponents.MM_DATA_COMPONENTS.register(modEventBus);
+        modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(MoreMachineConfig::onConfigLoad);
         // LargeMachine相关的注册
 //        LMConfig.registerConfigs(modContainer);
@@ -84,6 +88,13 @@ public class Mekmm implements IModModule {
         LargeMachineBlocks.LM_BLOCKS.register(modEventBus);
         LargeMachineTileEntityTypes.LM_TILE_ENTITY_TYPES.register(modEventBus);
         LargeMachineContainerTypes.LM_CONTAINER_TYPES.register(modEventBus);
+    }
+
+    private void commonSetup(FMLCommonSetupEvent event) {
+        //Initialization notification
+        LOGGER.info("Version {} initializing...", versionNumber);
+        //Register player tracker
+        NeoForge.EVENT_BUS.register(new MoreMachinePlayerTracker());
     }
 
     @Override

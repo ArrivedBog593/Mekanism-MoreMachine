@@ -4,8 +4,8 @@ import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.api.MoreMachineItemAbilities;
 import com.jerry.mekmm.common.MoreMachineLang;
 import com.jerry.mekmm.common.registries.MoreMachineDataComponents;
-import com.jerry.mekmm.common.tile.TileEntityWirelessTransmissionStation;
 import com.jerry.mekmm.common.tile.interfaces.ITileConnect;
+import com.jerry.mekmm.common.tile.prefab.TileEntityConnectableMachine;
 import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
 import mekanism.api.IIncrementalEnum;
@@ -55,12 +55,13 @@ import java.util.Objects;
 import java.util.function.IntFunction;
 
 public class ItemConnector extends Item implements IRadialModeItem<ItemConnector.ConnectorMode> {
+
     private static final Lazy<RadialData<ItemConnector.ConnectorMode>> LAZY_RADIAL_DATA = Lazy.of(() ->
             IRadialDataHelper.INSTANCE.dataForEnum(Mekmm.rl("connector_mode"), ItemConnector.ConnectorMode.class));
 
     public ItemConnector(Properties properties) {
         super(properties.rarity(Rarity.UNCOMMON).stacksTo(1)
-                .component(MoreMachineDataComponents.CONNECTOR_MODE, ConnectorMode.CONNECT_ENERGY)
+                .component(MoreMachineDataComponents.CONNECTOR_MODE, ConnectorMode.ENERGY)
         );
     }
 
@@ -68,6 +69,20 @@ public class ItemConnector extends Item implements IRadialModeItem<ItemConnector
     public void appendHoverText(@NotNull ItemStack stack, @NotNull Item.TooltipContext context, @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
         super.appendHoverText(stack, context, tooltip, flag);
         tooltip.add(MekanismLang.STATE.translateColored(EnumColor.PINK, getMode(stack)));
+        // 显示绑定的源位置
+        GlobalPos globalPos = getStoredPosition(stack);
+        if (globalPos != null) {
+            tooltip.add(MoreMachineLang.CONNECTOR_DETAIL.translate(EnumColor.ORANGE, formatDim(globalPos.dimension().location()), EnumColor.ORANGE, formatPos(globalPos.pos())));
+        }
+    }
+
+    //维度居然没有翻译文件。。。
+    private Component formatDim(ResourceLocation id) {
+        return Component.translatableWithFallback(id.toLanguageKey("dimension"), id.toString());
+    }
+
+    private String formatPos(BlockPos pos) {
+        return "[" + pos.getX() + "," + pos.getY() + "," + pos.getZ() + "]";
     }
 
     @NotNull
@@ -79,15 +94,15 @@ public class ItemConnector extends Item implements IRadialModeItem<ItemConnector
     @Override
     public boolean canPerformAction(@NotNull ItemStack stack, @NotNull ItemAbility action) {
         if (action == MoreMachineItemAbilities.CONNECT_CHEMICALS) {
-            return getMode(stack) == ConnectorMode.CONNECT_CHEMICALS;
+            return getMode(stack) == ConnectorMode.CHEMICALS;
         } else if (action == MoreMachineItemAbilities.CONNECT_ENERGY) {
-            return getMode(stack) == ConnectorMode.CONNECT_ENERGY;
+            return getMode(stack) == ConnectorMode.ENERGY;
         } else if (action == MoreMachineItemAbilities.CONNECT_FLUIDS) {
-            return getMode(stack) == ConnectorMode.CONNECT_FLUIDS;
+            return getMode(stack) == ConnectorMode.FLUIDS;
         } else if (action == MoreMachineItemAbilities.CONNECT_HEAT) {
-            return getMode(stack) == ConnectorMode.CONNECT_HEAT;
+            return getMode(stack) == ConnectorMode.HEAT;
         } else if (action == MoreMachineItemAbilities.CONNECT_ITEMS) {
-            return getMode(stack) == ConnectorMode.CONNECT_ITEMS;
+            return getMode(stack) == ConnectorMode.ITEMS;
         }
         return super.canPerformAction(stack, action);
     }
@@ -96,44 +111,63 @@ public class ItemConnector extends Item implements IRadialModeItem<ItemConnector
     public @NotNull InteractionResult useOn(@NotNull UseOnContext context) {
         Player player = context.getPlayer();
         Level world = context.getLevel();
-        if (!world.isClientSide && player != null) {
-            BlockPos pos = context.getClickedPos();
-            Direction side = context.getClickedFace();
-            ItemStack stack = context.getItemInHand();
-            Block block = Objects.requireNonNull(WorldUtils.getBlockStateIfLoaded(world, pos)).getBlock();
-            BlockEntity tile = WorldUtils.getTileEntity(world, pos);
-            if (player.isShiftKeyDown()) {
-                if (tile instanceof ITileConnect) {
-//                    NBTUtils.writeRegistryEntry(data, SerializationConstants.DATA_TYPE, BuiltInRegistries.BLOCK_ENTITY_TYPE, MoreMachineTileEntityTypes.WIRELESS_TRANSMISSION_STATION.get());
-                    stack.set(MoreMachineDataComponents.CONNECT_FROM, GlobalPos.of(world.dimension(), pos));
-                    player.displayClientMessage(MoreMachineLang.CONNECTOR_FROM.translate(EnumColor.INDIGO, TextComponentUtil.translate(block.getDescriptionId())), true);
-                }
-            } else {
-                GlobalPos globalPos = stack.get(MoreMachineDataComponents.CONNECT_FROM);
-                if (globalPos != null && world.dimension() == globalPos.dimension()) {
-                    //TODO:应该换成ITileConnect
-                    TileEntityWirelessTransmissionStation linkTile = WorldUtils.getTileEntity(TileEntityWirelessTransmissionStation.class, world, globalPos.pos(), true);
-                    if (linkTile != null) {
-                        switch (linkTile.connectOrCut(pos, side, getMode(stack).transmissionType)) {
-                            case CONNECT -> {
-                                player.displayClientMessage(MoreMachineLang.CONNECTOR_TO.translate(EnumColor.INDIGO, TextComponentUtil.translate(block.getDescriptionId()), EnumColor.INDIGO, side), true);
-                                return InteractionResult.SUCCESS;
-                            }
-                            case DISCONNECT -> {
-                                player.displayClientMessage(MoreMachineLang.CONNECTOR_DISCONNECT.translate(EnumColor.INDIGO, TextComponentUtil.translate(block.getDescriptionId()), EnumColor.INDIGO, side), true);
-                                return InteractionResult.SUCCESS;
-                            }
-                            case CONNECT_FAIL -> {
-                                //连接到没有能力或者不能连接的方块上时发出的消息
-                                player.displayClientMessage(MoreMachineLang.CONNECTOR_FAIL.translate(EnumColor.DARK_RED, TextComponentUtil.translate(block.getDescriptionId()), EnumColor.DARK_RED, side), true);
-                                return InteractionResult.SUCCESS;
-                            }
-                        }
-                        return InteractionResult.PASS;
-                    } else {
-                        player.displayClientMessage(MoreMachineLang.CONNECTOR_LOSE.translate(EnumColor.DARK_RED, globalPos.pos()), true);
+        if (player == null) {
+            return InteractionResult.PASS;
+        }
+        BlockPos pos = context.getClickedPos();
+        Direction side = context.getClickedFace();
+        ItemStack stack = context.getItemInHand();
+        Block block = world.getBlockState(pos).getBlock();
+        BlockEntity tile = WorldUtils.getTileEntity(world, pos);
+        if (player.isShiftKeyDown()) {
+            if (!(tile instanceof ITileConnect)) {
+                return InteractionResult.CONSUME;
+            }
+            if (!world.isClientSide) {
+                stack.set(MoreMachineDataComponents.CONNECT_FROM, GlobalPos.of(world.dimension(), pos));
+                player.displayClientMessage(MoreMachineLang.CONNECTOR_FROM.translate(EnumColor.INDIGO, TextComponentUtil.translate(block.getDescriptionId())), true);
+            }
+        } else {
+            //禁用交互效果在MoreMachinePlayerTracker
+            GlobalPos globalPos = getStoredPosition(stack);
+            if (globalPos == null) {
+                return InteractionResult.CONSUME;
+            }
+            //如果跨纬度
+            if (world.dimension() != globalPos.dimension()) {
+                //Ciallo～(∠・ω< )⌒★
+                player.displayClientMessage(MoreMachineLang.CONNECTOR_ACROSS_DIMENSION.translate(EnumColor.DARK_RED), true);
+                return InteractionResult.CONSUME;
+            }
+            //如果绑定到自己
+            if (pos == globalPos.pos()) {
+                player.displayClientMessage(MoreMachineLang.CONNECTOR_SELF.translate(EnumColor.DARK_RED), true);
+                return InteractionResult.CONSUME;
+            }
+            //获取保存位置的方块实体
+            TileEntityConnectableMachine linkTile = WorldUtils.getTileEntity(TileEntityConnectableMachine.class, world, globalPos.pos(), true);
+            if (linkTile != null) {
+                Component translateName = TextComponentUtil.translate(block.getDescriptionId());
+                switch (linkTile.connectOrCut(pos, side, getMode(stack).transmissionType)) {
+                    case CONNECT -> {
+                        player.displayClientMessage(MoreMachineLang.CONNECTOR_TO.translate(EnumColor.INDIGO, translateName, EnumColor.INDIGO, side), true);
+                        return InteractionResult.SUCCESS;
+                    }
+                    case DISCONNECT -> {
+                        player.displayClientMessage(MoreMachineLang.CONNECTOR_DISCONNECT.translate(EnumColor.INDIGO, translateName, EnumColor.INDIGO, side), true);
+                        return InteractionResult.SUCCESS;
+                    }
+                    case CONNECT_FAIL -> {
+                        //连接到没有能力或者不能连接的方块上时发出的消息
+                        player.displayClientMessage(MoreMachineLang.CONNECTOR_FAIL.translate(EnumColor.DARK_RED, translateName, EnumColor.DARK_RED, side), true);
+                        return InteractionResult.FAIL;
                     }
                 }
+                return InteractionResult.PASS;
+            } else {
+                //绑定后中心方块被拆除
+                player.displayClientMessage(MoreMachineLang.CONNECTOR_LOSE.translate(EnumColor.DARK_RED, globalPos.pos()), true);
+                return InteractionResult.FAIL;
             }
         }
         return InteractionResult.sidedSuccess(world.isClientSide);
@@ -144,12 +178,18 @@ public class ItemConnector extends Item implements IRadialModeItem<ItemConnector
         if (player.isShiftKeyDown()) {
             ItemStack connector = player.getItemInHand(usedHand);
             if (!level.isClientSide) {
-                connector.remove(MoreMachineDataComponents.CONNECT_FROM);
-                player.displayClientMessage(MoreMachineLang.CONNECTOR_CLEARED.translate(), true);
+                if (getStoredPosition(connector) != null) {
+                    connector.remove(MoreMachineDataComponents.CONNECT_FROM);
+                    player.displayClientMessage(MoreMachineLang.CONNECTOR_CLEARED.translate(), true);
+                }
             }
             return InteractionResultHolder.sidedSuccess(connector, level.isClientSide);
         }
         return super.use(level, player, usedHand);
+    }
+
+    private GlobalPos getStoredPosition(ItemStack stack) {
+        return stack.get(MoreMachineDataComponents.CONNECT_FROM);
     }
 
     @Override
@@ -164,7 +204,7 @@ public class ItemConnector extends Item implements IRadialModeItem<ItemConnector
 
     @Override
     public ConnectorMode getDefaultMode() {
-        return ConnectorMode.CONNECT_ENERGY;
+        return ConnectorMode.ENERGY;
     }
 
     @Override
@@ -180,11 +220,11 @@ public class ItemConnector extends Item implements IRadialModeItem<ItemConnector
 
     @NothingNullByDefault
     public enum ConnectorMode implements IIncrementalEnum<ConnectorMode>, IHasTextComponent.IHasEnumNameTextComponent, IRadialMode, StringRepresentable {
-        CONNECT_ITEMS(MekanismLang.CONFIGURATOR_CONFIGURATE, TransmissionType.ITEM, EnumColor.BRIGHT_GREEN, null),
-        CONNECT_FLUIDS(MekanismLang.CONFIGURATOR_CONFIGURATE, TransmissionType.FLUID, EnumColor.BRIGHT_GREEN, null),
-        CONNECT_CHEMICALS(MekanismLang.CONFIGURATOR_CONFIGURATE, TransmissionType.CHEMICAL, EnumColor.BRIGHT_GREEN, null),
-        CONNECT_ENERGY(MekanismLang.CONFIGURATOR_CONFIGURATE, TransmissionType.ENERGY, EnumColor.BRIGHT_GREEN, null),
-        CONNECT_HEAT(MekanismLang.CONFIGURATOR_CONFIGURATE, TransmissionType.HEAT, EnumColor.BRIGHT_GREEN, null);
+        ITEMS(MekanismLang.CONFIGURATOR_CONFIGURATE, TransmissionType.ITEM, EnumColor.GRAY, null),
+        FLUIDS(MekanismLang.CONFIGURATOR_CONFIGURATE, TransmissionType.FLUID, EnumColor.DARK_AQUA, null),
+        CHEMICALS(MekanismLang.CONFIGURATOR_CONFIGURATE, TransmissionType.CHEMICAL, EnumColor.YELLOW, null),
+        ENERGY(MekanismLang.CONFIGURATOR_CONFIGURATE, TransmissionType.ENERGY, EnumColor.DARK_RED, null),
+        HEAT(MekanismLang.CONFIGURATOR_CONFIGURATE, TransmissionType.HEAT, EnumColor.ORANGE, null);
 
         public static final Codec<ConnectorMode> CODEC = StringRepresentable.fromEnum(ConnectorMode::values);
         public static final IntFunction<ConnectorMode> BY_ID = ByIdMap.continuous(ConnectorMode::ordinal, values(), ByIdMap.OutOfBoundsStrategy.WRAP);

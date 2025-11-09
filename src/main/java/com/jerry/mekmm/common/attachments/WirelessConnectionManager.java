@@ -2,7 +2,7 @@ package com.jerry.mekmm.common.attachments;
 
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.common.tile.TileEntityWirelessTransmissionStation;
-import com.jerry.mekmm.common.tile.TileEntityWirelessTransmissionStation.ConnectStatus;
+import com.jerry.mekmm.common.tile.prefab.TileEntityConnectableMachine.ConnectStatus;
 import mekanism.api.chemical.IChemicalHandler;
 import mekanism.common.capabilities.Capabilities;
 import mekanism.common.integration.energy.BlockEnergyCapabilityCache;
