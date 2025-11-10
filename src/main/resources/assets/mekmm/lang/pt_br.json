@@ -334,6 +334,22 @@
   "tooltip.mekmm.is_blocking": "Bloqueado acima da máquina",
   "tooltip.mekmm.no_blocking": "Não bloqueado acima da máquina",
 
+  "gui.mekmm.configuration": "Configuration",
+  "gui.mekmm.wts.energy_rate": "Max energy output Rate:%1$s J/t",
+  "gui.mekmm.wts.fluids_rate": "Max fluids output Rate:%1$s mb/t",
+  "gui.mekmm.wts.chemicals_rate": "Max chemicals output Rate:%1$s mb/t",
+  "gui.mekmm.wts.items_rate": "Max items output Rate:%1$s",
+
+  "button.mekmm.disconnect": "Disconnect",
+  "button.mekmm.highlight": "Highlight",
+
+  "list.mekmm.name": "Name:%1$s",
+  "list.mekmm.pos": "BlockPos:%1$s",
+  "list.mekmm.direction": "Direction:%1$s",
+  "list.mekmm.type": "TransmitterType:%1$s",
+
+  "view.mekmm.connection_information": "View connection information",
+
   "connector.mekmm.from": "Connect from %1$s",
   "connector.mekmm.to": "Connect to %1$s's %2$s side",
   "connector.mekmm.disconnect": "Disconnect from %1$s's %2$s side",

@@ -8,6 +8,7 @@ import com.jerry.meklm.common.registries.LargeMachineContainerTypes;
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.client.gui.GuiWirelessChargingStation;
 import com.jerry.mekmm.client.gui.GuiWirelessTransmissionStation;
+import com.jerry.mekmm.client.gui.GuiWirelessTransmissionStationConfig;
 import com.jerry.mekmm.client.gui.machine.*;
 import com.jerry.mekmm.client.render.tileentity.RenderWirelessTransmissionStation;
 import com.jerry.mekmm.common.item.ItemConnector;
@@ -54,7 +55,6 @@ public class MoreMachineClientRegistration {
 
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        System.out.println("=== REGISTERING WIRELESS STATION RENDERER ===");
         event.registerBlockEntityRenderer(MoreMachineTileEntityTypes.WIRELESS_TRANSMISSION_STATION.get(), RenderWirelessTransmissionStation::new);
     }
 
@@ -71,6 +71,9 @@ public class MoreMachineClientRegistration {
         ClientRegistrationUtil.registerScreen(event, MoreMachineContainerTypes.AMBIENT_GAS_COLLECTOR, GuiAmbientGasCollector::new);
         ClientRegistrationUtil.registerScreen(event, MoreMachineContainerTypes.WIRELESS_CHARGING_STATION, GuiWirelessChargingStation::new);
         ClientRegistrationUtil.registerScreen(event, MoreMachineContainerTypes.WIRELESS_TRANSMISSION_STATION, GuiWirelessTransmissionStation::new);
+
+        ClientRegistrationUtil.registerScreen(event, MoreMachineContainerTypes.WIRELESS_TRANSMISSION_STATION_CONFIG, GuiWirelessTransmissionStationConfig::new);
+
         ClientRegistrationUtil.registerScreen(event, MoreMachineContainerTypes.MM_FACTORY, GuiMoreMachineFactory::new);
 
         //Advanced Factory

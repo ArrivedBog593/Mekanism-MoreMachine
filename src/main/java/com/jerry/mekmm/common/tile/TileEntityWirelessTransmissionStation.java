@@ -3,6 +3,7 @@ package com.jerry.mekmm.common.tile;
 import com.jerry.mekmm.common.attachments.ConnectionConfig;
 import com.jerry.mekmm.common.attachments.WirelessConnectionManager;
 import com.jerry.mekmm.common.registries.MoreMachineBlocks;
+import com.jerry.mekmm.common.tile.interfaces.ITileConnectHolder;
 import com.jerry.mekmm.common.tile.prefab.TileEntityConnectableMachine;
 import mekanism.api.Action;
 import mekanism.api.IContentsListener;
@@ -57,7 +58,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class TileEntityWirelessTransmissionStation extends TileEntityConnectableMachine {
+public class TileEntityWirelessTransmissionStation extends TileEntityConnectableMachine implements ITileConnectHolder {
 
     public final WirelessConnectionManager connectionManager = new WirelessConnectionManager(this);
 
@@ -73,8 +74,7 @@ public class TileEntityWirelessTransmissionStation extends TileEntityConnectable
 
     public BasicFluidTank fluidTank;
     public IChemicalTank chemicalTank;
-    public BasicInventorySlot leftInventorySlot;
-    public BasicInventorySlot rightInventorySlot;
+    public BasicInventorySlot inventorySlot;
     public MachineEnergyContainer<TileEntityWirelessTransmissionStation> energyContainer;
     public BasicHeatCapacitor heatCapacitor;
 
@@ -90,7 +90,7 @@ public class TileEntityWirelessTransmissionStation extends TileEntityConnectable
         configComponent.setupIOConfig(TransmissionType.ENERGY, energyContainer, RelativeSide.FRONT);
         configComponent.setupIOConfig(TransmissionType.FLUID, fluidTank, RelativeSide.LEFT);
         configComponent.setupIOConfig(TransmissionType.CHEMICAL, chemicalTank, RelativeSide.RIGHT);
-        configComponent.setupItemIOConfig(List.of(leftInventorySlot, rightInventorySlot, fluidFillSlot, chemicalInputSlot), List.of(fluidDrainSlot, chemicalOutputSlot, fluidOutputSlot), energySlot, false);
+        configComponent.setupItemIOConfig(List.of(inventorySlot, fluidFillSlot, chemicalInputSlot), List.of(fluidDrainSlot, chemicalOutputSlot, fluidOutputSlot), energySlot, false);
         configComponent.setupIOConfig(TransmissionType.HEAT, heatCapacitor, RelativeSide.BACK);
         configComponent.addDisabledSides(RelativeSide.TOP);
         ejectorComponent = new TileComponentEjector(this);
@@ -100,8 +100,8 @@ public class TileEntityWirelessTransmissionStation extends TileEntityConnectable
     @Override
     protected @Nullable IInventorySlotHolder getInitialInventory(IContentsListener listener) {
         InventorySlotHelper builder = InventorySlotHelper.forSideWithConfig(this);
-        builder.addSlot(leftInventorySlot = BasicInventorySlot.at(listener, 8, 77));
-        builder.addSlot(rightInventorySlot = BasicInventorySlot.at(listener, 152, 77));
+        builder.addSlot(inventorySlot = BasicInventorySlot.at(listener, 8, 77));
+//        builder.addSlot(rightInventorySlot = BasicInventorySlot.at(listener, 152, 77));
         builder.addSlot(chemicalInputSlot = ChemicalInventorySlot.fill(chemicalTank, listener, 28, 15));
         builder.addSlot(chemicalOutputSlot = ChemicalInventorySlot.drain(chemicalTank, listener, 28, 57));
         builder.addSlot(fluidFillSlot = FluidInventorySlot.fill(fluidTank, listener, 131, 15));
@@ -184,13 +184,13 @@ public class TileEntityWirelessTransmissionStation extends TileEntityConnectable
             IItemHandler target = cache.getCapability();
             if (target != null) {
                 //另一种获取输出的方法
-                HandlerTransitRequest request = InventoryUtils.getEjectItemMap(selfHandler, List.of(leftInventorySlot));
+                HandlerTransitRequest request = InventoryUtils.getEjectItemMap(selfHandler, List.of(inventorySlot));
                 if (!request.isEmpty()) {
                     //TODO:为什么这里使用useAll会导致只有在输入且输出的情况下才传输，其他情况只要不是空就会一直刷物品
                     TransitResponse response = request.eject(this, getBlockPos(), target, 0, LogisticalTransporterBase::getColor);
                     if (!response.isEmpty()) {
                         int amount = response.getSendingAmount();
-                        MekanismUtils.logMismatchedStackSize(leftInventorySlot.shrinkStack(amount, Action.EXECUTE), amount);
+                        MekanismUtils.logMismatchedStackSize(inventorySlot.shrinkStack(amount, Action.EXECUTE), amount);
                     }
                 }
             }
@@ -244,7 +244,7 @@ public class TileEntityWirelessTransmissionStation extends TileEntityConnectable
 
     @Override
     public ConnectStatus connectOrCut(BlockPos blockPos, Direction direction, TransmissionType type) {
-        ConnectStatus status = connectionManager.connectOrCut(blockPos, direction, type);
+        ConnectStatus status = connectionManager.linkOrCut(blockPos, direction, type);
         if (status != ConnectStatus.CONNECT_FAIL && !isRemote()) {
             sendUpdatePacket();
             markForSave();
@@ -256,7 +256,19 @@ public class TileEntityWirelessTransmissionStation extends TileEntityConnectable
         return energyContainer;
     }
 
-    public long getMaxEnergyOutput() {
+    public long getEnergyRate() {
+        return 1;
+    }
+
+    public long getFluidsRate() {
+        return 1;
+    }
+
+    public long getChemicalsRate() {
+        return 1;
+    }
+
+    public long getItemsRate() {
         return 1;
     }
 
@@ -305,5 +317,14 @@ public class TileEntityWirelessTransmissionStation extends TileEntityConnectable
         container.track(SyncableDouble.create(this::getLastTransferLoss, value -> lastTransferLoss = value));
         container.track(SyncableDouble.create(this::getLastEnvironmentLoss, value -> lastEnvironmentLoss = value));
         container.track(SyncableInt.create(connectionManager::getConnectionCount, count -> {}));
+    }
+
+    public void addConfigContainerTrackers(MekanismContainer container) {
+
+    }
+
+    @Override
+    public WirelessConnectionManager getConnectManager() {
+        return connectionManager;
     }
 }

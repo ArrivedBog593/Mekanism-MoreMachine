@@ -334,6 +334,22 @@
   "tooltip.mekmm.is_blocking": "机器上方有阻挡物",
   "tooltip.mekmm.no_blocking": "机器上方无阻挡物",
 
+  "gui.mekmm.configuration": "配置",
+  "gui.mekmm.wts.energy_rate": "最大能量输出速率：%1$sJ/t",
+  "gui.mekmm.wts.fluids_rate": "最大流体输出速率：%1$smb/t",
+  "gui.mekmm.wts.chemicals_rate": "最大化学品输出速率：%1$smb/t",
+  "gui.mekmm.wts.items_rate": "最大物品输出数量：%1$s",
+
+  "button.mekmm.disconnect": "断开连接",
+  "button.mekmm.highlight": "高亮位置",
+
+  "list.mekmm.name": "名称：%1$s",
+  "list.mekmm.pos": "位置：%1$s",
+  "list.mekmm.direction": "方向：%1$s",
+  "list.mekmm.type": "传输类型：%1$s",
+
+  "view.mekmm.connection_information": "查看连接信息",
+
   "connector.mekmm.from": "从%1$s连接",
   "connector.mekmm.to": "连接到%1$s的%2$s方",
   "connector.mekmm.disconnect": "从%1$s的%2$s方断开连接",

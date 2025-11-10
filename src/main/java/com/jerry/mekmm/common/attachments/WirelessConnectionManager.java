@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 public class WirelessConnectionManager {
     private final TileEntityWirelessTransmissionStation tile;
     // 使用 Set 存储连接配置,避免重复
-    private final Set<ConnectionConfig> connections = new HashSet<>();
+    private final List<ConnectionConfig> connections = new ArrayList<>();
     // 缓存各类型的 capability
     private final Map<TransmissionType, List<Object>> capabilityCache = new EnumMap<>(TransmissionType.class);
     private boolean cacheDirty = true;
@@ -37,7 +37,7 @@ public class WirelessConnectionManager {
     /**
      * 添加或移除连接
      */
-    public ConnectStatus connectOrCut(BlockPos pos, Direction direction, TransmissionType type) {
+    public ConnectStatus linkOrCut(BlockPos pos, Direction direction, TransmissionType type) {
         ConnectionConfig config = new ConnectionConfig(pos, direction, type);
         if (connections.contains(config)) {
             //已存在,移除连接
@@ -131,7 +131,7 @@ public class WirelessConnectionManager {
      * 获取所有连接配置 (用于遍历、渲染等)
      */
     public Collection<ConnectionConfig> getAllConnections() {
-        return Collections.unmodifiableSet(connections);
+        return Collections.unmodifiableList(connections);
     }
 
     /**
@@ -218,8 +218,12 @@ public class WirelessConnectionManager {
         cacheDirty = true;
     }
 
-    public int getConnectionCount() {
+    public final int getConnectionCount() {
         return connections.size();
+    }
+
+    public final List<ConnectionConfig> getConnections() {
+        return connections;
     }
 
     /**

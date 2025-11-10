@@ -56,7 +56,23 @@ public enum MoreMachineLang implements ILangEntry {
     RECIPE_VIEWER_INFO_UNSTABLE_DIMENSIONAL_GAS("info", "jei.unstable_dimensional_gas"),
     //Tooltip stuff
     IS_BLOCKING("tooltip", "is_blocking"),
-    NO_BLOCKING("tooltip", "no_blocking");
+    NO_BLOCKING("tooltip", "no_blocking"),
+    //Gui stuff
+    CONFIGURATION("gui", "configuration"),
+    WTS_ENERGY_RATE("gui", "wts.energy_rate"),
+    WTS_FLUIDS_RATE("gui", "wts.fluids_rate"),
+    WTS_CHEMICALS_RATE("gui", "wts.chemicals_rate"),
+    WTS_ITEMS_RATE("gui", "wts.items_rate"),
+    //Buton
+    BUTTON_DISCONNECT("button", "disconnect"),
+    BUTTON_HIGHLIGHT("button", "highlight"),
+    //List Display
+    LIST_NAME("list", "name"),
+    LIST_POS("list", "pos"),
+    LIST_DIRECTION("list", "direction"),
+    LIST_TYPE("list", "type"),
+    //View Connection
+    VIEW_CONNECTION("view", "connection_information");
 
     private final String key;
 

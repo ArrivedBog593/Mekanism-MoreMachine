@@ -6,6 +6,7 @@ import com.jerry.mekmm.common.MoreMachineLang;
 import com.jerry.mekmm.common.registries.MoreMachineDataComponents;
 import com.jerry.mekmm.common.tile.interfaces.ITileConnect;
 import com.jerry.mekmm.common.tile.prefab.TileEntityConnectableMachine;
+import com.jerry.mekmm.common.util.MoreMachineUtils;
 import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
 import mekanism.api.IIncrementalEnum;
@@ -72,18 +73,11 @@ public class ItemConnector extends Item implements IRadialModeItem<ItemConnector
         // 显示绑定的源位置
         GlobalPos globalPos = getStoredPosition(stack);
         if (globalPos != null) {
-            tooltip.add(MoreMachineLang.CONNECTOR_DETAIL.translate(EnumColor.ORANGE, formatDim(globalPos.dimension().location()), EnumColor.ORANGE, formatPos(globalPos.pos())));
+            tooltip.add(MoreMachineLang.CONNECTOR_DETAIL.translate(EnumColor.ORANGE, MoreMachineUtils.formatDim(globalPos.dimension().location()), EnumColor.ORANGE, MoreMachineUtils.formatPos(globalPos.pos())));
         }
     }
 
-    //维度居然没有翻译文件。。。
-    private Component formatDim(ResourceLocation id) {
-        return Component.translatableWithFallback(id.toLanguageKey("dimension"), id.toString());
-    }
 
-    private String formatPos(BlockPos pos) {
-        return "[" + pos.getX() + "," + pos.getY() + "," + pos.getZ() + "]";
-    }
 
     @NotNull
     @Override

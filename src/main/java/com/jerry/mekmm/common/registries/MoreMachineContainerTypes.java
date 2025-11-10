@@ -2,6 +2,7 @@ package com.jerry.mekmm.common.registries;
 
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.common.inventory.container.tile.MoreMachineFactoryContainer;
+import com.jerry.mekmm.common.inventory.container.tile.WirelessTransmissionStationConfigContainer;
 import com.jerry.mekmm.common.inventory.container.tile.WirelessTransmissionStationContainer;
 import com.jerry.mekmm.common.tile.TileEntityWirelessChargingStation;
 import com.jerry.mekmm.common.tile.TileEntityWirelessTransmissionStation;
@@ -33,6 +34,7 @@ public class MoreMachineContainerTypes {
     public static final ContainerTypeRegistryObject<WirelessTransmissionStationContainer> WIRELESS_TRANSMISSION_STATION = MM_CONTAINER_TYPES.register(MoreMachineBlocks.WIRELESS_TRANSMISSION_STATION, TileEntityWirelessTransmissionStation.class, WirelessTransmissionStationContainer::new);
 
     public static final ContainerTypeRegistryObject<MekanismTileContainer<TileEntityMoreMachineFactory<?>>> MM_FACTORY = MM_CONTAINER_TYPES.register("factory", factoryClass(), MoreMachineFactoryContainer::new);
+    public static final ContainerTypeRegistryObject<MekanismTileContainer<TileEntityWirelessTransmissionStation>> WIRELESS_TRANSMISSION_STATION_CONFIG = MM_CONTAINER_TYPES.register("wireless_transmission_station_config", TileEntityWirelessTransmissionStation.class, WirelessTransmissionStationConfigContainer::new);
 
     @SuppressWarnings({"rawtypes", "unchecked"})
     private static Class<TileEntityMoreMachineFactory<?>> factoryClass() {
