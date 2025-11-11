@@ -30,4 +30,9 @@ public class MoreMachineDataComponents {
     public static final MekanismDeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> CHARGE_INVENTORY = MM_DATA_COMPONENTS.registerBoolean("charge_inventory");
     public static final MekanismDeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> CHARGE_CURIOS = MM_DATA_COMPONENTS.registerBoolean("charge_curios");
 
+    public static final MekanismDeferredHolder<DataComponentType<?>, DataComponentType<Long>> ENERGY_RATE = MM_DATA_COMPONENTS.registerNonNegativeLong("energy_rate");
+    public static final MekanismDeferredHolder<DataComponentType<?>, DataComponentType<Integer>> FLUIDS_RATE = MM_DATA_COMPONENTS.registerInt("fluids_rate");
+    public static final MekanismDeferredHolder<DataComponentType<?>, DataComponentType<Long>> CHEMICALS_RATE = MM_DATA_COMPONENTS.registerNonNegativeLong("chemicals_rate");
+    public static final MekanismDeferredHolder<DataComponentType<?>, DataComponentType<Integer>> ITEMS_RATE = MM_DATA_COMPONENTS.registerInt("items_rate");
+
 }

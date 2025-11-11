@@ -214,5 +214,29 @@ public class MoreMachineRecipeProvider extends BaseRecipeProvider {
                 .key(Pattern.STEEL_CASING, MekanismBlocks.STEEL_CASING)
                 .key(Pattern.OSMIUM, MekanismTags.Items.PROCESSED_RESOURCE_BLOCKS.get(PrimaryResource.OSMIUM))
                 .build(consumer, Mekmm.rl("ambient_gas_collector"));
+        // 无线充电站
+        ExtendedShapedRecipeBuilder.shapedRecipe(MoreMachineBlocks.WIRELESS_CHARGING_STATION)
+                .pattern(RecipePattern.createPattern(
+                        RecipePattern.TripleLine.of(Pattern.HDPE_CHAR, Pattern.CONSTANT, Pattern.HDPE_CHAR),
+                        RecipePattern.TripleLine.of(Pattern.HDPE_CHAR, Pattern.ROBIT, Pattern.HDPE_CHAR),
+                        RecipePattern.TripleLine.of(Pattern.CIRCUIT, 'E', Pattern.CIRCUIT)
+                )).key(Pattern.HDPE_CHAR, MekanismItems.HDPE_SHEET)
+                .key(Pattern.CONSTANT, MekanismItems.TELEPORTATION_CORE)
+                .key(Pattern.CIRCUIT, MekanismTags.Items.CIRCUITS_ULTIMATE)
+                .key(Pattern.ROBIT, MekanismItems.ROBIT)
+                .key('E', MekanismBlocks.ULTIMATE_ENERGY_CUBE)
+                .build(consumer, Mekmm.rl("wireless_charging_station"));
+        // 无线传输站
+        ExtendedShapedRecipeBuilder.shapedRecipe(MoreMachineBlocks.WIRELESS_TRANSMISSION_STATION)
+                .pattern(RecipePattern.createPattern(
+                        RecipePattern.TripleLine.of(Pattern.HDPE_CHAR, Pattern.CONSTANT, Pattern.HDPE_CHAR),
+                        RecipePattern.TripleLine.of(Pattern.HDPE_CHAR, Pattern.ROBIT, Pattern.HDPE_CHAR),
+                        RecipePattern.TripleLine.of(Pattern.PLUTONIUM, 'Q', Pattern.PLUTONIUM)
+                )).key(Pattern.HDPE_CHAR, MekanismItems.HDPE_SHEET)
+                .key(Pattern.CONSTANT, MekanismBlocks.SUPERCHARGED_COIL)
+                .key(Pattern.PLUTONIUM, MekanismTags.Items.PELLETS_PLUTONIUM)
+                .key(Pattern.ROBIT, MekanismItems.ROBIT)
+                .key('Q', MekanismBlocks.QUANTUM_ENTANGLOPORTER)
+                .build(consumer, Mekmm.rl("wireless_transmission_station"));
     }
 }

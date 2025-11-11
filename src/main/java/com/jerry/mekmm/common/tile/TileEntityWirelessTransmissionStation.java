@@ -1,8 +1,11 @@
 package com.jerry.mekmm.common.tile;
 
+import com.jerry.mekmm.api.MoreMachineSerializationConstants;
 import com.jerry.mekmm.common.attachments.ConnectionConfig;
 import com.jerry.mekmm.common.attachments.WirelessConnectionManager;
+import com.jerry.mekmm.common.config.MoreMachineConfig;
 import com.jerry.mekmm.common.registries.MoreMachineBlocks;
+import com.jerry.mekmm.common.registries.MoreMachineDataComponents;
 import com.jerry.mekmm.common.tile.interfaces.ITileConnectHolder;
 import com.jerry.mekmm.common.tile.prefab.TileEntityConnectableMachine;
 import mekanism.api.Action;
@@ -35,6 +38,7 @@ import mekanism.common.inventory.container.MekanismContainer;
 import mekanism.common.inventory.container.slot.SlotOverlay;
 import mekanism.common.inventory.container.sync.SyncableDouble;
 import mekanism.common.inventory.container.sync.SyncableInt;
+import mekanism.common.inventory.container.sync.SyncableLong;
 import mekanism.common.inventory.slot.BasicInventorySlot;
 import mekanism.common.inventory.slot.EnergyInventorySlot;
 import mekanism.common.inventory.slot.FluidInventorySlot;
@@ -48,8 +52,10 @@ import mekanism.common.util.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
 import net.neoforged.neoforge.items.IItemHandler;
@@ -60,7 +66,17 @@ import java.util.List;
 
 public class TileEntityWirelessTransmissionStation extends TileEntityConnectableMachine implements ITileConnectHolder {
 
+    public static final long DEFAULT_ENERGY_RATE = 0;
+    public static final int DEFAULT_FLUIDS_RATE = 0;
+    public static final long DEFAULT_CHEMICALS_RATE = 0;
+    public static final int DEFAULT_ITEMS_RATE = 0;
+
     public final WirelessConnectionManager connectionManager = new WirelessConnectionManager(this);
+
+    private long energyRate;
+    private int fluidsRate;
+    private long chemicalsRate;
+    private int itemsRate;
 
     public static final long MAX_CHEMICAL = 10_000;
     public static final int MAX_FLUID = 10_000;
@@ -87,6 +103,10 @@ public class TileEntityWirelessTransmissionStation extends TileEntityConnectable
 
     public TileEntityWirelessTransmissionStation(BlockPos pos, BlockState state) {
         super(MoreMachineBlocks.WIRELESS_TRANSMISSION_STATION, pos, state);
+        energyRate = DEFAULT_ENERGY_RATE;
+        fluidsRate = DEFAULT_FLUIDS_RATE;
+        chemicalsRate = DEFAULT_CHEMICALS_RATE;
+        itemsRate = DEFAULT_ITEMS_RATE;
         configComponent.setupIOConfig(TransmissionType.ENERGY, energyContainer, RelativeSide.FRONT);
         configComponent.setupIOConfig(TransmissionType.FLUID, fluidTank, RelativeSide.LEFT);
         configComponent.setupIOConfig(TransmissionType.CHEMICAL, chemicalTank, RelativeSide.RIGHT);
@@ -157,11 +177,11 @@ public class TileEntityWirelessTransmissionStation extends TileEntityConnectable
         }
         //TODO:添加一个延时，不需要每tick都发送（2秒发送一次应该可以）
         //传输能量
-        CableUtils.emit(connectionManager.getEnergyCaches(), energyContainer, 100000);
+        CableUtils.emit(connectionManager.getEnergyCaches(), energyContainer, getEnergyRate());
         //传输流体
-        FluidUtils.emit(connectionManager.getFluidCaches(), fluidTank, 2000);
+        FluidUtils.emit(connectionManager.getFluidCaches(), fluidTank, getFluidsRate());
         //传输化学品
-        ChemicalUtil.emit(connectionManager.getChemicalCaches(), chemicalTank, 5000);
+        ChemicalUtil.emit(connectionManager.getChemicalCaches(), chemicalTank, getChemicalsRate());
         //传输物品
         transportItems();
         //传输热量
@@ -190,6 +210,7 @@ public class TileEntityWirelessTransmissionStation extends TileEntityConnectable
                     TransitResponse response = request.eject(this, getBlockPos(), target, 0, LogisticalTransporterBase::getColor);
                     if (!response.isEmpty()) {
                         int amount = response.getSendingAmount();
+//                        int amount = getItemsRate();
                         MekanismUtils.logMismatchedStackSize(inventorySlot.shrinkStack(amount, Action.EXECUTE), amount);
                     }
                 }
@@ -257,19 +278,59 @@ public class TileEntityWirelessTransmissionStation extends TileEntityConnectable
     }
 
     public long getEnergyRate() {
-        return 1;
+        return energyRate;
     }
 
-    public long getFluidsRate() {
-        return 1;
+    public int getFluidsRate() {
+        return fluidsRate;
     }
 
     public long getChemicalsRate() {
-        return 1;
+        return chemicalsRate;
     }
 
-    public long getItemsRate() {
-        return 1;
+    public int getItemsRate() {
+        return itemsRate;
+    }
+
+    public void setEnergyRateFromPacket(long newRate) {
+        setEnergyRate(Mth.clamp(newRate, 0, MoreMachineConfig.general.energyRate.get()));
+    }
+
+    public void setEnergyRate(long newRate) {
+        if (energyRate != newRate) {
+            energyRate = newRate;
+        }
+    }
+
+    public void setFluidsRateFromPacket(int newRate) {
+        setFluidsRate(Mth.clamp(newRate, 0, MoreMachineConfig.general.fluidsRate.get()));
+    }
+
+    public void setFluidsRate(int newRate) {
+        if (fluidsRate != newRate) {
+            fluidsRate = newRate;
+        }
+    }
+
+    public void setChemicalsRateFromPacket(long newRate) {
+        setChemicalsRate(Mth.clamp(newRate, 0, MoreMachineConfig.general.chemicalsRate.get()));
+    }
+
+    public void setChemicalsRate(long newRate) {
+        if (chemicalsRate != newRate) {
+            chemicalsRate = newRate;
+        }
+    }
+
+    public void setItemsRateFromPacket(int newRate) {
+        setItemsRate(Mth.clamp(newRate, 0, MoreMachineConfig.general.itemsRate.get()));
+    }
+
+    public void setItemsRate(int newRate) {
+        if (itemsRate != newRate) {
+            itemsRate = newRate;
+        }
     }
 
     public double getTemperature() {
@@ -288,15 +349,39 @@ public class TileEntityWirelessTransmissionStation extends TileEntityConnectable
     public @NotNull CompoundTag getReducedUpdateTag(HolderLookup.@NotNull Provider provider) {
         CompoundTag updateTag = super.getReducedUpdateTag(provider);
         connectionManager.saveToNBT(updateTag);
+        updateTag.putLong(MoreMachineSerializationConstants.ENERGY_RATE, getEnergyRate());
+        updateTag.putInt(MoreMachineSerializationConstants.FLUIDS_RATE, getFluidsRate());
+        updateTag.putLong(MoreMachineSerializationConstants.CHEMICALS_RATE, getChemicalsRate());
+        updateTag.putInt(MoreMachineSerializationConstants.ITEM_RATE, getItemsRate());
         return updateTag;
     }
 
     @Override
     public void handleUpdateTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider provider) {
         super.handleUpdateTag(tag, provider);
-        if (level != null && level.isClientSide()) {
-            connectionManager.loadFromNBT(tag);
-        }
+        connectionManager.loadFromNBT(tag);
+        NBTUtils.setIntIfPresent(tag, MoreMachineSerializationConstants.ENERGY_RATE, this::setEnergyRate);
+        NBTUtils.setIntIfPresent(tag, MoreMachineSerializationConstants.FLUIDS_RATE, this::setFluidsRate);
+        NBTUtils.setIntIfPresent(tag, MoreMachineSerializationConstants.CHEMICALS_RATE, this::setChemicalsRate);
+        NBTUtils.setIntIfPresent(tag, MoreMachineSerializationConstants.ITEM_RATE, this::setItemsRate);
+    }
+
+    @Override
+    public void readSustainedData(HolderLookup.Provider provider, CompoundTag dataMap) {
+        super.readSustainedData(provider, dataMap);
+        setEnergyRate(Math.min(dataMap.getInt(MoreMachineSerializationConstants.ENERGY_RATE), MoreMachineConfig.general.energyRate.get()));
+        setEnergyRate(Math.min(dataMap.getInt(MoreMachineSerializationConstants.FLUIDS_RATE), MoreMachineConfig.general.fluidsRate.get()));
+        setEnergyRate(Math.min(dataMap.getInt(MoreMachineSerializationConstants.CHEMICALS_RATE), MoreMachineConfig.general.chemicalsRate.get()));
+        setEnergyRate(Math.min(dataMap.getInt(MoreMachineSerializationConstants.ITEM_RATE), MoreMachineConfig.general.itemsRate.get()));
+    }
+
+    @Override
+    public void writeSustainedData(HolderLookup.Provider provider, CompoundTag dataMap) {
+        super.writeSustainedData(provider, dataMap);
+        dataMap.putLong(MoreMachineSerializationConstants.ENERGY_RATE, getEnergyRate());
+        dataMap.putInt(MoreMachineSerializationConstants.FLUIDS_RATE, getFluidsRate());
+        dataMap.putLong(MoreMachineSerializationConstants.CHEMICALS_RATE, getChemicalsRate());
+        dataMap.putInt(MoreMachineSerializationConstants.ITEM_RATE, getItemsRate());
     }
 
     @Override
@@ -314,13 +399,36 @@ public class TileEntityWirelessTransmissionStation extends TileEntityConnectable
     @Override
     public void addContainerTrackers(MekanismContainer container) {
         super.addContainerTrackers(container);
+        addConfigContainerTrackers(container);
         container.track(SyncableDouble.create(this::getLastTransferLoss, value -> lastTransferLoss = value));
         container.track(SyncableDouble.create(this::getLastEnvironmentLoss, value -> lastEnvironmentLoss = value));
-        container.track(SyncableInt.create(connectionManager::getConnectionCount, count -> {}));
+        container.track(SyncableInt.create(connectionManager::getConnectionCount, count -> {
+        }));
     }
 
     public void addConfigContainerTrackers(MekanismContainer container) {
+        container.track(SyncableLong.create(this::getEnergyRate, this::setEnergyRate));
+        container.track(SyncableInt.create(this::getFluidsRate, this::setFluidsRate));
+        container.track(SyncableLong.create(this::getChemicalsRate, this::setChemicalsRate));
+        container.track(SyncableInt.create(this::getItemsRate, this::setItemsRate));
+    }
 
+    @Override
+    protected void collectImplicitComponents(DataComponentMap.@NotNull Builder builder) {
+        super.collectImplicitComponents(builder);
+        builder.set(MoreMachineDataComponents.ENERGY_RATE, getEnergyRate());
+        builder.set(MoreMachineDataComponents.FLUIDS_RATE, getFluidsRate());
+        builder.set(MoreMachineDataComponents.CHEMICALS_RATE, getChemicalsRate());
+        builder.set(MoreMachineDataComponents.ITEMS_RATE, getItemsRate());
+    }
+
+    @Override
+    protected void applyImplicitComponents(@NotNull DataComponentInput input) {
+        super.applyImplicitComponents(input);
+        setEnergyRate(Math.min(input.getOrDefault(MoreMachineDataComponents.ENERGY_RATE, energyRate), MoreMachineConfig.general.energyRate.get()));
+        setFluidsRate(Math.min(input.getOrDefault(MoreMachineDataComponents.FLUIDS_RATE, fluidsRate), MoreMachineConfig.general.fluidsRate.get()));
+        setChemicalsRate(Math.min(input.getOrDefault(MoreMachineDataComponents.CHEMICALS_RATE, chemicalsRate), MoreMachineConfig.general.chemicalsRate.get()));
+        setItemsRate(Math.min(input.getOrDefault(MoreMachineDataComponents.ITEMS_RATE, itemsRate), MoreMachineConfig.general.itemsRate.get()));
     }
 
     @Override

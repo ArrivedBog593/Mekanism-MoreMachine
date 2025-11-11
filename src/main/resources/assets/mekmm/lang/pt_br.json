@@ -335,10 +335,10 @@
   "tooltip.mekmm.no_blocking": "Não bloqueado acima da máquina",
 
   "gui.mekmm.configuration": "Configuration",
-  "gui.mekmm.wts.energy_rate": "Max energy output Rate:%1$s J/t",
-  "gui.mekmm.wts.fluids_rate": "Max fluids output Rate:%1$s mb/t",
-  "gui.mekmm.wts.chemicals_rate": "Max chemicals output Rate:%1$s mb/t",
-  "gui.mekmm.wts.items_rate": "Max items output Rate:%1$s",
+  "gui.mekmm.wts.energy_rate": "energy output Rate:%1$s J/t",
+  "gui.mekmm.wts.fluids_rate": "fluids output Rate:%1$s mb/t",
+  "gui.mekmm.wts.chemicals_rate": "chemicals output Rate:%1$s mb/t",
+  "gui.mekmm.wts.items_rate": "items output Rate:%1$s",
 
   "button.mekmm.disconnect": "Disconnect",
   "button.mekmm.highlight": "Highlight",

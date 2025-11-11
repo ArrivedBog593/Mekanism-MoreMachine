@@ -17,6 +17,11 @@ public enum MoreMachineConfigTranslations implements IConfigTranslation {
     ITEM_RECIPES("general.item_replicator.recipes", "Add Item Replicator Recipes", "The recipes added here will be added to the item replicator. Write using modId:registeredName#amount, # followed by the amount(not null or zero) of UU matter consumed. For example:[\"minecraft:stone#10\",\"mekanism:basic_bin#100\"]"),
     FLUID_RECIPES("general.fluid_replicator.recipes", "Add Fluid Replicator Recipes", "The recipes added here will be added to the fluid replicator. Write using modId:registeredName#amount, # followed by the amount(not null or zero) of UU matter consumed. For example:[\"minecraft:water#10\",\"mekanism:heavy_water#100\"]"),
     CHEMICAL_RECIPES("general.chemical_replicator.recipes", "Add Chemical Replicator Recipes", "The recipes added here will be added to the chemical replicator. Write using modId:registeredName#amount, # followed by the amount(not null or zero) of UU matter consumed. For example:[\"mekanism:oxygen#10\",\"mekanism:hydrogen#100\"]"),
+    GENERAL_WIRELESS_TRANSMISSION_STATION_MAX_OUTPUT_RATE("general.wireless_transmission_station.max_output_rate", "Wireless Transmission Station Max Output Rate", "Maximum Transmission Rate"),
+    ENERGY_RATE("general.energy.max_output_rate", "Energy Max Output Rate", "Set the maximum energy output rate during wireless transmission"),
+    FLUIDS_RATE("general.energy.max_output_rate", "Fluids Max Output Rate", "Set the maximum fluids output rate during wireless transmission"),
+    CHEMICALS_RATE("general.energy.max_output_rate", "Chemicals Max Output Rate", "Set the maximum chemicals output rate during wireless transmission"),
+    ITEMS_RATE("general.energy.max_output_rate", "Items Max Output Rate", "Set the maximum items output rate during wireless transmission"),
 
     //Storage Config
     ENERGY_STORAGE_RECYCLER(TranslationPreset.ENERGY_STORAGE, "Recycler"),

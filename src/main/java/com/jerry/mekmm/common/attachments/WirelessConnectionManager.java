@@ -183,6 +183,9 @@ public class WirelessConnectionManager {
         }
         boolean removed = connections.removeIf(config -> !tile.getLevel().isLoaded(config.pos()) || tile.getLevel().isEmptyBlock(config.pos()) || !validateCapability(config.pos(), config.direction(), config.type()));
         if (removed) {
+            //删除之后要发送数据包更新渲染状态
+            tile.sendUpdatePacket();
+            tile.markForSave();
             cacheDirty = true;
         }
     }
@@ -218,10 +221,6 @@ public class WirelessConnectionManager {
         cacheDirty = true;
     }
 
-    public final int getConnectionCount() {
-        return connections.size();
-    }
-
     public final List<ConnectionConfig> getConnections() {
         return connections;
     }
@@ -231,6 +230,16 @@ public class WirelessConnectionManager {
      */
     public int getConnectionCount(TransmissionType type) {
         return (int) connections.stream().filter(c -> c.type() == type).count();
+    }
+
+    public final int getConnectionCount() {
+        return connections.size();
+    }
+
+    public void remove(ConnectionConfig config) {
+        connections.remove(config);
+        tile.sendUpdatePacket();
+        tile.markForSave();
     }
 
     public void clear() {

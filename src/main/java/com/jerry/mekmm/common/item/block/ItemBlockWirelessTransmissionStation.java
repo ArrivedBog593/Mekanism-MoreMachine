@@ -1,5 +1,6 @@
 package com.jerry.mekmm.common.item.block;
 
+import com.jerry.mekmm.common.registries.MoreMachineDataComponents;
 import com.jerry.mekmm.common.tile.TileEntityWirelessTransmissionStation;
 import mekanism.api.RelativeSide;
 import mekanism.common.attachments.component.AttachedEjector;
@@ -40,6 +41,10 @@ public class ItemBlockWirelessTransmissionStation extends ItemBlockTooltip<Block
 
     public ItemBlockWirelessTransmissionStation(BlockTileModel<TileEntityWirelessTransmissionStation, Machine<TileEntityWirelessTransmissionStation>> block, Properties properties) {
         super(block, true, properties
+                .component(MoreMachineDataComponents.ENERGY_RATE, TileEntityWirelessTransmissionStation.DEFAULT_ENERGY_RATE)
+                .component(MoreMachineDataComponents.FLUIDS_RATE, TileEntityWirelessTransmissionStation.DEFAULT_FLUIDS_RATE)
+                .component(MoreMachineDataComponents.CHEMICALS_RATE, TileEntityWirelessTransmissionStation.DEFAULT_CHEMICALS_RATE)
+                .component(MoreMachineDataComponents.ITEMS_RATE, TileEntityWirelessTransmissionStation.DEFAULT_ITEMS_RATE)
                 .component(MekanismDataComponents.EJECTOR, AttachedEjector.DEFAULT)
                 .component(MekanismDataComponents.SIDE_CONFIG, SIDE_CONFIG)
         );

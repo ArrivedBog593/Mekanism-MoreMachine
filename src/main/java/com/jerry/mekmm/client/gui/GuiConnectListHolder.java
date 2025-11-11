@@ -44,13 +44,13 @@ public abstract class GuiConnectListHolder<TILE extends TileEntityMekanism & ITi
     @Override
     protected void addGuiElements() {
         super.addGuiElements();
-        leftScreen = addRenderableWidget(new GuiInnerScreen(this, 9, 17, 85, 147));//相比于矿机增加了7
-        //List Holder
-        addRenderableWidget(new GuiElementHolder(this, 95, 17, 158, 147));//相比于矿机增加了29
+        leftScreen = addRenderableWidget(new GuiInnerScreen(this, 9, 17, 110, 147));//width 85,height相比于矿机增加了7
+        //List Holder                                          95
+        addRenderableWidget(new GuiElementHolder(this, 120, 17, 133, 147));//width 158,height相比于矿机增加了29
         WirelessConnectionManager connectionManager = getConnectManager();
         scrollBar = addRenderableWidget(new GuiScrollBar(this, 253, 17, 147, connectionManager::getConnectionCount, () -> CONNECT_COUNT));
         for (int i = 0; i < CONNECT_COUNT; i++) {
-            addRenderableWidget(new ConnectListButton(this, 96, 18 + i * 29, i, scrollBar::getCurrentSelection, connectionManager, this::onClick, this::getRenderStacks, level));
+            addRenderableWidget(new ConnectListButton(this, 121, 18 + i * 29, i, scrollBar::getCurrentSelection, connectionManager, this::onClick, this::getRenderStacks, level));
         }
     }
 

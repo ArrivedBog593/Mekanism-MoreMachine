@@ -2,11 +2,14 @@ package com.jerry.mekmm.client.gui.element.button;
 
 import com.jerry.mekmm.common.attachments.ConnectionConfig;
 import com.jerry.mekmm.common.attachments.WirelessConnectionManager;
+import mekanism.api.text.EnumColor;
+import mekanism.client.gui.GuiUtils;
 import mekanism.client.gui.IGuiWrapper;
 import mekanism.client.gui.element.button.MekanismButton;
 import mekanism.client.gui.element.slot.GuiSequencedSlotDisplay;
 import mekanism.client.gui.element.slot.GuiSlot;
 import mekanism.client.gui.element.slot.SlotType;
+import mekanism.client.render.MekanismRenderer;
 import mekanism.common.util.MekanismUtils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.CommonComponents;
@@ -24,9 +27,9 @@ import java.util.function.ObjIntConsumer;
 
 public class ConnectListButton extends MekanismButton {
 
-    private static final ResourceLocation TEXTURE = MekanismUtils.getResource(MekanismUtils.ResourceType.GUI_BUTTON, "filter_holder.png");
+    private static final ResourceLocation TEXTURE = MekanismUtils.getResource(MekanismUtils.ResourceType.GUI_BUTTON, "lists_holder.png");
 
-    protected static final int TEXTURE_WIDTH = 156;
+    protected static final int TEXTURE_WIDTH = 131;//156
     protected static final int TEXTURE_HEIGHT = 58;
 
     private final GuiSequencedSlotDisplay slotDisplay;
@@ -99,6 +102,15 @@ public class ConnectListButton extends MekanismButton {
             slotDisplay.updateStackList();
             prevConnection = connection;
         }
+        //似乎不太可能为null
+        EnumColor color = switch (connection.type()) {
+            case ENERGY -> EnumColor.BRIGHT_GREEN;
+            case FLUID -> EnumColor.AQUA;
+            case CHEMICAL -> EnumColor.YELLOW;
+            case ITEM -> EnumColor.GRAY;
+            case HEAT -> EnumColor.ORANGE;
+        };
+        GuiUtils.fill(guiGraphics, getButtonX(), getButtonY(), getButtonWidth(), getButtonHeight(), MekanismRenderer.getColorARGB(color, 0.3F));
         Component connectionDescriptor = level.getBlockState(connection.pos()).getBlock().asItem().getDefaultInstance().getHoverName();
         //这里width代替了FilterButton里面的textWidth，但似乎可以更长
         drawScrollingString(guiGraphics, connectionDescriptor, 19, 3, TextAlignment.LEFT, titleTextColor(), 227, 3, false);

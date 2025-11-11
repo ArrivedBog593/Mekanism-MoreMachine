@@ -36,7 +36,6 @@ public class RenderWirelessTransmissionStation extends MekanismTileEntityRendere
         Collection<ConnectionConfig> connections = tile.connectionManager.getAllConnections();
         // 为每个连接绘制光束
         for (ConnectionConfig config : connections) {
-            System.out.println("Rendering connection to: " + config.pos() + " [" + config.direction() + ", " + config.type() + "]");
             renderConnection(matrix, renderer, stationPos, config);
         }
     }
@@ -46,7 +45,7 @@ public class RenderWirelessTransmissionStation extends MekanismTileEntityRendere
      */
     private void renderConnection(PoseStack matrix, MultiBufferSource renderer, BlockPos tilePos, ConnectionConfig config) {
         // 计算起点: TileEntity 中心 (相对坐标)
-        // 在 TileEntityRenderer 中,(0,0,0) 就是 TileEntity 的位置
+        // 在 TileEntityRenderer (0,3,0)
         Vector3f start = new Vector3f(0.5f, 3.5f, 0.5f);
         BlockPos targetPos = config.pos();
         Direction targetFace = config.direction();

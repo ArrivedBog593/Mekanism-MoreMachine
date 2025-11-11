@@ -2,6 +2,7 @@ package com.jerry.mekmm.client.gui.window.connect;
 
 import com.jerry.mekmm.common.MoreMachineLang;
 import com.jerry.mekmm.common.attachments.ConnectionConfig;
+import com.jerry.mekmm.common.network.to_server.PacketViewConnection;
 import com.jerry.mekmm.common.tile.TileEntityWirelessTransmissionStation;
 import com.jerry.mekmm.common.util.MoreMachineUtils;
 import mekanism.api.text.EnumColor;
@@ -11,6 +12,7 @@ import mekanism.client.gui.element.button.TranslationButton;
 import mekanism.client.gui.element.slot.GuiSequencedSlotDisplay;
 import mekanism.client.gui.element.window.GuiWindow;
 import mekanism.common.inventory.container.SelectedWindowData;
+import mekanism.common.network.PacketUtils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -21,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class GuiTransmissionStationList extends GuiWindow {
+public class GuiViewConnection extends GuiWindow {
 
     static int MINER_FILTER_WIDTH = 173;
 
@@ -30,12 +32,11 @@ public class GuiTransmissionStationList extends GuiWindow {
 
     private final Level level;
 
-    public static GuiTransmissionStationList create(IGuiWrapper gui, TileEntityWirelessTransmissionStation tile, Level level, ConnectionConfig config) {
-
-        return new GuiTransmissionStationList(gui, (gui.getXSize() - MINER_FILTER_WIDTH) / 2, 30, tile, level, config);
+    public static GuiViewConnection create(IGuiWrapper gui, TileEntityWirelessTransmissionStation tile, Level level, ConnectionConfig config) {
+        return new GuiViewConnection(gui, (gui.getXSize() - MINER_FILTER_WIDTH) / 2, 30, tile, level, config);
     }
 
-    private GuiTransmissionStationList(IGuiWrapper gui, int x, int y, TileEntityWirelessTransmissionStation tile, Level level, ConnectionConfig config) {
+    private GuiViewConnection(IGuiWrapper gui, int x, int y, TileEntityWirelessTransmissionStation tile, Level level, ConnectionConfig config) {
         super(gui, x, y, MINER_FILTER_WIDTH, 100, SelectedWindowData.UNSPECIFIED);
         this.level = level;
         this.config = config;
@@ -44,7 +45,7 @@ public class GuiTransmissionStationList extends GuiWindow {
         addChild(new TranslationButton(gui(), getLeftButtonX(), relativeY + 20 + getScreenHeight(), 60, 20, MoreMachineLang.BUTTON_DISCONNECT,
                 (element, mouseX, mouseY) -> {
                     if (config != null) {
-//                        PacketUtils.sendToServer(tile.getConnectManager().getConnections().remove(config));
+                        PacketUtils.sendToServer(new PacketViewConnection(tile.getBlockPos(), config));
                     }
                     return close(element, mouseX, mouseY);
                 }));

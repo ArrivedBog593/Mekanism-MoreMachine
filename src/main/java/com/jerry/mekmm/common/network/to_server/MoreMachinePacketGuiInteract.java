@@ -3,6 +3,7 @@ package com.jerry.mekmm.common.network.to_server;
 import com.jerry.mekaf.common.tile.factory.TileEntityAdvancedFactoryBase;
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.common.tile.TileEntityWirelessChargingStation;
+import com.jerry.mekmm.common.tile.TileEntityWirelessTransmissionStation;
 import com.jerry.mekmm.common.tile.factory.TileEntityMoreMachineFactory;
 import com.jerry.mekmm.common.tile.machine.TileEntityReplicator;
 import io.netty.buffer.ByteBuf;
@@ -159,7 +160,7 @@ public class MoreMachinePacketGuiInteract implements IMekanismPacket {
                 advancedFactory.toggleSorting();
             }
         }),
-
+        //Wireless Charging Station
         CHARGING_EQUIPS((tile, player, extra) -> {
             if (tile instanceof TileEntityWirelessChargingStation chargingStation) {
                 chargingStation.toggleChargeEquipment();
@@ -174,7 +175,29 @@ public class MoreMachinePacketGuiInteract implements IMekanismPacket {
             if (tile instanceof TileEntityWirelessChargingStation chargingStation) {
                 chargingStation.toggleChargeCurios();
             }
-        });
+        }),
+        //Wireless Transmission Station
+        SET_ENERGY_RATE((tile, player, extra) -> {
+            if (tile instanceof TileEntityWirelessTransmissionStation transmissionStation) {
+                transmissionStation.setEnergyRateFromPacket(extra);
+            }
+        }),
+        SET_FLUIDS_RATE((tile, player, extra) -> {
+            if (tile instanceof TileEntityWirelessTransmissionStation transmissionStation) {
+                transmissionStation.setFluidsRateFromPacket(extra);
+            }
+        }),
+        SET_CHEMICALS_RATE((tile, player, extra) -> {
+            if (tile instanceof TileEntityWirelessTransmissionStation transmissionStation) {
+                transmissionStation.setChemicalsRateFromPacket(extra);
+            }
+        }),
+        SET_ITEMS_RATE((tile, player, extra) -> {
+            if (tile instanceof TileEntityWirelessTransmissionStation transmissionStation) {
+                transmissionStation.setItemsRateFromPacket(extra);
+            }
+        }),
+        ;
 
         public static final IntFunction<MMGuiInteraction> BY_ID = ByIdMap.continuous(MMGuiInteraction::ordinal, values(), ByIdMap.OutOfBoundsStrategy.WRAP);
         public static final StreamCodec<ByteBuf, MMGuiInteraction> STREAM_CODEC = ByteBufCodecs.idMapper(BY_ID, MMGuiInteraction::ordinal);
