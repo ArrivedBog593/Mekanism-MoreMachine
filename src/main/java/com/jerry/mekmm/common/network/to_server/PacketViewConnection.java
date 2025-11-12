@@ -1,7 +1,7 @@
 package com.jerry.mekmm.common.network.to_server;
 
-import com.jerry.mekmm.common.attachments.ConnectionConfig;
-import com.jerry.mekmm.common.attachments.WirelessConnectionManager;
+import com.jerry.mekmm.common.attachments.component.ConnectionConfig;
+import com.jerry.mekmm.common.attachments.component.WirelessConnectionManager;
 import com.jerry.mekmm.common.network.MoreMachinePacketUtils;
 import mekanism.common.Mekanism;
 import mekanism.common.network.IMekanismPacket;

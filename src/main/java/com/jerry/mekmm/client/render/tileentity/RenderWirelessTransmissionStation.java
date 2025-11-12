@@ -1,7 +1,7 @@
 package com.jerry.mekmm.client.render.tileentity;
 
 import com.jerry.mekmm.client.render.RenderLineHelper;
-import com.jerry.mekmm.common.attachments.ConnectionConfig;
+import com.jerry.mekmm.common.attachments.component.ConnectionConfig;
 import com.jerry.mekmm.common.item.ItemConnector;
 import com.jerry.mekmm.common.tile.TileEntityWirelessTransmissionStation;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -88,8 +88,8 @@ public class RenderWirelessTransmissionStation extends MekanismTileEntityRendere
         return switch (type) {
             case ENERGY -> new ColorRGB(1.0f, 0.0f, 0.0f);      // 红色 - 能量
             case FLUID -> new ColorRGB(0.0f, 0.4f, 1.0f);       // 蓝色 - 流体
-            case CHEMICAL -> new ColorRGB(0.0f, 1.0f, 0.0f);    // 绿色 - 化学品
-            case ITEM -> new ColorRGB(1.0f, 1.0f, 0.0f);        // 黄色 - 物品
+            case CHEMICAL -> new ColorRGB(1.0f, 1.0f, 0.0f);    // 黄色 - 化学品
+            case ITEM -> new ColorRGB(0.0f, 1.0f, 0.0f);        // 绿色 - 物品
             case HEAT -> new ColorRGB(1.0f, 0.5f, 0.0f);        // 橙色 - 热量
         };
     }
@@ -112,7 +112,7 @@ public class RenderWirelessTransmissionStation extends MekanismTileEntityRendere
         if (player != null) {
             ItemStack mainHand = player.getMainHandItem();
             ItemStack offHand = player.getOffhandItem();
-            if (mainHand.getItem() instanceof ItemConnector || offHand.getItem() instanceof ItemConnector){
+            if (mainHand.getItem() instanceof ItemConnector || offHand.getItem() instanceof ItemConnector) {
                 holdingConnector = true;
             }
         }

@@ -1,8 +1,8 @@
 package com.jerry.mekmm.client.gui;
 
 import com.jerry.mekmm.client.gui.element.button.ConnectListButton;
-import com.jerry.mekmm.common.attachments.ConnectionConfig;
-import com.jerry.mekmm.common.attachments.WirelessConnectionManager;
+import com.jerry.mekmm.common.attachments.component.ConnectionConfig;
+import com.jerry.mekmm.common.attachments.component.WirelessConnectionManager;
 import com.jerry.mekmm.common.tile.interfaces.ITileConnectHolder;
 import mekanism.client.gui.GuiMekanismTile;
 import mekanism.client.gui.element.GuiElementHolder;

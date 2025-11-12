@@ -1,8 +1,8 @@
 package com.jerry.mekmm.common.tile;
 
 import com.jerry.mekmm.api.MoreMachineSerializationConstants;
-import com.jerry.mekmm.common.attachments.ConnectionConfig;
-import com.jerry.mekmm.common.attachments.WirelessConnectionManager;
+import com.jerry.mekmm.common.attachments.component.ConnectionConfig;
+import com.jerry.mekmm.common.attachments.component.WirelessConnectionManager;
 import com.jerry.mekmm.common.config.MoreMachineConfig;
 import com.jerry.mekmm.common.registries.MoreMachineBlocks;
 import com.jerry.mekmm.common.registries.MoreMachineDataComponents;
@@ -370,9 +370,9 @@ public class TileEntityWirelessTransmissionStation extends TileEntityConnectable
     public void readSustainedData(HolderLookup.Provider provider, CompoundTag dataMap) {
         super.readSustainedData(provider, dataMap);
         setEnergyRate(Math.min(dataMap.getInt(MoreMachineSerializationConstants.ENERGY_RATE), MoreMachineConfig.general.energyRate.get()));
-        setEnergyRate(Math.min(dataMap.getInt(MoreMachineSerializationConstants.FLUIDS_RATE), MoreMachineConfig.general.fluidsRate.get()));
-        setEnergyRate(Math.min(dataMap.getInt(MoreMachineSerializationConstants.CHEMICALS_RATE), MoreMachineConfig.general.chemicalsRate.get()));
-        setEnergyRate(Math.min(dataMap.getInt(MoreMachineSerializationConstants.ITEM_RATE), MoreMachineConfig.general.itemsRate.get()));
+        setFluidsRate(Math.min(dataMap.getInt(MoreMachineSerializationConstants.FLUIDS_RATE), MoreMachineConfig.general.fluidsRate.get()));
+        setChemicalsRate(Math.min(dataMap.getInt(MoreMachineSerializationConstants.CHEMICALS_RATE), MoreMachineConfig.general.chemicalsRate.get()));
+        setItemsRate(Math.min(dataMap.getInt(MoreMachineSerializationConstants.ITEM_RATE), MoreMachineConfig.general.itemsRate.get()));
     }
 
     @Override

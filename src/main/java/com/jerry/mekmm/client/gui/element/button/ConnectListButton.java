@@ -1,7 +1,7 @@
 package com.jerry.mekmm.client.gui.element.button;
 
-import com.jerry.mekmm.common.attachments.ConnectionConfig;
-import com.jerry.mekmm.common.attachments.WirelessConnectionManager;
+import com.jerry.mekmm.common.attachments.component.ConnectionConfig;
+import com.jerry.mekmm.common.attachments.component.WirelessConnectionManager;
 import mekanism.api.text.EnumColor;
 import mekanism.client.gui.GuiUtils;
 import mekanism.client.gui.IGuiWrapper;

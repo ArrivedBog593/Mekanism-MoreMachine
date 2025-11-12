@@ -2,7 +2,7 @@ package com.jerry.mekmm.client.gui;
 
 import com.jerry.mekmm.client.gui.window.connect.GuiViewConnection;
 import com.jerry.mekmm.common.MoreMachineLang;
-import com.jerry.mekmm.common.attachments.ConnectionConfig;
+import com.jerry.mekmm.common.attachments.component.ConnectionConfig;
 import com.jerry.mekmm.common.config.MoreMachineConfig;
 import com.jerry.mekmm.common.network.to_server.MoreMachinePacketGuiInteract;
 import com.jerry.mekmm.common.network.to_server.MoreMachinePacketGuiInteract.MMGuiInteraction;

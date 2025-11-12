@@ -1,4 +1,4 @@
-package com.jerry.mekmm.common.attachments;
+package com.jerry.mekmm.common.attachments.component;
 
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.common.tile.TileEntityWirelessTransmissionStation;

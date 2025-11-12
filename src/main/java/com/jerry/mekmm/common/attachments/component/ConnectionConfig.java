@@ -1,4 +1,4 @@
-package com.jerry.mekmm.common.attachments;
+package com.jerry.mekmm.common.attachments.component;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

@@ -10,6 +10,7 @@ import com.jerry.mekmm.client.gui.GuiWirelessChargingStation;
 import com.jerry.mekmm.client.gui.GuiWirelessTransmissionStation;
 import com.jerry.mekmm.client.gui.GuiWirelessTransmissionStationConfig;
 import com.jerry.mekmm.client.gui.machine.*;
+import com.jerry.mekmm.client.render.MoreMachineRenderTickHandler;
 import com.jerry.mekmm.client.render.tileentity.RenderWirelessTransmissionStation;
 import com.jerry.mekmm.common.item.ItemConnector;
 import com.jerry.mekmm.common.item.ItemConnector.ConnectorMode;
@@ -26,6 +27,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.common.NeoForge;
 
 import static mekanism.client.ClientRegistration.addCustomModel;
 
@@ -34,6 +36,9 @@ public class MoreMachineClientRegistration {
 
     @SubscribeEvent
     public static void init(FMLClientSetupEvent event) {
+        NeoForge.EVENT_BUS.register(new MoreMachineClientTickHandler());
+        NeoForge.EVENT_BUS.register(new MoreMachineRenderTickHandler());
+
         addCustomModel(MoreMachineBlocks.WIRELESS_CHARGING_STATION, (orig, evt) -> new ExtensionBakedModel.TransformedBakedModel<Void>(orig,
                 QuadTransformation.translate(0, 1, 0)));
         addCustomModel(MoreMachineBlocks.WIRELESS_TRANSMISSION_STATION, (orig, evt) -> new ExtensionBakedModel.TransformedBakedModel<Void>(orig,

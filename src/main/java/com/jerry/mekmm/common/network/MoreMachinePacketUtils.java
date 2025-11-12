@@ -1,6 +1,6 @@
 package com.jerry.mekmm.common.network;
 
-import com.jerry.mekmm.common.attachments.WirelessConnectionManager;
+import com.jerry.mekmm.common.attachments.component.WirelessConnectionManager;
 import com.jerry.mekmm.common.tile.interfaces.ITileConnectHolder;
 import mekanism.common.network.PacketUtils;
 import net.minecraft.core.BlockPos;

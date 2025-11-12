@@ -1,7 +1,8 @@
 package com.jerry.mekmm.client.gui.window.connect;
 
+import com.jerry.mekmm.client.BlockHighlightManager;
 import com.jerry.mekmm.common.MoreMachineLang;
-import com.jerry.mekmm.common.attachments.ConnectionConfig;
+import com.jerry.mekmm.common.attachments.component.ConnectionConfig;
 import com.jerry.mekmm.common.network.to_server.PacketViewConnection;
 import com.jerry.mekmm.common.tile.TileEntityWirelessTransmissionStation;
 import com.jerry.mekmm.common.util.MoreMachineUtils;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+//TODO:所有有关无线连接的gui都应该优化，就像mek的过滤器gui那样
 public class GuiViewConnection extends GuiWindow {
 
     static int MINER_FILTER_WIDTH = 173;
@@ -42,21 +44,54 @@ public class GuiViewConnection extends GuiWindow {
         this.config = config;
         addChild(new GuiInnerScreen(gui(), relativeX + 29, relativeY + 18, getScreenWidth(), getScreenHeight(), this::getScreenText).clearFormat());
         //删除连接
-        addChild(new TranslationButton(gui(), getLeftButtonX(), relativeY + 20 + getScreenHeight(), 60, 20, MoreMachineLang.BUTTON_DISCONNECT,
-                (element, mouseX, mouseY) -> {
-                    if (config != null) {
-                        PacketUtils.sendToServer(new PacketViewConnection(tile.getBlockPos(), config));
-                    }
-                    return close(element, mouseX, mouseY);
-                }));
+        addChild(new TranslationButton(gui(), getLeftButtonX(), relativeY + 20 + getScreenHeight(), 60, 20, MoreMachineLang.BUTTON_DISCONNECT, (element, mouseX, mouseY) -> {
+            if (config != null) {
+                //TODO:删除连接但目前有bug
+                PacketUtils.sendToServer(new PacketViewConnection(tile.getBlockPos(), config));
+            }
+            return close(element, mouseX, mouseY);
+        }));
         //高亮位置
-        addChild(new TranslationButton(gui(), getLeftButtonX() + 62, relativeY + 20 + getScreenHeight(), 60, 20, MoreMachineLang.BUTTON_HIGHLIGHT,
-                (element, mouseX, mouseY) -> {
-                    if (config != null) {
-//                        PacketUtils.sendToServer(tile.getConnectManager().getConnections().remove(config));
+        addChild(new TranslationButton(gui(), getLeftButtonX() + 62, relativeY + 20 + getScreenHeight(), 60, 20, MoreMachineLang.BUTTON_HIGHLIGHT, (element, mouseX, mouseY) -> {
+            if (config != null) {
+                //高亮显示
+                float r = 0, g = 0, b = 0;
+                switch (config.type()) {
+                    //红
+                    case ENERGY -> {
+                        r = 1.0f;
+                        g = 0.0f;
+                        b = 0.0f;
                     }
-                    return close(element, mouseX, mouseY);
-                }));
+                    //蓝
+                    case FLUID -> {
+                        r = 0.0f;
+                        g = 0.4f;
+                        b = 1.0f;
+                    }
+                    //黄
+                    case CHEMICAL -> {
+                        r = 1.0f;
+                        g = 1.0f;
+                        b = 0.0f;
+                    }
+                    //灰
+                    case ITEM -> {
+                        r = 0.0f;
+                        g = 1.0f;
+                        b = 0.0f;
+                    }
+                    //橙
+                    case HEAT -> {
+                        r = 1.0f;
+                        g = 0.5f;
+                        b = 0.0f;
+                    }
+                }
+                BlockHighlightManager.getInstance().addHighlight(config.pos(), 400, r, g, b);
+            }
+            return close(element, mouseX, mouseY);
+        }));
         slotDisplay = addChild(new GuiSequencedSlotDisplay(gui(), relativeX + 8, relativeY + getSlotOffset() + 1, this::getRenderStacks));
         slotDisplay.updateStackList();
     }
