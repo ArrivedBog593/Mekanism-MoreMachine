@@ -160,7 +160,7 @@ public class ItemConnector extends Item implements IRadialModeItem<ItemConnector
                 return InteractionResult.PASS;
             } else {
                 //绑定后中心方块被拆除
-                player.displayClientMessage(MoreMachineLang.CONNECTOR_LOSE.translate(EnumColor.DARK_RED, globalPos.pos()), true);
+                player.displayClientMessage(MoreMachineLang.CONNECTOR_LOSE.translate(EnumColor.DARK_RED, MoreMachineUtils.formatPos(globalPos.pos())), true);
                 return InteractionResult.FAIL;
             }
         }

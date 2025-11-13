@@ -34,6 +34,7 @@
     "mekmm:chemical_replicator",
     "mekmm:ambient_gas_collector",
     "mekmm:wireless_charging_station",
+    "mekmm:wireless_transmission_station",
     "mekmm:author_doll",
     {"id": "mekmm:overclocked_recycling_factory", "required": false},
     {"id": "mekmm:quantum_recycling_factory", "required": false},
