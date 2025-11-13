@@ -80,7 +80,8 @@ public class TileEntityChemicalInfusingFactory extends TileEntityChemicalToChemi
         if (chemicalConfig != null) {
             chemicalConfig.addSlotInfo(DataType.INPUT_2, new ChemicalSlotInfo(true, false, rightTank));
             chemicalConfig.addSlotInfo(DataType.INPUT_1, new ChemicalSlotInfo(true, false, inputChemicalTanks));
-            List<IChemicalTank> ioTank = new ArrayList<>(List.of(rightTank));
+            List<IChemicalTank> ioTank = new ArrayList<>(outputChemicalTanks);
+            ioTank.add(rightTank);
             ioTank.addAll(inputChemicalTanks);
             chemicalConfig.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo(true, true, ioTank));
         }
