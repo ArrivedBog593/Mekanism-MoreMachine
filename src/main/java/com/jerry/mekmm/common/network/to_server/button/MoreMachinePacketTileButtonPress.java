@@ -1,9 +1,9 @@
 package com.jerry.mekmm.common.network.to_server.button;
 
 import com.jerry.mekmm.Mekmm;
+import com.jerry.mekmm.common.MoreMachineLang;
 import com.jerry.mekmm.common.registries.MoreMachineContainerTypes;
 import io.netty.buffer.ByteBuf;
-import mekanism.common.MekanismLang;
 import mekanism.common.network.IMekanismPacket;
 import mekanism.common.tile.base.TileEntityMekanism;
 import mekanism.common.util.WorldUtils;
@@ -58,7 +58,7 @@ public record MoreMachinePacketTileButtonPress(MoreMachineClickedTileButton butt
     }
 
     public enum MoreMachineClickedTileButton {
-        WIRELESS_TRANSMISSION_STATION_CONFIG(tile -> MoreMachineContainerTypes.WIRELESS_TRANSMISSION_STATION_CONFIG.getProvider(MekanismLang.MINER_CONFIG, tile));
+        WIRELESS_TRANSMISSION_STATION_CONFIG(tile -> MoreMachineContainerTypes.WIRELESS_TRANSMISSION_STATION_CONFIG.getProvider(MoreMachineLang.TRANSMITTER_CONFIG, tile));
 
         public static final IntFunction<MoreMachineClickedTileButton> BY_ID = ByIdMap.continuous(MoreMachineClickedTileButton::ordinal, values(), ByIdMap.OutOfBoundsStrategy.WRAP);
         public static final StreamCodec<ByteBuf, MoreMachineClickedTileButton> STREAM_CODEC = ByteBufCodecs.idMapper(BY_ID, MoreMachineClickedTileButton::ordinal);

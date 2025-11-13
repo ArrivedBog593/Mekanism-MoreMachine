@@ -8,7 +8,6 @@ import com.jerry.mekmm.common.network.to_server.button.MoreMachinePacketTileButt
 import com.jerry.mekmm.common.tile.TileEntityWirelessTransmissionStation;
 import mekanism.client.gui.GuiConfigurableTile;
 import mekanism.client.gui.element.bar.GuiBar.IBarInfoHandler;
-import mekanism.client.gui.element.button.MekanismButton;
 import mekanism.client.gui.element.button.MekanismImageButton;
 import mekanism.client.gui.element.gauge.GaugeType;
 import mekanism.client.gui.element.gauge.GuiChemicalGauge;
@@ -31,8 +30,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class GuiWirelessTransmissionStation extends GuiConfigurableTile<TileEntityWirelessTransmissionStation, WirelessTransmissionStationContainer> {
-
-    private MekanismButton configButton;
 
     public GuiWirelessTransmissionStation(WirelessTransmissionStationContainer container, Inventory inv, Component title) {
         super(container, inv, title);
@@ -71,7 +68,7 @@ public class GuiWirelessTransmissionStation extends GuiConfigurableTile<TileEnti
             }
         }, 27, 80, 119, 9));
         //配置按钮
-        addRenderableWidget(new MekanismImageButton(this, 151, 77, 18, 18, getButtonLocation("back"),
+        addRenderableWidget(new MekanismImageButton(this, 151, 77, 18, 18, getButtonLocation("config"),
                 (element, mouseX, mouseY) -> PacketUtils.sendToServer(new MoreMachinePacketTileButtonPress(MoreMachineClickedTileButton.WIRELESS_TRANSMISSION_STATION_CONFIG, ((GuiWirelessTransmissionStation) element.gui()).tile))))
                 .setTooltip(TooltipUtils.create(MoreMachineLang.CONFIGURATION));
         addRenderableWidget(new GuiHeatTab(this, () -> {

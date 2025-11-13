@@ -1,6 +1,6 @@
 package com.jerry.mekmm.client.gui.window.connect;
 
-import com.jerry.mekmm.client.BlockHighlightManager;
+import com.jerry.mekmm.client.render.BlockHighlightManager;
 import com.jerry.mekmm.common.MoreMachineLang;
 import com.jerry.mekmm.common.attachments.component.ConnectionConfig;
 import com.jerry.mekmm.common.network.to_server.PacketViewConnection;

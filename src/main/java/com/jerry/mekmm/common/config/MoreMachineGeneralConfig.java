@@ -44,9 +44,9 @@ public class MoreMachineGeneralConfig extends BaseMekanismConfig {
 
         MoreMachineConfigTranslations.GENERAL_WIRELESS_TRANSMISSION_STATION_MAX_OUTPUT_RATE.applyToBuilder(builder).push("wireless_transmission_station_max_output_rate");
         energyRate = CachedLongValue.define(this, builder, MoreMachineConfigTranslations.ENERGY_RATE, "energyRate", 100_000L, 1, Integer.MAX_VALUE);
-        fluidsRate = CachedIntValue.wrap(this, MoreMachineConfigTranslations.ENERGY_RATE.applyToBuilder(builder).defineInRange("fluidsRate", 1_000, 1, Integer.MAX_VALUE));
-        chemicalsRate = CachedLongValue.define(this, builder, MoreMachineConfigTranslations.ENERGY_RATE, "chemicalsRate", 4_000L, 1, Integer.MAX_VALUE);
-        itemsRate = CachedIntValue.wrap(this, MoreMachineConfigTranslations.ENERGY_RATE.applyToBuilder(builder).defineInRange("itemsRate", 64, 1, 64));
+        fluidsRate = CachedIntValue.wrap(this, MoreMachineConfigTranslations.FLUIDS_RATE.applyToBuilder(builder).defineInRange("fluidsRate", 1_000, 1, Integer.MAX_VALUE));
+        chemicalsRate = CachedLongValue.define(this, builder, MoreMachineConfigTranslations.CHEMICALS_RATE, "chemicalsRate", 4_000L, 1, Integer.MAX_VALUE);
+        itemsRate = CachedIntValue.wrap(this, MoreMachineConfigTranslations.ITEMS_RATE.applyToBuilder(builder).defineInRange("itemsRate", 64, 1, 64));
         builder.pop();
 
         gasCollectAmount = CachedIntValue.wrap(this, MoreMachineConfigTranslations.GAS_COLLECT_AMOUNT.applyToBuilder(builder).defineInRange("gasCollectAmount", 1, 1, FluidType.BUCKET_VOLUME));

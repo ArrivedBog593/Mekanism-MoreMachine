@@ -29,9 +29,9 @@ import java.util.List;
 
 public class GuiWirelessChargingStation extends GuiConfigurableTile<TileEntityWirelessChargingStation, MekanismTileContainer<TileEntityWirelessChargingStation>> {
 
-    private static final ResourceLocation EQUIPS = MekanismUtils.getResource(MekanismUtils.ResourceType.GUI, "switch/eject.png");
-    private static final ResourceLocation INVENTORY = MekanismUtils.getResource(MekanismUtils.ResourceType.GUI, "switch/input.png");
-    private static final ResourceLocation CURIOS = MekanismUtils.getResource(MekanismUtils.ResourceType.GUI, "switch/silk.png");
+    private static final ResourceLocation EQUIPS = MekanismUtils.getResource(MekanismUtils.ResourceType.GUI, "switch/equips.png");
+    private static final ResourceLocation INVENTORY = MekanismUtils.getResource(MekanismUtils.ResourceType.GUI, "switch/inventory.png");
+    private static final ResourceLocation CURIOS = MekanismUtils.getResource(MekanismUtils.ResourceType.GUI, "switch/curios.png");
 
     public GuiWirelessChargingStation(MekanismTileContainer<TileEntityWirelessChargingStation> container, Inventory inv, Component title) {
         super(container, inv, title);

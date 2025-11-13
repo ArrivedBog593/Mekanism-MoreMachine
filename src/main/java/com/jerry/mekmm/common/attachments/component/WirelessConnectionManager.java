@@ -238,6 +238,7 @@ public class WirelessConnectionManager {
 
     public void remove(ConnectionConfig config) {
         connections.remove(config);
+        cacheDirty = true;
         tile.sendUpdatePacket();
         tile.markForSave();
     }

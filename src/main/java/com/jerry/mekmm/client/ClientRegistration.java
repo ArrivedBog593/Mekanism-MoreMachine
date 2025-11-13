@@ -10,7 +10,7 @@ import com.jerry.mekmm.client.gui.GuiWirelessChargingStation;
 import com.jerry.mekmm.client.gui.GuiWirelessTransmissionStation;
 import com.jerry.mekmm.client.gui.GuiWirelessTransmissionStationConfig;
 import com.jerry.mekmm.client.gui.machine.*;
-import com.jerry.mekmm.client.render.MoreMachineRenderTickHandler;
+import com.jerry.mekmm.client.render.RenderTickHandler;
 import com.jerry.mekmm.client.render.tileentity.RenderWirelessTransmissionStation;
 import com.jerry.mekmm.common.item.ItemConnector;
 import com.jerry.mekmm.common.item.ItemConnector.ConnectorMode;
@@ -32,12 +32,12 @@ import net.neoforged.neoforge.common.NeoForge;
 import static mekanism.client.ClientRegistration.addCustomModel;
 
 @EventBusSubscriber(modid = Mekmm.MOD_ID, value = Dist.CLIENT)
-public class MoreMachineClientRegistration {
+public class ClientRegistration {
 
     @SubscribeEvent
     public static void init(FMLClientSetupEvent event) {
-        NeoForge.EVENT_BUS.register(new MoreMachineClientTickHandler());
-        NeoForge.EVENT_BUS.register(new MoreMachineRenderTickHandler());
+        NeoForge.EVENT_BUS.register(new ClientTickHandler());
+        NeoForge.EVENT_BUS.register(new RenderTickHandler());
 
         addCustomModel(MoreMachineBlocks.WIRELESS_CHARGING_STATION, (orig, evt) -> new ExtensionBakedModel.TransformedBakedModel<Void>(orig,
                 QuadTransformation.translate(0, 1, 0)));
@@ -78,7 +78,6 @@ public class MoreMachineClientRegistration {
         ClientRegistrationUtil.registerScreen(event, MoreMachineContainerTypes.WIRELESS_TRANSMISSION_STATION, GuiWirelessTransmissionStation::new);
 
         ClientRegistrationUtil.registerScreen(event, MoreMachineContainerTypes.WIRELESS_TRANSMISSION_STATION_CONFIG, GuiWirelessTransmissionStationConfig::new);
-
         ClientRegistrationUtil.registerScreen(event, MoreMachineContainerTypes.MM_FACTORY, GuiMoreMachineFactory::new);
 
         //Advanced Factory

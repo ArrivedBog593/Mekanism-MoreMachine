@@ -4,6 +4,7 @@ import com.jerry.mekmm.api.MoreMachineSerializationConstants;
 import com.jerry.mekmm.common.attachments.component.ConnectionConfig;
 import com.jerry.mekmm.common.attachments.component.WirelessConnectionManager;
 import com.jerry.mekmm.common.config.MoreMachineConfig;
+import com.jerry.mekmm.common.inventory.container.tile.WirelessTransmissionStationConfigContainer;
 import com.jerry.mekmm.common.registries.MoreMachineBlocks;
 import com.jerry.mekmm.common.registries.MoreMachineDataComponents;
 import com.jerry.mekmm.common.tile.interfaces.ITileConnectHolder;
@@ -56,12 +57,14 @@ import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
 import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashSet;
 import java.util.List;
 
 public class TileEntityWirelessTransmissionStation extends TileEntityConnectableMachine implements ITileConnectHolder {
@@ -163,9 +166,26 @@ public class TileEntityWirelessTransmissionStation extends TileEntityConnectable
         return builder.build();
     }
 
+    private void closeInvalidScreens() {
+        if (getActive() && !playersUsing.isEmpty()) {
+            for (Player player : new HashSet<>(playersUsing)) {
+                if (player.containerMenu instanceof WirelessTransmissionStationConfigContainer) {
+                    player.closeContainer();
+                }
+            }
+        }
+    }
+
+    @Override
+    protected void onUpdateClient() {
+        super.onUpdateClient();
+        closeInvalidScreens();
+    }
+
     @Override
     protected boolean onUpdateServer() {
         boolean sendUpdatePacket = super.onUpdateServer();
+        closeInvalidScreens();
         chemicalInputSlot.fillTank();
         chemicalOutputSlot.drainTank();
         fluidFillSlot.fillTank(fluidOutputSlot);

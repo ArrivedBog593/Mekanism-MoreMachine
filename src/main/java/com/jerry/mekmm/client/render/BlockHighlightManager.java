@@ -1,4 +1,4 @@
-package com.jerry.mekmm.client;
+package com.jerry.mekmm.client.render;
 
 import net.minecraft.core.BlockPos;
 
@@ -12,7 +12,8 @@ public class BlockHighlightManager {
     // 存储高亮方块及其数据
     private final Map<BlockPos, HighlightData> highlightedBlocks = new ConcurrentHashMap<>();
 
-    private BlockHighlightManager() {}
+    private BlockHighlightManager() {
+    }
 
     public static BlockHighlightManager getInstance() {
         return INSTANCE;
@@ -20,7 +21,8 @@ public class BlockHighlightManager {
 
     /**
      * 添加一个高亮方块
-     * @param pos 方块位置
+     *
+     * @param pos      方块位置
      * @param duration 持续时间 (ticks)
      */
     public void addHighlight(BlockPos pos, int duration) {
@@ -100,18 +102,24 @@ public class BlockHighlightManager {
     public static class HighlightData {
         //不是final,需要每tick修改
         int remainingTicks;
-        private final int totalTicks;
         private final float red;
         private final float green;
         private final float blue;
+        protected final float baseAlpha;
 
+        //默认红色
         public HighlightData(int ticks) {
-            this(ticks, 1.0f, 0.0f, 0.0f); // 默认红色
+            this(ticks, 1.0f, 0.0f, 0.0f);
         }
 
+        //默认alpha
         public HighlightData(int ticks, float r, float g, float b) {
+            this(ticks, r, g, b, 1.0f);
+        }
+
+        public HighlightData(int ticks, float r, float g, float b, float alpha) {
             this.remainingTicks = ticks;
-            this.totalTicks = ticks;
+            this.baseAlpha = alpha;
             this.red = r;
             this.green = g;
             this.blue = b;
@@ -137,10 +145,9 @@ public class BlockHighlightManager {
          * 获取当前透明度 (带闪烁效果)
          */
         public float getAlpha(long gameTime) {
-            // 基础透明度: 逐渐淡出
-            float baseAlpha = (float) remainingTicks / totalTicks;
-            // 闪烁效果: 使用正弦波
-            float flash = (float) (Math.sin(gameTime * 0.5) * 0.3 + 0.7); // 0.4 - 1.0
+            //闪烁效果: 使用正弦波
+            //0.4 - 1.0
+            float flash = (float) (Math.sin(gameTime * 0.5) * 0.3 + 0.7);
             return baseAlpha * flash;
         }
     }

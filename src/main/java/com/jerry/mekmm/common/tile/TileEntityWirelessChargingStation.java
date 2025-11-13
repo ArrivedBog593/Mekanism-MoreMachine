@@ -28,7 +28,6 @@ import mekanism.common.tile.component.TileComponentEjector;
 import mekanism.common.tile.interfaces.IBoundingBlock;
 import mekanism.common.tile.prefab.TileEntityConfigurableMachine;
 import mekanism.common.util.NBTUtils;
-import mekanism.common.util.StorageUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentMap;
@@ -91,40 +90,39 @@ public class TileEntityWirelessChargingStation extends TileEntityConfigurableMac
             UUID uuid = getSecurity().getOwnerUUID();
             if (level != null && uuid != null) {
                 Player player = level.getPlayerByUUID(uuid);
-                if (player != null) {
+                if (player == null) {
+                    return sendUpdatePacket;
+                }
+                long maxChargeRate = MoreMachineConfig.general.wirelessChargingStationChargingRate.get();
+                long availableEnergy = energyContainer.getEnergy();
+                long toCharge = Math.min(maxChargeRate, availableEnergy);
+                if (toCharge > 0L) {
                     //优先充能盔甲，其次是主副手和饰品，最后是物品栏
-                    if (chargeEquipment) chargeSuit(player);
-                    if (chargeInventory) chargeInventory(player);
-                    if (chargeCurios) chargeCurios(player);
+                    if (chargeEquipment) {
+                        toCharge = chargeSuit(player, toCharge);
+                    }
+                    if (toCharge > 0L && chargeInventory) {
+                        toCharge = chargeInventory(player, toCharge);
+                    }
+                    if (toCharge > 0L && chargeCurios) {
+                        chargeCurios(player, toCharge);
+                    }
                 }
             }
         }
         return sendUpdatePacket;
     }
 
-    private void chargeSuit(Player player) {
-        long toCharge = Math.min(MoreMachineConfig.general.wirelessChargingStationChargingRate.get(), energyContainer.getEnergy());
-        if (toCharge == 0L) {
-            return;
-        }
-
+    private long chargeSuit(Player player, long toCharge) {
         for (ItemStack stack : player.getArmorSlots()) {
-            IEnergyContainer suitContainer = StorageUtils.getEnergyContainer(stack, 0);
-            if (suitContainer != null) {
-                toCharge = charge(energyContainer, stack, toCharge);
-                if (toCharge == 0L) {
-                    return;
-                }
-            }
+            //charge方法会检测是否是含能量槽的物品
+            toCharge = charge(energyContainer, stack, toCharge);
+            if (toCharge == 0L) break;
         }
+        return toCharge;
     }
 
-    private void chargeInventory(Player player) {
-        long toCharge = Math.min(MoreMachineConfig.general.wirelessChargingStationChargingRate.get(), energyContainer.getEnergy());
-        if (toCharge == 0L) {
-            return;
-        }
-
+    private long chargeInventory(Player player, long toCharge) {
         ItemStack mainHand = player.getMainHandItem();
         ItemStack offHand = player.getOffhandItem();
         toCharge = charge(energyContainer, mainHand, toCharge);
@@ -133,46 +131,48 @@ public class TileEntityWirelessChargingStation extends TileEntityConfigurableMac
             for (ItemStack stack : player.getInventory().items) {
                 if (stack != mainHand && stack != offHand) {
                     toCharge = charge(energyContainer, stack, toCharge);
-                    if (toCharge == 0L) {
-                        return;
-                    }
+                    if (toCharge == 0L) break;
                 }
             }
 
         }
+        return toCharge;
     }
 
-    private void chargeCurios(Player player) {
-        long toCharge = Math.min(MoreMachineConfig.general.wirelessChargingStationChargingRate.get(), energyContainer.getEnergy());
-        if (toCharge == 0L) {
-            return;
-        }
-
+    private void chargeCurios(Player player, long toCharge) {
         if (Mekanism.hooks.curios.isLoaded()) {
             IItemHandler handler = CuriosIntegration.getCuriosInventory(player);
-            if (handler != null) {
-                for (int slot = 0, slots = handler.getSlots(); slot < slots; slot++) {
-                    toCharge = charge(energyContainer, handler.getStackInSlot(slot), toCharge);
-                    if (toCharge == 0L) {
-                        return;
-                    }
+            if (handler == null) {
+                return;
+            }
+            for (int slot = 0, slots = handler.getSlots(); slot < slots; slot++) {
+                toCharge = charge(energyContainer, handler.getStackInSlot(slot), toCharge);
+                if (toCharge == 0L) {
+                    return;
                 }
             }
         }
     }
 
     private long charge(IEnergyContainer energyContainer, ItemStack stack, long amount) {
-        if (!stack.isEmpty() && amount > 0L) {
-            IStrictEnergyHandler handler = EnergyCompatUtils.getStrictEnergyHandler(stack);
-            if (handler != null) {
-                long remaining = handler.insertEnergy(amount, Action.SIMULATE);
-                if (remaining < amount) {
-                    long toExtract = amount - remaining;
-                    long extracted = energyContainer.extract(toExtract, Action.EXECUTE, AutomationType.MANUAL);
-                    long inserted = handler.insertEnergy(extracted, Action.EXECUTE);
-                    return inserted + remaining;
-                }
-            }
+        if (stack.isEmpty() || amount <= 0L) {
+            return amount;
+        }
+        IStrictEnergyHandler handler = EnergyCompatUtils.getStrictEnergyHandler(stack);
+        if (handler == null) {
+            return amount;
+        }
+        //模拟接收后剩余的量
+        long remaining = handler.insertEnergy(amount, Action.SIMULATE);
+        if (remaining < amount) {
+            //物品需要的量=总量-模拟接收后剩余的量
+            long toExtract = amount - remaining;
+            //实际提取的量
+            long extracted = energyContainer.extract(toExtract, Action.EXECUTE, AutomationType.MANUAL);
+            //实际插入后剩余的量
+            long inserted = handler.insertEnergy(extracted, Action.EXECUTE);
+            //返回模拟剩余的量和实际插入后剩余的量的和
+            return inserted + remaining;
         }
         return amount;
     }

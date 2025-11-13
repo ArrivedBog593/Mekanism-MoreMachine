@@ -53,6 +53,12 @@ public class GuiWirelessTransmissionStationConfig extends GuiConnectListHolder<T
         itemsRateField.configureDigitalBorderInput(() -> setText(itemsRateField, MMGuiInteraction.SET_ITEMS_RATE));
     }
 
+    //覆写，以免绘制SecurityTab和RedstoneControl
+    @Override
+    protected void addGenericTabs() {
+        //Don't add the generic tabs when we are in the config
+    }
+
     @Override
     protected void drawForegroundText(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY) {
         super.drawForegroundText(guiGraphics, mouseX, mouseY);
