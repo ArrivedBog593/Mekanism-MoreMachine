@@ -15,12 +15,8 @@
     "item": "mysticalagriculture:coal_seeds"
   },
   "main_output": {
-    "count": 1,
-    "id": "mysticalagriculture:coal_seeds"
-  },
-  "per_tick_usage": true,
-  "secondary_output": {
     "count": 4,
     "id": "mysticalagriculture:coal_essence"
-  }
+  },
+  "per_tick_usage": true
 }

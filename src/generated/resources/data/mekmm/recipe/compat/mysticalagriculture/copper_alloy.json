@@ -15,12 +15,8 @@
     "item": "mysticalagriculture:copper_alloy_seeds"
   },
   "main_output": {
-    "count": 1,
-    "id": "mysticalagriculture:copper_alloy_seeds"
-  },
-  "per_tick_usage": true,
-  "secondary_output": {
     "count": 3,
     "id": "mysticalagriculture:copper_alloy_essence"
-  }
+  },
+  "per_tick_usage": true
 }

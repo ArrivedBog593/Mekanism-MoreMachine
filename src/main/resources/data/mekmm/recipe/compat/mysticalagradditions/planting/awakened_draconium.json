@@ -14,12 +14,8 @@
     "count": 1,
     "item": "mysticalagriculture:awakened_draconium_seeds"
   },
-  "main_output": {
-    "count": 1,
-    "item": "mysticalagriculture:awakened_draconium_seeds"
-  },
   "per_tick_usage": true,
-  "secondary_output": {
+  "main_output": {
     "count": 1,
     "item": "mysticalagriculture:awakened_draconium_essence"
   }

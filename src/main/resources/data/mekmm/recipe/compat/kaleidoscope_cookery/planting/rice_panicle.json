@@ -19,7 +19,7 @@
     "id": "kaleidoscope_cookery:wild_rice"
   },
   "secondary_output": {
-    "count": 3,
+    "count": 5,
     "id": "kaleidoscope_cookery:rice_panicle"
   },
   "per_tick_usage":true

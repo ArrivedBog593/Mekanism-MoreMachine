@@ -15,11 +15,11 @@
     "chemical": "mekmm:nutrient_solution"
   },
   "main_output": {
-    "count": 3,
+    "count": 2,
     "id": "farmersdelight:cabbage_seeds"
   },
   "secondary_output": {
-    "count": 1,
+    "count": 4,
     "id": "farmersdelight:cabbage"
   },
   "per_tick_usage":true

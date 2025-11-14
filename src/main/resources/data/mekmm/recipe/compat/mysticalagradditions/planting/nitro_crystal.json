@@ -14,12 +14,8 @@
     "count": 1,
     "item": "mysticalagriculture:nitro_crystal_seeds"
   },
-  "main_output": {
-    "count": 1,
-    "id": "mysticalagriculture:nitro_crystal_seeds"
-  },
   "per_tick_usage": true,
-  "secondary_output": {
+  "main_output": {
     "count": 1,
     "id": "mysticalagriculture:nitro_crystal_essence"
   }

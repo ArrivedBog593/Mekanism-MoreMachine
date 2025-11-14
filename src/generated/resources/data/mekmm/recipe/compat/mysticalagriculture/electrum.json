@@ -15,12 +15,8 @@
     "item": "mysticalagriculture:electrum_seeds"
   },
   "main_output": {
-    "count": 1,
-    "id": "mysticalagriculture:electrum_seeds"
-  },
-  "per_tick_usage": true,
-  "secondary_output": {
     "count": 2,
     "id": "mysticalagriculture:electrum_essence"
-  }
+  },
+  "per_tick_usage": true
 }

@@ -15,12 +15,8 @@
     "item": "mysticalagriculture:grains_of_infinity_seeds"
   },
   "main_output": {
-    "count": 1,
-    "id": "mysticalagriculture:grains_of_infinity_seeds"
-  },
-  "per_tick_usage": true,
-  "secondary_output": {
     "count": 4,
     "id": "mysticalagriculture:grains_of_infinity_essence"
-  }
+  },
+  "per_tick_usage": true
 }

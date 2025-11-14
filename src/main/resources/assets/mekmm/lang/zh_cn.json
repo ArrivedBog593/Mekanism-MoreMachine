@@ -343,6 +343,8 @@
   "button.mekmm.disconnect": "断开连接",
   "button.mekmm.highlight": "高亮位置",
 
+  "transmitter.mekmm.config": "无线传输站配置",
+
   "list.mekmm.name": "名称：%1$s",
   "list.mekmm.pos": "位置：%1$s",
   "list.mekmm.direction": "方向：%1$s",

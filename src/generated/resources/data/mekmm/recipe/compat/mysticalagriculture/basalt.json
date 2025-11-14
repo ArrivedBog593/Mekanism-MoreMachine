@@ -15,12 +15,8 @@
     "item": "mysticalagriculture:basalt_seeds"
   },
   "main_output": {
-    "count": 1,
-    "id": "mysticalagriculture:basalt_seeds"
-  },
-  "per_tick_usage": true,
-  "secondary_output": {
     "count": 4,
     "id": "mysticalagriculture:basalt_essence"
-  }
+  },
+  "per_tick_usage": true
 }

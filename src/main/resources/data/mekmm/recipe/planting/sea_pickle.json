@@ -9,7 +9,7 @@
     "chemical": "mekmm:nutrient_solution"
   },
   "main_output": {
-    "count": 3,
+    "count": 4,
     "id": "minecraft:sea_pickle"
   },
   "per_tick_usage":true

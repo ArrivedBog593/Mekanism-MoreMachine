@@ -15,12 +15,8 @@
     "item": "mysticalagriculture:creeper_seeds"
   },
   "main_output": {
-    "count": 1,
-    "id": "mysticalagriculture:creeper_seeds"
-  },
-  "per_tick_usage": true,
-  "secondary_output": {
     "count": 3,
     "id": "mysticalagriculture:creeper_essence"
-  }
+  },
+  "per_tick_usage": true
 }

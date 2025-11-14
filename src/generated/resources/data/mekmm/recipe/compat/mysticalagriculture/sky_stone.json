@@ -15,12 +15,8 @@
     "item": "mysticalagriculture:sky_stone_seeds"
   },
   "main_output": {
-    "count": 1,
-    "id": "mysticalagriculture:sky_stone_seeds"
-  },
-  "per_tick_usage": true,
-  "secondary_output": {
     "count": 3,
     "id": "mysticalagriculture:sky_stone_essence"
-  }
+  },
+  "per_tick_usage": true
 }

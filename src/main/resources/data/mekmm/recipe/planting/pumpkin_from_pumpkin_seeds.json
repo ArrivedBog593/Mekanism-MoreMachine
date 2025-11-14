@@ -9,11 +9,7 @@
     "chemical": "mekmm:nutrient_solution"
   },
   "main_output": {
-    "count": 1,
-    "id": "minecraft:pumpkin_seeds"
-  },
-  "secondary_output": {
-    "count": 1,
+    "count": 2,
     "id": "minecraft:pumpkin"
   },
   "per_tick_usage":true

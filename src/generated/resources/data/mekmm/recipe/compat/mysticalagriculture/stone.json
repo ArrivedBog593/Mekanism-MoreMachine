@@ -15,12 +15,8 @@
     "item": "mysticalagriculture:stone_seeds"
   },
   "main_output": {
-    "count": 1,
-    "id": "mysticalagriculture:stone_seeds"
-  },
-  "per_tick_usage": true,
-  "secondary_output": {
     "count": 5,
     "id": "mysticalagriculture:stone_essence"
-  }
+  },
+  "per_tick_usage": true
 }

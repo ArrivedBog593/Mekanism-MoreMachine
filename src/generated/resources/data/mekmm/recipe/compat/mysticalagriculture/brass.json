@@ -15,12 +15,8 @@
     "item": "mysticalagriculture:brass_seeds"
   },
   "main_output": {
-    "count": 1,
-    "id": "mysticalagriculture:brass_seeds"
-  },
-  "per_tick_usage": true,
-  "secondary_output": {
     "count": 3,
     "id": "mysticalagriculture:brass_essence"
-  }
+  },
+  "per_tick_usage": true
 }

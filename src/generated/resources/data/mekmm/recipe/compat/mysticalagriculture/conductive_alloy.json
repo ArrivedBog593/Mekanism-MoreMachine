@@ -15,12 +15,8 @@
     "item": "mysticalagriculture:conductive_alloy_seeds"
   },
   "main_output": {
-    "count": 1,
-    "id": "mysticalagriculture:conductive_alloy_seeds"
-  },
-  "per_tick_usage": true,
-  "secondary_output": {
     "count": 3,
     "id": "mysticalagriculture:conductive_alloy_essence"
-  }
+  },
+  "per_tick_usage": true
 }

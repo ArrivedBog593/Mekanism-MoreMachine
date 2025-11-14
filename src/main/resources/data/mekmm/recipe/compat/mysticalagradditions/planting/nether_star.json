@@ -14,12 +14,8 @@
     "count": 1,
     "item": "mysticalagriculture:nether_star_seeds"
   },
-  "main_output": {
-    "count": 1,
-    "id": "mysticalagriculture:nether_star_seeds"
-  },
   "per_tick_usage": true,
-  "secondary_output": {
+  "main_output": {
     "count": 1,
     "id": "mysticalagriculture:nether_star_essence"
   }

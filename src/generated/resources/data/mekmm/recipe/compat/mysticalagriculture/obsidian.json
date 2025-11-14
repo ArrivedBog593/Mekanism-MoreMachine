@@ -15,12 +15,8 @@
     "item": "mysticalagriculture:obsidian_seeds"
   },
   "main_output": {
-    "count": 1,
-    "id": "mysticalagriculture:obsidian_seeds"
-  },
-  "per_tick_usage": true,
-  "secondary_output": {
     "count": 3,
     "id": "mysticalagriculture:obsidian_essence"
-  }
+  },
+  "per_tick_usage": true
 }

@@ -9,11 +9,7 @@
     "chemical": "mekmm:nutrient_solution"
   },
   "main_output": {
-    "count": 1,
-    "id": "minecraft:melon_seeds"
-  },
-  "secondary_output": {
-    "count": 1,
+    "count": 2,
     "id": "minecraft:melon"
   },
   "per_tick_usage":true

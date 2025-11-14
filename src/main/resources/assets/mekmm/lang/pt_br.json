@@ -343,6 +343,8 @@
   "button.mekmm.disconnect": "Disconnect",
   "button.mekmm.highlight": "Highlight",
 
+  "transmitter.mekmm.config": "Wireless Transmission Station Config",
+
   "list.mekmm.name": "Name:%1$s",
   "list.mekmm.pos": "BlockPos:%1$s",
   "list.mekmm.direction": "Direction:%1$s",

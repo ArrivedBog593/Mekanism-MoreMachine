@@ -15,12 +15,8 @@
     "item": "mysticalagriculture:cobalt_seeds"
   },
   "main_output": {
-    "count": 1,
-    "id": "mysticalagriculture:cobalt_seeds"
-  },
-  "per_tick_usage": true,
-  "secondary_output": {
     "count": 2,
     "id": "mysticalagriculture:cobalt_essence"
-  }
+  },
+  "per_tick_usage": true
 }

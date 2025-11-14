@@ -1,7 +1,7 @@
 package com.jerry.mekmm.common.tile.factory;
 
 import com.jerry.mekmm.api.recipes.PlantingRecipe;
-import com.jerry.mekmm.api.recipes.cache.MMItemStackConstantChemicalToObjectCachedRecipe;
+import com.jerry.mekmm.api.recipes.cache.PlantingStationCachedRecipe;
 import com.jerry.mekmm.api.recipes.cache.MoreMachineTwoInputCachedRecipe;
 import com.jerry.mekmm.api.recipes.outputs.MoreMachineOutputHelper;
 import com.jerry.mekmm.client.recipe_viewer.MMRecipeViewerRecipeType;
@@ -180,7 +180,7 @@ public class TileEntityPlantingFactory extends TileEntityMoreMachineFactory<Plan
     public @NotNull CachedRecipe<PlantingRecipe> createNewCachedRecipe(@NotNull PlantingRecipe recipe, int cacheIndex) {
         CachedRecipe<PlantingRecipe> cachedRecipe;
         if (recipe.perTickUsage()) {
-            cachedRecipe = MMItemStackConstantChemicalToObjectCachedRecipe.planting(recipe, recheckAllRecipeErrors[cacheIndex], inputHandlers[cacheIndex], chemicalInputHandler,
+            cachedRecipe = PlantingStationCachedRecipe.planting(recipe, recheckAllRecipeErrors[cacheIndex], inputHandlers[cacheIndex], chemicalInputHandler,
                     chemicalUsageMultiplier, used -> usedSoFar[cacheIndex] = used, outputHandlers[cacheIndex]);
         } else {
             cachedRecipe = MoreMachineTwoInputCachedRecipe.planting(recipe, recheckAllRecipeErrors[cacheIndex], inputHandlers[cacheIndex], chemicalInputHandler, outputHandlers[cacheIndex]);

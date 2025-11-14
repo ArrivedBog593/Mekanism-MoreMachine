@@ -15,12 +15,8 @@
     "item": "mysticalagriculture:dirt_seeds"
   },
   "main_output": {
-    "count": 1,
-    "id": "mysticalagriculture:dirt_seeds"
-  },
-  "per_tick_usage": true,
-  "secondary_output": {
     "count": 5,
     "id": "mysticalagriculture:dirt_essence"
-  }
+  },
+  "per_tick_usage": true
 }

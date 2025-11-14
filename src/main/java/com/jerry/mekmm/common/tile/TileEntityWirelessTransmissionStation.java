@@ -124,7 +124,6 @@ public class TileEntityWirelessTransmissionStation extends TileEntityConnectable
     protected @Nullable IInventorySlotHolder getInitialInventory(IContentsListener listener) {
         InventorySlotHelper builder = InventorySlotHelper.forSideWithConfig(this);
         builder.addSlot(inventorySlot = BasicInventorySlot.at(listener, 8, 77));
-//        builder.addSlot(rightInventorySlot = BasicInventorySlot.at(listener, 152, 77));
         builder.addSlot(chemicalInputSlot = ChemicalInventorySlot.fill(chemicalTank, listener, 28, 15));
         builder.addSlot(chemicalOutputSlot = ChemicalInventorySlot.drain(chemicalTank, listener, 28, 57));
         builder.addSlot(fluidFillSlot = FluidInventorySlot.fill(fluidTank, listener, 131, 15));
@@ -243,6 +242,7 @@ public class TileEntityWirelessTransmissionStation extends TileEntityConnectable
      *
      * @return double 与连接方块的热量传递值
      */
+    //连接两个及以上数量的方块时会导致热量频繁交换（
     private double exchangeHeat() {
         double adjacentTransfer = 0;
         for (ConnectionConfig config : connectionManager.getConnectionsByType(TransmissionType.HEAT)) {

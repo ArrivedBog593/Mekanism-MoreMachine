@@ -15,12 +15,8 @@
     "item": "mysticalagriculture:nickel_seeds"
   },
   "main_output": {
-    "count": 1,
-    "id": "mysticalagriculture:nickel_seeds"
-  },
-  "per_tick_usage": true,
-  "secondary_output": {
     "count": 2,
     "id": "mysticalagriculture:nickel_essence"
-  }
+  },
+  "per_tick_usage": true
 }

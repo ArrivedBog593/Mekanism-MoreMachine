@@ -9,7 +9,7 @@
     "chemical": "mekmm:nutrient_solution"
   },
   "main_output": {
-    "count": 3,
+    "count": 9,
     "id": "minecraft:bamboo"
   },
   "per_tick_usage":true

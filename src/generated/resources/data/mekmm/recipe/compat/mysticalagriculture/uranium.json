@@ -15,12 +15,8 @@
     "item": "mysticalagriculture:uranium_seeds"
   },
   "main_output": {
-    "count": 1,
-    "id": "mysticalagriculture:uranium_seeds"
-  },
-  "per_tick_usage": true,
-  "secondary_output": {
     "count": 2,
     "id": "mysticalagriculture:uranium_essence"
-  }
+  },
+  "per_tick_usage": true
 }

@@ -15,12 +15,8 @@
     "item": "mysticalagriculture:starmetal_seeds"
   },
   "main_output": {
-    "count": 1,
-    "id": "mysticalagriculture:starmetal_seeds"
-  },
-  "per_tick_usage": true,
-  "secondary_output": {
     "count": 2,
     "id": "mysticalagriculture:starmetal_essence"
-  }
+  },
+  "per_tick_usage": true
 }

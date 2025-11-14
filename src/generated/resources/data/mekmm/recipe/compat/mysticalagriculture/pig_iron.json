@@ -15,12 +15,8 @@
     "item": "mysticalagriculture:pig_iron_seeds"
   },
   "main_output": {
-    "count": 1,
-    "id": "mysticalagriculture:pig_iron_seeds"
-  },
-  "per_tick_usage": true,
-  "secondary_output": {
     "count": 3,
     "id": "mysticalagriculture:pig_iron_essence"
-  }
+  },
+  "per_tick_usage": true
 }

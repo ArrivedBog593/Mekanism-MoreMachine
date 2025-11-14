@@ -19,7 +19,7 @@
     "id": "kaleidoscope_cookery:tomato_seed"
   },
   "secondary_output": {
-    "count": 1,
+    "count": 3,
     "id": "kaleidoscope_cookery:tomato"
   },
   "per_tick_usage":true

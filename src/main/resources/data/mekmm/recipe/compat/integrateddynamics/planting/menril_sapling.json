@@ -20,7 +20,7 @@
   },
   "per_tick_usage": true,
   "secondary_output": {
-    "count": 6,
+    "count": 12,
     "id": "integrateddynamics:menril_log"
   }
 }

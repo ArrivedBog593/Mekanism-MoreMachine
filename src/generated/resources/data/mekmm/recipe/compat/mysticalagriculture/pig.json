@@ -15,12 +15,8 @@
     "item": "mysticalagriculture:pig_seeds"
   },
   "main_output": {
-    "count": 1,
-    "id": "mysticalagriculture:pig_seeds"
-  },
-  "per_tick_usage": true,
-  "secondary_output": {
     "count": 4,
     "id": "mysticalagriculture:pig_essence"
-  }
+  },
+  "per_tick_usage": true
 }

@@ -13,7 +13,7 @@
     "id": "minecraft:beetroot_seeds"
   },
   "secondary_output": {
-    "count": 1,
+    "count": 4,
     "id": "minecraft:beetroot"
   },
   "per_tick_usage":true

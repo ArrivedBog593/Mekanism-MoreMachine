@@ -9,7 +9,7 @@
     "chemical": "mekmm:nutrient_solution"
   },
   "main_output": {
-    "count": 4,
+    "count": 9,
     "id": "minecraft:potato"
   },
   "per_tick_usage": true

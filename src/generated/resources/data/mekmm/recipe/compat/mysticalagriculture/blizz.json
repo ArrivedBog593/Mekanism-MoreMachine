@@ -15,12 +15,8 @@
     "item": "mysticalagriculture:blizz_seeds"
   },
   "main_output": {
-    "count": 1,
-    "id": "mysticalagriculture:blizz_seeds"
-  },
-  "per_tick_usage": true,
-  "secondary_output": {
     "count": 3,
     "id": "mysticalagriculture:blizz_essence"
-  }
+  },
+  "per_tick_usage": true
 }
