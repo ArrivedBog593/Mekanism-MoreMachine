@@ -15,9 +15,9 @@ import mekanism.api.RelativeSide;
 import mekanism.api.chemical.BasicChemicalTank;
 import mekanism.api.chemical.IChemicalTank;
 import mekanism.api.functions.ConstantPredicates;
-import mekanism.api.heat.HeatAPI;
 import mekanism.api.heat.HeatAPI.HeatTransfer;
 import mekanism.api.heat.IHeatHandler;
+import mekanism.common.attachments.containers.ContainerType;
 import mekanism.common.capabilities.Capabilities;
 import mekanism.common.capabilities.energy.MachineEnergyContainer;
 import mekanism.common.capabilities.fluid.BasicFluidTank;
@@ -45,10 +45,12 @@ import mekanism.common.inventory.slot.EnergyInventorySlot;
 import mekanism.common.inventory.slot.FluidInventorySlot;
 import mekanism.common.inventory.slot.OutputInventorySlot;
 import mekanism.common.inventory.slot.chemical.ChemicalInventorySlot;
-import mekanism.common.lib.inventory.HandlerTransitRequest;
+import mekanism.common.lib.inventory.Finder;
+import mekanism.common.lib.inventory.TransitRequest;
 import mekanism.common.lib.inventory.TransitRequest.TransitResponse;
 import mekanism.common.lib.transmitter.TransmissionType;
 import mekanism.common.tile.component.TileComponentEjector;
+import mekanism.common.tile.interfaces.IBoundingBlock;
 import mekanism.common.util.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -67,7 +69,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashSet;
 import java.util.List;
 
-public class TileEntityWirelessTransmissionStation extends TileEntityConnectableMachine implements ITileConnectHolder {
+public class TileEntityWirelessTransmissionStation extends TileEntityConnectableMachine implements IBoundingBlock, ITileConnectHolder {
 
     public static final long DEFAULT_ENERGY_RATE = 0;
     public static final int DEFAULT_FLUIDS_RATE = 0;
@@ -190,8 +192,8 @@ public class TileEntityWirelessTransmissionStation extends TileEntityConnectable
         fluidFillSlot.fillTank(fluidOutputSlot);
         fluidDrainSlot.drainTank(fluidOutputSlot);
         energySlot.fillContainerOrConvert();
-        //
-        if (level != null && level.getGameTime() % 100 == 0) {
+        //2.5秒检测一次
+        if (level != null && level.getGameTime() % 50 == 0) {
             connectionManager.validateConnections();
         }
         //TODO:添加一个延时，不需要每tick都发送（2秒发送一次应该可以）
@@ -214,6 +216,7 @@ public class TileEntityWirelessTransmissionStation extends TileEntityConnectable
     }
 
     private void transportItems() {
+        if (itemsRate <= 0) return;
         //TODO:似乎还不能平分
         //获取自身的弹出能力
         IItemHandler selfHandler = Capabilities.ITEM.createCache((ServerLevel) level, getBlockPos(), Direction.DOWN).getCapability();
@@ -222,14 +225,11 @@ public class TileEntityWirelessTransmissionStation extends TileEntityConnectable
         for (BlockCapabilityCache<IItemHandler, Direction> cache : connectionManager.getItemCaches()) {
             IItemHandler target = cache.getCapability();
             if (target != null) {
-                //另一种获取输出的方法
-                HandlerTransitRequest request = InventoryUtils.getEjectItemMap(selfHandler, List.of(inventorySlot));
+                TransitRequest request = TransitRequest.definedItem(selfHandler, 1, getItemsRate(), Finder.ANY);
                 if (!request.isEmpty()) {
-                    //TODO:为什么这里使用useAll会导致只有在输入且输出的情况下才传输，其他情况只要不是空就会一直刷物品
                     TransitResponse response = request.eject(this, getBlockPos(), target, 0, LogisticalTransporterBase::getColor);
                     if (!response.isEmpty()) {
                         int amount = response.getSendingAmount();
-//                        int amount = getItemsRate();
                         MekanismUtils.logMismatchedStackSize(inventorySlot.shrinkStack(amount, Action.EXECUTE), amount);
                     }
                 }
@@ -245,29 +245,40 @@ public class TileEntityWirelessTransmissionStation extends TileEntityConnectable
     //连接两个及以上数量的方块时会导致热量频繁交换（
     private double exchangeHeat() {
         double adjacentTransfer = 0;
+        //累积总热量变化
+        double totalHeatToTransfer = 0;
+        //当前温度(在循环开始前获取,避免循环中温度变化影响计算)
+        double currentTemp = getTemperature();
+        //获取当前系统该方向的热容量（在simulateAdjacent()中是这样，但在这只是获取热量容器的热容量）
+        double heatCapacity = heatCapacitor.getHeatCapacity();
+
         for (ConnectionConfig config : connectionManager.getConnectionsByType(TransmissionType.HEAT)) {
             //检查该方向是否有相邻的热处理系统
             IHeatHandler sink = WorldUtils.getCapability(level, Capabilities.HEAT, config.pos(), config.direction());
             //只有存在相邻系统时才进行热交换计算
             if (sink != null) {
-                //获取当前系统该方向的热容量（在simulateAdjacent()中是这样，但在这只是获取热量容器的热容量）
-                double heatCapacity = heatCapacitor.getHeatCapacity();
-                //计算两个系统间的总热阻
-                //将getTotalInverseConductionCoefficient(direction)替换为heatCapacitor.getInverseConduction()
-                //因为远程传递热量将直接与热量容器交互
+                // 获取目标温度
+                double sinkTemp = sink.getTotalTemperature();
+                // 计算总热阻
                 double invConduction = sink.getTotalInverseConduction() + heatCapacitor.getInverseConduction();
-                //计算温度传递量
-                //将getTotalTemperature(direction)替换为getTemperature()<=>heatCapacitor.getTemperature()
-                //将getAmbientTemperature(direction)删去，因为无线传输没有与环境温度的交互
-                double tempToTransfer = getTemperature() - HeatAPI.AMBIENT_TEMP / invConduction;
+                if (invConduction == 0) continue;
+                double tempDifference = currentTemp - sinkTemp;
+                double tempToTransfer = tempDifference / invConduction;
                 //将温度差转换为实际热量Q = ΔT × C
                 double heatToTransfer = tempToTransfer * heatCapacity;
-                //当前系统失去热量
-                heatCapacitor.handleHeat(-heatToTransfer);
-                //Note: Our sinks in mek are "lazy" but they will update the next tick if needed
+                //限制热量传递速率，最多传递50%的温差
+                double maxHeatTransfer = Math.abs(tempDifference) * heatCapacity * 0.5;
+                heatToTransfer = Mth.clamp(heatToTransfer, -maxHeatTransfer, maxHeatTransfer);
+                totalHeatToTransfer -= heatToTransfer;
+                // 对方接收热量
                 sink.handleHeat(heatToTransfer);
+                // 对方接收热量
                 adjacentTransfer = incrementAdjacentTransfer(adjacentTransfer, tempToTransfer, config.direction());
             }
+        }
+        //一次性应用所有热量变化
+        if (totalHeatToTransfer != 0) {
+            heatCapacitor.handleHeat(totalHeatToTransfer);
         }
         return adjacentTransfer;
     }
@@ -449,6 +460,16 @@ public class TileEntityWirelessTransmissionStation extends TileEntityConnectable
         setFluidsRate(Math.min(input.getOrDefault(MoreMachineDataComponents.FLUIDS_RATE, fluidsRate), MoreMachineConfig.general.fluidsRate.get()));
         setChemicalsRate(Math.min(input.getOrDefault(MoreMachineDataComponents.CHEMICALS_RATE, chemicalsRate), MoreMachineConfig.general.chemicalsRate.get()));
         setItemsRate(Math.min(input.getOrDefault(MoreMachineDataComponents.ITEMS_RATE, itemsRate), MoreMachineConfig.general.itemsRate.get()));
+    }
+
+    @Override
+    public int getRedstoneLevel() {
+        return MekanismUtils.redstoneLevelFromContents(energyContainer.getEnergy(), energyContainer.getMaxEnergy());
+    }
+
+    @Override
+    protected boolean makesComparatorDirty(ContainerType<?, ?, ?> type) {
+        return type == ContainerType.ENERGY;
     }
 
     @Override
