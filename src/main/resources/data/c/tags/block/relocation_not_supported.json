@@ -18,6 +18,8 @@
     {"id": "mekmm:quantum_centrifuging_factory", "required": false},
     {"id": "mekmm:dense_centrifuging_factory", "required": false},
     {"id": "mekmm:multiversal_centrifuging_factory", "required": false},
-    {"id": "mekmm:creative_centrifuging_factory", "required": false}
+    {"id": "mekmm:creative_centrifuging_factory", "required": false},
+
+    "mekmm:wireless_transmission_station"
   ]
 }
