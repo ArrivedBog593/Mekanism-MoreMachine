@@ -4,6 +4,7 @@ import com.jerry.meklm.common.capabilities.holder.chemical.CanAdjustChemicalTank
 import com.jerry.meklm.common.capabilities.holder.fluid.CanAdjustFluidTankHelper;
 import com.jerry.meklm.common.registries.LargeMachineBlocks;
 import com.jerry.meklm.common.tile.prefab.TileEntityRecipeLargeMachine;
+
 import mekanism.api.*;
 import mekanism.api.chemical.BasicChemicalTank;
 import mekanism.api.chemical.ChemicalStack;
@@ -56,6 +57,7 @@ import mekanism.common.tile.interfaces.IHasMode;
 import mekanism.common.util.MekanismUtils;
 import mekanism.common.util.NBTUtils;
 import mekanism.common.util.WorldUtils;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -68,6 +70,7 @@ import net.minecraft.world.level.redstone.Redstone;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidType;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -88,15 +91,18 @@ public class TileEntityLargeRotaryCondensentrator extends TileEntityRecipeLargeM
             NOT_ENOUGH_GAS_INPUT_ERROR,
             NOT_ENOUGH_SPACE_GAS_OUTPUT_ERROR,
             NOT_ENOUGH_SPACE_FLUID_OUTPUT_ERROR,
-            RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT
-    );
+            RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT);
     public static final int CAPACITY = 10 * FluidType.BUCKET_VOLUME;
 
-    @WrappingComputerMethod(wrapper = ComputerChemicalTankWrapper.class, methodNames = {"getGas", "getGasCapacity", "getGasNeeded",
-            "getGasFilledPercentage"}, docPlaceholder = "gas tank")
+    @WrappingComputerMethod(wrapper = ComputerChemicalTankWrapper.class,
+                            methodNames = { "getGas", "getGasCapacity", "getGasNeeded",
+                                    "getGasFilledPercentage" },
+                            docPlaceholder = "gas tank")
     public IChemicalTank gasTank;
-    @WrappingComputerMethod(wrapper = ComputerFluidTankWrapper.class, methodNames = {"getFluid", "getFluidCapacity", "getFluidNeeded",
-            "getFluidFilledPercentage"}, docPlaceholder = "fluid tank")
+    @WrappingComputerMethod(wrapper = ComputerFluidTankWrapper.class,
+                            methodNames = { "getFluid", "getFluidCapacity", "getFluidNeeded",
+                                    "getFluidFilledPercentage" },
+                            docPlaceholder = "fluid tank")
     public BasicFluidTank fluidTank;
     /**
      * True: fluid -> chemical
@@ -207,10 +213,10 @@ public class TileEntityLargeRotaryCondensentrator extends TileEntityRecipeLargeM
     protected boolean onUpdateServer() {
         boolean sendUpdatePacket = super.onUpdateServer();
         energySlot.fillContainerOrConvert();
-        if (mode) {//Fluid to Gas
+        if (mode) {// Fluid to Gas
             fluidInputSlot.fillTank(fluidOutputSlot);
             gasInputSlot.drainTank();
-        } else {//Gas to Fluid
+        } else {// Gas to Fluid
             gasOutputSlot.fillTank();
             fluidInputSlot.drainTank(fluidOutputSlot);
         }
@@ -230,7 +236,7 @@ public class TileEntityLargeRotaryCondensentrator extends TileEntityRecipeLargeM
 
     @Override
     public void previousMode() {
-        //We only have two modes just flip it
+        // We only have two modes just flip it
         nextMode();
     }
 
@@ -450,7 +456,7 @@ public class TileEntityLargeRotaryCondensentrator extends TileEntityRecipeLargeM
         return true;
     }
 
-    //Methods relating to IComputerTile
+    // Methods relating to IComputerTile
     @ComputerMethod
     boolean isCondensentrating() {
         return !mode;
@@ -464,5 +470,5 @@ public class TileEntityLargeRotaryCondensentrator extends TileEntityRecipeLargeM
             setChanged();
         }
     }
-    //End methods IComputerTile
+    // End methods IComputerTile
 }

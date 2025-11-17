@@ -8,10 +8,12 @@ import com.jerry.mekmm.common.registries.MoreMachineChemicals;
 import com.jerry.mekmm.common.tile.machine.TileEntityChemicalReplicator;
 import com.jerry.mekmm.common.tile.machine.TileEntityFluidReplicator;
 import com.jerry.mekmm.common.tile.machine.TileEntityReplicator;
+
 import mekanism.api.MekanismAPI;
 import mekanism.api.chemical.Chemical;
 import mekanism.api.chemical.ChemicalStack;
 import mekanism.client.recipe_viewer.RecipeViewerUtils;
+
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -24,13 +26,11 @@ import java.util.Map;
 
 public class MMRecipeViewerUtils {
 
-    private MMRecipeViewerUtils() {
-
-    }
+    private MMRecipeViewerUtils() {}
 
     public static Map<ResourceLocation, MMBasicItemStackChemicalToItemStackRecipe> getItemReplicatorRecipes() {
         Map<ResourceLocation, MMBasicItemStackChemicalToItemStackRecipe> replicator = new HashMap<>();
-        //TODO: Do we want to loop creative tabs or something instead?
+        // TODO: Do we want to loop creative tabs or something instead?
         // In theory recipe loaders should init the creative tabs before we are called so we wouldn't need to call
         // CreativeModeTab#buildContents, and in theory we only need to care about things in search so could use:
         // CreativeModeTabs.searchTab().getDisplayItems(). The bigger issue is how to come up with unique synthetic
@@ -58,7 +58,7 @@ public class MMRecipeViewerUtils {
     public static Map<ResourceLocation, MMBasicChemicalChemicalToChemicalRecipe> getChemicalReplicatorRecipes() {
         Map<ResourceLocation, MMBasicChemicalChemicalToChemicalRecipe> replicator = new HashMap<>();
         for (Map.Entry<ResourceKey<Chemical>, Chemical> entry : MekanismAPI.CHEMICAL_REGISTRY.entrySet()) {
-            //mek将很多方法弃用了，所以只能使用这个办法。
+            // mek将很多方法弃用了，所以只能使用这个办法。
             MMBasicChemicalChemicalToChemicalRecipe recipe = TileEntityChemicalReplicator.getRecipe(new ChemicalStack(MekanismAPI.CHEMICAL_REGISTRY.wrapAsHolder(entry.getValue()), 1), MoreMachineChemicals.UU_MATTER.asStack(1));
             if (recipe != null) {
                 replicator.put(RecipeViewerUtils.synthetic(entry.getKey().location(), "replicator", Mekmm.MOD_ID), recipe);

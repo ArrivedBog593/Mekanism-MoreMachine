@@ -1,8 +1,10 @@
 package com.jerry.mekmm.api.recipes;
 
 import com.jerry.mekmm.Mekmm;
+
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.recipes.ItemStackChemicalToObjectRecipe;
+
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -10,6 +12,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.neoforged.neoforge.registries.DeferredHolder;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;

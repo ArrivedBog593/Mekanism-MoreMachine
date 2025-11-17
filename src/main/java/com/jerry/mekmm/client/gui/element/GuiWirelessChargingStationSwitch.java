@@ -5,8 +5,10 @@ import mekanism.client.gui.element.GuiTexturedElement;
 import mekanism.common.MekanismLang;
 import mekanism.common.registries.MekanismSounds;
 import mekanism.common.util.MekanismUtils;
+
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.BooleanSupplier;
@@ -53,6 +55,7 @@ public class GuiWirelessChargingStationSwitch extends GuiTexturedElement {
     }
 
     public enum SwitchType {
+
         LOWER_ICON(BUTTON_SIZE_X, BUTTON_SIZE_Y * 2 + 12, 0, 0, 5, 18);
 
         private final int iconX, iconY;

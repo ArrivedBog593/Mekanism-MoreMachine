@@ -9,6 +9,7 @@ import mekanism.common.inventory.slot.InputInventorySlot;
 import mekanism.common.tile.component.ITileComponent;
 import mekanism.common.tile.interfaces.IRedstoneControl;
 import mekanism.common.upgrade.IUpgradeData;
+
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 
@@ -30,12 +31,11 @@ public class PRCUpgradeData implements IUpgradeData {
     public final IChemicalTank outputTank;
     public final CompoundTag components;
 
-
     public PRCUpgradeData(HolderLookup.Provider provider, boolean redstone, IRedstoneControl.RedstoneControl controlType,
                           IEnergyContainer energyContainer, int operatingTicks, EnergyInventorySlot energySlot,
                           IChemicalTank inputChemicalTank, BasicFluidTank inputFluidTank, InputInventorySlot inputSlot,
                           IInventorySlot outputSlot, IChemicalTank outputTank, List<ITileComponent> components) {
-        this(provider, redstone, controlType, energyContainer, new int[]{operatingTicks}, energySlot, inputChemicalTank, inputFluidTank, Collections.singletonList(inputSlot),
+        this(provider, redstone, controlType, energyContainer, new int[] { operatingTicks }, energySlot, inputChemicalTank, inputFluidTank, Collections.singletonList(inputSlot),
                 Collections.singletonList(outputSlot), outputTank, false, components);
     }
 

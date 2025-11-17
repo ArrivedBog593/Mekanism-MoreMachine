@@ -2,6 +2,7 @@ package com.jerry.mekmm.client.recipe_viewer.jei.machine;
 
 import com.jerry.mekmm.api.recipes.PlantingRecipe;
 import com.jerry.mekmm.common.tile.machine.TileEntityPlantingStation;
+
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.chemical.ChemicalStack;
 import mekanism.api.functions.ConstantPredicates;
@@ -15,12 +16,14 @@ import mekanism.client.recipe_viewer.RecipeViewerUtils;
 import mekanism.client.recipe_viewer.jei.HolderRecipeCategory;
 import mekanism.client.recipe_viewer.type.IRecipeViewerRecipeType;
 import mekanism.common.inventory.container.slot.SlotOverlay;
+
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
+
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,9 +64,9 @@ public class PlantingRecipeCategory extends HolderRecipeCategory<PlantingRecipe>
             firstOutputs.add(output.first());
             secondOutputs.add(output.second());
         }
-//        if (!firstOutputs.stream().allMatch(ConstantPredicates.ITEM_EMPTY)) {
-//            initItem(builder, RecipeIngredientRole.OUTPUT, output.getX() + 4, output.getY() + 4, firstOutputs);
-//        }
+        // if (!firstOutputs.stream().allMatch(ConstantPredicates.ITEM_EMPTY)) {
+        // initItem(builder, RecipeIngredientRole.OUTPUT, output.getX() + 4, output.getY() + 4, firstOutputs);
+        // }
         initItem(builder, RecipeIngredientRole.OUTPUT, output.getX() + 4, output.getY() + 4, firstOutputs);
         if (!secondOutputs.stream().allMatch(ConstantPredicates.ITEM_EMPTY)) {
             initItem(builder, RecipeIngredientRole.OUTPUT, output.getX() + 20, output.getY() + 4, secondOutputs);

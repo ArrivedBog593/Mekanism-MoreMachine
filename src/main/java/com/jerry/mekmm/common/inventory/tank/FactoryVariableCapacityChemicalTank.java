@@ -5,6 +5,7 @@ import mekanism.api.IContentsListener;
 import mekanism.api.chemical.ChemicalStack;
 import mekanism.api.chemical.attribute.ChemicalAttributeValidator;
 import mekanism.common.capabilities.chemical.VariableCapacityChemicalTank;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

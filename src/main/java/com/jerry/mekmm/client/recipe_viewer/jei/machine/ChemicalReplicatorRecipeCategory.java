@@ -3,8 +3,7 @@ package com.jerry.mekmm.client.recipe_viewer.jei.machine;
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.api.recipes.basic.MMBasicChemicalChemicalToChemicalRecipe;
 import com.jerry.mekmm.common.recipe.impl.ChemicalReplicatorIRecipeSingle;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
+
 import mekanism.api.MekanismAPI;
 import mekanism.api.SerializationConstants;
 import mekanism.api.annotations.NothingNullByDefault;
@@ -23,13 +22,17 @@ import mekanism.client.recipe_viewer.jei.BaseRecipeCategory;
 import mekanism.client.recipe_viewer.type.IRecipeViewerRecipeType;
 import mekanism.common.inventory.container.slot.SlotOverlay;
 import mekanism.common.tile.component.config.DataType;
+
+import net.minecraft.resources.ResourceLocation;
+
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.helpers.ICodecHelper;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.IRecipeManager;
 import mezz.jei.api.recipe.RecipeIngredientRole;
-import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,12 +41,11 @@ import java.util.List;
 @NothingNullByDefault
 public class ChemicalReplicatorRecipeCategory extends BaseRecipeCategory<MMBasicChemicalChemicalToChemicalRecipe> {
 
-    //TODO: Re-evaluate
+    // TODO: Re-evaluate
     private static final Codec<MMBasicChemicalChemicalToChemicalRecipe> RECIPE_CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ChemicalStackIngredient.CODEC.fieldOf(SerializationConstants.INPUT).forGetter(MMBasicChemicalChemicalToChemicalRecipe::getLeftInput),
             IngredientCreatorAccess.chemicalStack().codec().fieldOf(SerializationConstants.CHEMICAL_INPUT).forGetter(MMBasicChemicalChemicalToChemicalRecipe::getRightInput),
-            ChemicalStack.CODEC.fieldOf(SerializationConstants.OUTPUT).forGetter(MMBasicChemicalChemicalToChemicalRecipe::getOutputRaw)
-    ).apply(instance, ChemicalReplicatorIRecipeSingle::new));
+            ChemicalStack.CODEC.fieldOf(SerializationConstants.OUTPUT).forGetter(MMBasicChemicalChemicalToChemicalRecipe::getOutputRaw)).apply(instance, ChemicalReplicatorIRecipeSingle::new));
 
     private final GuiGauge<?> secondaryGauge;
     private final GuiGauge<?> outputGauge;
@@ -64,6 +66,7 @@ public class ChemicalReplicatorRecipeCategory extends BaseRecipeCategory<MMBasic
         addSlot(SlotType.POWER, 152, 65).with(SlotOverlay.POWER);
         addSimpleProgress(ProgressType.LARGE_RIGHT, 64, 36);
         addElement(new GuiEnergyGauge(new GuiEnergyGauge.IEnergyInfoHandler() {
+
             @Override
             public long getEnergy() {
                 return 1L;

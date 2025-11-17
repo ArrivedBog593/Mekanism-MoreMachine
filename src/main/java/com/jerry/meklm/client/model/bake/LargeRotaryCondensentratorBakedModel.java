@@ -2,6 +2,7 @@ package com.jerry.meklm.client.model.bake;
 
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.client.model.baked.ExtensionBakedModel;
+
 import net.minecraft.client.resources.model.BakedModel;
 
 @NothingNullByDefault

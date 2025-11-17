@@ -3,9 +3,9 @@ package com.jerry.mekaf.common.tile.factory;
 import com.jerry.mekaf.common.block.attribute.AttributeAdvancedFactoryType;
 import com.jerry.mekaf.common.capabilities.energy.AdvancedFactoryEnergyContainer;
 import com.jerry.mekaf.common.content.blocktype.AdvancedFactoryType;
+
 import com.jerry.mekmm.common.util.MoreMachineUtils;
-import it.unimi.dsi.fastutil.ints.IntArraySet;
-import it.unimi.dsi.fastutil.ints.IntSet;
+
 import mekanism.api.IContentsListener;
 import mekanism.api.SerializationConstants;
 import mekanism.api.Upgrade;
@@ -45,6 +45,7 @@ import mekanism.common.tile.prefab.TileEntityRecipeMachine;
 import mekanism.common.util.MekanismUtils;
 import mekanism.common.util.NBTUtils;
 import mekanism.common.util.UpgradeUtils;
+
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -59,6 +60,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidType;
+
+import it.unimi.dsi.fastutil.ints.IntArraySet;
+import it.unimi.dsi.fastutil.ints.IntSet;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -92,7 +96,7 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
      * How many ticks it takes, with upgrades, to run an operation
      */
     private int ticksRequired = BASE_TICKS_REQUIRED;
-    private int operationsPerTick = 1;//will increase for modified upgrade multipliers
+    private int operationsPerTick = 1;// will increase for modified upgrade multipliers
     protected boolean sorting;
     private boolean sortingNeeded = true;
     private long lastUsage = 0L;
@@ -103,7 +107,7 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
     @NotNull
     protected final AdvancedFactoryType type;
 
-    //为了加压工厂而更改
+    // 为了加压工厂而更改
     protected AdvancedFactoryEnergyContainer energyContainer;
 
     @WrappingComputerMethod(wrapper = ComputerIInventorySlotWrapper.class, methodNames = "getEnergyItem", docPlaceholder = "energy slot")
@@ -125,20 +129,22 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
         activeStates = new boolean[tier.processes];
         recheckAllRecipeErrors = new BooleanSupplier[tier.processes];
         for (int i = 0; i < recheckAllRecipeErrors.length; i++) {
-            //Note: We store one per slot so that we can recheck the different slots at different times to reduce the load on the server
+            // Note: We store one per slot so that we can recheck the different slots at different times to reduce the
+            // load on the server
             recheckAllRecipeErrors[i] = TileEntityRecipeMachine.shouldRecheckAllErrors(this);
         }
         errorTracker = new ErrorTracker(errorTypes, globalErrorTypes, tier.processes);
     }
 
     /**
-     * Used for slots/contents pertaining to the inventory checks to mark sorting as being needed again and recipes as needing to be rechecked. This combines with the
+     * Used for slots/contents pertaining to the inventory checks to mark sorting as being needed again and recipes as
+     * needing to be rechecked. This combines with the
      * passed in listener to allow for abstracting the comparator type checks up to the base level.
      */
     protected IContentsListener markAllMonitorsChanged(IContentsListener listener) {
         return () -> {
             listener.onContentsChanged();
-            //Note: Updating sorting is handled by the onChange calls
+            // Note: Updating sorting is handled by the onChange calls
             for (FactoryRecipeCacheLookupMonitor<RECIPE> cacheLookupMonitor : recipeCacheLookupMonitors) {
                 cacheLookupMonitor.onChange();
             }
@@ -161,7 +167,7 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
         ChemicalTankHelper builder = ChemicalTankHelper.forSideWithConfig(this);
         addTanks(builder, listener, () -> {
             listener.onContentsChanged();
-            //Mark sorting as being needed again
+            // Mark sorting as being needed again
             sortingNeeded = true;
         });
         return builder.build();
@@ -186,11 +192,11 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
         InventorySlotHelper builder = InventorySlotHelper.forSideWithConfig(this);
         addSlots(builder, listener, () -> {
             listener.onContentsChanged();
-            //Mark sorting as being needed again
+            // Mark sorting as being needed again
             sortingNeeded = true;
         });
-        //Add the energy slot after adding the other slots so that it has the lowest priority in shift clicking
-        //Note: We can just pass ourselves as the listener instead of the listener that updates sorting as well,
+        // Add the energy slot after adding the other slots so that it has the lowest priority in shift clicking
+        // Note: We can just pass ourselves as the listener instead of the listener that updates sorting as well,
         // as changes to it won't change anything about the sorting of the recipe
         builder.addSlot(energySlot = EnergyInventorySlot.fillOrConvert(energyContainer, this::getLevel, listener, 7, 13));
         return builder.build();
@@ -237,7 +243,7 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
 
         handleSecondaryFuel();
         if (sortingNeeded && isSorting()) {
-            //If sorting is needed, and we have sorting enabled mark
+            // If sorting is needed, and we have sorting enabled mark
             // sorting as no longer needed and sort the inventory
             sortingNeeded = false;
             // Note: If sorting happens, sorting will be marked as needed once more
@@ -249,23 +255,24 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
             // with other items.
             sortInventoryOrTank();
         } else if (!sortingNeeded && CommonWorldTickHandler.flushTagAndRecipeCaches) {
-            //Otherwise, if sorting isn't currently needed and the recipe cache is invalid
+            // Otherwise, if sorting isn't currently needed and the recipe cache is invalid
             // Mark sorting as being needed again for the next check as recipes may
             // have changed so our current sort may be incorrect
             sortingNeeded = true;
         }
 
-        //Copy this so that if it changes we still have the original amount. Don't bother making it a constant though as this way
+        // Copy this so that if it changes we still have the original amount. Don't bother making it a constant though
+        // as this way
         // we can then use minusEqual instead of subtract to remove an extra copy call
         long prev = energyContainer.getEnergy();
         for (int i = 0; i < recipeCacheLookupMonitors.length; i++) {
             if (!recipeCacheLookupMonitors[i].updateAndProcess()) {
-                //If we don't have a recipe in that slot make sure that our active state for that position is false
+                // If we don't have a recipe in that slot make sure that our active state for that position is false
                 activeStates[i] = false;
             }
         }
 
-        //Update the active state based on the current active state of each recipe
+        // Update the active state based on the current active state of each recipe
         boolean isActive = false;
         for (boolean state : activeStates) {
             if (state) {
@@ -274,14 +281,14 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
             }
         }
         setActive(isActive);
-        //If none of the recipes are actively processing don't bother with any subtraction
+        // If none of the recipes are actively processing don't bother with any subtraction
         lastUsage = isActive ? prev - energyContainer.getEnergy() : 0L;
         return sendUpdatePacket;
     }
 
     @Nullable
     protected CachedRecipe<RECIPE> getCachedRecipe(int cacheIndex) {
-        //TODO: Sanitize that cacheIndex is in bounds?
+        // TODO: Sanitize that cacheIndex is in bounds?
         return recipeCacheLookupMonitors[cacheIndex].getCachedRecipe(cacheIndex);
     }
 
@@ -301,8 +308,7 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
     /**
      * Handles filling the secondary fuel tank based on the item in the extra slot
      */
-    protected void handleSecondaryFuel() {
-    }
+    protected void handleSecondaryFuel() {}
 
     public int getProgress(int cacheIndex) {
         return progress[cacheIndex];
@@ -406,7 +412,7 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
 
     @Override
     public boolean isConfigurationDataCompatible(Block blockType) {
-        //Allow exact match or factories of the same type (as we will just ignore the extra data)
+        // Allow exact match or factories of the same type (as we will just ignore the extra data)
         return super.isConfigurationDataCompatible(blockType) || MoreMachineUtils.isSameAFTypeFactory(getBlockHolder(), blockType);
     }
 
@@ -428,7 +434,7 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
         container.track(SyncableInt.create(this::getTicksRequired, value -> ticksRequired = value));
     }
 
-    //Methods relating to IComputerTile
+    // Methods relating to IComputerTile
     protected void validateValidProcess(int process) throws ComputerException {
         if (process < 0 || process >= progress.length) {
             throw new ComputerException("Process: '%d' is out of bounds, as this factory only has '%d' processes (zero indexed).", process, progress.length);
@@ -457,12 +463,12 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
         private final List<RecipeError> errorTypes;
         private final IntSet globalTypes;
 
-        //TODO: See if we can get it so we only have to sync a single version of global types?
+        // TODO: See if we can get it so we only have to sync a single version of global types?
         private final boolean[][] trackedErrors;
         private final int processes;
 
         public ErrorTracker(List<RecipeError> errorTypes, Set<RecipeError> globalErrorTypes, int processes) {
-            //Copy the list if it is mutable to ensure it doesn't get changed, otherwise just use the list
+            // Copy the list if it is mutable to ensure it doesn't get changed, otherwise just use the list
             this.errorTypes = List.copyOf(errorTypes);
             globalTypes = new IntArraySet(globalErrorTypes.size());
             for (int i = 0; i < this.errorTypes.size(); i++) {
@@ -507,7 +513,7 @@ public abstract class TileEntityAdvancedFactoryBase<RECIPE extends MekanismRecip
                     return () -> trackedErrors[processIndex][errorIndex];
                 }
             }
-            //Something went wrong
+            // Something went wrong
             return () -> false;
         }
     }

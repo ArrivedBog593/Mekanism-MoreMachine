@@ -3,6 +3,7 @@ package com.jerry.mekmm.api.recipes.cache;
 import com.jerry.mekmm.api.recipes.basic.BasicFluidChemicalToFluidRecipe;
 import com.jerry.mekmm.api.recipes.basic.MMBasicChemicalChemicalToChemicalRecipe;
 import com.jerry.mekmm.api.recipes.basic.MMBasicItemStackChemicalToItemStackRecipe;
+
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.chemical.ChemicalStack;
 import mekanism.api.functions.ConstantPredicates;
@@ -12,8 +13,10 @@ import mekanism.api.recipes.cache.CachedRecipeHelper;
 import mekanism.api.recipes.ingredients.InputIngredient;
 import mekanism.api.recipes.inputs.IInputHandler;
 import mekanism.api.recipes.outputs.IOutputHandler;
+
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,7 +38,8 @@ public class ReplicatorCachedRecipe<TYPE, RECIPE extends MekanismRecipe<?> & BiP
     private final BiConsumer<TYPE, ChemicalStack> inputsSetter;
     private final Consumer<TYPE> outputSetter;
 
-    //Note: Our inputs and outputs shouldn't be null in places they are actually used, but we mark them as nullable, so we don't have to initialize them
+    // Note: Our inputs and outputs shouldn't be null in places they are actually used, but we mark them as nullable, so
+    // we don't have to initialize them
     @Nullable
     private TYPE input;
     @Nullable
@@ -45,7 +49,8 @@ public class ReplicatorCachedRecipe<TYPE, RECIPE extends MekanismRecipe<?> & BiP
 
     /**
      * @param recipe           Recipe.
-     * @param recheckAllErrors Returns {@code true} if processing should be continued even if an error is hit in order to gather all the errors. It is recommended to not
+     * @param recheckAllErrors Returns {@code true} if processing should be continued even if an error is hit in order
+     *                         to gather all the errors. It is recommended to not
      *                         do this every tick or if there is no one viewing recipes.
      */
     private ReplicatorCachedRecipe(RECIPE recipe, BooleanSupplier recheckAllErrors, IInputHandler<TYPE> inputHandler, IInputHandler<ChemicalStack> secondaryInputHandler,
@@ -69,23 +74,20 @@ public class ReplicatorCachedRecipe<TYPE, RECIPE extends MekanismRecipe<?> & BiP
         this.outputSetter = output -> this.output = output;
     }
 
-    public static <RECIPE extends MMBasicItemStackChemicalToItemStackRecipe> ReplicatorCachedRecipe<ItemStack, RECIPE>
-    createItemReplicator(RECIPE recipe, BooleanSupplier recheckAllErrors, IInputHandler<@NotNull ItemStack> itemInputHandler,
-                         IInputHandler<@NotNull ChemicalStack> chemicalInputHandler, IOutputHandler<@NotNull ItemStack> outputHandler) {
+    public static <RECIPE extends MMBasicItemStackChemicalToItemStackRecipe> ReplicatorCachedRecipe<ItemStack, RECIPE> createItemReplicator(RECIPE recipe, BooleanSupplier recheckAllErrors, IInputHandler<@NotNull ItemStack> itemInputHandler,
+                                                                                                                                            IInputHandler<@NotNull ChemicalStack> chemicalInputHandler, IOutputHandler<@NotNull ItemStack> outputHandler) {
         return new ReplicatorCachedRecipe<>(recipe, recheckAllErrors, itemInputHandler, chemicalInputHandler, outputHandler, recipe::getItemInput, recipe::getChemicalInput,
                 recipe::getOutput, ConstantPredicates.ITEM_EMPTY, ConstantPredicates.CHEMICAL_EMPTY, ConstantPredicates.ITEM_EMPTY);
     }
 
-    public static <RECIPE extends BasicFluidChemicalToFluidRecipe> ReplicatorCachedRecipe<FluidStack, RECIPE>
-    createFluidReplicator(RECIPE recipe, BooleanSupplier recheckAllErrors, IInputHandler<@NotNull FluidStack> fluidInputHandler,
-                          IInputHandler<@NotNull ChemicalStack> chemicalInputHandler, IOutputHandler<@NotNull FluidStack> outputHandler) {
+    public static <RECIPE extends BasicFluidChemicalToFluidRecipe> ReplicatorCachedRecipe<FluidStack, RECIPE> createFluidReplicator(RECIPE recipe, BooleanSupplier recheckAllErrors, IInputHandler<@NotNull FluidStack> fluidInputHandler,
+                                                                                                                                    IInputHandler<@NotNull ChemicalStack> chemicalInputHandler, IOutputHandler<@NotNull FluidStack> outputHandler) {
         return new ReplicatorCachedRecipe<>(recipe, recheckAllErrors, fluidInputHandler, chemicalInputHandler, outputHandler, recipe::getFluidInput, recipe::getChemicalInput,
                 recipe::getOutput, ConstantPredicates.FLUID_EMPTY, ConstantPredicates.CHEMICAL_EMPTY, ConstantPredicates.FLUID_EMPTY);
     }
 
-    public static <RECIPE extends MMBasicChemicalChemicalToChemicalRecipe> ReplicatorCachedRecipe<ChemicalStack, RECIPE>
-    createChemicalReplicator(RECIPE recipe, BooleanSupplier recheckAllErrors, IInputHandler<@NotNull ChemicalStack> firstInputHandler,
-                             IInputHandler<@NotNull ChemicalStack> secondaryInputHandler, IOutputHandler<@NotNull ChemicalStack> outputHandler) {
+    public static <RECIPE extends MMBasicChemicalChemicalToChemicalRecipe> ReplicatorCachedRecipe<ChemicalStack, RECIPE> createChemicalReplicator(RECIPE recipe, BooleanSupplier recheckAllErrors, IInputHandler<@NotNull ChemicalStack> firstInputHandler,
+                                                                                                                                                  IInputHandler<@NotNull ChemicalStack> secondaryInputHandler, IOutputHandler<@NotNull ChemicalStack> outputHandler) {
         return new ReplicatorCachedRecipe<>(recipe, recheckAllErrors, firstInputHandler, secondaryInputHandler, outputHandler, recipe::getLeftInput, recipe::getRightInput,
                 recipe::getOutput, ConstantPredicates.CHEMICAL_EMPTY, ConstantPredicates.CHEMICAL_EMPTY, ConstantPredicates.CHEMICAL_EMPTY);
     }
@@ -109,10 +111,10 @@ public class ReplicatorCachedRecipe<TYPE, RECIPE extends MekanismRecipe<?> & BiP
 
     @Override
     protected void finishProcessing(int operations) {
-        //Validate something didn't go horribly wrong
+        // Validate something didn't go horribly wrong
         if (input != null && secondaryInput != null && output != null && !inputEmptyCheck.test(input) && !secondaryInputEmptyCheck.test(secondaryInput) &&
                 !outputEmptyCheck.test(output)) {
-//            inputHandler.use(input, operations);
+            // inputHandler.use(input, operations);
             secondaryInputHandler.use(secondaryInput, operations);
             outputHandler.handleOutput(output, operations);
         }

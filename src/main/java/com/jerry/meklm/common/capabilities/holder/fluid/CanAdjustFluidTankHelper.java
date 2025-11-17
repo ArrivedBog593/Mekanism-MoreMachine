@@ -4,7 +4,9 @@ import mekanism.api.RelativeSide;
 import mekanism.api.fluid.IExtendedFluidTank;
 import mekanism.common.capabilities.holder.fluid.IFluidTankHolder;
 import mekanism.common.tile.interfaces.ISideConfiguration;
+
 import net.minecraft.core.Direction;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

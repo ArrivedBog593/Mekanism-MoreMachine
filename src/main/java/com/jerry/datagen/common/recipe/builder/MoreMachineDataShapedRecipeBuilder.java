@@ -2,6 +2,7 @@ package com.jerry.datagen.common.recipe.builder;
 
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.common.recipe.upgrade.MekanismShapedRecipe;
+
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.ItemLike;

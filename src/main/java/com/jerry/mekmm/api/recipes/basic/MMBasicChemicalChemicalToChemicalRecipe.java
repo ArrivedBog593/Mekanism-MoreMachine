@@ -5,6 +5,7 @@ import mekanism.api.chemical.ChemicalStack;
 import mekanism.api.recipes.ChemicalChemicalToChemicalRecipe;
 import mekanism.api.recipes.basic.IBasicChemicalOutput;
 import mekanism.api.recipes.ingredients.ChemicalStackIngredient;
+
 import org.jetbrains.annotations.Contract;
 
 import java.util.Collections;
@@ -13,6 +14,7 @@ import java.util.Objects;
 
 @NothingNullByDefault
 public abstract class MMBasicChemicalChemicalToChemicalRecipe extends ChemicalChemicalToChemicalRecipe implements IBasicChemicalOutput {
+
     protected final ChemicalStackIngredient leftInput;
     protected final ChemicalStackIngredient rightInput;
     protected final ChemicalStack output;
@@ -73,7 +75,7 @@ public abstract class MMBasicChemicalChemicalToChemicalRecipe extends ChemicalCh
             return false;
         }
         MMBasicChemicalChemicalToChemicalRecipe other = (MMBasicChemicalChemicalToChemicalRecipe) o;
-        //Note: We don't need to compare the recipe type as that gets covered by the explicit class type check above
+        // Note: We don't need to compare the recipe type as that gets covered by the explicit class type check above
         return leftInput.equals(other.leftInput) && rightInput.equals(other.rightInput) && output.equals(other.output);
     }
 

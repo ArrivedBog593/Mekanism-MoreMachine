@@ -8,15 +8,14 @@ import com.jerry.mekmm.api.recipes.basic.MMBasicChemicalChemicalToChemicalRecipe
 import com.jerry.mekmm.api.recipes.basic.MMBasicItemStackChemicalToItemStackRecipe;
 import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
 import com.jerry.mekmm.common.registries.MoreMachineBlocks;
+
 import mekanism.api.recipes.ItemStackToItemStackRecipe;
 import mekanism.client.recipe_viewer.type.FakeRVRecipeType;
 import mekanism.client.recipe_viewer.type.RVRecipeTypeWrapper;
 
 public class MMRecipeViewerRecipeType {
 
-    private MMRecipeViewerRecipeType() {
-
-    }
+    private MMRecipeViewerRecipeType() {}
 
     public static final RVRecipeTypeWrapper<?, RecyclerRecipe, ?> RECYCLER = new RVRecipeTypeWrapper<>(MoreMachineRecipeType.RECYCLING, RecyclerRecipe.class, -28, -16, 144, 54, MoreMachineBlocks.RECYCLER);
 
@@ -33,5 +32,4 @@ public class MMRecipeViewerRecipeType {
     public static final FakeRVRecipeType<BasicFluidChemicalToFluidRecipe> FLUID_REPLICATOR = new FakeRVRecipeType<>(MoreMachineBlocks.FLUID_REPLICATOR, BasicFluidChemicalToFluidRecipe.class, -3, -3, 170, 79);
 
     public static final FakeRVRecipeType<MMBasicChemicalChemicalToChemicalRecipe> CHEMICAL_REPLICATOR = new FakeRVRecipeType<>(MoreMachineBlocks.CHEMICAL_REPLICATOR, MMBasicChemicalChemicalToChemicalRecipe.class, -3, -3, 170, 79);
-
 }

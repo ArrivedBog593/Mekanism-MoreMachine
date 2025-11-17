@@ -2,23 +2,25 @@ package com.jerry.mekaf.client.recipe_viewer.jei;
 
 import com.jerry.mekaf.common.content.blocktype.AdvancedFactoryType;
 import com.jerry.mekaf.common.registries.AdvancedFactoryBlocks;
+
 import com.jerry.mekmm.common.util.MoreMachineUtils;
+
 import mekanism.client.recipe_viewer.jei.MekanismJEI;
 import mekanism.client.recipe_viewer.type.IRecipeViewerRecipeType;
 import mekanism.common.registries.MekanismBlocks;
 import mekanism.common.tier.FactoryTier;
-import mezz.jei.api.recipe.RecipeType;
-import mezz.jei.api.registration.IRecipeCatalystRegistration;
+
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
+
+import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.registration.IRecipeCatalystRegistration;
 
 import java.util.List;
 
 public class AFCatalystRegistryHelper {
 
-    private AFCatalystRegistryHelper() {
-
-    }
+    private AFCatalystRegistryHelper() {}
 
     /**
      * 用于往“ENERGY_CONVERSION”或“CHEMICAL_CONVERSION”添加新机器，与Mekanism的CatalystRegistryHelper中的register方法

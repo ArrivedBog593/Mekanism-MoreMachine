@@ -1,11 +1,9 @@
 package com.jerry.datagen.common.recipe.builder;
 
 import com.jerry.datagen.common.recipe.pattern.RecipePattern;
-import it.unimi.dsi.fastutil.chars.Char2ObjectArrayMap;
-import it.unimi.dsi.fastutil.chars.Char2ObjectMap;
-import it.unimi.dsi.fastutil.chars.CharOpenHashSet;
-import it.unimi.dsi.fastutil.chars.CharSet;
+
 import mekanism.api.annotations.NothingNullByDefault;
+
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -16,6 +14,11 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.minecraft.world.level.ItemLike;
+
+import it.unimi.dsi.fastutil.chars.Char2ObjectArrayMap;
+import it.unimi.dsi.fastutil.chars.Char2ObjectMap;
+import it.unimi.dsi.fastutil.chars.CharOpenHashSet;
+import it.unimi.dsi.fastutil.chars.CharSet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,12 +106,11 @@ public class ExtendedShapedRecipeBuilder extends BaseRecipeBuilder<ExtendedShape
     @Override
     protected Recipe<?> asRecipe() {
         return wrapRecipe(new ShapedRecipe(
-              Objects.requireNonNullElse(this.group, ""),
-              RecipeBuilder.determineBookCategory(this.category),
-              ShapedRecipePattern.of(this.key, this.pattern),
-              new ItemStack(this.result, this.count),
-              this.showNotification
-        ));
+                Objects.requireNonNullElse(this.group, ""),
+                RecipeBuilder.determineBookCategory(this.category),
+                ShapedRecipePattern.of(this.key, this.pattern),
+                new ItemStack(this.result, this.count),
+                this.showNotification));
     }
 
     protected Recipe<?> wrapRecipe(ShapedRecipe recipe) {

@@ -1,14 +1,17 @@
 package com.jerry.mekmm.api.text;
 
 import com.jerry.mekmm.Mekmm;
+
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.text.ILangEntry;
+
 import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;
 
 @NothingNullByDefault
 public enum APIMoreMachineLang implements ILangEntry {
-    //Upgrades
+
+    // Upgrades
     UPGRADE_THREAD("upgrade", "thread"),
     UPGRADE_THREAD_DESCRIPTION("upgrade", "thread.description");
 

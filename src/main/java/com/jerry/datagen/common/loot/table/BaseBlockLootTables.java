@@ -1,7 +1,5 @@
 package com.jerry.datagen.common.loot.table;
 
-import it.unimi.dsi.fastutil.objects.ReferenceArraySet;
-import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.common.Mekanism;
 import mekanism.common.attachments.containers.ContainerType;
@@ -16,6 +14,7 @@ import mekanism.common.resource.ore.OreBlockType;
 import mekanism.common.tile.base.TileEntityMekanism;
 import mekanism.common.tile.base.TileEntityUpdateable;
 import mekanism.common.util.RegistryUtils;
+
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -46,6 +45,9 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+
+import it.unimi.dsi.fastutil.objects.ReferenceArraySet;
+import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -56,17 +58,18 @@ import java.util.stream.Collectors;
 public abstract class BaseBlockLootTables extends BlockLootSubProvider {
 
     private final Set<Block> knownBlocks = new ReferenceOpenHashSet<>();
-    //Note: We use an array set as we never expect this to have more than a few elements (in reality it only ever has one)
+    // Note: We use an array set as we never expect this to have more than a few elements (in reality it only ever has
+    // one)
     private final Set<Block> toSkip = new ReferenceArraySet<>();
 
     protected BaseBlockLootTables(HolderLookup.Provider provider) {
-        //Note: We manually handle explosion resistance on a case by case basis dynamically
+        // Note: We manually handle explosion resistance on a case by case basis dynamically
         super(Collections.emptySet(), FeatureFlags.VANILLA_SET, provider);
     }
 
     @Override
     protected void add(@NotNull Block block, @NotNull LootTable.Builder table) {
-        //Overwrite the core register method to add to our list of known blocks
+        // Overwrite the core register method to add to our list of known blocks
         super.add(block, table);
         knownBlocks.add(block);
     }
@@ -84,24 +87,22 @@ public abstract class BaseBlockLootTables extends BlockLootSubProvider {
     }
 
     protected boolean skipBlock(Block block) {
-        //Skip any blocks that we already registered a table for or have marked to skip
+        // Skip any blocks that we already registered a table for or have marked to skip
         return knownBlocks.contains(block) || toSkip.contains(block);
     }
 
     protected Builder createOreDrop(Block block, ItemLike item) {
         return createSilkTouchDispatchTable(block, applyExplosionDecay(block, LootItem.lootTableItem(item.asItem())
-              .apply(ApplyBonusCount.addOreBonusCount(this.registries.holderOrThrow(Enchantments.FORTUNE)))
-        ));
+                .apply(ApplyBonusCount.addOreBonusCount(this.registries.holderOrThrow(Enchantments.FORTUNE)))));
     }
 
     protected Builder droppingWithFortuneOrRandomly(Block block, ItemLike item, UniformGenerator range) {
         return createSilkTouchDispatchTable(block, applyExplosionDecay(block, LootItem.lootTableItem(item.asItem())
-              .apply(SetItemCountFunction.setCount(range))
-              .apply(ApplyBonusCount.addOreBonusCount(this.registries.holderOrThrow(Enchantments.FORTUNE)))
-        ));
+                .apply(SetItemCountFunction.setCount(range))
+                .apply(ApplyBonusCount.addOreBonusCount(this.registries.holderOrThrow(Enchantments.FORTUNE)))));
     }
 
-    //Holder<Block> versions of BlockLootTable methods, modified to support varargs
+    // Holder<Block> versions of BlockLootTable methods, modified to support varargs
     protected void dropSelf(Collection<? extends Holder<Block>> blockProviders) {
         for (Holder<Block> blockProvider : blockProviders) {
             Block block = blockProvider.value();
@@ -131,7 +132,7 @@ public abstract class BaseBlockLootTables extends BlockLootSubProvider {
     }
 
     protected void dropSelfWithContents(Collection<? extends Holder<Block>> blockProviders) {
-        //TODO: See if there is other stuff we want to be transferring which we currently do not
+        // TODO: See if there is other stuff we want to be transferring which we currently do not
         // For example, when writing this we added dump mode for chemical tanks to getting transferred to the item
         for (Holder<Block> blockProvider : blockProviders) {
             Block block = blockProvider.value();
@@ -143,7 +144,7 @@ public abstract class BaseBlockLootTables extends BlockLootSubProvider {
             boolean hasContents = false;
             ItemStack stack = new ItemStack(block);
             LootItem.Builder<?> itemLootPool = LootItem.lootTableItem(block);
-            //delayed items until after other copies are added, for cases like referencing the owner
+            // delayed items until after other copies are added, for cases like referencing the owner
             DelayedLootItemBuilder delayedPool = new DelayedLootItemBuilder();
             @Nullable
             BlockEntity tile = null;
@@ -164,10 +165,11 @@ public abstract class BaseBlockLootTables extends BlockLootSubProvider {
                 if (!components.isEmpty()) {
                     Set<DataComponentType<?>> skipTypes = ContainerType.TYPES.stream().map(type -> type.getComponentType().get()).collect(Collectors.toSet());
                     hasComponents = true;
-                    //Sort the components so that the order is consistent when writing to json
+                    // Sort the components so that the order is consistent when writing to json
                     components.sort(Comparator.comparing(BuiltInRegistries.DATA_COMPONENT_TYPE::getKey, ResourceLocation::compareNamespaced));
                     for (DataComponentType<?> remapEntry : components) {
-                        //Allow containers to be handled below where we do extra validation that the stack actually supports it
+                        // Allow containers to be handled below where we do extra validation that the stack actually
+                        // supports it
                         if (!skipTypes.contains(remapEntry)) {
                             componentsBuilder.include(remapEntry);
                         }
@@ -190,9 +192,10 @@ public abstract class BaseBlockLootTables extends BlockLootSubProvider {
                             }
                         }
                     } else if (attachmentContainers == 0) {
-                        //TODO: Improve how we handle skipping warnings for known missing types
+                        // TODO: Improve how we handle skipping warnings for known missing types
                         if (type == ContainerType.ITEM && block.asItem() instanceof ItemBlockPersonalStorage) {
-                            //We don't want explosions causing personal storage items to be directly destroyed. It is also known that the attachment is missing
+                            // We don't want explosions causing personal storage items to be directly destroyed. It is
+                            // also known that the attachment is missing
                             hasContents = true;
                         } else if (type != ContainerType.CHEMICAL || !(block instanceof BlockRadioactiveWasteBarrel)) {
                             Mekanism.logger.warn("Container type: {}, item missing attachments: {}", type.getComponentName(), RegistryUtils.getName(block.builtInRegistryHolder()));
@@ -201,7 +204,7 @@ public abstract class BaseBlockLootTables extends BlockLootSubProvider {
                         Mekanism.logger.warn("Container type: {}, item has attachments but block doesn't have containers: {}", type.getComponentName(), RegistryUtils.getName(block.builtInRegistryHolder()));
                     } else {
                         Mekanism.logger.warn("Container type: {}, has {} item attachments and block has {} containers: {}", type.getComponentName(), attachmentContainers,
-                              containers.size(), RegistryUtils.getName(block.builtInRegistryHolder()));
+                                containers.size(), RegistryUtils.getName(block.builtInRegistryHolder()));
                     }
                 }
             }
@@ -213,7 +216,7 @@ public abstract class BaseBlockLootTables extends BlockLootSubProvider {
             if (hasComponents) {
                 itemLootPool.apply(componentsBuilder);
             }
-            //apply the delayed ones last, so that NBT funcs have happened first
+            // apply the delayed ones last, so that NBT funcs have happened first
             for (LootItemFunction.Builder function : delayedPool.functions) {
                 itemLootPool.apply(function);
             }
@@ -221,15 +224,15 @@ public abstract class BaseBlockLootTables extends BlockLootSubProvider {
                 itemLootPool.when(condition);
             }
             add(block, LootTable.lootTable().withPool(applyExplosionCondition(hasContents, LootPool.lootPool()
-                  .name("main")
-                  .setRolls(ConstantValue.exactly(1))
-                  .add(itemLootPool)
-            )));
+                    .name("main")
+                    .setRolls(ConstantValue.exactly(1))
+                    .add(itemLootPool))));
         }
     }
 
     /**
-     * Like vanilla's {@link BlockLootSubProvider#applyExplosionCondition(ItemLike, ConditionUserBuilder)} except with a boolean for if it is explosion resistant.
+     * Like vanilla's {@link BlockLootSubProvider#applyExplosionCondition(ItemLike, ConditionUserBuilder)} except with a
+     * boolean for if it is explosion resistant.
      */
     private static <T extends ConditionUserBuilder<T>> T applyExplosionCondition(boolean explosionResistant, ConditionUserBuilder<T> condition) {
         return explosionResistant ? condition.unwrap() : condition.when(ExplosionCondition.survivesExplosion());
@@ -242,16 +245,12 @@ public abstract class BaseBlockLootTables extends BlockLootSubProvider {
     @Override
     protected LootTable.Builder createSlabItemTable(@NotNull Block slab) {
         return LootTable.lootTable().withPool(LootPool.lootPool()
-              .name("main")
-              .setRolls(ConstantValue.exactly(1))
-              .add(applyExplosionDecay(slab, LootItem.lootTableItem(slab)
-                          .apply(SetItemCountFunction.setCount(ConstantValue.exactly(2))
+                .name("main")
+                .setRolls(ConstantValue.exactly(1))
+                .add(applyExplosionDecay(slab, LootItem.lootTableItem(slab)
+                        .apply(SetItemCountFunction.setCount(ConstantValue.exactly(2))
                                 .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(slab)
-                                      .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(SlabBlock.TYPE, SlabType.DOUBLE)))
-                          )
-                    )
-              )
-        );
+                                        .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(SlabBlock.TYPE, SlabType.DOUBLE)))))));
     }
 
     /**
@@ -269,14 +268,14 @@ public abstract class BaseBlockLootTables extends BlockLootSubProvider {
     @Override
     public LootTable.Builder createSingleItemTable(@NotNull ItemLike item) {
         return LootTable.lootTable().withPool(applyExplosionCondition(item, LootPool.lootPool()
-              .name("main")
-              .setRolls(ConstantValue.exactly(1))
-              .add(LootItem.lootTableItem(item))
-        ));
+                .name("main")
+                .setRolls(ConstantValue.exactly(1))
+                .add(LootItem.lootTableItem(item))));
     }
 
     /**
-     * Like vanilla's {@link BlockLootSubProvider#createSingleItemTableWithSilkTouch(Block, ItemLike, NumberProvider)} except with a named pool
+     * Like vanilla's {@link BlockLootSubProvider#createSingleItemTableWithSilkTouch(Block, ItemLike, NumberProvider)}
+     * except with a named pool
      */
     @NotNull
     @Override
@@ -285,7 +284,8 @@ public abstract class BaseBlockLootTables extends BlockLootSubProvider {
     }
 
     /**
-     * Like vanilla's {@link BlockLootSubProvider#createSilkTouchDispatchTable(Block, LootPoolEntryContainer.Builder)} except with a named pool
+     * Like vanilla's {@link BlockLootSubProvider#createSilkTouchDispatchTable(Block, LootPoolEntryContainer.Builder)}
+     * except with a named pool
      */
     @NotNull
     @Override
@@ -294,19 +294,19 @@ public abstract class BaseBlockLootTables extends BlockLootSubProvider {
     }
 
     /**
-     * Like vanilla's {@link BlockLootSubProvider#createSelfDropDispatchTable(Block, LootItemCondition.Builder, LootPoolEntryContainer.Builder)} except with a named pool
+     * Like vanilla's
+     * {@link BlockLootSubProvider#createSelfDropDispatchTable(Block, LootItemCondition.Builder, LootPoolEntryContainer.Builder)}
+     * except with a named pool
      */
     @NotNull
     protected static LootTable.Builder createSelfDropDispatchTable(@NotNull Block block, @NotNull LootItemCondition.Builder conditionBuilder,
-          @NotNull LootPoolEntryContainer.Builder<?> entry) {
+                                                                   @NotNull LootPoolEntryContainer.Builder<?> entry) {
         return LootTable.lootTable().withPool(LootPool.lootPool()
-              .name("main")
-              .setRolls(ConstantValue.exactly(1))
-              .add(LootItem.lootTableItem(block)
-                    .when(conditionBuilder)
-                    .otherwise(entry)
-              )
-        );
+                .name("main")
+                .setRolls(ConstantValue.exactly(1))
+                .add(LootItem.lootTableItem(block)
+                        .when(conditionBuilder)
+                        .otherwise(entry)));
     }
 
     @NothingNullByDefault

@@ -3,9 +3,11 @@ package com.jerry.mekmm.api.recipes.basic;
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.api.recipes.MoreMachineRecipeSerializers;
 import com.jerry.mekmm.api.recipes.MoreMachineRecipeTypes;
+
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.recipes.basic.BasicItemStackToItemStackRecipe;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
+
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -20,8 +22,8 @@ public class BasicRollingMillRecipe extends BasicItemStackToItemStackRecipe {
     private static final Holder<Item> CNC_ROLLING_MILL = DeferredHolder.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(Mekmm.MOD_ID, "cnc_rolling_mill"));
 
     /**
-     * @param input      Input.
-     * @param output     Output.
+     * @param input  Input.
+     * @param output Output.
      */
     public BasicRollingMillRecipe(ItemStackIngredient input, ItemStack output) {
         super(input, output, MoreMachineRecipeTypes.TYPE_ROLLING_MILL.value());

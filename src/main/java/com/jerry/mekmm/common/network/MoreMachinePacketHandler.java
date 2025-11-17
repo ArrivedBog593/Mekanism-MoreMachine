@@ -3,9 +3,11 @@ package com.jerry.mekmm.common.network;
 import com.jerry.mekmm.common.network.to_server.MoreMachinePacketGuiInteract;
 import com.jerry.mekmm.common.network.to_server.PacketViewConnection;
 import com.jerry.mekmm.common.network.to_server.button.MoreMachinePacketTileButtonPress;
+
 import mekanism.common.lib.Version;
 import mekanism.common.network.BasePacketHandler;
 import mekanism.common.network.to_client.configuration.SyncAllSecurityData;
+
 import net.minecraft.network.protocol.configuration.ServerConfigurationPacketListener;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.network.event.RegisterConfigurationTasksEvent;
@@ -25,12 +27,10 @@ public class MoreMachinePacketHandler extends BasePacketHandler {
         registrar.play(PacketViewConnection.TYPE, PacketViewConnection.STREAM_CODEC);
         registrar.play(MoreMachinePacketGuiInteract.TYPE, MoreMachinePacketGuiInteract.STREAM_CODEC);
 
-        //Button Press
+        // Button Press
         registrar.play(MoreMachinePacketTileButtonPress.TYPE, MoreMachinePacketTileButtonPress.STREAM_CODEC);
     }
 
     @Override
-    protected void registerServerToClient(PacketRegistrar registrar) {
-
-    }
+    protected void registerServerToClient(PacketRegistrar registrar) {}
 }

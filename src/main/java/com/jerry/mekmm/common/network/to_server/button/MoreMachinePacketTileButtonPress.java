@@ -3,10 +3,11 @@ package com.jerry.mekmm.common.network.to_server.button;
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.common.MoreMachineLang;
 import com.jerry.mekmm.common.registries.MoreMachineContainerTypes;
-import io.netty.buffer.ByteBuf;
+
 import mekanism.common.network.IMekanismPacket;
 import mekanism.common.tile.base.TileEntityMekanism;
 import mekanism.common.util.WorldUtils;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -17,6 +18,8 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
+
+import io.netty.buffer.ByteBuf;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -26,14 +29,14 @@ import java.util.function.Function;
 import java.util.function.IntFunction;
 
 public record MoreMachinePacketTileButtonPress(MoreMachineClickedTileButton buttonClicked,
-                                               BlockPos pos) implements IMekanismPacket {
+                                               BlockPos pos)
+        implements IMekanismPacket {
 
     public static final CustomPacketPayload.Type<MoreMachinePacketTileButtonPress> TYPE = new CustomPacketPayload.Type<>(Mekmm.rl("tile_button"));
     public static final StreamCodec<ByteBuf, MoreMachinePacketTileButtonPress> STREAM_CODEC = StreamCodec.composite(
             MoreMachineClickedTileButton.STREAM_CODEC, MoreMachinePacketTileButtonPress::buttonClicked,
             BlockPos.STREAM_CODEC, MoreMachinePacketTileButtonPress::pos,
-            MoreMachinePacketTileButtonPress::new
-    );
+            MoreMachinePacketTileButtonPress::new);
 
     public MoreMachinePacketTileButtonPress(MoreMachineClickedTileButton buttonClicked, BlockEntity tile) {
         this(buttonClicked, tile.getBlockPos());
@@ -58,6 +61,7 @@ public record MoreMachinePacketTileButtonPress(MoreMachineClickedTileButton butt
     }
 
     public enum MoreMachineClickedTileButton {
+
         WIRELESS_TRANSMISSION_STATION_CONFIG(tile -> MoreMachineContainerTypes.WIRELESS_TRANSMISSION_STATION_CONFIG.getProvider(MoreMachineLang.TRANSMITTER_CONFIG, tile));
 
         public static final IntFunction<MoreMachineClickedTileButton> BY_ID = ByIdMap.continuous(MoreMachineClickedTileButton::ordinal, values(), ByIdMap.OutOfBoundsStrategy.WRAP);

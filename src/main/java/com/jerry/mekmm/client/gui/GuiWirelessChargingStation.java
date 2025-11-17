@@ -6,6 +6,7 @@ import com.jerry.mekmm.common.MoreMachineLang;
 import com.jerry.mekmm.common.network.to_server.MoreMachinePacketGuiInteract;
 import com.jerry.mekmm.common.network.to_server.MoreMachinePacketGuiInteract.MMGuiInteraction;
 import com.jerry.mekmm.common.tile.TileEntityWirelessChargingStation;
+
 import mekanism.client.SpecialColors;
 import mekanism.client.gui.GuiConfigurableTile;
 import mekanism.client.gui.element.GuiInnerScreen;
@@ -19,10 +20,12 @@ import mekanism.common.inventory.container.tile.MekanismTileContainer;
 import mekanism.common.network.PacketUtils;
 import mekanism.common.util.MekanismUtils;
 import mekanism.common.util.text.EnergyDisplay;
+
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -52,14 +55,11 @@ public class GuiWirelessChargingStation extends GuiConfigurableTile<TileEntityWi
         addRenderableWidget(new GuiEnergyTab(this, () -> List.of(MekanismLang.MATRIX_INPUT_RATE.translate(EnergyDisplay.of(tile.getInputRate())),
                 MekanismLang.MAX_OUTPUT.translate(EnergyDisplay.of(tile.getOutput())))));
 
-        addRenderableWidget(new GuiWirelessChargingStationSwitch(this, imageWidth + 4, 42, EQUIPS, tile::getChargeEquipment, (element, mouseX, mouseY) ->
-                PacketUtils.sendToServer(new MoreMachinePacketGuiInteract(MMGuiInteraction.CHARGING_EQUIPS, ((GuiWirelessChargingStation) element.gui()).tile)), SwitchType.LOWER_ICON))
+        addRenderableWidget(new GuiWirelessChargingStationSwitch(this, imageWidth + 4, 42, EQUIPS, tile::getChargeEquipment, (element, mouseX, mouseY) -> PacketUtils.sendToServer(new MoreMachinePacketGuiInteract(MMGuiInteraction.CHARGING_EQUIPS, ((GuiWirelessChargingStation) element.gui()).tile)), SwitchType.LOWER_ICON))
                 .setTooltip(MoreMachineLang.CHARGING_EQUIPS);
-        addRenderableWidget(new GuiWirelessChargingStationSwitch(this, imageWidth + 4, 67, INVENTORY, tile::getChargeInventory, (element, mouseX, mouseY) ->
-                PacketUtils.sendToServer(new MoreMachinePacketGuiInteract(MMGuiInteraction.CHARGING_INVENTORY, ((GuiWirelessChargingStation) element.gui()).tile)), SwitchType.LOWER_ICON))
+        addRenderableWidget(new GuiWirelessChargingStationSwitch(this, imageWidth + 4, 67, INVENTORY, tile::getChargeInventory, (element, mouseX, mouseY) -> PacketUtils.sendToServer(new MoreMachinePacketGuiInteract(MMGuiInteraction.CHARGING_INVENTORY, ((GuiWirelessChargingStation) element.gui()).tile)), SwitchType.LOWER_ICON))
                 .setTooltip(MoreMachineLang.CHARGING_INVENTORY);
-        addRenderableWidget(new GuiWirelessChargingStationSwitch(this, imageWidth + 4, 92, CURIOS, tile::getChargeCurios, (element, mouseX, mouseY) ->
-                PacketUtils.sendToServer(new MoreMachinePacketGuiInteract(MMGuiInteraction.CHARGING_CURIOS, ((GuiWirelessChargingStation) element.gui()).tile)), SwitchType.LOWER_ICON))
+        addRenderableWidget(new GuiWirelessChargingStationSwitch(this, imageWidth + 4, 92, CURIOS, tile::getChargeCurios, (element, mouseX, mouseY) -> PacketUtils.sendToServer(new MoreMachinePacketGuiInteract(MMGuiInteraction.CHARGING_CURIOS, ((GuiWirelessChargingStation) element.gui()).tile)), SwitchType.LOWER_ICON))
                 .setTooltip(MoreMachineLang.CHARGING_CURIOS);
     }
 

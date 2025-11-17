@@ -1,9 +1,11 @@
 package com.jerry.mekmm.common.util;
 
 import com.jerry.mekmm.api.chemical.chemicals.ChemicalStackLinkedSet;
+
+import mekanism.api.chemical.ChemicalStack;
+
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenCustomHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenCustomHashMap;
-import mekanism.api.chemical.ChemicalStack;
 
 import java.util.Map;
 

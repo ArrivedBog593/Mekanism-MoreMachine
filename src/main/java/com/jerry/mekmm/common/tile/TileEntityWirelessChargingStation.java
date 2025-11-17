@@ -4,6 +4,7 @@ import com.jerry.mekmm.api.MoreMachineSerializationConstants;
 import com.jerry.mekmm.common.config.MoreMachineConfig;
 import com.jerry.mekmm.common.registries.MoreMachineBlocks;
 import com.jerry.mekmm.common.registries.MoreMachineDataComponents;
+
 import mekanism.api.Action;
 import mekanism.api.AutomationType;
 import mekanism.api.IContentsListener;
@@ -28,6 +29,7 @@ import mekanism.common.tile.component.TileComponentEjector;
 import mekanism.common.tile.interfaces.IBoundingBlock;
 import mekanism.common.tile.prefab.TileEntityConfigurableMachine;
 import mekanism.common.util.NBTUtils;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentMap;
@@ -37,6 +39,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.IItemHandler;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -97,7 +100,7 @@ public class TileEntityWirelessChargingStation extends TileEntityConfigurableMac
                 long availableEnergy = energyContainer.getEnergy();
                 long toCharge = Math.min(maxChargeRate, availableEnergy);
                 if (toCharge > 0L) {
-                    //优先充能盔甲，其次是主副手和饰品，最后是物品栏
+                    // 优先充能盔甲，其次是主副手和饰品，最后是物品栏
                     if (chargeEquipment) {
                         toCharge = chargeSuit(player, toCharge);
                     }
@@ -115,7 +118,7 @@ public class TileEntityWirelessChargingStation extends TileEntityConfigurableMac
 
     private long chargeSuit(Player player, long toCharge) {
         for (ItemStack stack : player.getArmorSlots()) {
-            //charge方法会检测是否是含能量槽的物品
+            // charge方法会检测是否是含能量槽的物品
             toCharge = charge(energyContainer, stack, toCharge);
             if (toCharge == 0L) break;
         }
@@ -162,16 +165,16 @@ public class TileEntityWirelessChargingStation extends TileEntityConfigurableMac
         if (handler == null) {
             return amount;
         }
-        //模拟接收后剩余的量
+        // 模拟接收后剩余的量
         long remaining = handler.insertEnergy(amount, Action.SIMULATE);
         if (remaining < amount) {
-            //物品需要的量=总量-模拟接收后剩余的量
+            // 物品需要的量=总量-模拟接收后剩余的量
             long toExtract = amount - remaining;
-            //实际提取的量
+            // 实际提取的量
             long extracted = energyContainer.extract(toExtract, Action.EXECUTE, AutomationType.MANUAL);
-            //实际插入后剩余的量
+            // 实际插入后剩余的量
             long inserted = handler.insertEnergy(extracted, Action.EXECUTE);
-            //返回模拟剩余的量和实际插入后剩余的量的和
+            // 返回模拟剩余的量和实际插入后剩余的量的和
             return inserted + remaining;
         }
         return amount;

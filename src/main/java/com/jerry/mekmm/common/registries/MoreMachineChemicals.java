@@ -2,14 +2,14 @@ package com.jerry.mekmm.common.registries;
 
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.common.MoreMachineChemicalConstants;
+
 import mekanism.api.chemical.Chemical;
 import mekanism.common.registration.impl.ChemicalDeferredRegister;
 import mekanism.common.registration.impl.DeferredChemical;
 
 public class MoreMachineChemicals {
 
-    private MoreMachineChemicals() {
-    }
+    private MoreMachineChemicals() {}
 
     public static final ChemicalDeferredRegister MM_CHEMICALS = new ChemicalDeferredRegister(Mekmm.MOD_ID);
 

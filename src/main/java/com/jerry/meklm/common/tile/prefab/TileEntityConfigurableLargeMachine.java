@@ -6,6 +6,7 @@ import mekanism.common.tile.base.TileEntityMekanism;
 import mekanism.common.tile.component.TileComponentConfig;
 import mekanism.common.tile.component.TileComponentEjector;
 import mekanism.common.tile.interfaces.ISideConfiguration;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -17,7 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public abstract class TileEntityConfigurableLargeMachine extends TileEntityMekanism implements ISideConfiguration {
 
     public TileComponentEjector ejectorComponent;
-    public final TileComponentConfig configComponent;//does not tick!
+    public final TileComponentConfig configComponent;// does not tick!
 
     public TileEntityConfigurableLargeMachine(Holder<Block> blockProvider, BlockPos pos, BlockState state) {
         super(blockProvider, pos, state);

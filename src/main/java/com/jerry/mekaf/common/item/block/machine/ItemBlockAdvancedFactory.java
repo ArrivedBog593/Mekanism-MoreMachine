@@ -3,6 +3,7 @@ package com.jerry.mekaf.common.item.block.machine;
 import com.jerry.mekaf.common.attachments.component.AdvancedFactoryAttachedSideConfig;
 import com.jerry.mekaf.common.block.attribute.AttributeAdvancedFactoryType;
 import com.jerry.mekaf.common.block.prefab.BlockAdvancedFactoryMachine;
+
 import mekanism.api.text.EnumColor;
 import mekanism.common.MekanismLang;
 import mekanism.common.attachments.component.AttachedEjector;
@@ -12,10 +13,12 @@ import mekanism.common.block.prefab.BlockTile;
 import mekanism.common.item.block.ItemBlockTooltip;
 import mekanism.common.registries.MekanismDataComponents;
 import mekanism.common.tier.FactoryTier;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -32,7 +35,7 @@ public class ItemBlockAdvancedFactory extends ItemBlockTooltip<BlockTile<?, ?>> 
             case CRYSTALLIZING -> AttachedSideConfig.CRYSTALLIZER;
             case CENTRIFUGING -> AttachedSideConfig.CENTRIFUGE;
             case LIQUIFYING -> AttachedSideConfig.LIQUIFIER;
-//            case SOLAR_NEUTRON_ACTIVATING -> AttachedSideConfig.SNA;
+            // case SOLAR_NEUTRON_ACTIVATING -> AttachedSideConfig.SNA;
         };
     }
 
@@ -40,8 +43,7 @@ public class ItemBlockAdvancedFactory extends ItemBlockTooltip<BlockTile<?, ?>> 
         super(block, true, properties
                 .component(MekanismDataComponents.SORTING, false)
                 .component(MekanismDataComponents.EJECTOR, AttachedEjector.DEFAULT)
-                .component(MekanismDataComponents.SIDE_CONFIG, getSideConfig(block))
-        );
+                .component(MekanismDataComponents.SIDE_CONFIG, getSideConfig(block)));
     }
 
     @Override
@@ -51,7 +53,7 @@ public class ItemBlockAdvancedFactory extends ItemBlockTooltip<BlockTile<?, ?>> 
 
     @Override
     protected void addTypeDetails(@NotNull ItemStack stack, @NotNull Item.TooltipContext context, @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
-        //Should always be present but validate it just in case
+        // Should always be present but validate it just in case
         AttributeAdvancedFactoryType factoryType = Attribute.get(getBlock(), AttributeAdvancedFactoryType.class);
         if (factoryType != null) {
             tooltip.add(MekanismLang.FACTORY_TYPE.translateColored(EnumColor.INDIGO, EnumColor.GRAY, factoryType.getAdvancedFactoryType()));

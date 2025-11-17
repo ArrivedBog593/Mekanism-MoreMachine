@@ -2,8 +2,7 @@ package com.jerry.mekmm.client.recipe_viewer.emi.recipe;
 
 import com.jerry.mekmm.api.recipes.RecyclerRecipe;
 import com.jerry.mekmm.common.tile.machine.TileEntityRecycler;
-import dev.emi.emi.api.stack.EmiStack;
-import dev.emi.emi.api.widget.WidgetHolder;
+
 import mekanism.client.gui.element.GuiUpArrow;
 import mekanism.client.gui.element.bar.GuiVerticalPowerBar;
 import mekanism.client.gui.element.progress.ProgressType;
@@ -12,8 +11,12 @@ import mekanism.client.recipe_viewer.RecipeViewerUtils;
 import mekanism.client.recipe_viewer.emi.MekanismEmiRecipeCategory;
 import mekanism.client.recipe_viewer.emi.recipe.MekanismEmiHolderRecipe;
 import mekanism.common.inventory.container.slot.SlotOverlay;
+
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
+
+import dev.emi.emi.api.stack.EmiStack;
+import dev.emi.emi.api.widget.WidgetHolder;
 
 import java.util.ArrayList;
 import java.util.List;

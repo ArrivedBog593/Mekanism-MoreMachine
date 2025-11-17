@@ -2,15 +2,18 @@ package com.jerry.mekmm.mixin;
 
 import com.jerry.mekmm.api.MoreMachineUpgrade;
 import com.jerry.mekmm.api.text.APIMoreMachineLang;
-import com.mojang.serialization.Codec;
-import io.netty.buffer.ByteBuf;
+
 import mekanism.api.Upgrade;
 import mekanism.api.text.EnumColor;
 import mekanism.api.text.ILangEntry;
+
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ByIdMap;
 import net.minecraft.util.StringRepresentable;
+
+import com.mojang.serialization.Codec;
+import io.netty.buffer.ByteBuf;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.gen.Invoker;
 import org.spongepowered.asm.mixin.injection.At;
@@ -47,15 +50,14 @@ public class MixinUpgrade {
     @Final
     public static IntFunction<Upgrade> BY_ID;
 
-    public MixinUpgrade() {
-    }
+    public MixinUpgrade() {}
 
     @Invoker("<init>")
     public static Upgrade upgrade$initInvoker(String internalName, int internalId, String name, ILangEntry langKey, ILangEntry descLangKey, int maxStack, EnumColor color) {
         throw new AssertionError();
     }
 
-    @Inject(method = "<clinit>",at = @At("TAIL"))
+    @Inject(method = "<clinit>", at = @At("TAIL"))
     private static void upgradeClinit(CallbackInfo ci) {
         MoreMachineUpgrade.THREAD = mekanismMoreMachine$addVariant("THREAD", APIMoreMachineLang.UPGRADE_THREAD, APIMoreMachineLang.UPGRADE_THREAD_DESCRIPTION, 8, EnumColor.BRIGHT_PINK);
 
@@ -87,5 +89,4 @@ public class MixinUpgrade {
         BY_ID = ByIdMap.continuous(Upgrade::ordinal, values, ByIdMap.OutOfBoundsStrategy.WRAP);
         STREAM_CODEC = ByteBufCodecs.idMapper(BY_ID, Upgrade::ordinal);
     }
-
 }

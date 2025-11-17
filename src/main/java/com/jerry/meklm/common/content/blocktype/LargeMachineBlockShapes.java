@@ -2,14 +2,13 @@ package com.jerry.meklm.common.content.blocktype;
 
 import mekanism.common.util.EnumUtils;
 import mekanism.common.util.VoxelShapeUtils;
+
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class LargeMachineBlockShapes {
 
-    private LargeMachineBlockShapes() {
-
-    }
+    private LargeMachineBlockShapes() {}
 
     private static VoxelShape box(double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
         return Block.box(minX, minY, minZ, maxX, maxY, maxZ);
@@ -57,7 +56,6 @@ public class LargeMachineBlockShapes {
                 box(19, -13, 31, 29, -3, 32),
                 box(20, -12, 25, 28, -4, 31),
                 box(-13, -13, 31, -3, -3, 32),
-                box(-12, -12, 25, -4, -4, 31)
-        ).move(0, 1, 0), LARGE_ROTARY_CONDENSENTRATOR);
+                box(-12, -12, 25, -4, -4, 31)).move(0, 1, 0), LARGE_ROTARY_CONDENSENTRATOR);
     }
 }

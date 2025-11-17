@@ -1,26 +1,24 @@
 package com.jerry.mekmm.common.attachments.component;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.netty.buffer.ByteBuf;
 import mekanism.common.lib.transmitter.TransmissionType;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.codec.StreamCodec;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.netty.buffer.ByteBuf;
+
 public record ConnectionConfig(BlockPos pos, Direction direction, TransmissionType type) {
 
-    public static final Codec<ConnectionConfig> CODEC = RecordCodecBuilder.create(instance ->
-            instance.group(BlockPos.CODEC.fieldOf("pos").forGetter(ConnectionConfig::pos),
-                    Direction.CODEC.fieldOf("direction").forGetter(ConnectionConfig::direction),
-                    TransmissionType.CODEC.fieldOf("type").forGetter(ConnectionConfig::type)
-            ).apply(instance, ConnectionConfig::new)
-    );
+    public static final Codec<ConnectionConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(BlockPos.CODEC.fieldOf("pos").forGetter(ConnectionConfig::pos),
+            Direction.CODEC.fieldOf("direction").forGetter(ConnectionConfig::direction),
+            TransmissionType.CODEC.fieldOf("type").forGetter(ConnectionConfig::type)).apply(instance, ConnectionConfig::new));
     public static final StreamCodec<ByteBuf, ConnectionConfig> STREAM_CODEC = StreamCodec.composite(
             BlockPos.STREAM_CODEC, ConnectionConfig::pos, Direction.STREAM_CODEC, ConnectionConfig::direction,
-            TransmissionType.STREAM_CODEC, ConnectionConfig::type, ConnectionConfig::new
-    );
+            TransmissionType.STREAM_CODEC, ConnectionConfig::type, ConnectionConfig::new);
 
     /**
      * 保存到NBT

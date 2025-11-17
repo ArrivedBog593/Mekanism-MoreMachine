@@ -8,6 +8,7 @@ import mekanism.common.inventory.slot.OutputInventorySlot;
 import mekanism.common.tile.component.ITileComponent;
 import mekanism.common.tile.interfaces.IRedstoneControl.RedstoneControl;
 import mekanism.common.upgrade.MachineUpgradeData;
+
 import net.minecraft.core.HolderLookup;
 
 import java.util.List;
@@ -16,14 +17,14 @@ public class StamperUpgradeData extends MachineUpgradeData {
 
     public final InputInventorySlot extraSlot;
 
-    //Stamper Constructor
+    // Stamper Constructor
     public StamperUpgradeData(HolderLookup.Provider provider, boolean redstone, RedstoneControl controlType, IEnergyContainer energyContainer, int operatingTicks,
                               EnergyInventorySlot energySlot, InputInventorySlot extraSlot, InputInventorySlot inputSlot, OutputInventorySlot outputSlot, List<ITileComponent> components) {
         super(provider, redstone, controlType, energyContainer, operatingTicks, energySlot, inputSlot, outputSlot, components);
         this.extraSlot = extraSlot;
     }
 
-    //Stamper Factory Constructor
+    // Stamper Factory Constructor
     public StamperUpgradeData(HolderLookup.Provider provider, boolean redstone, RedstoneControl controlType, IEnergyContainer energyContainer, int[] progress,
                               EnergyInventorySlot energySlot, InputInventorySlot extraSlot, List<IInventorySlot> inputSlots, List<IInventorySlot> outputSlots, boolean sorting,
                               List<ITileComponent> components) {

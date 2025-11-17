@@ -3,11 +3,13 @@ package com.jerry.mekmm.common.attachments.component;
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.common.tile.TileEntityWirelessTransmissionStation;
 import com.jerry.mekmm.common.tile.prefab.TileEntityConnectableMachine.ConnectStatus;
+
 import mekanism.api.chemical.IChemicalHandler;
 import mekanism.common.capabilities.Capabilities;
 import mekanism.common.integration.energy.BlockEnergyCapabilityCache;
 import mekanism.common.lib.transmitter.TransmissionType;
 import mekanism.common.util.WorldUtils;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -17,12 +19,14 @@ import net.minecraft.server.level.ServerLevel;
 import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
+
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class WirelessConnectionManager {
+
     private final TileEntityWirelessTransmissionStation tile;
     // 使用 Set 存储连接配置,避免重复
     private final List<ConnectionConfig> connections = new ArrayList<>();
@@ -40,12 +44,12 @@ public class WirelessConnectionManager {
     public ConnectStatus linkOrCut(BlockPos pos, Direction direction, TransmissionType type) {
         ConnectionConfig config = new ConnectionConfig(pos, direction, type);
         if (connections.contains(config)) {
-            //已存在,移除连接
+            // 已存在,移除连接
             connections.remove(config);
             cacheDirty = true;
             return ConnectStatus.DISCONNECT;
         }
-        //尝试添加新连接 - 先验证能力是否存在
+        // 尝试添加新连接 - 先验证能力是否存在
         if (validateCapability(pos, direction, type)) {
             connections.add(config);
             cacheDirty = true;
@@ -62,11 +66,9 @@ public class WirelessConnectionManager {
             return false;
         }
         return switch (type) {
-            case ENERGY ->
-                    WorldUtils.getCapability(tile.getLevel(), Capabilities.ENERGY.block(), pos, direction) != null;
+            case ENERGY -> WorldUtils.getCapability(tile.getLevel(), Capabilities.ENERGY.block(), pos, direction) != null;
             case FLUID -> WorldUtils.getCapability(tile.getLevel(), Capabilities.FLUID.block(), pos, direction) != null;
-            case CHEMICAL ->
-                    WorldUtils.getCapability(tile.getLevel(), Capabilities.CHEMICAL.block(), pos, direction) != null;
+            case CHEMICAL -> WorldUtils.getCapability(tile.getLevel(), Capabilities.CHEMICAL.block(), pos, direction) != null;
             case ITEM -> WorldUtils.getCapability(tile.getLevel(), Capabilities.ITEM.block(), pos, direction) != null;
             case HEAT -> WorldUtils.getCapability(tile.getLevel(), Capabilities.HEAT, pos, direction) != null;
         };
@@ -183,7 +185,7 @@ public class WirelessConnectionManager {
         }
         boolean removed = connections.removeIf(config -> !tile.getLevel().isLoaded(config.pos()) || tile.getLevel().isEmptyBlock(config.pos()) || !validateCapability(config.pos(), config.direction(), config.type()));
         if (removed) {
-            //删除之后要发送数据包更新渲染状态
+            // 删除之后要发送数据包更新渲染状态
             tile.sendUpdatePacket();
             tile.markForSave();
             cacheDirty = true;
@@ -217,7 +219,7 @@ public class WirelessConnectionManager {
                 }
             }
         }
-        //标记需要重建缓存
+        // 标记需要重建缓存
         cacheDirty = true;
     }
 

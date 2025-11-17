@@ -1,6 +1,7 @@
 package com.jerry.mekmm.client.recipe_viewer.jei.machine;
 
 import com.jerry.mekmm.api.recipes.StamperRecipe;
+
 import mekanism.client.gui.element.GuiUpArrow;
 import mekanism.client.gui.element.bar.GuiVerticalPowerBar;
 import mekanism.client.gui.element.progress.ProgressType;
@@ -10,14 +11,16 @@ import mekanism.client.recipe_viewer.RecipeViewerUtils;
 import mekanism.client.recipe_viewer.jei.HolderRecipeCategory;
 import mekanism.client.recipe_viewer.type.IRecipeViewerRecipeType;
 import mekanism.common.inventory.container.slot.SlotOverlay;
+
+import net.minecraft.world.item.crafting.RecipeHolder;
+
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
-import net.minecraft.world.item.crafting.RecipeHolder;
 import org.jetbrains.annotations.NotNull;
 
-//虽然可以直接使用融合机的RecipeCategory，但复制一份应该更好
+// 虽然可以直接使用融合机的RecipeCategory，但复制一份应该更好
 public class StamperRecipeCategory extends HolderRecipeCategory<StamperRecipe> {
 
     private final GuiSlot input;

@@ -6,6 +6,7 @@ import com.jerry.mekmm.common.inventory.container.tile.WirelessTransmissionStati
 import com.jerry.mekmm.common.network.to_server.button.MoreMachinePacketTileButtonPress;
 import com.jerry.mekmm.common.network.to_server.button.MoreMachinePacketTileButtonPress.MoreMachineClickedTileButton;
 import com.jerry.mekmm.common.tile.TileEntityWirelessTransmissionStation;
+
 import mekanism.client.gui.GuiConfigurableTile;
 import mekanism.client.gui.element.bar.GuiBar.IBarInfoHandler;
 import mekanism.client.gui.element.button.MekanismImageButton;
@@ -22,9 +23,11 @@ import mekanism.common.network.PacketUtils;
 import mekanism.common.util.MekanismUtils;
 import mekanism.common.util.UnitDisplayUtils;
 import mekanism.common.util.text.EnergyDisplay;
+
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -43,6 +46,7 @@ public class GuiWirelessTransmissionStation extends GuiConfigurableTile<TileEnti
         addRenderableWidget(new GuiChemicalGauge(() -> tile.chemicalTank, () -> tile.getChemicalTanks(null), GaugeType.STANDARD, this, 7, 14));
         addRenderableWidget(new GuiFluidGauge(() -> tile.fluidTank, () -> tile.getFluidTanks(null), GaugeType.STANDARD, this, 151, 14));
         addRenderableWidget(new GuiEnergyGauge(new IEnergyInfoHandler() {
+
             @Override
             public long getEnergy() {
                 return tile.getEnergyContainer().getEnergy();
@@ -55,8 +59,9 @@ public class GuiWirelessTransmissionStation extends GuiConfigurableTile<TileEnti
         }, GaugeType.MEDIUM, this, 53, 14, 68, 60));
         addRenderableWidget(new GuiEnergyTab(this, () -> List.of(MekanismLang.MATRIX_INPUT_RATE.translate(EnergyDisplay.of(tile.getInputRate())),
                 MekanismLang.MAX_OUTPUT.translate(EnergyDisplay.of(tile.getEnergyRate())))));
-        //热量条
+        // 热量条
         addRenderableWidget(new GuiFlexibleHorizontalRateBar(this, new IBarInfoHandler() {
+
             @Override
             public Component getTooltip() {
                 return MekanismUtils.getTemperatureDisplay(tile.getTemperature(), UnitDisplayUtils.TemperatureUnit.KELVIN, true);
@@ -67,7 +72,7 @@ public class GuiWirelessTransmissionStation extends GuiConfigurableTile<TileEnti
                 return Math.min(1, tile.getTemperature() / TileEntityWirelessTransmissionStation.MAX_MULTIPLIER_TEMP);
             }
         }, 27, 80, 119, 9));
-        //配置按钮
+        // 配置按钮
         addRenderableWidget(new MekanismImageButton(this, 151, 77, 18, 18, getButtonLocation("config"),
                 (element, mouseX, mouseY) -> PacketUtils.sendToServer(new MoreMachinePacketTileButtonPress(MoreMachineClickedTileButton.WIRELESS_TRANSMISSION_STATION_CONFIG, ((GuiWirelessTransmissionStation) element.gui()).tile))))
                 .setTooltip(TooltipUtils.create(MoreMachineLang.CONFIGURATION));
@@ -82,7 +87,7 @@ public class GuiWirelessTransmissionStation extends GuiConfigurableTile<TileEnti
     @Override
     protected void drawForegroundText(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY) {
         renderTitleText(guiGraphics);
-//        renderInventoryText(guiGraphics);
+        // renderInventoryText(guiGraphics);
         super.drawForegroundText(guiGraphics, mouseX, mouseY);
     }
 }

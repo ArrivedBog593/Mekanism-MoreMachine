@@ -3,8 +3,7 @@ package com.jerry.mekmm.client.recipe_viewer.jei.machine;
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.api.recipes.basic.MMBasicItemStackChemicalToItemStackRecipe;
 import com.jerry.mekmm.common.recipe.impl.ReplicatorIRecipeSingle;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
+
 import mekanism.api.SerializationConstants;
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
@@ -21,15 +20,19 @@ import mekanism.client.recipe_viewer.jei.BaseRecipeCategory;
 import mekanism.client.recipe_viewer.type.IRecipeViewerRecipeType;
 import mekanism.common.inventory.container.slot.SlotOverlay;
 import mekanism.common.tile.component.config.DataType;
+
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.helpers.ICodecHelper;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.IRecipeManager;
 import mezz.jei.api.recipe.RecipeIngredientRole;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,12 +41,11 @@ import java.util.List;
 @NothingNullByDefault
 public class ReplicatorRecipeCategory extends BaseRecipeCategory<MMBasicItemStackChemicalToItemStackRecipe> {
 
-    //TODO: Re-evaluate
+    // TODO: Re-evaluate
     private static final Codec<MMBasicItemStackChemicalToItemStackRecipe> RECIPE_CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ItemStackIngredient.CODEC.fieldOf(SerializationConstants.INPUT).forGetter(MMBasicItemStackChemicalToItemStackRecipe::getItemInput),
             IngredientCreatorAccess.chemicalStack().codec().fieldOf(SerializationConstants.CHEMICAL_INPUT).forGetter(MMBasicItemStackChemicalToItemStackRecipe::getChemicalInput),
-            ItemStack.CODEC.fieldOf(SerializationConstants.OUTPUT).forGetter(MMBasicItemStackChemicalToItemStackRecipe::getOutputRaw)
-    ).apply(instance, ReplicatorIRecipeSingle::new));
+            ItemStack.CODEC.fieldOf(SerializationConstants.OUTPUT).forGetter(MMBasicItemStackChemicalToItemStackRecipe::getOutputRaw)).apply(instance, ReplicatorIRecipeSingle::new));
 
     private final GuiGauge<?> inputGauge;
     private final GuiSlot outputSlot;
@@ -60,6 +62,7 @@ public class ReplicatorRecipeCategory extends BaseRecipeCategory<MMBasicItemStac
         addSlot(SlotType.POWER, 152, 65).with(SlotOverlay.POWER);
         addSimpleProgress(ProgressType.LARGE_RIGHT, 64, 36);
         addElement(new GuiEnergyGauge(new GuiEnergyGauge.IEnergyInfoHandler() {
+
             @Override
             public long getEnergy() {
                 return 1L;

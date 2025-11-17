@@ -1,7 +1,5 @@
 package com.jerry.mekmm.common.registries;
 
-import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.Table;
 import com.jerry.mekmm.common.MoreMachineLang;
 import com.jerry.mekmm.common.config.MoreMachineConfig;
 import com.jerry.mekmm.common.content.blocktype.MoreMachineBlockShapes;
@@ -16,6 +14,7 @@ import com.jerry.mekmm.common.tile.TileEntityWirelessTransmissionStation;
 import com.jerry.mekmm.common.tile.machine.*;
 import com.jerry.mekmm.common.util.MoreMachineEnumUtils;
 import com.jerry.mekmm.common.util.MoreMachineUtils;
+
 import mekanism.api.Upgrade;
 import mekanism.common.block.attribute.*;
 import mekanism.common.block.attribute.AttributeHasBounding.HandleBoundingBlock;
@@ -27,16 +26,19 @@ import mekanism.common.content.blocktype.Machine.MachineBuilder;
 import mekanism.common.lib.transmitter.TransmissionType;
 import mekanism.common.registries.MekanismSounds;
 import mekanism.common.tier.FactoryTier;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
+
 public class MoreMachineBlockTypes {
 
-    private MoreMachineBlockTypes() {
-    }
+    private MoreMachineBlockTypes() {}
 
     private static final Table<FactoryTier, MoreMachineFactoryType, MoreMachineFactory<?>> MM_FACTORIES = HashBasedTable.create();
 
@@ -143,12 +145,13 @@ public class MoreMachineBlockTypes {
             .createMachine(() -> MoreMachineTileEntityTypes.WIRELESS_CHARGING_STATION, MoreMachineLang.DESCRIPTION_WIRELESS_CHARGING_STATION)
             .withGui(() -> MoreMachineContainerTypes.WIRELESS_CHARGING_STATION)
             .withEnergyConfig(MoreMachineConfig.storage.wirelessChargingStation)
-//            .with(AttributeUpgradeSupport.ANCHOR_ONLY)
+            // .with(AttributeUpgradeSupport.ANCHOR_ONLY)
             .withSideConfig(TransmissionType.ITEM, TransmissionType.ENERGY)
             .withCustomShape(MoreMachineBlockShapes.WIRELESS_CHARGING_STATION)
             .with(AttributeCustomSelectionBox.JSON)
             .without(AttributeUpgradeSupport.class)
             .withBounding(new HandleBoundingBlock() {
+
                 @Override
                 public <DATA> boolean handle(Level level, BlockPos pos, BlockState state, DATA data, TriBooleanFunction<Level, BlockPos, DATA> consumer) {
                     MutableBlockPos mutable = new MutableBlockPos();
@@ -175,6 +178,7 @@ public class MoreMachineBlockTypes {
             .with(AttributeCustomSelectionBox.JSON)
             .without(AttributeUpgradeSupport.class)
             .withBounding(new HandleBoundingBlock() {
+
                 @Override
                 public <DATA> boolean handle(Level level, BlockPos pos, BlockState state, DATA data, TriBooleanFunction<Level, BlockPos, DATA> consumer) {
                     MutableBlockPos mutable = new MutableBlockPos();

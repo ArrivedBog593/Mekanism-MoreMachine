@@ -2,10 +2,13 @@ package com.jerry.mekmm.api.recipes.basic;
 
 import com.jerry.mekmm.api.recipes.MoreMachineRecipeSerializers;
 import com.jerry.mekmm.api.recipes.RecyclerRecipe;
+
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
+
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+
 import org.jetbrains.annotations.Contract;
 
 import java.util.Collections;
@@ -24,7 +27,7 @@ public class BasicRecyclerRecipe extends RecyclerRecipe {
         Objects.requireNonNull(chanceOutput, "Output cannot be null.");
         if (chanceOutput.isEmpty()) {
             throw new IllegalArgumentException("Output cannot be null.");
-        }else if (chance < 0 || chance > 1) {
+        } else if (chance < 0 || chance > 1) {
             throw new IllegalArgumentException("Output chance must be at least zero and at most one.");
         }
         this.chanceOutput = chanceOutput.copy();
@@ -72,7 +75,8 @@ public class BasicRecyclerRecipe extends RecyclerRecipe {
     }
 
     /**
-     * Represents a precalculated chance based output. This output keeps track of what random value was calculated for use in comparing if the secondary output should be
+     * Represents a precalculated chance based output. This output keeps track of what random value was calculated for
+     * use in comparing if the secondary output should be
      * created.
      */
     public class BasicChanceOutput implements ChanceOutput {

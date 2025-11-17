@@ -13,11 +13,13 @@ import mekanism.common.inventory.container.MekanismContainer;
 import mekanism.common.recipe.lookup.IRecipeLookupHandler;
 import mekanism.common.recipe.lookup.monitor.RecipeCacheLookupMonitor;
 import mekanism.common.tile.base.TileEntityMekanism;
+
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -44,11 +46,12 @@ public abstract class TileEntityRecipeLargeMachine<RECIPE extends MekanismRecipe
 
     protected TileEntityRecipeLargeMachine(Holder<Block> blockProvider, BlockPos pos, BlockState state, List<RecipeError> errorTypes) {
         super(blockProvider, pos, state);
-        //Copy the list if it is mutable to ensure it doesn't get changed, otherwise just use the list
+        // Copy the list if it is mutable to ensure it doesn't get changed, otherwise just use the list
         this.errorTypes = List.copyOf(errorTypes);
         recheckAllRecipeErrors = shouldRecheckAllErrors(this);
         trackedErrors = new boolean[this.errorTypes.size()];
-        //Clear the memory if we didn't use it. Note: We can set this to null as we pass it by reference so if it is not used
+        // Clear the memory if we didn't use it. Note: We can set this to null as we pass it by reference so if it is
+        // not used
         // then it will get GC'd otherwise the corresponding things will still have a reference to it
         recipeCacheSaveOnlyListener = null;
         recipeCacheUnpauseListener = null;
@@ -66,7 +69,7 @@ public abstract class TileEntityRecipeLargeMachine<RECIPE extends MekanismRecipe
     }
 
     protected IContentsListener getRecipeCacheSaveOnlyListener() {
-        //If we don't support comparators we can just skip having a special one that only marks for save as our
+        // If we don't support comparators we can just skip having a special one that only marks for save as our
         // setChanged won't actually do anything so there is no reason to bother creating a save only listener
         if (supportsComparator()) {
             if (recipeCacheSaveOnlyListener == null) {
@@ -119,14 +122,15 @@ public abstract class TileEntityRecipeLargeMachine<RECIPE extends MekanismRecipe
     public BooleanSupplier getWarningCheck(RecipeError error) {
         int errorIndex = errorTypes.indexOf(error);
         if (errorIndex == -1) {
-            //Something went wrong
+            // Something went wrong
             return () -> false;
         }
         return () -> trackedErrors[errorIndex];
     }
 
     public static BooleanSupplier shouldRecheckAllErrors(TileEntityMekanism tile) {
-        // Choose a random offset to check for all errors. We do this to ensure that not every tile tries to recheck errors for every
+        // Choose a random offset to check for all errors. We do this to ensure that not every tile tries to recheck
+        // errors for every
         // recipe the same tick and thus create uneven spikes of CPU usage
         int checkOffset = ThreadLocalRandom.current().nextInt(RECIPE_CHECK_FREQUENCY);
         return () -> !tile.playersUsing.isEmpty() && tile.hasLevel() && tile.getLevel().getGameTime() % RECIPE_CHECK_FREQUENCY == checkOffset;

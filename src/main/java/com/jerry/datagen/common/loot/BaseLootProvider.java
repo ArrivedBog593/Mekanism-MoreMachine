@@ -18,7 +18,7 @@ public abstract class BaseLootProvider extends LootTableProvider {
     }
 
     protected BaseLootProvider(PackOutput output, Set<ResourceKey<LootTable>> requiredTables, List<SubProviderEntry> subProviders,
-          CompletableFuture<HolderLookup.Provider> provider) {
+                               CompletableFuture<HolderLookup.Provider> provider) {
         super(output, requiredTables, subProviders, provider);
     }
 }

@@ -34,7 +34,7 @@ public final class MoreMachineHooks {
 
     public MoreMachineHooks() {
         ModList modList = ModList.get();
-        //Note: The modList is null when running tests
+        // Note: The modList is null when running tests
         Predicate<String> loadedCheck = modList == null ? modId -> false : modList::isLoaded;
         evolvedMekanism = new IntegrationInfo("evolvedmekanism", loadedCheck);
     }

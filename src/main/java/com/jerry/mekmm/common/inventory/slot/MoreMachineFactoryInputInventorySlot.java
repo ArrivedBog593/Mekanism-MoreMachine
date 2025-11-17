@@ -1,10 +1,12 @@
 package com.jerry.mekmm.common.inventory.slot;
 
 import com.jerry.mekmm.common.tile.factory.TileEntityMoreMachineFactory;
+
 import mekanism.api.IContentsListener;
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.inventory.IInventorySlot;
 import mekanism.common.inventory.slot.InputInventorySlot;
+
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;

@@ -3,8 +3,7 @@ package com.jerry.mekmm.client.recipe_viewer.jei.machine;
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.api.recipes.basic.BasicFluidChemicalToFluidRecipe;
 import com.jerry.mekmm.common.recipe.impl.FluidReplicatorIRecipeSingle;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
+
 import mekanism.api.SerializationConstants;
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.recipes.ingredients.FluidStackIngredient;
@@ -18,15 +17,19 @@ import mekanism.client.recipe_viewer.jei.BaseRecipeCategory;
 import mekanism.client.recipe_viewer.type.IRecipeViewerRecipeType;
 import mekanism.common.inventory.container.slot.SlotOverlay;
 import mekanism.common.tile.component.config.DataType;
+
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.fluids.FluidStack;
+
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.helpers.ICodecHelper;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.IRecipeManager;
 import mezz.jei.api.recipe.RecipeIngredientRole;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,12 +38,11 @@ import java.util.List;
 @NothingNullByDefault
 public class FluidReplicatorRecipeCategory extends BaseRecipeCategory<BasicFluidChemicalToFluidRecipe> {
 
-    //TODO: Re-evaluate
+    // TODO: Re-evaluate
     private static final Codec<BasicFluidChemicalToFluidRecipe> RECIPE_CODEC = RecordCodecBuilder.create(instance -> instance.group(
             FluidStackIngredient.CODEC.fieldOf(SerializationConstants.INPUT).forGetter(BasicFluidChemicalToFluidRecipe::getFluidInput),
             IngredientCreatorAccess.chemicalStack().codec().fieldOf(SerializationConstants.CHEMICAL_INPUT).forGetter(BasicFluidChemicalToFluidRecipe::getChemicalInput),
-            FluidStack.CODEC.fieldOf(SerializationConstants.OUTPUT).forGetter(BasicFluidChemicalToFluidRecipe::getOutputRaw)
-    ).apply(instance, FluidReplicatorIRecipeSingle::new));
+            FluidStack.CODEC.fieldOf(SerializationConstants.OUTPUT).forGetter(BasicFluidChemicalToFluidRecipe::getOutputRaw)).apply(instance, FluidReplicatorIRecipeSingle::new));
 
     private final GuiGauge<?> gasInputGauge;
     private final GuiGauge<?> fluidInputGauge;
@@ -60,6 +62,7 @@ public class FluidReplicatorRecipeCategory extends BaseRecipeCategory<BasicFluid
         addSlot(SlotType.POWER, 152, 65).with(SlotOverlay.POWER);
         addSimpleProgress(ProgressType.LARGE_RIGHT, 64, 36);
         addElement(new GuiEnergyGauge(new GuiEnergyGauge.IEnergyInfoHandler() {
+
             @Override
             public long getEnergy() {
                 return 1L;

@@ -7,6 +7,7 @@ import com.jerry.mekmm.common.config.MoreMachineConfig;
 import com.jerry.mekmm.common.recipe.impl.ReplicatorIRecipeSingle;
 import com.jerry.mekmm.common.registries.MoreMachineChemicals;
 import com.jerry.mekmm.common.util.ValidatorUtils;
+
 import mekanism.api.IContentsListener;
 import mekanism.api.chemical.BasicChemicalTank;
 import mekanism.api.chemical.ChemicalStack;
@@ -35,6 +36,7 @@ import mekanism.common.upgrade.AdvancedMachineUpgradeData;
 import mekanism.common.upgrade.IUpgradeData;
 import mekanism.common.util.InventoryUtils;
 import mekanism.common.util.RegistryUtils;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -43,6 +45,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidType;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -52,30 +55,27 @@ import java.util.Objects;
 import java.util.Set;
 
 public class TileEntityReplicatingFactory extends TileEntityItemToItemMMFactory<MMBasicItemStackChemicalToItemStackRecipe> implements IHasDumpButton,
-        ItemChemicalRecipeLookupHandler<MMBasicItemStackChemicalToItemStackRecipe> {
+                                          ItemChemicalRecipeLookupHandler<MMBasicItemStackChemicalToItemStackRecipe> {
 
-    protected static final DoubleInputRecipeCache.CheckRecipeType<ItemStack, ChemicalStack, MMBasicItemStackChemicalToItemStackRecipe, ItemStack> OUTPUT_CHECK =
-            (recipe, input, extra, output) -> InventoryUtils.areItemsStackable(recipe.getOutput(input, extra), output);
+    protected static final DoubleInputRecipeCache.CheckRecipeType<ItemStack, ChemicalStack, MMBasicItemStackChemicalToItemStackRecipe, ItemStack> OUTPUT_CHECK = (recipe, input, extra, output) -> InventoryUtils.areItemsStackable(recipe.getOutput(input, extra), output);
     private static final List<RecipeError> TRACKED_ERROR_TYPES = List.of(
             RecipeError.NOT_ENOUGH_ENERGY,
             RecipeError.NOT_ENOUGH_INPUT,
             RecipeError.NOT_ENOUGH_SECONDARY_INPUT,
             RecipeError.NOT_ENOUGH_OUTPUT_SPACE,
-            RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT
-    );
+            RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT);
     private static final Set<RecipeError> GLOBAL_ERROR_TYPES = Set.of(
             RecipeError.NOT_ENOUGH_ENERGY,
-            RecipeError.NOT_ENOUGH_SECONDARY_INPUT
-    );
+            RecipeError.NOT_ENOUGH_SECONDARY_INPUT);
 
     public static final long MAX_GAS = 10 * FluidType.BUCKET_VOLUME;
 
     public static HashMap<String, Integer> customRecipeMap = ValidatorUtils.getRecipeFromConfig(MoreMachineConfig.general.itemReplicatorRecipe.get());
 
     private final ILongInputHandler<ChemicalStack> chemicalInputHandler;
-    //化学品存储槽
+    // 化学品存储槽
     public IChemicalTank chemicalTank;
-    //气罐槽
+    // 气罐槽
     ChemicalInventorySlot chemicalSlot;
 
     public TileEntityReplicatingFactory(Holder<Block> blockProvider, BlockPos pos, BlockState state) {
@@ -184,15 +184,14 @@ public class TileEntityReplicatingFactory extends TileEntityItemToItemMMFactory<
         }
         if (customRecipeMap != null) {
             Item item = itemStack.getItem();
-            //如果为空则赋值为0
+            // 如果为空则赋值为0
             int amount = customRecipeMap.getOrDefault(RegistryUtils.getName(itemStack.getItemHolder()).toString(), 0);
-            //防止null和配置文件中出现0
+            // 防止null和配置文件中出现0
             if (amount == 0) return null;
             return new ReplicatorIRecipeSingle(
                     IngredientCreatorAccess.item().from(item, 1),
                     IngredientCreatorAccess.chemicalStack().fromHolder(MoreMachineChemicals.UU_MATTER, amount),
-                    new ItemStack(item, 1)
-            );
+                    new ItemStack(item, 1));
         }
         return null;
     }
@@ -205,9 +204,9 @@ public class TileEntityReplicatingFactory extends TileEntityItemToItemMMFactory<
     @Override
     public void parseUpgradeData(HolderLookup.Provider provider, @NotNull IUpgradeData upgradeData) {
         if (upgradeData instanceof AdvancedMachineUpgradeData data) {
-            //Generic factory upgrade data handling
+            // Generic factory upgrade data handling
             super.parseUpgradeData(provider, upgradeData);
-            //Copy the contents using NBT so that if it is not actually valid due to a reload we don't crash
+            // Copy the contents using NBT so that if it is not actually valid due to a reload we don't crash
             chemicalTank.deserializeNBT(provider, data.stored.serializeNBT(provider));
             chemicalSlot.deserializeNBT(provider, data.chemicalSlot.serializeNBT(provider));
         } else {

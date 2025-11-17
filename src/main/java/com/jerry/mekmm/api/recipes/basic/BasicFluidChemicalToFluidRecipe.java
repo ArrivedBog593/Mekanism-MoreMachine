@@ -1,11 +1,14 @@
 package com.jerry.mekmm.api.recipes.basic;
 
 import com.jerry.mekmm.api.recipes.FluidChemicalToFluidRecipe;
+
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.chemical.ChemicalStack;
 import mekanism.api.recipes.ingredients.ChemicalStackIngredient;
 import mekanism.api.recipes.ingredients.FluidStackIngredient;
+
 import net.neoforged.neoforge.fluids.FluidStack;
+
 import org.jetbrains.annotations.Contract;
 
 import java.util.Collections;

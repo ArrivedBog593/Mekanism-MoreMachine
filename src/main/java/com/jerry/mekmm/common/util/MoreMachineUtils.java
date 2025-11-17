@@ -1,13 +1,16 @@
 package com.jerry.mekmm.common.util;
 
 import com.jerry.mekaf.common.block.attribute.AttributeAdvancedFactoryType;
+
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.common.block.attribute.MoreMachineAttributeFactoryType;
+
 import mekanism.api.text.EnumColor;
 import mekanism.common.block.attribute.Attribute;
 import mekanism.common.lib.transmitter.TransmissionType;
 import mekanism.common.tier.FactoryTier;
 import mekanism.common.util.EnumUtils;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
@@ -18,7 +21,7 @@ import java.util.Arrays;
 
 public class MoreMachineUtils {
 
-    //维度居然没有翻译文件。。。
+    // 维度居然没有翻译文件。。。
     public static Component formatDim(ResourceLocation id) {
         return Component.translatableWithFallback(id.toLanguageKey("dimension"), id.toString());
     }
@@ -44,7 +47,7 @@ public class MoreMachineUtils {
      * @return FactoryTier[]
      */
     public static FactoryTier[] getFactoryTier() {
-        //Compatible wit Emek
+        // Compatible wit Emek
         if (Mekmm.hooks.evolvedMekanism.isLoaded()) {
             FactoryTier[] mergedTiers;
             mergedTiers = Arrays.copyOf(EnumUtils.FACTORY_TIERS, EnumUtils.FACTORY_TIERS.length + MoreMachineEnumUtils.EM_TIERS.length);
@@ -55,7 +58,7 @@ public class MoreMachineUtils {
         }
     }
 
-    //从MekanismUtils的isSameTypeFactory单拎出来的
+    // 从MekanismUtils的isSameTypeFactory单拎出来的
     public static boolean isSameMMTypeFactory(Holder<Block> block, Block factoryBlockType) {
         MoreMachineAttributeFactoryType attribute = Attribute.get(block, MoreMachineAttributeFactoryType.class);
         if (attribute != null) {
@@ -65,7 +68,7 @@ public class MoreMachineUtils {
         return false;
     }
 
-    //从MekanismUtils的isSameTypeFactory单拎出来的
+    // 从MekanismUtils的isSameTypeFactory单拎出来的
     public static boolean isSameAFTypeFactory(Holder<Block> block, Block factoryBlockType) {
         AttributeAdvancedFactoryType attribute = Attribute.get(block, AttributeAdvancedFactoryType.class);
         if (attribute != null) {

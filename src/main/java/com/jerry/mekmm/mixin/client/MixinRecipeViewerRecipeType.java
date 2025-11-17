@@ -1,6 +1,7 @@
 package com.jerry.mekmm.mixin.client;
 
 import com.jerry.mekmm.common.registries.MoreMachineBlocks;
+
 import mekanism.api.recipes.ItemStackToChemicalRecipe;
 import mekanism.client.recipe_viewer.type.RecipeViewerRecipeType;
 import mekanism.client.recipe_viewer.type.SimpleRVRecipeType;
@@ -8,6 +9,7 @@ import mekanism.common.MekanismLang;
 import mekanism.common.recipe.MekanismRecipeType;
 import mekanism.common.registries.MekanismBlocks;
 import mekanism.common.util.MekanismUtils;
+
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
@@ -34,6 +36,5 @@ public abstract class MixinRecipeViewerRecipeType {
                 MekanismBlocks.PURIFICATION_CHAMBER, MekanismBlocks.METALLURGIC_INFUSER, MekanismBlocks.OSMIUM_COMPRESSOR, MekanismBlocks.CHEMICAL_INJECTION_CHAMBER, MekanismBlocks.CHEMICAL_DISSOLUTION_CHAMBER, MekanismBlocks.ANTIPROTONIC_NUCLEOSYNTHESIZER,
                 // TODO:这里的顺序会影响显示效果，这很奇怪
                 MoreMachineBlocks.REPLICATOR, MoreMachineBlocks.PLANTING_STATION);
-
     }
 }

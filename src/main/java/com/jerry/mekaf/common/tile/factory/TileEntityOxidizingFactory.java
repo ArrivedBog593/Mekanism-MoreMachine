@@ -1,6 +1,7 @@
 package com.jerry.mekaf.common.tile.factory;
 
 import com.jerry.mekaf.common.upgrade.ItemToChemicalUpgradeData;
+
 import mekanism.api.chemical.ChemicalStack;
 import mekanism.api.chemical.IChemicalTank;
 import mekanism.api.math.MathUtils;
@@ -17,6 +18,7 @@ import mekanism.common.recipe.lookup.ISingleRecipeLookupHandler.ItemRecipeLookup
 import mekanism.common.recipe.lookup.cache.InputRecipeCache.SingleItem;
 import mekanism.common.tile.component.TileComponentEjector;
 import mekanism.common.upgrade.IUpgradeData;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -24,6 +26,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.util.TriPredicate;
+
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -33,14 +36,12 @@ import java.util.Set;
 
 public class TileEntityOxidizingFactory extends TileEntityItemToChemicalFactory<ItemStackToChemicalRecipe> implements ItemRecipeLookupHandler<ItemStackToChemicalRecipe> {
 
-    private static final TriPredicate<ItemStackToChemicalRecipe, ItemStack, ChemicalStack> OUTPUT_CHECK =
-            (recipe, input, output) -> ChemicalStack.isSameChemical(recipe.getOutput(input), output);
+    private static final TriPredicate<ItemStackToChemicalRecipe, ItemStack, ChemicalStack> OUTPUT_CHECK = (recipe, input, output) -> ChemicalStack.isSameChemical(recipe.getOutput(input), output);
     private static final List<RecipeError> TRACKED_ERROR_TYPES = List.of(
             RecipeError.NOT_ENOUGH_ENERGY,
             RecipeError.NOT_ENOUGH_INPUT,
             RecipeError.NOT_ENOUGH_OUTPUT_SPACE,
-            RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT
-    );
+            RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT);
     private static final Set<RecipeError> GLOBAL_ERROR_TYPES = Set.of(RecipeError.NOT_ENOUGH_ENERGY);
 
     public TileEntityOxidizingFactory(Holder<Block> blockProvider, BlockPos pos, BlockState state) {
@@ -95,7 +96,7 @@ public class TileEntityOxidizingFactory extends TileEntityItemToChemicalFactory<
         return MathUtils.clampToInt(recipe.getInput().getNeededAmount(inputStack));
     }
 
-    //物品能否放进槽位
+    // 物品能否放进槽位
     @Override
     public boolean isItemValidForSlot(@NotNull ItemStack stack) {
         return containsRecipe(stack);

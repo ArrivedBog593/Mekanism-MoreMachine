@@ -1,9 +1,11 @@
 package com.jerry.mekmm.api.recipes;
 
 import com.jerry.mekmm.Mekmm;
+
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.recipes.MekanismRecipe;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
+
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -14,6 +16,7 @@ import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.registries.DeferredHolder;
+
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -53,7 +56,7 @@ public abstract class StamperRecipe extends MekanismRecipe<RecipeInput> implemen
 
     @Override
     public boolean matches(RecipeInput input, Level level) {
-        //Don't match incomplete recipes or ones that don't match
+        // Don't match incomplete recipes or ones that don't match
         return !isIncomplete() && input.size() == 2 && test(input.getItem(0), input.getItem(1));
     }
 
@@ -70,8 +73,9 @@ public abstract class StamperRecipe extends MekanismRecipe<RecipeInput> implemen
      *
      * @return New output.
      *
-     * @apiNote While Mekanism does not currently make use of the inputs, it is important to support it and pass the proper value in case any addons define input based
-     * outputs where things like NBT may be different.
+     * @apiNote While Mekanism does not currently make use of the inputs, it is important to support it and pass the
+     *          proper value in case any addons define input based
+     *          outputs where things like NBT may be different.
      * @implNote The passed in inputs should <strong>NOT</strong> be modified.
      */
     @Contract(value = "_, _ -> new", pure = true)

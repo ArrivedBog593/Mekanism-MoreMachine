@@ -1,6 +1,7 @@
 package com.jerry.mekmm.api.recipes.cache;
 
 import com.jerry.mekmm.api.recipes.StamperRecipe;
+
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.functions.ConstantPredicates;
 import mekanism.api.recipes.cache.CachedRecipe;
@@ -8,7 +9,9 @@ import mekanism.api.recipes.cache.CachedRecipeHelper;
 import mekanism.api.recipes.ingredients.InputIngredient;
 import mekanism.api.recipes.inputs.IInputHandler;
 import mekanism.api.recipes.outputs.IOutputHandler;
+
 import net.minecraft.world.item.ItemStack;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,7 +34,8 @@ public class StamperCachedRecipe extends CachedRecipe<StamperRecipe> {
     private final BiConsumer<ItemStack, ItemStack> inputsSetter;
     private final Consumer<ItemStack> outputSetter;
 
-    //Note: Our inputs and outputs shouldn't be null in places they are actually used, but we mark them as nullable, so we don't have to initialize them
+    // Note: Our inputs and outputs shouldn't be null in places they are actually used, but we mark them as nullable, so
+    // we don't have to initialize them
     @Nullable
     private ItemStack input;
     @Nullable
@@ -41,7 +45,8 @@ public class StamperCachedRecipe extends CachedRecipe<StamperRecipe> {
 
     /**
      * @param recipe           Recipe.
-     * @param recheckAllErrors Returns {@code true} if processing should be continued even if an error is hit in order to gather all the errors. It is recommended to not
+     * @param recheckAllErrors Returns {@code true} if processing should be continued even if an error is hit in order
+     *                         to gather all the errors. It is recommended to not
      *                         do this every tick or if there is no one viewing recipes.
      */
     protected StamperCachedRecipe(StamperRecipe recipe, BooleanSupplier recheckAllErrors, IInputHandler<ItemStack> inputHandler, IInputHandler<ItemStack> secondaryInputHandler,
@@ -69,15 +74,16 @@ public class StamperCachedRecipe extends CachedRecipe<StamperRecipe> {
      * Base implementation for handling Combiner Recipes.
      *
      * @param recipe            Recipe.
-     * @param recheckAllErrors  Returns {@code true} if processing should be continued even if an error is hit in order to gather all the errors. It is recommended to not
+     * @param recheckAllErrors  Returns {@code true} if processing should be continued even if an error is hit in order
+     *                          to gather all the errors. It is recommended to not
      *                          do this every tick or if there is no one viewing recipes.
      * @param inputHandler      Main input handler.
      * @param extraInputHandler Secondary/Extra input handler.
      * @param outputHandler     Output handler.
      */
     public static StamperCachedRecipe createCache(StamperRecipe recipe,
-                                              BooleanSupplier recheckAllErrors, IInputHandler<@NotNull ItemStack> inputHandler, IInputHandler<@NotNull ItemStack> extraInputHandler,
-                                              IOutputHandler<@NotNull ItemStack> outputHandler) {
+                                                  BooleanSupplier recheckAllErrors, IInputHandler<@NotNull ItemStack> inputHandler, IInputHandler<@NotNull ItemStack> extraInputHandler,
+                                                  IOutputHandler<@NotNull ItemStack> outputHandler) {
         return new StamperCachedRecipe(recipe, recheckAllErrors, inputHandler, extraInputHandler, outputHandler, recipe::getInput, recipe::getMold,
                 recipe::getOutput, ConstantPredicates.ITEM_EMPTY, ConstantPredicates.ITEM_EMPTY, ConstantPredicates.ITEM_EMPTY);
     }
@@ -104,7 +110,7 @@ public class StamperCachedRecipe extends CachedRecipe<StamperRecipe> {
         if (input != null && secondaryInput != null && output != null && !inputEmptyCheck.test(input) && !secondaryInputEmptyCheck.test(secondaryInput) &&
                 !outputEmptyCheck.test(output)) {
             inputHandler.use(input, operations);
-//            secondaryInputHandler.use(secondaryInput, operations);
+            // secondaryInputHandler.use(secondaryInput, operations);
             outputHandler.handleOutput(output, operations);
         }
     }

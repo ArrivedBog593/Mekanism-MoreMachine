@@ -1,7 +1,9 @@
 package com.jerry.datagen.common.recipe.compat;
 
 import com.jerry.datagen.common.recipe.ISubRecipeProvider;
+
 import mekanism.api.annotations.NothingNullByDefault;
+
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -19,7 +21,7 @@ import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO: Decide if we should have compat recipes go into their own data packs
+// TODO: Decide if we should have compat recipes go into their own data packs
 @NothingNullByDefault
 public abstract class CompatRecipeProvider implements ISubRecipeProvider {
 

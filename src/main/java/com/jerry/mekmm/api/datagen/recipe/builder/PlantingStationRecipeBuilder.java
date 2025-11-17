@@ -1,10 +1,12 @@
 package com.jerry.mekmm.api.datagen.recipe.builder;
 
 import com.jerry.mekmm.api.recipes.basic.BasicPlantingRecipe;
+
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.datagen.recipe.MekanismRecipeBuilder;
 import mekanism.api.recipes.ingredients.ChemicalStackIngredient;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
+
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 

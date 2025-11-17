@@ -2,22 +2,23 @@ package com.jerry.meklm.common.registries;
 
 import com.jerry.meklm.common.content.blocktype.LargeMachineBlockShapes;
 import com.jerry.meklm.common.tile.TileEntityLargeRotaryCondensentrator;
+
 import com.jerry.mekmm.common.config.MoreMachineConfig;
+
 import mekanism.common.MekanismLang;
 import mekanism.common.block.attribute.AttributeCustomSelectionBox;
 import mekanism.common.block.attribute.AttributeHasBounding;
 import mekanism.common.content.blocktype.Machine;
 import mekanism.common.lib.transmitter.TransmissionType;
 import mekanism.common.registries.MekanismSounds;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class LargeMachineBlockTypes {
 
-    private LargeMachineBlockTypes() {
-
-    }
+    private LargeMachineBlockTypes() {}
 
     // Rotary Condensentrator
     public static final Machine<TileEntityLargeRotaryCondensentrator> LARGE_ROTARY_CONDENSENTRATOR = Machine.MachineBuilder
@@ -29,6 +30,7 @@ public class LargeMachineBlockTypes {
             .withCustomShape(LargeMachineBlockShapes.LARGE_ROTARY_CONDENSENTRATOR)
             .with(AttributeCustomSelectionBox.JSON)
             .withBounding(new AttributeHasBounding.HandleBoundingBlock() {
+
                 @Override
                 public <DATA> boolean handle(Level level, BlockPos pos, BlockState state, DATA data, AttributeHasBounding.TriBooleanFunction<Level, BlockPos, DATA> predicate) {
                     BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();

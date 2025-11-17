@@ -1,8 +1,10 @@
 package com.jerry.mekaf.common.content.blocktype;
 
 import com.jerry.mekaf.common.registries.AdvancedFactoryBlockTypes;
+
 import com.jerry.mekmm.common.MoreMachineLang;
 import com.jerry.mekmm.common.content.blocktype.MoreMachineMachine;
+
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.text.IHasTranslationKey;
 import mekanism.api.text.ILangEntry;
@@ -14,10 +16,11 @@ import java.util.function.Supplier;
 
 @NothingNullByDefault
 public enum AdvancedFactoryType implements IHasTranslationKey.IHasEnumNameTranslationKey {
-    //回旋应该加在这，如果会加的话
+
+    // 回旋应该加在这，如果会加的话
     OXIDIZING("oxidizing", MoreMachineLang.OXIDIZING, () -> AdvancedFactoryBlockTypes.CHEMICAL_OXIDIZER, () -> MekanismBlocks.CHEMICAL_OXIDIZER),
     CHEMICAL_INFUSING("chemical_infusing", MoreMachineLang.CHEMICAL_INFUSING, () -> AdvancedFactoryBlockTypes.CHEMICAL_INFUSER, () -> MekanismBlocks.CHEMICAL_INFUSER),
-    //电解分离机
+    // 电解分离机
     DISSOLVING("dissolving", MoreMachineLang.DISSOLVING, () -> AdvancedFactoryBlockTypes.CHEMICAL_DISSOLUTION_CHAMBER, () -> MekanismBlocks.CHEMICAL_DISSOLUTION_CHAMBER),
     WASHING("washing", MoreMachineLang.WASHING, () -> AdvancedFactoryBlockTypes.CHEMICAL_WASHER, () -> MekanismBlocks.CHEMICAL_WASHER),
     CRYSTALLIZING("crystallizing", MoreMachineLang.CRYSTALLIZING, () -> AdvancedFactoryBlockTypes.CHEMICAL_CRYSTALLIZER, () -> MekanismBlocks.CHEMICAL_CRYSTALLIZER),

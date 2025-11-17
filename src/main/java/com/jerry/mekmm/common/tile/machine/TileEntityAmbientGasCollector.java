@@ -3,6 +3,7 @@ package com.jerry.mekmm.common.tile.machine;
 import com.jerry.mekmm.common.config.MoreMachineConfig;
 import com.jerry.mekmm.common.registries.MoreMachineBlocks;
 import com.jerry.mekmm.common.registries.MoreMachineChemicals;
+
 import mekanism.api.*;
 import mekanism.api.chemical.BasicChemicalTank;
 import mekanism.api.chemical.ChemicalStack;
@@ -25,6 +26,7 @@ import mekanism.common.inventory.slot.EnergyInventorySlot;
 import mekanism.common.inventory.slot.chemical.ChemicalInventorySlot;
 import mekanism.common.tile.base.TileEntityMekanism;
 import mekanism.common.util.*;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -36,6 +38,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
 import net.neoforged.neoforge.fluids.FluidType;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -44,6 +47,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class TileEntityAmbientGasCollector extends TileEntityMekanism {
+
     /**
      * How many ticks it takes to run an operation.
      */
@@ -51,7 +55,7 @@ public class TileEntityAmbientGasCollector extends TileEntityMekanism {
     public static final int MAX_CHEMICAL = 10 * FluidType.BUCKET_VOLUME;
     private static final int BASE_OUTPUT_RATE = 256;
 
-    //化学品存储槽
+    // 化学品存储槽
     public IChemicalTank chemicalTank;
     /**
      * The type of chemical this collector is collecting
@@ -112,8 +116,10 @@ public class TileEntityAmbientGasCollector extends TileEntityMekanism {
             long energyPerTick = energyContainer.getEnergyPerTick();
             if (energyContainer.extract(energyPerTick, Action.SIMULATE, AutomationType.INTERNAL) == energyPerTick) {
                 if (!activeType.isEmpty()) {
-                    //If we have an active type of fluid, use energy. This can cause there to be ticks where there isn't actually
-                    // anything to suck that use energy, but those will balance out with the first set of ticks where it doesn't
+                    // If we have an active type of fluid, use energy. This can cause there to be ticks where there
+                    // isn't actually
+                    // anything to suck that use energy, but those will balance out with the first set of ticks where it
+                    // doesn't
                     // use any energy until it actually picks up the first block
                     clientEnergyUsed = energyContainer.extract(energyPerTick, Action.EXECUTE, AutomationType.INTERNAL);
                 }
@@ -123,7 +129,8 @@ public class TileEntityAmbientGasCollector extends TileEntityMekanism {
                     // 判断收集器上方是否是空气
                     if (suck(worldPosition.relative(Direction.UP))) {
                         if (clientEnergyUsed == 0L) {
-                            //If it didn't already have an active type (hasn't used energy this tick), then extract energy
+                            // If it didn't already have an active type (hasn't used energy this tick), then extract
+                            // energy
                             clientEnergyUsed = energyContainer.extract(energyPerTick, Action.EXECUTE, AutomationType.INTERNAL);
                         }
                     } else {

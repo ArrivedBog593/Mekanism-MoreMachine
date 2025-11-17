@@ -12,8 +12,7 @@ public class BlockHighlightManager {
     // 存储高亮方块及其数据
     private final Map<BlockPos, HighlightData> highlightedBlocks = new ConcurrentHashMap<>();
 
-    private BlockHighlightManager() {
-    }
+    private BlockHighlightManager() {}
 
     public static BlockHighlightManager getInstance() {
         return INSTANCE;
@@ -100,19 +99,20 @@ public class BlockHighlightManager {
      * 高亮数据
      */
     public static class HighlightData {
-        //不是final,需要每tick修改
+
+        // 不是final,需要每tick修改
         int remainingTicks;
         private final float red;
         private final float green;
         private final float blue;
         protected final float baseAlpha;
 
-        //默认红色
+        // 默认红色
         public HighlightData(int ticks) {
             this(ticks, 1.0f, 0.0f, 0.0f);
         }
 
-        //默认alpha
+        // 默认alpha
         public HighlightData(int ticks, float r, float g, float b) {
             this(ticks, r, g, b, 1.0f);
         }
@@ -145,8 +145,8 @@ public class BlockHighlightManager {
          * 获取当前透明度 (带闪烁效果)
          */
         public float getAlpha(long gameTime) {
-            //闪烁效果: 使用正弦波
-            //0.4 - 1.0
+            // 闪烁效果: 使用正弦波
+            // 0.4 - 1.0
             float flash = (float) (Math.sin(gameTime * 0.5) * 0.3 + 0.7);
             return baseAlpha * flash;
         }

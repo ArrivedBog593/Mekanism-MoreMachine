@@ -6,6 +6,7 @@ import com.jerry.mekmm.api.recipes.outputs.MoreMachineOutputHelper;
 import com.jerry.mekmm.client.recipe_viewer.MMRecipeViewerRecipeType;
 import com.jerry.mekmm.common.inventory.slot.MoreMachineFactoryInputInventorySlot;
 import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
+
 import mekanism.api.IContentsListener;
 import mekanism.api.inventory.IInventorySlot;
 import mekanism.api.math.MathUtils;
@@ -25,6 +26,7 @@ import mekanism.common.recipe.lookup.monitor.FactoryRecipeCacheLookupMonitor;
 import mekanism.common.tier.FactoryTier;
 import mekanism.common.upgrade.MachineUpgradeData;
 import mekanism.common.util.InventoryUtils;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -33,6 +35,7 @@ import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.util.TriPredicate;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -41,15 +44,13 @@ import java.util.Set;
 
 public class TileEntityRecyclingFactory extends TileEntityMoreMachineFactory<RecyclerRecipe> implements ItemRecipeLookupHandler<RecyclerRecipe> {
 
-    private static final TriPredicate<RecyclerRecipe, ItemStack, ItemStack> OUTPUT_CHECK =
-            (recipe, input, output) -> InventoryUtils.areItemsStackable(recipe.getOutput(input).getMaxChanceOutput(), output);
+    private static final TriPredicate<RecyclerRecipe, ItemStack, ItemStack> OUTPUT_CHECK = (recipe, input, output) -> InventoryUtils.areItemsStackable(recipe.getOutput(input).getMaxChanceOutput(), output);
 
     private static final List<RecipeError> TRACKED_ERROR_TYPES = List.of(
             RecipeError.NOT_ENOUGH_ENERGY,
             RecipeError.NOT_ENOUGH_INPUT,
             RecipeError.NOT_ENOUGH_OUTPUT_SPACE,
-            RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT
-    );
+            RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT);
 
     private static final Set<RecipeError> GLOBAL_ERROR_TYPES = Set.of(RecipeError.NOT_ENOUGH_ENERGY);
 
@@ -75,7 +76,8 @@ public class TileEntityRecyclingFactory extends TileEntityMoreMachineFactory<Rec
                 lookupMonitor.unpause();
             };
             OutputInventorySlot outputSlot = OutputInventorySlot.at(updateSortingAndUnpause, xPos, 57);
-            //Note: As we are an item factory that has comparator's based on items we can just use the monitor as a listener directly
+            // Note: As we are an item factory that has comparator's based on items we can just use the monitor as a
+            // listener directly
             MoreMachineFactoryInputInventorySlot inputSlot = MoreMachineFactoryInputInventorySlot.create(this, i, outputSlot, lookupMonitor, xPos, 13);
             int index = i;
             builder.addSlot(inputSlot).tracksWarnings(slot -> slot.warning(WarningType.NO_MATCHING_RECIPE, getWarningCheck(RecipeError.NOT_ENOUGH_INPUT, index)));

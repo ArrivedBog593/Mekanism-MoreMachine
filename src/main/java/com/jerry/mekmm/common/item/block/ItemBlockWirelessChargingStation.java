@@ -2,6 +2,7 @@ package com.jerry.mekmm.common.item.block;
 
 import com.jerry.mekmm.common.registries.MoreMachineDataComponents;
 import com.jerry.mekmm.common.tile.TileEntityWirelessChargingStation;
+
 import mekanism.common.attachments.component.AttachedEjector;
 import mekanism.common.attachments.component.AttachedSideConfig;
 import mekanism.common.attachments.component.AttachedSideConfig.LightConfigInfo;
@@ -10,6 +11,7 @@ import mekanism.common.content.blocktype.Machine;
 import mekanism.common.item.block.ItemBlockTooltip;
 import mekanism.common.lib.transmitter.TransmissionType;
 import mekanism.common.registries.MekanismDataComponents;
+
 import net.minecraft.Util;
 
 import java.util.EnumMap;
@@ -30,7 +32,6 @@ public class ItemBlockWirelessChargingStation extends ItemBlockTooltip<BlockTile
                 .component(MoreMachineDataComponents.CHARGE_INVENTORY, false)
                 .component(MoreMachineDataComponents.CHARGE_CURIOS, false)
                 .component(MekanismDataComponents.EJECTOR, AttachedEjector.DEFAULT)
-                .component(MekanismDataComponents.SIDE_CONFIG, SIDE_CONFIG)
-        );
+                .component(MekanismDataComponents.SIDE_CONFIG, SIDE_CONFIG));
     }
 }

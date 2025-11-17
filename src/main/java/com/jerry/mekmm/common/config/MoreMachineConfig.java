@@ -1,7 +1,9 @@
 package com.jerry.mekmm.common.config;
 
 import com.jerry.mekmm.Mekmm;
+
 import mekanism.common.config.IMekanismConfig;
+
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.config.IConfigSpec;
 import net.neoforged.fml.event.config.ModConfigEvent;
@@ -13,8 +15,7 @@ import java.util.Map;
 
 public class MoreMachineConfig {
 
-    private MoreMachineConfig() {
-    }
+    private MoreMachineConfig() {}
 
     private static final Map<IConfigSpec, IMekanismConfig> KNOWN_CONFIGS = new HashMap<>();
     public static final MoreMachineGeneralConfig general = new MoreMachineGeneralConfig();

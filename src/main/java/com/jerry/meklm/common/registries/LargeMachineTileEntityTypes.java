@@ -1,7 +1,9 @@
 package com.jerry.meklm.common.registries;
 
 import com.jerry.meklm.common.tile.TileEntityLargeRotaryCondensentrator;
+
 import com.jerry.mekmm.Mekmm;
+
 import mekanism.common.capabilities.Capabilities;
 import mekanism.common.registration.impl.TileEntityTypeDeferredRegister;
 import mekanism.common.registration.impl.TileEntityTypeRegistryObject;
@@ -9,9 +11,7 @@ import mekanism.common.tile.base.TileEntityMekanism;
 
 public class LargeMachineTileEntityTypes {
 
-    private LargeMachineTileEntityTypes() {
-
-    }
+    private LargeMachineTileEntityTypes() {}
 
     public static final TileEntityTypeDeferredRegister LM_TILE_ENTITY_TYPES = new TileEntityTypeDeferredRegister(Mekmm.MOD_ID);
 

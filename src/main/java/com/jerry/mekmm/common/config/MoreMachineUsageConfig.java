@@ -2,6 +2,7 @@ package com.jerry.mekmm.common.config;
 
 import mekanism.common.config.BaseMekanismConfig;
 import mekanism.common.config.value.CachedLongValue;
+
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.ModConfigSpec;
 

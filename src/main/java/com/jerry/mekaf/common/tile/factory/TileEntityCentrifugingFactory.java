@@ -1,6 +1,7 @@
 package com.jerry.mekaf.common.tile.factory;
 
 import com.jerry.mekaf.common.upgrade.ChemicalToChemicalUpgradeData;
+
 import mekanism.api.IContentsListener;
 import mekanism.api.RelativeSide;
 import mekanism.api.Upgrade;
@@ -26,6 +27,7 @@ import mekanism.common.tile.component.config.slot.ChemicalSlotInfo;
 import mekanism.common.tile.interfaces.IBoundingBlock;
 import mekanism.common.upgrade.IUpgradeData;
 import mekanism.common.util.UpgradeUtils;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -33,6 +35,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.util.TriPredicate;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -41,15 +44,13 @@ import java.util.Set;
 
 public class TileEntityCentrifugingFactory extends TileEntityChemicalToChemicalFactory<ChemicalToChemicalRecipe> implements IBoundingBlock, ChemicalRecipeLookupHandler<ChemicalToChemicalRecipe> {
 
-    protected static final TriPredicate<ChemicalToChemicalRecipe, ChemicalStack, ChemicalStack> OUTPUT_CHECK =
-            (recipe, input, output) -> ChemicalStack.isSameChemical(recipe.getOutput(input), output);
+    protected static final TriPredicate<ChemicalToChemicalRecipe, ChemicalStack, ChemicalStack> OUTPUT_CHECK = (recipe, input, output) -> ChemicalStack.isSameChemical(recipe.getOutput(input), output);
     private static final List<RecipeError> TRACKED_ERROR_TYPES = List.of(
             RecipeError.NOT_ENOUGH_ENERGY,
             RecipeError.NOT_ENOUGH_ENERGY_REDUCED_RATE,
             RecipeError.NOT_ENOUGH_INPUT,
             RecipeError.NOT_ENOUGH_OUTPUT_SPACE,
-            RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT
-    );
+            RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT);
     private static final Set<RecipeError> GLOBAL_ERROR_TYPES = Set.of(RecipeError.NOT_ENOUGH_ENERGY);
 
     public TileEntityCentrifugingFactory(Holder<Block> blockProvider, BlockPos pos, BlockState state) {
@@ -69,9 +70,7 @@ public class TileEntityCentrifugingFactory extends TileEntityChemicalToChemicalF
     }
 
     @Override
-    protected void addSlots(InventorySlotHelper builder, IContentsListener listener, IContentsListener updateSortingListener) {
-
-    }
+    protected void addSlots(InventorySlotHelper builder, IContentsListener listener, IContentsListener updateSortingListener) {}
 
     @Override
     protected boolean isCachedRecipeValid(@Nullable CachedRecipe<ChemicalToChemicalRecipe> cached, @NotNull ChemicalStack stack) {
@@ -133,7 +132,7 @@ public class TileEntityCentrifugingFactory extends TileEntityChemicalToChemicalF
         }
     }
 
-    //更改加速升级的显示的，默认是10x，气体工厂是256x
+    // 更改加速升级的显示的，默认是10x，气体工厂是256x
     @NotNull
     @Override
     public List<Component> getInfo(@NotNull Upgrade upgrade) {

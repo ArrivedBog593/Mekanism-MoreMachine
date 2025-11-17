@@ -1,8 +1,9 @@
 package com.jerry.mekmm.api.chemical.chemicals;
 
+import mekanism.api.chemical.ChemicalStack;
+
 import it.unimi.dsi.fastutil.Hash;
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenCustomHashSet;
-import mekanism.api.chemical.ChemicalStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
@@ -10,6 +11,7 @@ import java.util.Set;
 public class ChemicalStackLinkedSet {
 
     public static final Hash.Strategy<? super ChemicalStack> TYPE_AND_COMPONENTS = new Hash.Strategy<ChemicalStack>() {
+
         public int hashCode(@Nullable ChemicalStack stack) {
             // hashCode会在空时返回0，因此不需要判断非空
             return stack.hashCode();
@@ -20,8 +22,7 @@ public class ChemicalStackLinkedSet {
         }
     };
 
-    public ChemicalStackLinkedSet() {
-    }
+    public ChemicalStackLinkedSet() {}
 
     public static Set<ChemicalStack> createTypeAndComponentsSet() {
         return new ObjectLinkedOpenCustomHashSet(TYPE_AND_COMPONENTS);

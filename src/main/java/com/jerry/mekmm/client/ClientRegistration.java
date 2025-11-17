@@ -2,9 +2,11 @@ package com.jerry.mekmm.client;
 
 import com.jerry.mekaf.client.gui.machine.GuiAdvancedFactory;
 import com.jerry.mekaf.common.registries.AdvancedFactoryContainerTypes;
+
 import com.jerry.meklm.client.gui.machine.GuiLargeRotaryCondensentrator;
 import com.jerry.meklm.common.registries.LargeMachineBlocks;
 import com.jerry.meklm.common.registries.LargeMachineContainerTypes;
+
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.client.gui.GuiWirelessChargingStation;
 import com.jerry.mekmm.client.gui.GuiWirelessTransmissionStation;
@@ -18,9 +20,11 @@ import com.jerry.mekmm.common.registries.MoreMachineBlocks;
 import com.jerry.mekmm.common.registries.MoreMachineContainerTypes;
 import com.jerry.mekmm.common.registries.MoreMachineItems;
 import com.jerry.mekmm.common.registries.MoreMachineTileEntityTypes;
+
 import mekanism.client.ClientRegistrationUtil;
 import mekanism.client.model.baked.ExtensionBakedModel;
 import mekanism.client.render.lib.QuadTransformation;
+
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -80,10 +84,10 @@ public class ClientRegistration {
         ClientRegistrationUtil.registerScreen(event, MoreMachineContainerTypes.WIRELESS_TRANSMISSION_STATION_CONFIG, GuiWirelessTransmissionStationConfig::new);
         ClientRegistrationUtil.registerScreen(event, MoreMachineContainerTypes.MM_FACTORY, GuiMoreMachineFactory::new);
 
-        //Advanced Factory
+        // Advanced Factory
         ClientRegistrationUtil.registerScreen(event, AdvancedFactoryContainerTypes.ADVANCED_FACTORY, GuiAdvancedFactory::new);
 
-        //Large Machine
+        // Large Machine
         ClientRegistrationUtil.registerScreen(event, LargeMachineContainerTypes.LARGE_ROTARY_CONDENSENTRATOR, GuiLargeRotaryCondensentrator::new);
     }
 }

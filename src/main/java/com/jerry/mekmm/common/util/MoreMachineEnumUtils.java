@@ -1,16 +1,17 @@
 package com.jerry.mekmm.common.util;
 
 import com.jerry.mekaf.common.content.blocktype.AdvancedFactoryType;
+
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.common.content.blocktype.MoreMachineFactoryType;
-import fr.iglee42.evolvedmekanism.tiers.EMFactoryTier;
+
 import mekanism.common.tier.FactoryTier;
+
+import fr.iglee42.evolvedmekanism.tiers.EMFactoryTier;
 
 public class MoreMachineEnumUtils {
 
-    private MoreMachineEnumUtils() {
-
-    }
+    private MoreMachineEnumUtils() {}
 
     /**
      * Cached value of {@link MoreMachineFactoryType#values()}. DO NOT MODIFY THIS LIST.
@@ -28,10 +29,10 @@ public class MoreMachineEnumUtils {
     public static FactoryTier[] EM_TIERS;
 
     static {
-        //Compatible wit Emek
-        //需要判断是否加载模组
+        // Compatible wit Emek
+        // 需要判断是否加载模组
         if (Mekmm.hooks.evolvedMekanism.isLoaded()) {
-            EM_TIERS = new FactoryTier[]{EMFactoryTier.OVERCLOCKED, EMFactoryTier.QUANTUM, EMFactoryTier.DENSE, EMFactoryTier.MULTIVERSAL, EMFactoryTier.CREATIVE};
+            EM_TIERS = new FactoryTier[] { EMFactoryTier.OVERCLOCKED, EMFactoryTier.QUANTUM, EMFactoryTier.DENSE, EMFactoryTier.MULTIVERSAL, EMFactoryTier.CREATIVE };
         }
     }
 }

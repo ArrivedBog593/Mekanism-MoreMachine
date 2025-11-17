@@ -6,7 +6,9 @@ import mekanism.common.capabilities.holder.fluid.IFluidTankHolder;
 import mekanism.common.lib.transmitter.TransmissionType;
 import mekanism.common.tile.component.config.slot.FluidSlotInfo;
 import mekanism.common.tile.interfaces.ISideConfiguration;
+
 import net.minecraft.core.Direction;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

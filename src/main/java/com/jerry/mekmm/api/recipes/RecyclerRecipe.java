@@ -1,9 +1,11 @@
 package com.jerry.mekmm.api.recipes;
 
 import com.jerry.mekmm.Mekmm;
+
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.recipes.MekanismRecipe;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
+
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -14,6 +16,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.registries.DeferredHolder;
+
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -31,7 +34,7 @@ public abstract class RecyclerRecipe extends MekanismRecipe<SingleRecipeInput> i
 
     @Override
     public boolean matches(SingleRecipeInput input, Level level) {
-        //Don't match incomplete recipes or ones that don't match
+        // Don't match incomplete recipes or ones that don't match
         return !isIncomplete() && test(input.item());
     }
 
@@ -42,8 +45,9 @@ public abstract class RecyclerRecipe extends MekanismRecipe<SingleRecipeInput> i
      *
      * @return New chance output.
      *
-     * @apiNote While Mekanism does not currently make use of the input, it is important to support it and pass the proper value in case any addons define input based
-     * outputs where things like NBT may be different.
+     * @apiNote While Mekanism does not currently make use of the input, it is important to support it and pass the
+     *          proper value in case any addons define input based
+     *          outputs where things like NBT may be different.
      * @implNote The passed in input should <strong>NOT</strong> be modified.
      */
     @Contract(value = "_ -> new")
@@ -87,13 +91,15 @@ public abstract class RecyclerRecipe extends MekanismRecipe<SingleRecipeInput> i
     }
 
     /**
-     * Represents a precalculated chance based output. This output keeps track of what random value was calculated for use in comparing if the chance output should be
+     * Represents a precalculated chance based output. This output keeps track of what random value was calculated for
+     * use in comparing if the chance output should be
      * created.
      */
     public interface ChanceOutput {
 
         /**
-         * Gets a copy of the chance output ignoring the random chance of it happening. This is mostly used for checking the maximum amount we can get as a chance
+         * Gets a copy of the chance output ignoring the random chance of it happening. This is mostly used for checking
+         * the maximum amount we can get as a chance
          * output for purposes of seeing if we have space to process.
          *
          * @implNote return a new copy or ItemStack.EMPTY
@@ -101,7 +107,8 @@ public abstract class RecyclerRecipe extends MekanismRecipe<SingleRecipeInput> i
         ItemStack getMaxChanceOutput();
 
         /**
-         * Gets a copy of the chance output if the random number generated for this output matches the chance of a secondary output being produced, otherwise returns
+         * Gets a copy of the chance output if the random number generated for this output matches the chance of a
+         * secondary output being produced, otherwise returns
          * an empty stack.
          *
          * @implNote return a new copy or ItemStack.EMPTY
@@ -109,7 +116,8 @@ public abstract class RecyclerRecipe extends MekanismRecipe<SingleRecipeInput> i
         ItemStack getChanceOutput();
 
         /**
-         * Similar to {@link #getChanceOutput()} except that this calculates a new random number to act as if this was another chance output for purposes of handling
+         * Similar to {@link #getChanceOutput()} except that this calculates a new random number to act as if this was
+         * another chance output for purposes of handling
          * multiple operations at once.
          *
          * @implNote return a new copy or ItemStack.EMPTY

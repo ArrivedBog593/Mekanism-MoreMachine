@@ -9,6 +9,7 @@ import com.jerry.mekmm.common.registries.MoreMachineBlocks;
 import com.jerry.mekmm.common.registries.MoreMachineDataComponents;
 import com.jerry.mekmm.common.tile.interfaces.ITileConnectHolder;
 import com.jerry.mekmm.common.tile.prefab.TileEntityConnectableMachine;
+
 import mekanism.api.Action;
 import mekanism.api.IContentsListener;
 import mekanism.api.RelativeSide;
@@ -52,6 +53,7 @@ import mekanism.common.lib.transmitter.TransmissionType;
 import mekanism.common.tile.component.TileComponentEjector;
 import mekanism.common.tile.interfaces.IBoundingBlock;
 import mekanism.common.util.*;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -63,6 +65,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
 import net.neoforged.neoforge.items.IItemHandler;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -192,24 +195,24 @@ public class TileEntityWirelessTransmissionStation extends TileEntityConnectable
         fluidFillSlot.fillTank(fluidOutputSlot);
         fluidDrainSlot.drainTank(fluidOutputSlot);
         energySlot.fillContainerOrConvert();
-        //2.5秒检测一次
+        // 2.5秒检测一次
         if (level != null && level.getGameTime() % 50 == 0) {
             connectionManager.validateConnections();
         }
-        //TODO:添加一个延时，不需要每tick都发送（2秒发送一次应该可以）
-        //传输能量
+        // TODO:添加一个延时，不需要每tick都发送（2秒发送一次应该可以）
+        // 传输能量
         CableUtils.emit(connectionManager.getEnergyCaches(), energyContainer, getEnergyRate());
-        //传输流体
+        // 传输流体
         FluidUtils.emit(connectionManager.getFluidCaches(), fluidTank, getFluidsRate());
-        //传输化学品
+        // 传输化学品
         ChemicalUtil.emit(connectionManager.getChemicalCaches(), chemicalTank, getChemicalsRate());
-        //传输物品
+        // 传输物品
         transportItems();
-        //传输热量
+        // 传输热量
         HeatTransfer loss = simulate();
-        //如果有无线交换热量缓存时要加上无线交换的热量损失
-        //交换热量需要每tick进行
-        //如果没有无线热量传递，则只计算相邻方块的热传导；如果有无线热量传递，则计算两者的加和
+        // 如果有无线交换热量缓存时要加上无线交换的热量损失
+        // 交换热量需要每tick进行
+        // 如果没有无线热量传递，则只计算相邻方块的热传导；如果有无线热量传递，则计算两者的加和
         lastTransferLoss = loss.adjacentTransfer();
         lastEnvironmentLoss = loss.environmentTransfer();
         return sendUpdatePacket;
@@ -217,8 +220,8 @@ public class TileEntityWirelessTransmissionStation extends TileEntityConnectable
 
     private void transportItems() {
         if (itemsRate <= 0) return;
-        //TODO:似乎还不能平分
-        //获取自身的弹出能力
+        // TODO:似乎还不能平分
+        // 获取自身的弹出能力
         IItemHandler selfHandler = Capabilities.ITEM.createCache((ServerLevel) level, getBlockPos(), Direction.DOWN).getCapability();
         if (selfHandler == null) return;
 
@@ -242,20 +245,20 @@ public class TileEntityWirelessTransmissionStation extends TileEntityConnectable
      *
      * @return double 与连接方块的热量传递值
      */
-    //连接两个及以上数量的方块时会导致热量频繁交换（
+    // 连接两个及以上数量的方块时会导致热量频繁交换（
     private double exchangeHeat() {
         double adjacentTransfer = 0;
-        //累积总热量变化
+        // 累积总热量变化
         double totalHeatToTransfer = 0;
-        //当前温度(在循环开始前获取,避免循环中温度变化影响计算)
+        // 当前温度(在循环开始前获取,避免循环中温度变化影响计算)
         double currentTemp = getTemperature();
-        //获取当前系统该方向的热容量（在simulateAdjacent()中是这样，但在这只是获取热量容器的热容量）
+        // 获取当前系统该方向的热容量（在simulateAdjacent()中是这样，但在这只是获取热量容器的热容量）
         double heatCapacity = heatCapacitor.getHeatCapacity();
 
         for (ConnectionConfig config : connectionManager.getConnectionsByType(TransmissionType.HEAT)) {
-            //检查该方向是否有相邻的热处理系统
+            // 检查该方向是否有相邻的热处理系统
             IHeatHandler sink = WorldUtils.getCapability(level, Capabilities.HEAT, config.pos(), config.direction());
-            //只有存在相邻系统时才进行热交换计算
+            // 只有存在相邻系统时才进行热交换计算
             if (sink != null) {
                 // 获取目标温度
                 double sinkTemp = sink.getTotalTemperature();
@@ -264,9 +267,9 @@ public class TileEntityWirelessTransmissionStation extends TileEntityConnectable
                 if (invConduction == 0) continue;
                 double tempDifference = currentTemp - sinkTemp;
                 double tempToTransfer = tempDifference / invConduction;
-                //将温度差转换为实际热量Q = ΔT × C
+                // 将温度差转换为实际热量Q = ΔT × C
                 double heatToTransfer = tempToTransfer * heatCapacity;
-                //限制热量传递速率，最多传递50%的温差
+                // 限制热量传递速率，最多传递50%的温差
                 double maxHeatTransfer = Math.abs(tempDifference) * heatCapacity * 0.5;
                 heatToTransfer = Mth.clamp(heatToTransfer, -maxHeatTransfer, maxHeatTransfer);
                 totalHeatToTransfer -= heatToTransfer;
@@ -276,7 +279,7 @@ public class TileEntityWirelessTransmissionStation extends TileEntityConnectable
                 adjacentTransfer = incrementAdjacentTransfer(adjacentTransfer, tempToTransfer, config.direction());
             }
         }
-        //一次性应用所有热量变化
+        // 一次性应用所有热量变化
         if (totalHeatToTransfer != 0) {
             heatCapacitor.handleHeat(totalHeatToTransfer);
         }
@@ -433,8 +436,7 @@ public class TileEntityWirelessTransmissionStation extends TileEntityConnectable
         addConfigContainerTrackers(container);
         container.track(SyncableDouble.create(this::getLastTransferLoss, value -> lastTransferLoss = value));
         container.track(SyncableDouble.create(this::getLastEnvironmentLoss, value -> lastEnvironmentLoss = value));
-        container.track(SyncableInt.create(connectionManager::getConnectionCount, count -> {
-        }));
+        container.track(SyncableInt.create(connectionManager::getConnectionCount, count -> {}));
     }
 
     public void addConfigContainerTrackers(MekanismContainer container) {

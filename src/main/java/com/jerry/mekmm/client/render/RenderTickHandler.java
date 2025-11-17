@@ -1,9 +1,7 @@
 package com.jerry.mekmm.client.render;
 
 import com.jerry.mekmm.client.renderer.NoDepthRenderType;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -11,6 +9,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
 public class RenderTickHandler {
 
@@ -24,11 +26,11 @@ public class RenderTickHandler {
         Vec3 cameraPos = event.getCamera().getPosition();
         long gameTime = mc.level.getGameTime();
 
-        //启用混合,让透明度正常工作
+        // 启用混合,让透明度正常工作
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-        //这玩意不管用啊，如果下面用RenderType.lines()
-//        RenderSystem.disableDepthTest();
+        // 这玩意不管用啊，如果下面用RenderType.lines()
+        // RenderSystem.disableDepthTest();
 
         poseStack.pushPose();
         for (BlockPos pos : BlockHighlightManager.getInstance().getHighlightedPositions()) {
@@ -39,7 +41,7 @@ public class RenderTickHandler {
         }
         poseStack.popPose();
 
-//        RenderSystem.enableDepthTest();
+        // RenderSystem.enableDepthTest();
         RenderSystem.disableBlend();
     }
 

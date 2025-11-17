@@ -5,6 +5,7 @@ import mekanism.common.attachments.component.AttachedSideConfig;
 import mekanism.common.attachments.component.AttachedSideConfig.LightConfigInfo;
 import mekanism.common.lib.transmitter.TransmissionType;
 import mekanism.common.tile.component.config.DataType;
+
 import net.minecraft.Util;
 
 import java.util.EnumMap;
@@ -26,5 +27,4 @@ public class AdvancedFactoryAttachedSideConfig {
         configInfo.put(TransmissionType.ENERGY, LightConfigInfo.INPUT_ONLY);
         return new AttachedSideConfig(configInfo);
     });
-
 }

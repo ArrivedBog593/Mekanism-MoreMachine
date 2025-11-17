@@ -6,8 +6,10 @@ import mekanism.api.recipes.MekanismRecipe;
 import mekanism.api.recipes.ingredients.ChemicalStackIngredient;
 import mekanism.api.recipes.ingredients.FluidStackIngredient;
 import mekanism.api.recipes.vanilla_input.SingleFluidChemicalRecipeInput;
+
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.fluids.FluidStack;
+
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -33,7 +35,7 @@ public abstract class FluidChemicalToFluidRecipe extends MekanismRecipe<SingleFl
 
     @Override
     public boolean matches(SingleFluidChemicalRecipeInput input, Level level) {
-        //Don't match incomplete recipes or ones that don't match
+        // Don't match incomplete recipes or ones that don't match
         return !isIncomplete() && test(input.fluid(), input.chemical());
     }
 
@@ -62,17 +64,16 @@ public abstract class FluidChemicalToFluidRecipe extends MekanismRecipe<SingleFl
      *
      * @return New output.
      *
-     * @apiNote While Mekanism does not currently make use of the inputs, it is important to support it and pass the proper value in case any addons define input based
-     * outputs where things like NBT may be different.
+     * @apiNote While Mekanism does not currently make use of the inputs, it is important to support it and pass the
+     *          proper value in case any addons define input based
+     *          outputs where things like NBT may be different.
      * @implNote The passed in inputs should <strong>NOT</strong> be modified.
      */
     @Contract(value = "_, _ -> new", pure = true)
     public abstract FluidStack getOutput(FluidStack fluidStack, ChemicalStack chemicalStack);
 
-
     @Override
     public boolean isIncomplete() {
         return getFluidInput().hasNoMatchingInstances() || getChemicalInput().hasNoMatchingInstances();
     }
-
 }

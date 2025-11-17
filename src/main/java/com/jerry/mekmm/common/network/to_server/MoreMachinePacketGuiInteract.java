@@ -1,16 +1,18 @@
 package com.jerry.mekmm.common.network.to_server;
 
 import com.jerry.mekaf.common.tile.factory.TileEntityAdvancedFactoryBase;
+
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.common.tile.TileEntityWirelessChargingStation;
 import com.jerry.mekmm.common.tile.TileEntityWirelessTransmissionStation;
 import com.jerry.mekmm.common.tile.factory.TileEntityMoreMachineFactory;
 import com.jerry.mekmm.common.tile.machine.TileEntityReplicator;
-import io.netty.buffer.ByteBuf;
+
 import mekanism.api.functions.TriConsumer;
 import mekanism.common.network.IMekanismPacket;
 import mekanism.common.tile.base.TileEntityMekanism;
 import mekanism.common.util.WorldUtils;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -21,6 +23,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
+
+import io.netty.buffer.ByteBuf;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.IntFunction;
@@ -37,42 +41,41 @@ public class MoreMachinePacketGuiInteract implements IMekanismPacket {
                 case INT -> StreamCodec.composite(
                         MMGuiInteraction.STREAM_CODEC, packet -> packet.interaction,
                         BlockPos.STREAM_CODEC, packet -> packet.tilePosition,
-                        //TODO - 1.18?: Eventually we may want to try to make some form of this that can compact negatives better as well
+                        // TODO - 1.18?: Eventually we may want to try to make some form of this that can compact
+                        // negatives better as well
                         ByteBufCodecs.VAR_INT, packet -> packet.extra,
-                        MoreMachinePacketGuiInteract::new
-                );
+                        MoreMachinePacketGuiInteract::new);
                 case ITEM -> StreamCodec.composite(
                         MMGuiInteractionItem.STREAM_CODEC, packet -> packet.itemInteraction,
                         BlockPos.STREAM_CODEC, packet -> packet.tilePosition,
                         ItemStack.OPTIONAL_STREAM_CODEC, packet -> packet.extraItem,
-                        MoreMachinePacketGuiInteract::new
-                );
+                        MoreMachinePacketGuiInteract::new);
             });
 
     private final MMInteractionType interactionType;
 
     private MMGuiInteraction interaction;
     private MMGuiInteractionItem itemInteraction;
-//    private MMPacketGuiInteract.GuiInteractionEntity entityInteraction;
+    // private MMPacketGuiInteract.GuiInteractionEntity entityInteraction;
     private BlockPos tilePosition;
     private ItemStack extraItem;
     private int entityID;
     private int extra;
 
-//    public MMPacketGuiInteract(MMPacketGuiInteract.GuiInteractionEntity interaction, Entity entity) {
-//        this(interaction, entity, 0);
-//    }
-//
-//    public MMPacketGuiInteract(MMPacketGuiInteract.GuiInteractionEntity interaction, Entity entity, int extra) {
-//        this(interaction, entity.getId(), extra);
-//    }
-//
-//    public MMPacketGuiInteract(MMPacketGuiInteract.GuiInteractionEntity interaction, int entityID, int extra) {
-//        this.interactionType = MMPacketGuiInteract.MMInteractionType.ENTITY;
-//        this.entityInteraction = interaction;
-//        this.entityID = entityID;
-//        this.extra = extra;
-//    }
+    // public MMPacketGuiInteract(MMPacketGuiInteract.GuiInteractionEntity interaction, Entity entity) {
+    // this(interaction, entity, 0);
+    // }
+    //
+    // public MMPacketGuiInteract(MMPacketGuiInteract.GuiInteractionEntity interaction, Entity entity, int extra) {
+    // this(interaction, entity.getId(), extra);
+    // }
+    //
+    // public MMPacketGuiInteract(MMPacketGuiInteract.GuiInteractionEntity interaction, int entityID, int extra) {
+    // this.interactionType = MMPacketGuiInteract.MMInteractionType.ENTITY;
+    // this.entityInteraction = interaction;
+    // this.entityID = entityID;
+    // this.extra = extra;
+    // }
 
     public MoreMachinePacketGuiInteract(MMGuiInteraction interaction, BlockEntity tile) {
         this(interaction, tile.getBlockPos());
@@ -109,18 +112,18 @@ public class MoreMachinePacketGuiInteract implements IMekanismPacket {
         Player player = context.player();
         if (interactionType == MMInteractionType.ENTITY) {
             Entity entity = player.level().getEntity(entityID);
-//            if (entity != null) {
-//                entityInteraction.consume(entity, player, extra);
-//            }
+            // if (entity != null) {
+            // entityInteraction.consume(entity, player, extra);
+            // }
         } else {
             TileEntityMekanism tile = WorldUtils.getTileEntity(TileEntityMekanism.class, player.level(), tilePosition);
             if (tile != null) {
                 if (interactionType == MMInteractionType.INT) {
                     interaction.consume(tile, player, extra);
                 } else
-                if (interactionType == MMInteractionType.ITEM) {
-                    itemInteraction.consume(tile, player, extraItem);
-                }
+                    if (interactionType == MMInteractionType.ITEM) {
+                        itemInteraction.consume(tile, player, extraItem);
+                    }
             }
         }
     }
@@ -131,9 +134,10 @@ public class MoreMachinePacketGuiInteract implements IMekanismPacket {
     }
 
     public enum MMGuiInteractionItem {
+
         DUPLICATOR_INVERSE_REPLACE_ITEM((tile, player, stack) -> {
             if (tile instanceof TileEntityReplicator duplicator) {
-//                duplicator.setInverseReplaceTarget(stack.getItem());
+                //                duplicator.setInverseReplaceTarget(stack.getItem());
             }
         });
 
@@ -152,6 +156,7 @@ public class MoreMachinePacketGuiInteract implements IMekanismPacket {
     }
 
     public enum MMGuiInteraction {
+
         AUTO_SORT_BUTTON((tile, player, extra) -> {
             if (tile instanceof TileEntityMoreMachineFactory<?> factory) {
                 factory.toggleSorting();
@@ -160,7 +165,7 @@ public class MoreMachinePacketGuiInteract implements IMekanismPacket {
                 advancedFactory.toggleSorting();
             }
         }),
-        //Wireless Charging Station
+        // Wireless Charging Station
         CHARGING_EQUIPS((tile, player, extra) -> {
             if (tile instanceof TileEntityWirelessChargingStation chargingStation) {
                 chargingStation.toggleChargeEquipment();
@@ -176,7 +181,7 @@ public class MoreMachinePacketGuiInteract implements IMekanismPacket {
                 chargingStation.toggleChargeCurios();
             }
         }),
-        //Wireless Transmission Station
+        // Wireless Transmission Station
         SET_ENERGY_RATE((tile, player, extra) -> {
             if (tile instanceof TileEntityWirelessTransmissionStation transmissionStation) {
                 transmissionStation.setEnergyRateFromPacket(extra);
@@ -214,6 +219,7 @@ public class MoreMachinePacketGuiInteract implements IMekanismPacket {
     }
 
     private enum MMInteractionType {
+
         ENTITY,
         ITEM,
         INT;

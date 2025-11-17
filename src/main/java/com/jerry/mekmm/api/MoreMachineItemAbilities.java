@@ -3,6 +3,7 @@ package com.jerry.mekmm.api;
 import net.neoforged.neoforge.common.ItemAbility;
 
 public final class MoreMachineItemAbilities {
+
     /**
      * Exposed by Connector that can currently connect chemical properties for a block.
      */

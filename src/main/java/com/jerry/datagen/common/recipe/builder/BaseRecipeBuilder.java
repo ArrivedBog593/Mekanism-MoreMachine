@@ -2,10 +2,12 @@ package com.jerry.datagen.common.recipe.builder;
 
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.datagen.recipe.MekanismRecipeBuilder;
+
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
+
 import org.jetbrains.annotations.Nullable;
 
 @NothingNullByDefault
@@ -38,6 +40,6 @@ public abstract class BaseRecipeBuilder<BUILDER extends BaseRecipeBuilder<BUILDE
     }
 
     public void build(RecipeOutput recipeOutput) {
-//        build(recipeOutput, result);
+        // build(recipeOutput, result);
     }
 }

@@ -7,6 +7,7 @@ import mekanism.common.inventory.slot.EnergyInventorySlot;
 import mekanism.common.tile.component.ITileComponent;
 import mekanism.common.tile.interfaces.IRedstoneControl;
 import mekanism.common.upgrade.IUpgradeData;
+
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 
@@ -28,7 +29,7 @@ public class ChemicalToItemUpgradeData implements IUpgradeData {
     public ChemicalToItemUpgradeData(HolderLookup.Provider provider, boolean redstone, IRedstoneControl.RedstoneControl controlType,
                                      IEnergyContainer energyContainer, int operatingTicks, EnergyInventorySlot energySlot,
                                      IChemicalTank inputTank, IInventorySlot outputSlot, List<ITileComponent> components) {
-        this(provider, redstone, controlType, energyContainer, new int[]{operatingTicks}, energySlot, Collections.singletonList(inputTank),
+        this(provider, redstone, controlType, energyContainer, new int[] { operatingTicks }, energySlot, Collections.singletonList(inputTank),
                 Collections.singletonList(outputSlot), false, components);
     }
 

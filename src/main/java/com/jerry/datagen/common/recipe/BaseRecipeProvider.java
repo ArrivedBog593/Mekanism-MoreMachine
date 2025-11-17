@@ -4,6 +4,7 @@ import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.common.resource.PrimaryResource;
 import mekanism.common.resource.ResourceType;
 import mekanism.common.tags.MekanismTags;
+
 import net.minecraft.advancements.Advancement.Builder;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.core.HolderLookup;
@@ -21,6 +22,7 @@ import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.common.conditions.ICondition;
 import net.neoforged.neoforge.common.crafting.DifferenceIngredient;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -80,9 +82,8 @@ public abstract class BaseRecipeProvider extends RecipeProvider {
 
     public static Ingredient createIngredient(Collection<TagKey<Item>> itemTags, ItemLike... items) {
         return Ingredient.fromValues(Stream.concat(
-              itemTags.stream().map(Ingredient.TagValue::new),
-              Arrays.stream(items).map(item -> new Ingredient.ItemValue(new ItemStack(item)))
-        ));
+                itemTags.stream().map(Ingredient.TagValue::new),
+                Arrays.stream(items).map(item -> new Ingredient.ItemValue(new ItemStack(item)))));
     }
 
     @SafeVarargs

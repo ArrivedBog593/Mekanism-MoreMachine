@@ -8,6 +8,7 @@ import mekanism.common.inventory.slot.FluidInventorySlot;
 import mekanism.common.inventory.slot.OutputInventorySlot;
 import mekanism.common.tile.component.ITileComponent;
 import mekanism.common.tile.interfaces.IRedstoneControl;
+
 import net.minecraft.core.HolderLookup;
 
 import java.util.Collections;
@@ -24,7 +25,7 @@ public class FluidChemicalToChemicalUpgradeData extends ChemicalToChemicalUpgrad
                                               IEnergyContainer energyContainer, int operatingTicks, long usedSoFar, EnergyInventorySlot energySlot,
                                               FluidInventorySlot fluidInputSlot, OutputInventorySlot fluidOutputSlot, IChemicalTank inputSlot,
                                               BasicFluidTank inputTank, IChemicalTank outputTank, List<ITileComponent> components) {
-        this(provider, redstone, controlType, energyContainer, new int[]{operatingTicks}, new long[]{usedSoFar}, energySlot, fluidInputSlot, fluidOutputSlot,
+        this(provider, redstone, controlType, energyContainer, new int[] { operatingTicks }, new long[] { usedSoFar }, energySlot, fluidInputSlot, fluidOutputSlot,
                 Collections.singletonList(inputSlot), inputTank, Collections.singletonList(outputTank), false, components);
     }
 

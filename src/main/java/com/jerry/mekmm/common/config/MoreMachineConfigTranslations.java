@@ -1,9 +1,12 @@
 package com.jerry.mekmm.common.config;
 
 import com.jerry.mekmm.Mekmm;
+
 import mekanism.common.config.IConfigTranslation;
 import mekanism.common.config.TranslationPreset;
+
 import net.minecraft.Util;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,7 +26,7 @@ public enum MoreMachineConfigTranslations implements IConfigTranslation {
     CHEMICALS_RATE("general.chemicals.max_transmission_rate", "Chemicals Max Transmission Rate", "Set the maximum chemicals transmission rate during wireless transmission"),
     ITEMS_RATE("general.items.max_transmission_rate", "Items Max Transmission Rate", "Set the maximum items transmission rate during wireless transmission"),
 
-    //Storage Config
+    // Storage Config
     ENERGY_STORAGE_RECYCLER(TranslationPreset.ENERGY_STORAGE, "Recycler"),
     ENERGY_STORAGE_PLANTING_STATION(TranslationPreset.ENERGY_STORAGE, "Planting Station"),
     ENERGY_STORAGE_CNC_STAMPER(TranslationPreset.ENERGY_STORAGE, "CNC Stamper"),
@@ -38,7 +41,7 @@ public enum MoreMachineConfigTranslations implements IConfigTranslation {
     ENERGY_STORAGE_CHEMICAL_REPLICATOR(TranslationPreset.ENERGY_STORAGE, "Chemical Replicator"),
     ENERGY_STORAGE_LARGE_ROTARY_CONDENSENTRATOR(TranslationPreset.ENERGY_STORAGE, "Large Rotary Condensentrator"),
 
-    //Usage Config
+    // Usage Config
     ENERGY_USAGE_RECYCLER(TranslationPreset.ENERGY_USAGE, "Recycler"),
     ENERGY_USAGE_PLANTING_STATION(TranslationPreset.ENERGY_USAGE, "Planting Station"),
     ENERGY_USAGE_CNC_STAMPER(TranslationPreset.ENERGY_USAGE, "CNC Stamper"),
@@ -52,7 +55,7 @@ public enum MoreMachineConfigTranslations implements IConfigTranslation {
     ENERGY_USAGE_CHEMICAL_REPLICATOR(TranslationPreset.ENERGY_USAGE, "Chemical Replicator"),
     ENERGY_USAGE_LARGE_ROTARY_CONDENSENTRATOR(TranslationPreset.ENERGY_USAGE, "Large Rotary Condensentrator"),
 
-    //General Config
+    // General Config
     GAS_COLLECT_AMOUNT("general.collect.amount", "Gas Collect Amount", "mB of Unstable Dimensional Gas collected by the Ambient Gas Collector."),
     WIRELESS_CHARGING_STATION_CHARGING_RATE("general.charging.rate", "Charge Rate", "Amount of Energy(joules) an item can receive per tick from a Wireless Charging Station.");
 

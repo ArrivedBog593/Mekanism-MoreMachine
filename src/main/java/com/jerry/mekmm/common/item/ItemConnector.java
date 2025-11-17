@@ -7,8 +7,7 @@ import com.jerry.mekmm.common.registries.MoreMachineDataComponents;
 import com.jerry.mekmm.common.tile.interfaces.ITileConnect;
 import com.jerry.mekmm.common.tile.prefab.TileEntityConnectableMachine;
 import com.jerry.mekmm.common.util.MoreMachineUtils;
-import com.mojang.serialization.Codec;
-import io.netty.buffer.ByteBuf;
+
 import mekanism.api.IIncrementalEnum;
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.api.radial.IRadialDataHelper;
@@ -23,6 +22,7 @@ import mekanism.common.lib.radial.IRadialModeItem;
 import mekanism.common.lib.transmitter.TransmissionType;
 import mekanism.common.util.MekanismUtils;
 import mekanism.common.util.WorldUtils;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
@@ -47,6 +47,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.common.ItemAbility;
 import net.neoforged.neoforge.common.util.Lazy;
+
+import com.mojang.serialization.Codec;
+import io.netty.buffer.ByteBuf;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -57,13 +60,11 @@ import java.util.function.IntFunction;
 
 public class ItemConnector extends Item implements IRadialModeItem<ItemConnector.ConnectorMode> {
 
-    private static final Lazy<RadialData<ItemConnector.ConnectorMode>> LAZY_RADIAL_DATA = Lazy.of(() ->
-            IRadialDataHelper.INSTANCE.dataForEnum(Mekmm.rl("connector_mode"), ItemConnector.ConnectorMode.class));
+    private static final Lazy<RadialData<ItemConnector.ConnectorMode>> LAZY_RADIAL_DATA = Lazy.of(() -> IRadialDataHelper.INSTANCE.dataForEnum(Mekmm.rl("connector_mode"), ItemConnector.ConnectorMode.class));
 
     public ItemConnector(Properties properties) {
         super(properties.rarity(Rarity.UNCOMMON).stacksTo(1)
-                .component(MoreMachineDataComponents.CONNECTOR_MODE, ConnectorMode.ENERGY)
-        );
+                .component(MoreMachineDataComponents.CONNECTOR_MODE, ConnectorMode.ENERGY));
     }
 
     @Override
@@ -76,8 +77,6 @@ public class ItemConnector extends Item implements IRadialModeItem<ItemConnector
             tooltip.add(MoreMachineLang.CONNECTOR_DETAIL.translate(EnumColor.ORANGE, MoreMachineUtils.formatDim(globalPos.dimension().location()), EnumColor.ORANGE, MoreMachineUtils.formatPos(globalPos.pos())));
         }
     }
-
-
 
     @NotNull
     @Override
@@ -122,23 +121,23 @@ public class ItemConnector extends Item implements IRadialModeItem<ItemConnector
                 player.displayClientMessage(MoreMachineLang.CONNECTOR_FROM.translate(EnumColor.INDIGO, TextComponentUtil.translate(block.getDescriptionId())), true);
             }
         } else {
-            //禁用交互效果在MoreMachinePlayerTracker
+            // 禁用交互效果在MoreMachinePlayerTracker
             GlobalPos globalPos = getStoredPosition(stack);
             if (globalPos == null) {
                 return InteractionResult.CONSUME;
             }
-            //如果跨纬度
+            // 如果跨纬度
             if (world.dimension() != globalPos.dimension()) {
-                //Ciallo～(∠・ω< )⌒★
+                // Ciallo～(∠・ω< )⌒★
                 player.displayClientMessage(MoreMachineLang.CONNECTOR_ACROSS_DIMENSION.translate(EnumColor.DARK_RED), true);
                 return InteractionResult.CONSUME;
             }
-            //如果绑定到自己
+            // 如果绑定到自己
             if (pos == globalPos.pos()) {
                 player.displayClientMessage(MoreMachineLang.CONNECTOR_SELF.translate(EnumColor.DARK_RED), true);
                 return InteractionResult.CONSUME;
             }
-            //获取保存位置的方块实体
+            // 获取保存位置的方块实体
             TileEntityConnectableMachine linkTile = WorldUtils.getTileEntity(TileEntityConnectableMachine.class, world, globalPos.pos(), true);
             if (linkTile != null) {
                 Component translateName = TextComponentUtil.translate(block.getDescriptionId());
@@ -152,14 +151,14 @@ public class ItemConnector extends Item implements IRadialModeItem<ItemConnector
                         return InteractionResult.SUCCESS;
                     }
                     case CONNECT_FAIL -> {
-                        //连接到没有能力或者不能连接的方块上时发出的消息
+                        // 连接到没有能力或者不能连接的方块上时发出的消息
                         player.displayClientMessage(MoreMachineLang.CONNECTOR_FAIL.translate(EnumColor.DARK_RED, translateName, EnumColor.DARK_RED, side), true);
                         return InteractionResult.FAIL;
                     }
                 }
                 return InteractionResult.PASS;
             } else {
-                //绑定后中心方块被拆除
+                // 绑定后中心方块被拆除
                 player.displayClientMessage(MoreMachineLang.CONNECTOR_LOSE.translate(EnumColor.DARK_RED, MoreMachineUtils.formatPos(globalPos.pos())), true);
                 return InteractionResult.FAIL;
             }
@@ -211,9 +210,9 @@ public class ItemConnector extends Item implements IRadialModeItem<ItemConnector
         }
     }
 
-
     @NothingNullByDefault
     public enum ConnectorMode implements IIncrementalEnum<ConnectorMode>, IHasTextComponent.IHasEnumNameTextComponent, IRadialMode, StringRepresentable {
+
         ITEMS(MekanismLang.CONFIGURATOR_CONFIGURATE, TransmissionType.ITEM, EnumColor.GRAY, null),
         FLUIDS(MekanismLang.CONFIGURATOR_CONFIGURATE, TransmissionType.FLUID, EnumColor.DARK_AQUA, null),
         CHEMICALS(MekanismLang.CONFIGURATOR_CONFIGURATE, TransmissionType.CHEMICAL, EnumColor.YELLOW, null),

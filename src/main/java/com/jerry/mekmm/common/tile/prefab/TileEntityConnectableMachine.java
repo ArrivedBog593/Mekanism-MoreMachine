@@ -1,7 +1,9 @@
 package com.jerry.mekmm.common.tile.prefab;
 
 import com.jerry.mekmm.common.tile.interfaces.ITileConnect;
+
 import mekanism.common.tile.prefab.TileEntityConfigurableMachine;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.block.Block;
@@ -14,6 +16,8 @@ public abstract class TileEntityConnectableMachine extends TileEntityConfigurabl
     }
 
     public enum ConnectStatus {
-        CONNECT, DISCONNECT, CONNECT_FAIL
+        CONNECT,
+        DISCONNECT,
+        CONNECT_FAIL
     }
 }

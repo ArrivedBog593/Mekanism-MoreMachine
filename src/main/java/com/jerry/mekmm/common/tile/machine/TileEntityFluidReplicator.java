@@ -9,6 +9,7 @@ import com.jerry.mekmm.common.registries.MoreMachineBlocks;
 import com.jerry.mekmm.common.registries.MoreMachineChemicals;
 import com.jerry.mekmm.common.util.MoreMachineUtils;
 import com.jerry.mekmm.common.util.ValidatorUtils;
+
 import mekanism.api.IContentsListener;
 import mekanism.api.chemical.BasicChemicalTank;
 import mekanism.api.chemical.ChemicalStack;
@@ -46,6 +47,7 @@ import mekanism.common.tile.component.config.slot.FluidSlotInfo;
 import mekanism.common.tile.component.config.slot.InventorySlotInfo;
 import mekanism.common.tile.prefab.TileEntityProgressMachine;
 import mekanism.common.util.RegistryUtils;
+
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -54,6 +56,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidType;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -68,8 +71,7 @@ public class TileEntityFluidReplicator extends TileEntityProgressMachine<BasicFl
             RecipeError.NOT_ENOUGH_INPUT,
             RecipeError.NOT_ENOUGH_SECONDARY_INPUT,
             RecipeError.NOT_ENOUGH_OUTPUT_SPACE,
-            RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT
-    );
+            RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT);
 
     public static final int MAX_FLUID = 10 * FluidType.BUCKET_VOLUME;
     public static final long MAX_GAS = 10 * FluidType.BUCKET_VOLUME;
@@ -79,7 +81,7 @@ public class TileEntityFluidReplicator extends TileEntityProgressMachine<BasicFl
 
     public BasicFluidTank fluidInputTank;
     public BasicFluidTank fluidOutputTank;
-    //化学品存储槽
+    // 化学品存储槽
     public IChemicalTank chemicalTank;
 
     private MachineEnergyContainer<TileEntityFluidReplicator> energyContainer;
@@ -90,16 +92,16 @@ public class TileEntityFluidReplicator extends TileEntityProgressMachine<BasicFl
 
     FluidInventorySlot lFluidInputSlot;
     FluidInventorySlot rFluidInputSlot;
-    //流体储罐输入输出物品槽(GUI外的两个槽)
+    // 流体储罐输入输出物品槽(GUI外的两个槽)
     FluidInventorySlot fluidInputSlot;
     OutputInventorySlot fluidOutputSlot;
-    //气罐槽
+    // 气罐槽
     ChemicalInventorySlot chemicalSlot;
     EnergyInventorySlot energySlot;
 
     public TileEntityFluidReplicator(BlockPos pos, BlockState state) {
         super(MoreMachineBlocks.FLUID_REPLICATOR, pos, state, TRACKED_ERROR_TYPES, BASE_TICKS_REQUIRED);
-//        configComponent.setupItemIOExtraConfig(fluidInputSlot, fluidOutputSlot, chemicalSlot, energySlot);
+        // configComponent.setupItemIOExtraConfig(fluidInputSlot, fluidOutputSlot, chemicalSlot, energySlot);
         configComponent.setupItemIOConfig(List.of(fluidInputSlot, lFluidInputSlot), List.of(rFluidInputSlot, fluidOutputSlot), energySlot, false);
         ConfigInfo itemConfig = configComponent.getConfig(TransmissionType.ITEM);
         if (itemConfig != null) {
@@ -149,17 +151,17 @@ public class TileEntityFluidReplicator extends TileEntityProgressMachine<BasicFl
     @Override
     protected @Nullable IInventorySlotHolder getInitialInventory(IContentsListener listener, IContentsListener recipeCacheListener, IContentsListener recipeCacheUnpauseListener) {
         InventorySlotHelper builder = InventorySlotHelper.forSideWithConfig(this);
-        //输入
+        // 输入
         builder.addSlot(fluidInputSlot = FluidInventorySlot.fill(fluidInputTank, listener, 180, 71));
         builder.addSlot(fluidOutputSlot = OutputInventorySlot.at(listener, 180, 102));
-        //输出
+        // 输出
         builder.addSlot(lFluidInputSlot = FluidInventorySlot.drain(fluidInputTank, listener, 29, 65));
         builder.addSlot(rFluidInputSlot = FluidInventorySlot.drain(fluidOutputTank, listener, 132, 65));
-        //化学品罐槽位置
+        // 化学品罐槽位置
         builder.addSlot(chemicalSlot = ChemicalInventorySlot.fillOrConvert(chemicalTank, this::getLevel, listener, 8, 65));
-        //能量槽位置
+        // 能量槽位置
         builder.addSlot(energySlot = EnergyInventorySlot.fillOrConvert(energyContainer, this::getLevel, listener, 152, 65));
-        //化学品罐槽减号图标
+        // 化学品罐槽减号图标
         chemicalSlot.setSlotOverlay(SlotOverlay.MINUS);
         fluidInputSlot.setSlotOverlay(SlotOverlay.MINUS);
         lFluidInputSlot.setSlotOverlay(SlotOverlay.PLUS);
@@ -228,15 +230,14 @@ public class TileEntityFluidReplicator extends TileEntityProgressMachine<BasicFl
         }
         if (customRecipeMap != null) {
             Holder<Fluid> fluidHolder = fluidStack.getFluidHolder();
-            //如果为空则赋值为0
+            // 如果为空则赋值为0
             int amount = customRecipeMap.getOrDefault(Objects.requireNonNull(RegistryUtils.getName(fluidHolder)).toString(), 0);
-            //防止null和配置文件中出现0
+            // 防止null和配置文件中出现0
             if (amount == 0) return null;
             return new FluidReplicatorIRecipeSingle(
                     IngredientCreatorAccess.fluid().fromHolder(fluidHolder, 1000),
                     IngredientCreatorAccess.chemicalStack().fromHolder(MoreMachineChemicals.UU_MATTER, amount),
-                    new FluidStack(fluidHolder, FluidType.BUCKET_VOLUME)
-            );
+                    new FluidStack(fluidHolder, FluidType.BUCKET_VOLUME));
         }
         return null;
     }

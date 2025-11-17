@@ -5,6 +5,7 @@ import com.jerry.mekmm.api.recipes.cache.StamperCachedRecipe;
 import com.jerry.mekmm.client.recipe_viewer.MMRecipeViewerRecipeType;
 import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
 import com.jerry.mekmm.common.upgrade.StamperUpgradeData;
+
 import mekanism.api.IContentsListener;
 import mekanism.api.inventory.IInventorySlot;
 import mekanism.api.math.MathUtils;
@@ -25,6 +26,7 @@ import mekanism.common.recipe.lookup.cache.DoubleInputRecipeCache.CheckRecipeTyp
 import mekanism.common.recipe.lookup.cache.InputRecipeCache.DoubleItem;
 import mekanism.common.upgrade.IUpgradeData;
 import mekanism.common.util.InventoryUtils;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -32,6 +34,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -40,19 +43,16 @@ import java.util.Set;
 
 public class TileEntityStampingFactory extends TileEntityItemToItemMMFactory<StamperRecipe> implements DoubleItemRecipeLookupHandler<StamperRecipe> {
 
-    private static final CheckRecipeType<ItemStack, ItemStack, StamperRecipe, ItemStack> OUTPUT_CHECK =
-          (recipe, input, extra, output) -> InventoryUtils.areItemsStackable(recipe.getOutput(input, extra), output);
+    private static final CheckRecipeType<ItemStack, ItemStack, StamperRecipe, ItemStack> OUTPUT_CHECK = (recipe, input, extra, output) -> InventoryUtils.areItemsStackable(recipe.getOutput(input, extra), output);
     private static final List<RecipeError> TRACKED_ERROR_TYPES = List.of(
-          RecipeError.NOT_ENOUGH_ENERGY,
-          RecipeError.NOT_ENOUGH_INPUT,
-          RecipeError.NOT_ENOUGH_SECONDARY_INPUT,
-          RecipeError.NOT_ENOUGH_OUTPUT_SPACE,
-          RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT
-    );
+            RecipeError.NOT_ENOUGH_ENERGY,
+            RecipeError.NOT_ENOUGH_INPUT,
+            RecipeError.NOT_ENOUGH_SECONDARY_INPUT,
+            RecipeError.NOT_ENOUGH_OUTPUT_SPACE,
+            RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT);
     private static final Set<RecipeError> GLOBAL_ERROR_TYPES = Set.of(
-          RecipeError.NOT_ENOUGH_ENERGY,
-          RecipeError.NOT_ENOUGH_SECONDARY_INPUT
-    );
+            RecipeError.NOT_ENOUGH_ENERGY,
+            RecipeError.NOT_ENOUGH_SECONDARY_INPUT);
 
     private final IInputHandler<@NotNull ItemStack> extraInputHandler;
 
@@ -103,7 +103,7 @@ public class TileEntityStampingFactory extends TileEntityItemToItemMMFactory<Sta
 
     @Override
     protected StamperRecipe findRecipe(int process, @NotNull ItemStack fallbackInput, @NotNull IInventorySlot outputSlot, @Nullable IInventorySlot secondaryOutputSlot) {
-        //TODO: Give it something that is not empty when we don't have a stored secondary stack for getting the output?
+        // TODO: Give it something that is not empty when we don't have a stored secondary stack for getting the output?
         return getRecipeType().getInputCache().findTypeBasedRecipe(level, fallbackInput, extraSlot.getStack(), outputSlot.getStack(), OUTPUT_CHECK);
     }
 
@@ -128,22 +128,22 @@ public class TileEntityStampingFactory extends TileEntityItemToItemMMFactory<Sta
     @Override
     public CachedRecipe<StamperRecipe> createNewCachedRecipe(@NotNull StamperRecipe recipe, int cacheIndex) {
         return StamperCachedRecipe.createCache(recipe, recheckAllRecipeErrors[cacheIndex], inputHandlers[cacheIndex], extraInputHandler, outputHandlers[cacheIndex])
-              .setErrorsChanged(errors -> errorTracker.onErrorsChanged(errors, cacheIndex))
-              .setCanHolderFunction(this::canFunction)
-              .setActive(active -> setActiveState(active, cacheIndex))
-              .setEnergyRequirements(energyContainer::getEnergyPerTick, energyContainer)
-              .setRequiredTicks(this::getTicksRequired)
-              .setOnFinish(this::markForSave)
-              .setOperatingTicksChanged(operatingTicks -> progress[cacheIndex] = operatingTicks)
-              .setBaselineMaxOperations(this::getOperationsPerTick);
+                .setErrorsChanged(errors -> errorTracker.onErrorsChanged(errors, cacheIndex))
+                .setCanHolderFunction(this::canFunction)
+                .setActive(active -> setActiveState(active, cacheIndex))
+                .setEnergyRequirements(energyContainer::getEnergyPerTick, energyContainer)
+                .setRequiredTicks(this::getTicksRequired)
+                .setOnFinish(this::markForSave)
+                .setOperatingTicksChanged(operatingTicks -> progress[cacheIndex] = operatingTicks)
+                .setBaselineMaxOperations(this::getOperationsPerTick);
     }
 
     @Override
     public void parseUpgradeData(HolderLookup.Provider provider, @NotNull IUpgradeData upgradeData) {
         if (upgradeData instanceof StamperUpgradeData data) {
-            //Generic factory upgrade data handling
+            // Generic factory upgrade data handling
             super.parseUpgradeData(provider, upgradeData);
-            //Copy the stack using NBT so that if it is not actually valid due to a reload we don't crash
+            // Copy the stack using NBT so that if it is not actually valid due to a reload we don't crash
             extraSlot.deserializeNBT(provider, data.extraSlot.serializeNBT(provider));
         } else {
             Mekanism.logger.warn("Unhandled upgrade data.", new Throwable());

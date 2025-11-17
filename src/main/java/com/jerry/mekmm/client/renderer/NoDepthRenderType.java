@@ -1,8 +1,9 @@
 package com.jerry.mekmm.client.renderer;
 
+import net.minecraft.client.renderer.RenderType;
+
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import net.minecraft.client.renderer.RenderType;
 
 import java.util.OptionalDouble;
 
@@ -23,9 +24,8 @@ public class NoDepthRenderType extends RenderType {
                     .setLayeringState(VIEW_OFFSET_Z_LAYERING)
                     .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
                     .setOutputState(ITEM_ENTITY_TARGET)
-                    //禁用深度测试
+                    // 禁用深度测试
                     .setDepthTestState(NO_DEPTH_TEST)
                     .setCullState(NO_CULL)
-                    .createCompositeState(false)
-    );
+                    .createCompositeState(false));
 }

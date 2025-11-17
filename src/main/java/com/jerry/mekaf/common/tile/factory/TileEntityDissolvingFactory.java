@@ -1,6 +1,7 @@
 package com.jerry.mekaf.common.tile.factory;
 
 import com.jerry.mekaf.common.upgrade.ItemChemicalToChemicalUpgradeData;
+
 import mekanism.api.IContentsListener;
 import mekanism.api.SerializationConstants;
 import mekanism.api.Upgrade;
@@ -37,6 +38,7 @@ import mekanism.common.tile.interfaces.IHasDumpButton;
 import mekanism.common.upgrade.IUpgradeData;
 import mekanism.common.util.MekanismUtils;
 import mekanism.common.util.StatUtils;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -45,6 +47,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -55,22 +58,19 @@ import java.util.List;
 import java.util.Set;
 
 public class TileEntityDissolvingFactory extends TileEntityItemToChemicalFactory<ChemicalDissolutionRecipe> implements IHasDumpButton, ConstantUsageRecipeLookupHandler,
-        ItemChemicalRecipeLookupHandler<ChemicalDissolutionRecipe> {
+                                         ItemChemicalRecipeLookupHandler<ChemicalDissolutionRecipe> {
 
-    private static final DoubleInputRecipeCache.CheckRecipeType<ItemStack, ChemicalStack, ChemicalDissolutionRecipe, ChemicalStack> OUTPUT_CHECK =
-            (recipe, input, extra, output) -> ChemicalStack.isSameChemical(recipe.getOutput(input, extra), output);
+    private static final DoubleInputRecipeCache.CheckRecipeType<ItemStack, ChemicalStack, ChemicalDissolutionRecipe, ChemicalStack> OUTPUT_CHECK = (recipe, input, extra, output) -> ChemicalStack.isSameChemical(recipe.getOutput(input, extra), output);
     private static final List<RecipeError> TRACKED_ERROR_TYPES = List.of(
             RecipeError.NOT_ENOUGH_ENERGY,
             RecipeError.NOT_ENOUGH_ENERGY_REDUCED_RATE,
             RecipeError.NOT_ENOUGH_INPUT,
             RecipeError.NOT_ENOUGH_SECONDARY_INPUT,
             RecipeError.NOT_ENOUGH_OUTPUT_SPACE,
-            RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT
-    );
+            RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT);
     private static final Set<RecipeError> GLOBAL_ERROR_TYPES = Set.of(
             RecipeError.NOT_ENOUGH_ENERGY,
-            RecipeError.NOT_ENOUGH_SECONDARY_INPUT
-    );
+            RecipeError.NOT_ENOUGH_SECONDARY_INPUT);
 
     private final ILongInputHandler<@NotNull ChemicalStack> chemicalInputHandler;
 
@@ -94,7 +94,7 @@ public class TileEntityDissolvingFactory extends TileEntityItemToChemicalFactory
             chemicalConfig.addSlotInfo(DataType.INPUT, new ChemicalSlotInfo(true, false, injectTank));
             List<IChemicalTank> ioTank = new ArrayList<>(List.of(injectTank));
             ioTank.addAll(outputChemicalTanks);
-            //这个只能设定一个
+            // 这个只能设定一个
             chemicalConfig.addSlotInfo(DataType.INPUT_OUTPUT, new ChemicalSlotInfo(true, true, ioTank));
         }
 

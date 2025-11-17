@@ -19,6 +19,7 @@ import mekanism.common.recipe.lookup.cache.InputRecipeCache;
 import mekanism.common.tile.component.TileComponentEjector;
 import mekanism.common.tile.interfaces.IBoundingBlock;
 import mekanism.common.util.WorldUtils;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.util.Mth;
@@ -27,21 +28,20 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.util.TriPredicate;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Set;
 
-public class TileEntitySolarNeutronActivatingFactory  extends TileEntityChemicalToChemicalFactory<ChemicalToChemicalRecipe> implements IBoundingBlock, ISingleRecipeLookupHandler.ChemicalRecipeLookupHandler<ChemicalToChemicalRecipe> {
+public class TileEntitySolarNeutronActivatingFactory extends TileEntityChemicalToChemicalFactory<ChemicalToChemicalRecipe> implements IBoundingBlock, ISingleRecipeLookupHandler.ChemicalRecipeLookupHandler<ChemicalToChemicalRecipe> {
 
-    protected static final TriPredicate<ChemicalToChemicalRecipe, ChemicalStack, ChemicalStack> OUTPUT_CHECK =
-            (recipe, input, output) -> ChemicalStack.isSameChemical(recipe.getOutput(input), output);
+    protected static final TriPredicate<ChemicalToChemicalRecipe, ChemicalStack, ChemicalStack> OUTPUT_CHECK = (recipe, input, output) -> ChemicalStack.isSameChemical(recipe.getOutput(input), output);
     private static final List<CachedRecipe.OperationTracker.RecipeError> TRACKED_ERROR_TYPES = List.of(
             CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_INPUT,
             CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_OUTPUT_SPACE,
-            CachedRecipe.OperationTracker.RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT
-    );
+            CachedRecipe.OperationTracker.RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT);
     private static final Set<CachedRecipe.OperationTracker.RecipeError> GLOBAL_ERROR_TYPES = Set.of(CachedRecipe.OperationTracker.RecipeError.NOT_ENOUGH_ENERGY);
 
     private float peakProductionRate;
@@ -58,9 +58,7 @@ public class TileEntitySolarNeutronActivatingFactory  extends TileEntityChemical
     }
 
     @Override
-    protected void addSlots(InventorySlotHelper builder, IContentsListener listener, IContentsListener updateSortingListener) {
-
-    }
+    protected void addSlots(InventorySlotHelper builder, IContentsListener listener, IContentsListener updateSortingListener) {}
 
     private void recheckSettings() {
         Level world = getLevel();
@@ -141,7 +139,7 @@ public class TileEntitySolarNeutronActivatingFactory  extends TileEntityChemical
                 .setCanHolderFunction(this::canFunction)
                 .setActive(this::setActive)
                 .setOnFinish(this::markForSave)
-                //Edge case handling, this should almost always end up being 1
+                // Edge case handling, this should almost always end up being 1
                 .setRequiredTicks(() -> productionRate > 0 && productionRate < 1 ? Mth.ceil(1 / productionRate) : 1)
                 .setBaselineMaxOperations(() -> productionRate > 0 && productionRate < 1 ? 1 : (int) productionRate);
     }
@@ -149,23 +147,25 @@ public class TileEntitySolarNeutronActivatingFactory  extends TileEntityChemical
     boolean canSeeSun() {
         return WorldUtils.canSeeSun(level, worldPosition.above());
     }
+
     @Override
     public boolean canFunction() {
         // Sort out if the solar neutron activator can see the sun; we no longer check if it's raining here,
         // since under the new rules, we can still function when it's raining, albeit at a significant penalty.
         return super.canFunction() && canSeeSun();
     }
+
     private float recalculateProductionRate() {
         Level world = getLevel();
         if (world == null || !canFunction()) {
             return 0;
         }
-        //Get the brightness of the sun; note that there are some implementations that depend on the base
+        // Get the brightness of the sun; note that there are some implementations that depend on the base
         // brightness function which doesn't take into account the fact that rain can't occur in some biomes.
         float brightness = WorldUtils.getSunBrightness(world, 1.0F);
-        //Production is a function of the peak possible output in this biome and sun's current brightness
+        // Production is a function of the peak possible output in this biome and sun's current brightness
         float production = peakProductionRate * brightness;
-        //If the solar neutron activator is in a biome where it can rain, and it's raining penalize production by 80%
+        // If the solar neutron activator is in a biome where it can rain, and it's raining penalize production by 80%
         if (needsRainCheck && (world.isRaining() || world.isThundering())) {
             production *= 0.2F;
         }

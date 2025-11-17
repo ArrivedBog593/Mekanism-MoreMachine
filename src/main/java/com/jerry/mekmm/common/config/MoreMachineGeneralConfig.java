@@ -2,10 +2,12 @@ package com.jerry.mekmm.common.config;
 
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.common.util.ValidatorUtils;
+
 import mekanism.common.config.BaseMekanismConfig;
 import mekanism.common.config.value.CachedConfigValue;
 import mekanism.common.config.value.CachedIntValue;
 import mekanism.common.config.value.CachedLongValue;
+
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.fluids.FluidType;
@@ -17,13 +19,13 @@ public class MoreMachineGeneralConfig extends BaseMekanismConfig {
 
     private final ModConfigSpec configSpec;
 
-    //Replicator
+    // Replicator
     public final CachedConfigValue<List<? extends String>> itemReplicatorRecipe;
     public final CachedConfigValue<List<? extends String>> fluidReplicatorRecipe;
     public final CachedConfigValue<List<? extends String>> chemicalReplicatorRecipe;
 
     public final CachedIntValue gasCollectAmount;
-    //Wireless
+    // Wireless
     public final CachedLongValue wirelessChargingStationChargingRate;
     public final CachedLongValue energyRate;
     public final CachedIntValue fluidsRate;

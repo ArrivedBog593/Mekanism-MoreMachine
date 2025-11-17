@@ -2,7 +2,7 @@ package com.jerry.mekmm.client.recipe_viewer.emi.recipe;
 
 import com.jerry.mekmm.api.recipes.PlantingRecipe;
 import com.jerry.mekmm.common.tile.machine.TileEntityPlantingStation;
-import dev.emi.emi.api.widget.WidgetHolder;
+
 import mekanism.api.functions.ConstantPredicates;
 import mekanism.api.recipes.ingredients.ItemStackIngredient;
 import mekanism.client.gui.element.bar.GuiEmptyBar;
@@ -14,8 +14,11 @@ import mekanism.client.recipe_viewer.RecipeViewerUtils;
 import mekanism.client.recipe_viewer.emi.MekanismEmiRecipeCategory;
 import mekanism.client.recipe_viewer.emi.recipe.MekanismEmiHolderRecipe;
 import mekanism.common.inventory.container.slot.SlotOverlay;
+
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
+
+import dev.emi.emi.api.widget.WidgetHolder;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -36,18 +39,18 @@ public class PlantingEmiRecipe extends MekanismEmiHolderRecipe<PlantingRecipe> {
             firstOutput.add(output.first());
             secondOutput.add(output.second());
         }
-        //第一个输出一定有
+        // 第一个输出一定有
         addItemOutputDefinition(firstOutput);
-        //第二个输出不一定有
-        if (secondOutput.stream().allMatch(ConstantPredicates.ITEM_EMPTY)){
+        // 第二个输出不一定有
+        if (secondOutput.stream().allMatch(ConstantPredicates.ITEM_EMPTY)) {
             addOutputDefinition(Collections.emptyList());
-        }else {
+        } else {
             addItemOutputDefinition(secondOutput);
         }
         addCatalsyst(recipe.getChemicalInput());
     }
 
-    //重写，消耗变为0
+    // 重写，消耗变为0
     @Override
     protected void addInputDefinition(@NotNull ItemStackIngredient ingredient) {
         getInputs().add(ingredient(ingredient).setChance(0));

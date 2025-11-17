@@ -1,6 +1,7 @@
 package com.jerry.mekaf.common.tile.factory;
 
 import com.jerry.mekaf.common.upgrade.ChemicalToItemUpgradeData;
+
 import mekanism.api.chemical.ChemicalStack;
 import mekanism.api.inventory.IInventorySlot;
 import mekanism.api.math.MathUtils;
@@ -18,6 +19,7 @@ import mekanism.common.recipe.lookup.cache.InputRecipeCache;
 import mekanism.common.tile.component.TileComponentEjector;
 import mekanism.common.upgrade.IUpgradeData;
 import mekanism.common.util.InventoryUtils;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -25,6 +27,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.util.TriPredicate;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,14 +36,12 @@ import java.util.Set;
 
 public class TileEntityCrystallizingFactory extends TileEntityChemicalToItemFactory<ChemicalCrystallizerRecipe> implements ChemicalRecipeLookupHandler<ChemicalCrystallizerRecipe> {
 
-    protected static final TriPredicate<ChemicalCrystallizerRecipe, ChemicalStack, ItemStack> OUTPUT_CHECK =
-            (recipe, input, output) -> InventoryUtils.areItemsStackable(recipe.getOutput(input), output);
+    protected static final TriPredicate<ChemicalCrystallizerRecipe, ChemicalStack, ItemStack> OUTPUT_CHECK = (recipe, input, output) -> InventoryUtils.areItemsStackable(recipe.getOutput(input), output);
     private static final List<RecipeError> TRACKED_ERROR_TYPES = List.of(
             RecipeError.NOT_ENOUGH_ENERGY,
             RecipeError.NOT_ENOUGH_INPUT,
             RecipeError.NOT_ENOUGH_OUTPUT_SPACE,
-            RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT
-    );
+            RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT);
     private static final Set<RecipeError> GLOBAL_ERROR_TYPES = Set.of(RecipeError.NOT_ENOUGH_ENERGY);
 
     public TileEntityCrystallizingFactory(Holder<Block> blockProvider, BlockPos pos, BlockState state) {
@@ -104,7 +105,7 @@ public class TileEntityCrystallizingFactory extends TileEntityChemicalToItemFact
 
     @Override
     public @Nullable IUpgradeData getUpgradeData(HolderLookup.Provider provider) {
-        return new ChemicalToItemUpgradeData(provider, redstone,getControlType(), getEnergyContainer(),
+        return new ChemicalToItemUpgradeData(provider, redstone, getControlType(), getEnergyContainer(),
                 progress, energySlot, inputChemicalTanks, outputItemSlots, isSorting(), getComponents());
     }
 }

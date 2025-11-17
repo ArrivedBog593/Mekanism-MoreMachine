@@ -4,9 +4,11 @@ import com.jerry.mekaf.common.block.attribute.AttributeAdvancedFactoryType;
 import com.jerry.mekaf.common.registries.AdvancedFactoryBlocks;
 import com.jerry.mekaf.common.registries.AdvancedFactoryContainerTypes;
 import com.jerry.mekaf.common.tile.factory.TileEntityAdvancedFactoryBase;
+
 import com.jerry.mekmm.common.content.blocktype.MoreMachineBlockShapes;
 import com.jerry.mekmm.common.content.blocktype.MoreMachineMachine;
 import com.jerry.mekmm.common.util.MoreMachineUtils;
+
 import mekanism.api.math.MathUtils;
 import mekanism.common.MekanismLang;
 import mekanism.common.block.attribute.*;
@@ -16,6 +18,7 @@ import mekanism.common.lib.transmitter.TransmissionType;
 import mekanism.common.registration.impl.ContainerTypeRegistryObject;
 import mekanism.common.registration.impl.TileEntityTypeRegistryObject;
 import mekanism.common.tier.FactoryTier;
+
 import net.minecraft.core.particles.ParticleTypes;
 
 import java.util.function.Supplier;
@@ -46,7 +49,7 @@ public class AdvancedFactory<TILE extends TileEntityAdvancedFactoryBase<?>> exte
     }
 
     public static class AdvancedFactoryBuilder<FACTORY extends AdvancedFactory<TILE>, TILE extends TileEntityAdvancedFactoryBase<?>, T extends MMMachineBuilder<FACTORY, TILE, T>>
-          extends BlockTileBuilder<FACTORY, TILE, T> {
+                                              extends BlockTileBuilder<FACTORY, TILE, T> {
 
         protected AdvancedFactoryBuilder(FACTORY holder) {
             super(holder);
@@ -57,8 +60,8 @@ public class AdvancedFactory<TILE extends TileEntityAdvancedFactoryBase<?>> exte
                                                                                                                                                    FactoryTier tier) {
             // this is dirty but unfortunately necessary for things to play right
             AdvancedFactoryBuilder<AdvancedFactory<TILE>, TILE, ?> builder = new AdvancedFactoryBuilder<>(new AdvancedFactory<>((Supplier<TileEntityTypeRegistryObject<TILE>>) tileEntityRegistrar,
-                  () -> AdvancedFactoryContainerTypes.ADVANCED_FACTORY, type.getBaseMachine(), tier));
-            //Note, we can't just return the builder here as then it gets all confused about object types, so we just
+                    () -> AdvancedFactoryContainerTypes.ADVANCED_FACTORY, type.getBaseMachine(), tier));
+            // Note, we can't just return the builder here as then it gets all confused about object types, so we just
             // assign the value here, and then return the builder itself as it is the same object
             builder.withComputerSupport(tier, type.getRegistryNameComponentCapitalized() + "Factory");
             builder.withCustomShape(MoreMachineBlockShapes.getShape(tier, type));
@@ -73,10 +76,9 @@ public class AdvancedFactory<TILE extends TileEntityAdvancedFactoryBase<?>> exte
                 builder.with(AttributeHasBounding.ABOVE_ONLY);
             }
             builder.replace(new AttributeParticleFX().addDense(ParticleTypes.SMOKE, 5, rand -> new Pos3D(
-                  rand.nextFloat() * 0.7F - 0.3F,
-                  rand.nextFloat() * 0.1F + 0.7F,
-                  rand.nextFloat() * 0.7F - 0.3F
-            )));
+                    rand.nextFloat() * 0.7F - 0.3F,
+                    rand.nextFloat() * 0.1F + 0.7F,
+                    rand.nextFloat() * 0.7F - 0.3F)));
             return builder;
         }
     }

@@ -2,7 +2,7 @@ package com.jerry.mekmm.client.recipe_viewer.emi.recipe;
 
 import com.jerry.mekmm.api.recipes.StamperRecipe;
 import com.jerry.mekmm.common.tile.machine.TileEntityStamper;
-import dev.emi.emi.api.widget.WidgetHolder;
+
 import mekanism.client.gui.element.GuiUpArrow;
 import mekanism.client.gui.element.bar.GuiVerticalPowerBar;
 import mekanism.client.gui.element.progress.ProgressType;
@@ -11,9 +11,12 @@ import mekanism.client.recipe_viewer.RecipeViewerUtils;
 import mekanism.client.recipe_viewer.emi.MekanismEmiRecipeCategory;
 import mekanism.client.recipe_viewer.emi.recipe.MekanismEmiHolderRecipe;
 import mekanism.common.inventory.container.slot.SlotOverlay;
+
 import net.minecraft.world.item.crafting.RecipeHolder;
 
-//虽然可以直接使用融合机的EmiRecipe，但复制一份应该更好
+import dev.emi.emi.api.widget.WidgetHolder;
+
+// 虽然可以直接使用融合机的EmiRecipe，但复制一份应该更好
 public class StamperEmiRecipe extends MekanismEmiHolderRecipe<StamperRecipe> {
 
     public StamperEmiRecipe(MekanismEmiRecipeCategory category, RecipeHolder<StamperRecipe> recipeHolder) {

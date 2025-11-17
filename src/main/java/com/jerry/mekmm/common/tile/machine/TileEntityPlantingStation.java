@@ -2,13 +2,14 @@ package com.jerry.mekmm.common.tile.machine;
 
 import com.jerry.mekmm.api.recipes.PlantingRecipe;
 import com.jerry.mekmm.api.recipes.PlantingRecipe.PlantingStationRecipeOutput;
-import com.jerry.mekmm.api.recipes.cache.PlantingStationCachedRecipe;
 import com.jerry.mekmm.api.recipes.cache.MoreMachineTwoInputCachedRecipe;
+import com.jerry.mekmm.api.recipes.cache.PlantingStationCachedRecipe;
 import com.jerry.mekmm.api.recipes.outputs.MoreMachineOutputHelper;
 import com.jerry.mekmm.client.recipe_viewer.MMRecipeViewerRecipeType;
 import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
 import com.jerry.mekmm.common.registries.MoreMachineBlocks;
 import com.jerry.mekmm.common.upgrade.PlantingUpgradeData;
+
 import mekanism.api.IContentsListener;
 import mekanism.api.RelativeSide;
 import mekanism.api.SerializationConstants;
@@ -47,6 +48,7 @@ import mekanism.common.tile.component.TileComponentEjector;
 import mekanism.common.tile.prefab.TileEntityProgressMachine;
 import mekanism.common.util.MekanismUtils;
 import mekanism.common.util.StatUtils;
+
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -54,6 +56,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -61,7 +64,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class TileEntityPlantingStation extends TileEntityProgressMachine<PlantingRecipe> implements IRecipeLookupHandler.ConstantUsageRecipeLookupHandler,
-        IDoubleRecipeLookupHandler.ItemChemicalRecipeLookupHandler<PlantingRecipe> {
+                                       IDoubleRecipeLookupHandler.ItemChemicalRecipeLookupHandler<PlantingRecipe> {
 
     public static final RecipeError NOT_ENOUGH_SPACE_SECONDARY_OUTPUT_ERROR = RecipeError.create();
     private static final List<RecipeError> TRACKED_ERROR_TYPES = List.of(
@@ -71,14 +74,13 @@ public class TileEntityPlantingStation extends TileEntityProgressMachine<Plantin
             RecipeError.NOT_ENOUGH_SECONDARY_INPUT,
             RecipeError.NOT_ENOUGH_OUTPUT_SPACE,
             NOT_ENOUGH_SPACE_SECONDARY_OUTPUT_ERROR,
-            RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT
-    );
+            RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT);
 
     public static final int BASE_TICKS_REQUIRED = 10 * SharedConstants.TICKS_PER_SECOND;
 
     public static final long MAX_GAS = 210;
 
-    //化学品存储槽
+    // 化学品存储槽
     public IChemicalTank chemicalTank;
 
     private final ChemicalUsageMultiplier chemicalUsageMultiplier;
@@ -95,7 +97,7 @@ public class TileEntityPlantingStation extends TileEntityProgressMachine<Plantin
     InputInventorySlot inputSlot;
     OutputInventorySlot mainOutputSlot;
     OutputInventorySlot secondaryOutputSlot;
-    //气罐槽
+    // 气罐槽
     ChemicalInventorySlot chemicalSlot;
     EnergyInventorySlot energySlot;
 
@@ -197,7 +199,7 @@ public class TileEntityPlantingStation extends TileEntityProgressMachine<Plantin
             cachedRecipe = MoreMachineTwoInputCachedRecipe.planting(recipe, recheckAllRecipeErrors, itemInputHandler, chemicalInputHandler, outputHandler);
         }
         return cachedRecipe
-                //设置错误更改
+                // 设置错误更改
                 .setErrorsChanged(this::onErrorsChanged)
                 .setCanHolderFunction(this::canFunction)
                 .setActive(this::setActive)

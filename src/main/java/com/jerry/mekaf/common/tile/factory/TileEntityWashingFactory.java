@@ -1,6 +1,7 @@
 package com.jerry.mekaf.common.tile.factory;
 
 import com.jerry.mekaf.common.upgrade.FluidChemicalToChemicalUpgradeData;
+
 import mekanism.api.IContentsListener;
 import mekanism.api.Upgrade;
 import mekanism.api.chemical.ChemicalStack;
@@ -37,6 +38,7 @@ import mekanism.common.tile.component.config.slot.InventorySlotInfo;
 import mekanism.common.tile.interfaces.IHasDumpButton;
 import mekanism.common.upgrade.IUpgradeData;
 import mekanism.common.util.UpgradeUtils;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -44,6 +46,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -52,20 +55,17 @@ import java.util.Set;
 
 public class TileEntityWashingFactory extends TileEntityChemicalToChemicalFactory<FluidChemicalToChemicalRecipe> implements IHasDumpButton, FluidChemicalRecipeLookupHandler<FluidChemicalToChemicalRecipe> {
 
-    protected static final DoubleInputRecipeCache.CheckRecipeType<FluidStack, ChemicalStack, FluidChemicalToChemicalRecipe, ChemicalStack> OUTPUT_CHECK =
-            (recipe, fluidInput, chemicalInput, output) -> ChemicalStack.isSameChemical(recipe.getOutput(fluidInput, chemicalInput), output);
+    protected static final DoubleInputRecipeCache.CheckRecipeType<FluidStack, ChemicalStack, FluidChemicalToChemicalRecipe, ChemicalStack> OUTPUT_CHECK = (recipe, fluidInput, chemicalInput, output) -> ChemicalStack.isSameChemical(recipe.getOutput(fluidInput, chemicalInput), output);
     private static final List<RecipeError> TRACKED_ERROR_TYPES = List.of(
             RecipeError.NOT_ENOUGH_ENERGY,
             RecipeError.NOT_ENOUGH_ENERGY_REDUCED_RATE,
             RecipeError.NOT_ENOUGH_INPUT,
             RecipeError.NOT_ENOUGH_SECONDARY_INPUT,
             RecipeError.NOT_ENOUGH_OUTPUT_SPACE,
-            RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT
-    );
+            RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT);
     private static final Set<RecipeError> GLOBAL_ERROR_TYPES = Set.of(
             RecipeError.NOT_ENOUGH_ENERGY,
-            RecipeError.NOT_ENOUGH_SECONDARY_INPUT
-    );
+            RecipeError.NOT_ENOUGH_SECONDARY_INPUT);
 
     public BasicFluidTank fluidTank;
 
@@ -191,7 +191,7 @@ public class TileEntityWashingFactory extends TileEntityChemicalToChemicalFactor
         }
     }
 
-    //更改加速升级的显示的，默认是10x，气体工厂是256x
+    // 更改加速升级的显示的，默认是10x，气体工厂是256x
     @NotNull
     @Override
     public List<Component> getInfo(@NotNull Upgrade upgrade) {

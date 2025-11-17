@@ -1,6 +1,7 @@
 package com.jerry.mekmm.client.recipe_viewer.jei.machine;
 
 import com.jerry.mekmm.api.recipes.RecyclerRecipe;
+
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.client.gui.element.GuiUpArrow;
 import mekanism.client.gui.element.bar.GuiVerticalPowerBar;
@@ -12,13 +13,15 @@ import mekanism.client.recipe_viewer.jei.HolderRecipeCategory;
 import mekanism.client.recipe_viewer.type.IRecipeViewerRecipeType;
 import mekanism.common.inventory.container.slot.SlotOverlay;
 import mekanism.common.util.text.TextUtils;
+
+import net.minecraft.world.item.crafting.RecipeHolder;
+
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.placement.HorizontalAlignment;
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
-import net.minecraft.world.item.crafting.RecipeHolder;
 
 @NothingNullByDefault
 public class RecyclerRecipeCategory extends HolderRecipeCategory<RecyclerRecipe> {

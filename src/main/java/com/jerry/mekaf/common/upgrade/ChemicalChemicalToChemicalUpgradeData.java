@@ -6,6 +6,7 @@ import mekanism.common.inventory.slot.EnergyInventorySlot;
 import mekanism.common.inventory.slot.chemical.ChemicalInventorySlot;
 import mekanism.common.tile.component.ITileComponent;
 import mekanism.common.tile.interfaces.IRedstoneControl;
+
 import net.minecraft.core.HolderLookup;
 
 import java.util.Collections;
@@ -21,14 +22,14 @@ public class ChemicalChemicalToChemicalUpgradeData extends ChemicalToChemicalUpg
                                                  IEnergyContainer energyContainer, int operatingTicks, EnergyInventorySlot energySlot,
                                                  ChemicalInventorySlot chemicalSlot, IChemicalTank inputSlot, IChemicalTank inputTank, IChemicalTank outputTank,
                                                  List<ITileComponent> components) {
-        this(provider, redstone, controlType, energyContainer, new int[]{operatingTicks}, null, energySlot, chemicalSlot, Collections.singletonList(inputSlot), inputTank, Collections.singletonList(outputTank), false, components);
+        this(provider, redstone, controlType, energyContainer, new int[] { operatingTicks }, null, energySlot, chemicalSlot, Collections.singletonList(inputSlot), inputTank, Collections.singletonList(outputTank), false, components);
     }
 
     public ChemicalChemicalToChemicalUpgradeData(HolderLookup.Provider provider, boolean redstone, IRedstoneControl.RedstoneControl controlType,
                                                  IEnergyContainer energyContainer, int operatingTicks, long usedSoFar, EnergyInventorySlot energySlot,
                                                  ChemicalInventorySlot chemicalSlot, IChemicalTank inputSlot, IChemicalTank inputTank, IChemicalTank outputTank,
                                                  List<ITileComponent> components) {
-        this(provider, redstone, controlType, energyContainer, new int[]{operatingTicks}, new long[]{usedSoFar}, energySlot, chemicalSlot, Collections.singletonList(inputSlot), inputTank, Collections.singletonList(outputTank), false, components);
+        this(provider, redstone, controlType, energyContainer, new int[] { operatingTicks }, new long[] { usedSoFar }, energySlot, chemicalSlot, Collections.singletonList(inputSlot), inputTank, Collections.singletonList(outputTank), false, components);
     }
 
     public ChemicalChemicalToChemicalUpgradeData(HolderLookup.Provider provider, boolean redstone, IRedstoneControl.RedstoneControl controlType,

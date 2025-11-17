@@ -3,15 +3,16 @@ package com.jerry.datagen.common.recipe.compat;
 import com.jerry.datagen.common.recipe.builder.MoreMachineDataShapedRecipeBuilder;
 import com.jerry.datagen.common.recipe.imp.MoreMachineRecipeProvider;
 import com.jerry.datagen.common.recipe.pattern.Pattern;
+
 import com.jerry.mekaf.common.block.attribute.AttributeAdvancedFactoryType;
 import com.jerry.mekaf.common.block.prefab.BlockAdvancedFactoryMachine.BlockAdvancedFactory;
 import com.jerry.mekaf.common.content.blocktype.AdvancedFactoryType;
 import com.jerry.mekaf.common.item.block.machine.ItemBlockAdvancedFactory;
 import com.jerry.mekaf.common.registries.AdvancedFactoryBlocks;
+
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.common.util.MoreMachineEnumUtils;
-import fr.iglee42.evolvedmekanism.registries.EMTags;
-import fr.iglee42.evolvedmekanism.tiers.EMFactoryTier;
+
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.common.block.attribute.Attribute;
 import mekanism.common.registration.impl.BlockRegistryObject;
@@ -19,12 +20,16 @@ import mekanism.common.resource.PrimaryResource;
 import mekanism.common.resource.ResourceType;
 import mekanism.common.tags.MekanismTags;
 import mekanism.common.tier.FactoryTier;
+
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.common.Tags;
+
+import fr.iglee42.evolvedmekanism.registries.EMTags;
+import fr.iglee42.evolvedmekanism.tiers.EMFactoryTier;
 
 @NothingNullByDefault
 public class EMAdvancedFactoryRecipeProvider extends CompatRecipeProvider {

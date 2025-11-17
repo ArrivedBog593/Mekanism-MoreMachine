@@ -13,6 +13,7 @@ import mekanism.common.config.IMekanismConfig;
 import mekanism.common.registration.impl.BlockRegistryObject;
 import mekanism.common.registration.impl.FluidRegistryObject;
 import mekanism.common.registration.impl.MekanismDamageType;
+
 import net.minecraft.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.data.CachedOutput;
@@ -22,6 +23,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.EntityType;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.LanguageProvider;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -49,10 +51,10 @@ public abstract class BaseLanguageProvider extends LanguageProvider {
         this.modid = modid;
         this.modName = modName;
         this.basicModName = modName.replaceAll(":", "");
-        altProviders = new ConvertibleLanguageProvider[]{
-              new UpsideDownLanguageProvider(output, modid),
-              new NonAmericanLanguageProvider(output, modid, "en_au"),
-              new NonAmericanLanguageProvider(output, modid, "en_gb")
+        altProviders = new ConvertibleLanguageProvider[] {
+                new UpsideDownLanguageProvider(output, modid),
+                new NonAmericanLanguageProvider(output, modid, "en_au"),
+                new NonAmericanLanguageProvider(output, modid, "en_gb")
         };
     }
 

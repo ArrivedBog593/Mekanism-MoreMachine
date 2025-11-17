@@ -2,6 +2,7 @@ package com.jerry.mekaf.common.tile.factory;
 
 import com.jerry.mekaf.common.inventory.slot.AdvancedFactoryInputInventorySlot;
 import com.jerry.mekaf.common.upgrade.PRCUpgradeData;
+
 import mekanism.api.Action;
 import mekanism.api.IContentsListener;
 import mekanism.api.Upgrade;
@@ -45,6 +46,7 @@ import mekanism.common.tile.component.config.slot.ChemicalSlotInfo;
 import mekanism.common.tile.interfaces.IHasDumpButton;
 import mekanism.common.upgrade.IUpgradeData;
 import mekanism.common.util.MekanismUtils;
+
 import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -54,6 +56,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.util.ItemStackMap;
 import net.neoforged.neoforge.fluids.FluidStack;
+
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -65,14 +68,14 @@ import java.util.Set;
 import java.util.function.ToIntBiFunction;
 
 public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFactoryBase<PressurizedReactionRecipe> implements IHasDumpButton,
-        ItemFluidChemicalRecipeLookupHandler<PressurizedReactionRecipe> {
+                                                  ItemFluidChemicalRecipeLookupHandler<PressurizedReactionRecipe> {
 
     public static final RecipeError NOT_ENOUGH_ITEM_INPUT_ERROR = RecipeError.create();
     public static final RecipeError NOT_ENOUGH_FLUID_INPUT_ERROR = RecipeError.create();
     public static final RecipeError NOT_ENOUGH_CHEMICAL_INPUT_ERROR = RecipeError.create();
     public static final RecipeError NOT_ENOUGH_SPACE_ITEM_OUTPUT_ERROR = RecipeError.create();
     public static final RecipeError NOT_ENOUGH_SPACE_GAS_OUTPUT_ERROR = RecipeError.create();
-    //单个槽位报错，例如输入槽和输出槽
+    // 单个槽位报错，例如输入槽和输出槽
     private static final List<RecipeError> TRACKED_ERROR_TYPES = List.of(
             RecipeError.NOT_ENOUGH_ENERGY,
             NOT_ENOUGH_ITEM_INPUT_ERROR,
@@ -80,15 +83,13 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
             NOT_ENOUGH_CHEMICAL_INPUT_ERROR,
             NOT_ENOUGH_SPACE_ITEM_OUTPUT_ERROR,
             NOT_ENOUGH_SPACE_GAS_OUTPUT_ERROR,
-            RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT
-    );
-    //GLOBAL对应要统一处理的错误例如这里的输出储罐，在监听时应该用GLOBAL声明的Error才能正常报错
+            RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT);
+    // GLOBAL对应要统一处理的错误例如这里的输出储罐，在监听时应该用GLOBAL声明的Error才能正常报错
     private static final Set<RecipeError> GLOBAL_ERROR_TYPES = Set.of(
             RecipeError.NOT_ENOUGH_ENERGY,
             NOT_ENOUGH_FLUID_INPUT_ERROR,
             NOT_ENOUGH_CHEMICAL_INPUT_ERROR,
-            NOT_ENOUGH_SPACE_GAS_OUTPUT_ERROR
-    );
+            NOT_ENOUGH_SPACE_GAS_OUTPUT_ERROR);
 
     private static final int BASE_DURATION = 5 * SharedConstants.TICKS_PER_SECOND;
 
@@ -160,7 +161,8 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
                 lookupMonitor.unpause();
             };
             OutputInventorySlot outputSlot = OutputInventorySlot.at(updateSortingAndUnpause, getXPos(i), 57);
-            //Note: As we are an item factory that has comparator's based on items we can just use the monitor as a listener directly
+            // Note: As we are an item factory that has comparator's based on items we can just use the monitor as a
+            // listener directly
             AdvancedFactoryInputInventorySlot inputSlot = AdvancedFactoryInputInventorySlot.create(this, i, outputSlot, outputChemicalTank, recipeCacheLookupMonitors[i], getXPos(i), 13);
             int index = i;
             builder.addSlot(inputSlot).tracksWarnings(slot -> slot.warning(WarningType.NO_MATCHING_RECIPE, getWarningCheck(NOT_ENOUGH_ITEM_INPUT_ERROR, index)));
@@ -188,7 +190,7 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
         if (update) {
             recalculateUpgrades(Upgrade.SPEED);
         }
-        //Ensure we take our recipe's energy per tick into account
+        // Ensure we take our recipe's energy per tick into account
         energyContainer.updateEnergyPerTick();
     }
 
@@ -257,21 +259,22 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
     @Nullable
     protected PressurizedReactionRecipe getRecipeForInput(int process, @NotNull ItemStack fallbackInput, @NotNull IInventorySlot outputSlot, @NotNull IChemicalTank outputTank, boolean updateCache) {
         if (!CommonWorldTickHandler.flushTagAndRecipeCaches) {
-            //If our recipe caches are valid, grab our cached recipe and see if it is still valid
+            // If our recipe caches are valid, grab our cached recipe and see if it is still valid
             CachedRecipe<PressurizedReactionRecipe> cached = getCachedRecipe(process);
             if (isCachedRecipeValid(cached, fallbackInput)) {
-                //Our input matches the recipe we have cached for this slot
+                // Our input matches the recipe we have cached for this slot
                 return cached.getRecipe();
             }
         }
-        //If there is no cached item input, or it doesn't match our fallback then it is an out of date cache, so we ignore the fact that we have a cache
+        // If there is no cached item input, or it doesn't match our fallback then it is an out of date cache, so we
+        // ignore the fact that we have a cache
         PressurizedReactionRecipe foundRecipe = findRecipe(process, fallbackInput, outputSlot, outputTank);
         if (foundRecipe == null) {
-            //We could not find any valid recipe for the given item that matches the items in the current output slots
+            // We could not find any valid recipe for the given item that matches the items in the current output slots
             return null;
         }
         if (updateCache) {
-            //If we want to update the cache, then create a new cache with the recipe we found and update the cache
+            // If we want to update the cache, then create a new cache with the recipe we found and update the cache
             recipeCacheLookupMonitors[process].updateCachedRecipe(foundRecipe);
         }
         return foundRecipe;
@@ -305,7 +308,7 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
             energySlot.deserializeNBT(provider, data.energySlot.serializeNBT(provider));
             System.arraycopy(data.progress, 0, progress, 0, data.progress.length);
             for (int i = 0; i < data.inputSlots.size(); i++) {
-                //Copy the stack using NBT so that if it is not actually valid due to a reload we don't crash
+                // Copy the stack using NBT so that if it is not actually valid due to a reload we don't crash
                 inputItemSlots.get(i).deserializeNBT(provider, data.inputSlots.get(i).serializeNBT(provider));
             }
             for (int i = 0; i < data.outputSlots.size(); i++) {
@@ -332,9 +335,10 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
     public void dump() {
         inputFluidTank.setStack(FluidStack.EMPTY);
         if (!isRemote() && IRadiationManager.INSTANCE.isRadiationEnabled() && shouldDumpRadiation()) {
-            //If we are on a server and radiation is enabled dump all gas tanks with radioactive materials
-            // Note: we handle clearing radioactive contents later in drop calculation due to when things are written to NBT
-            //点击按钮后只需要释放输入储罐的辐射
+            // If we are on a server and radiation is enabled dump all gas tanks with radioactive materials
+            // Note: we handle clearing radioactive contents later in drop calculation due to when things are written to
+            // NBT
+            // 点击按钮后只需要释放输入储罐的辐射
             IRadiationManager.INSTANCE.dumpRadiation(getWorldNN(), worldPosition, List.of(inputChemicalTank), false);
         }
         inputChemicalTank.setEmpty();
@@ -354,7 +358,7 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
                 recipeProcessInfo.processes.add(processInfo);
                 recipeProcessInfo.totalCount += inputStack.getCount();
                 if (recipeProcessInfo.lazyMinPerSlot == null && !CommonWorldTickHandler.flushTagAndRecipeCaches) {
-                    //If we don't have a lazily initialized min per slot calculation set for it yet
+                    // If we don't have a lazily initialized min per slot calculation set for it yet
                     // and our cache is not invalid/out of date due to a reload
                     CachedRecipe<PressurizedReactionRecipe> cachedRecipe = getCachedRecipe(processInfo.process());
                     if (isCachedRecipeValid(cachedRecipe, inputStack)) {
@@ -369,24 +373,24 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
             }
         }
         if (processes.isEmpty()) {
-            //If all input slots are empty, just exit
+            // If all input slots are empty, just exit
             return;
         }
         for (Map.Entry<ItemStack, PRCRecipeProcessInfo> entry : processes.entrySet()) {
             PRCRecipeProcessInfo recipeProcessInfo = entry.getValue();
             if (recipeProcessInfo.lazyMinPerSlot == null) {
                 recipeProcessInfo.item = entry.getKey();
-                //If we don't have a lazy initializer for our minPerSlot setup, that means that there is
+                // If we don't have a lazy initializer for our minPerSlot setup, that means that there is
                 // no valid cached recipe for any of the slots of this type currently, so we want to try and
                 // get the recipe we will have for the first slot, once we end up with more items in the stack
                 recipeProcessInfo.lazyMinPerSlot = (info, factory) -> {
-                    //Note: We put all of this logic in the lazy init, so that we don't actually call any of this
+                    // Note: We put all of this logic in the lazy init, so that we don't actually call any of this
                     // until it is needed. That way if we have no empty slots and all our input slots are filled
                     // we don't do any extra processing here, and can properly short circuit
                     ItemStack item = (ItemStack) info.item;
                     ItemStack largerInput = item.copyWithCount(Math.min(item.getMaxStackSize(), info.totalCount));
                     PRCProcessInfo processInfo = info.processes.getFirst();
-                    //Try getting a recipe for our input with a larger size, and update the cache if we find one
+                    // Try getting a recipe for our input with a larger size, and update the cache if we find one
                     info.recipe = factory.getRecipeForInput(processInfo.process(), largerInput, processInfo.outputSlot(), outputChemicalTank, true);
                     if (info.recipe != null) {
                         return factory.getNeededInput(info.recipe, largerInput);
@@ -396,12 +400,12 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
             }
         }
         if (!emptyProcesses.isEmpty()) {
-            //If we have any empty slots, we need to factor them in as valid slots for items to transferred to
+            // If we have any empty slots, we need to factor them in as valid slots for items to transferred to
             addEmptySlotsAsTargets(processes, emptyProcesses);
-            //Note: Any remaining empty slots are "ignored" as we don't have any
+            // Note: Any remaining empty slots are "ignored" as we don't have any
             // spare items to distribute to them
         }
-        //Distribute items among the slots
+        // Distribute items among the slots
         distributeItems(processes);
     }
 
@@ -411,37 +415,37 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
             int minPerSlot = recipeProcessInfo.getMinPerSlot(this);
             int maxSlots = recipeProcessInfo.totalCount / minPerSlot;
             if (maxSlots <= 1) {
-                //If we don't have enough to even fill the input for a slot for a single recipe; skip
+                // If we don't have enough to even fill the input for a slot for a single recipe; skip
                 continue;
             }
-            //Otherwise, if we have at least enough items for two slots see how many we already have with items in them
+            // Otherwise, if we have at least enough items for two slots see how many we already have with items in them
             int processCount = recipeProcessInfo.processes.size();
             if (maxSlots <= processCount) {
-                //If we don't have enough extra to fill another slot skip
+                // If we don't have enough extra to fill another slot skip
                 continue;
             }
-            //Note: This is some arbitrary input stack one of the stacks contained
+            // Note: This is some arbitrary input stack one of the stacks contained
             ItemStack sourceStack = entry.getKey();
             int emptyToAdd = maxSlots - processCount;
             int added = 0;
             List<PRCProcessInfo> toRemove = new ArrayList<>();
             for (PRCProcessInfo emptyProcess : emptyProcesses) {
                 if (inputProducesOutput(emptyProcess.process(), sourceStack, emptyProcess.outputSlot(), outputChemicalTank, true)) {
-                    //If the input is valid for the stuff in the empty process' output slot
+                    // If the input is valid for the stuff in the empty process' output slot
                     // then add our empty process to our recipeProcessInfo, and mark
                     // the empty process as accounted for
                     recipeProcessInfo.processes.add(emptyProcess);
                     toRemove.add(emptyProcess);
                     added++;
                     if (added >= emptyToAdd) {
-                        //If we added as many as we could based on how much input we have; exit
+                        // If we added as many as we could based on how much input we have; exit
                         break;
                     }
                 }
             }
             emptyProcesses.removeAll(toRemove);
             if (emptyProcesses.isEmpty()) {
-                //We accounted for all our empty processes, stop looking at inputs
+                // We accounted for all our empty processes, stop looking at inputs
                 // for purposes of distributing empty slots among them
                 break;
             }
@@ -453,15 +457,16 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
             PRCRecipeProcessInfo recipeProcessInfo = entry.getValue();
             int processCount = recipeProcessInfo.processes.size();
             if (processCount == 1) {
-                //If there is only one process with the item in it; short-circuit, no balancing is needed
+                // If there is only one process with the item in it; short-circuit, no balancing is needed
                 continue;
             }
             ItemStack item = entry.getKey();
-            //Note: This isn't based on any limits the slot may have (but we currently don't have any reduced ones here, so it doesn't matter)
+            // Note: This isn't based on any limits the slot may have (but we currently don't have any reduced ones
+            // here, so it doesn't matter)
             int maxStackSize = item.getMaxStackSize();
             int numberPerSlot = recipeProcessInfo.totalCount / processCount;
             if (numberPerSlot == maxStackSize) {
-                //If all the slots are already maxed out; short-circuit, no balancing is needed
+                // If all the slots are already maxed out; short-circuit, no balancing is needed
                 continue;
             }
             int remainder = recipeProcessInfo.totalCount % processCount;
@@ -469,7 +474,7 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
             if (minPerSlot > 1) {
                 int perSlotRemainder = numberPerSlot % minPerSlot;
                 if (perSlotRemainder > 0) {
-                    //Reduce the number we distribute per slot by what our excess
+                    // Reduce the number we distribute per slot by what our excess
                     // is if we are trying to balance it by the size of the input
                     // required by the recipe
                     numberPerSlot -= perSlotRemainder;
@@ -483,7 +488,7 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
                     // slot while we still have a remainder, will make sure
                 }
                 if (numberPerSlot + minPerSlot > maxStackSize) {
-                    //If adding how much we want per slot would cause the slot to overflow
+                    // If adding how much we want per slot would cause the slot to overflow
                     // we reduce how much we set per slot to how much there is room for
                     // Note: we can do this safely because while our remainder may be
                     // processCount * minPerSlot - 1 (as shown above), if we are in
@@ -501,26 +506,29 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
                 AdvancedFactoryInputInventorySlot inputSlot = processInfo.inputSlot();
                 int sizeForSlot = numberPerSlot;
                 if (remainder > 0) {
-                    //If we have a remainder, factor it into our slots
+                    // If we have a remainder, factor it into our slots
                     if (remainder > minPerSlot) {
-                        //If our remainder is greater than how much we need to fill out the min amount for the slot based
-                        // on the recipe then, to keep it distributed as evenly as possible, increase our size for the slot
+                        // If our remainder is greater than how much we need to fill out the min amount for the slot
+                        // based
+                        // on the recipe then, to keep it distributed as evenly as possible, increase our size for the
+                        // slot
                         // by how much we need, and decrease our remainder by that amount
                         sizeForSlot += minPerSlot;
                         remainder -= minPerSlot;
                     } else {
-                        //Otherwise, add our entire remainder to the size for slot, and mark our remainder as fully used
+                        // Otherwise, add our entire remainder to the size for slot, and mark our remainder as fully
+                        // used
                         sizeForSlot += remainder;
                         remainder = 0;
                     }
                 }
                 if (inputSlot.isEmpty()) {
-                    //Note: sizeForSlot should never be zero here as we would not have added
+                    // Note: sizeForSlot should never be zero here as we would not have added
                     // the empty slot to this item's distribution grouping if it would not
                     // end up getting any items; check it just in case though before creating
                     // a stack for the slot and setting it
                     if (sizeForSlot > 0) {
-                        //Note: We use setStackUnchecked here, as there is a very small chance that
+                        // Note: We use setStackUnchecked here, as there is a very small chance that
                         // the stack is not actually valid for the slot because of a reload causing
                         // recipes to change. If this is the case, then we want to properly not crash,
                         // but we would rather not add any extra overhead about revalidating the item
@@ -528,16 +536,18 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
                         inputSlot.setStackUnchecked(item.copyWithCount(sizeForSlot));
                     }
                 } else {
-                    //Slot is not currently empty
+                    // Slot is not currently empty
                     if (sizeForSlot == 0) {
-                        //If the amount of the item we want to set it to is zero (all got used by earlier stacks, which might
-                        // happen if the recipe requires a stacked input (minPerSlot > 1)), then we need to set the slot to empty
+                        // If the amount of the item we want to set it to is zero (all got used by earlier stacks, which
+                        // might
+                        // happen if the recipe requires a stacked input (minPerSlot > 1)), then we need to set the slot
+                        // to empty
                         inputSlot.setEmpty();
                     } else if (inputSlot.getCount() != sizeForSlot) {
-                        //Otherwise, if our slot doesn't already contain the amount we want it to,
+                        // Otherwise, if our slot doesn't already contain the amount we want it to,
                         // we need to adjust how much is stored in it, and log an error if it changed
                         // by a different amount then we expected
-                        //Note: We use setStackSize here rather than setStack to avoid an unnecessary stack copy call
+                        // Note: We use setStackSize here rather than setStack to avoid an unnecessary stack copy call
                         // as copying item stacks can sometimes be rather expensive in a heavily modded environment
                         MekanismUtils.logMismatchedStackSize(sizeForSlot, inputSlot.setStackSize(sizeForSlot, Action.EXECUTE));
                     }
@@ -547,8 +557,7 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
     }
 
     public record PRCProcessInfo(int process, @NotNull AdvancedFactoryInputInventorySlot inputSlot,
-                                 @NotNull IInventorySlot outputSlot) {
-    }
+                                 @NotNull IInventorySlot outputSlot) {}
 
     protected static class PRCRecipeProcessInfo {
 
@@ -562,7 +571,7 @@ public class TileEntityPressurizedReactingFactory extends TileEntityAdvancedFact
 
         public int getMinPerSlot(TileEntityPressurizedReactingFactory factory) {
             if (lazyMinPerSlot != null) {
-                //Get the value lazily
+                // Get the value lazily
                 minPerSlot = Math.max(1, lazyMinPerSlot.applyAsInt(this, factory));
                 lazyMinPerSlot = null;
             }

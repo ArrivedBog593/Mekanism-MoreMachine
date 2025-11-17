@@ -11,6 +11,7 @@ import mekanism.common.attachments.containers.creator.IBasicContainerCreator;
 import mekanism.common.config.MekanismConfig;
 import mekanism.common.recipe.IMekanismRecipeTypeProvider;
 import mekanism.common.recipe.lookup.cache.IInputRecipeCache;
+
 import net.minecraft.world.item.crafting.RecipeInput;
 
 import java.util.ArrayList;
@@ -26,8 +27,7 @@ public class AFChemicalTanksBuilder {
 
     protected final List<IBasicContainerCreator<? extends ComponentBackedChemicalTank>> tankCreators = new ArrayList<>();
 
-    protected AFChemicalTanksBuilder() {
-    }
+    protected AFChemicalTanksBuilder() {}
 
     public BaseContainerCreator<AttachedChemicals, ComponentBackedChemicalTank> build() {
         return new AFBaseChemicalTankBuilder(tankCreators);

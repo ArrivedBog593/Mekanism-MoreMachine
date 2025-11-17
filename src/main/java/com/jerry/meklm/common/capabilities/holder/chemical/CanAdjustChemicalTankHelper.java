@@ -7,7 +7,9 @@ import mekanism.api.chemical.IChemicalTank;
 import mekanism.common.capabilities.holder.chemical.IChemicalTankHolder;
 import mekanism.common.lib.radiation.RadiationManager;
 import mekanism.common.tile.interfaces.ISideConfiguration;
+
 import net.minecraft.core.Direction;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -25,10 +27,12 @@ public class CanAdjustChemicalTankHelper {
     }
 
     public static BiPredicate<ChemicalStack, @NotNull AutomationType> radioactiveInputTankPredicate(Supplier<IChemicalTank> outputTank) {
-        //Allow extracting out of the input gas tank if it isn't external OR the output tank is empty AND the input is radioactive
-        //Note: This only is the case if radiation is enabled as otherwise things like gauge droppers can work as the way to remove radioactive contents
+        // Allow extracting out of the input gas tank if it isn't external OR the output tank is empty AND the input is
+        // radioactive
+        // Note: This only is the case if radiation is enabled as otherwise things like gauge droppers can work as the
+        // way to remove radioactive contents
         return (type, automationType) -> automationType != AutomationType.EXTERNAL ||
-                                         (outputTank.get().isEmpty() && type.isRadioactive() && RadiationManager.isGlobalRadiationEnabled());
+                (outputTank.get().isEmpty() && type.isRadioactive() && RadiationManager.isGlobalRadiationEnabled());
     }
 
     public static CanAdjustChemicalTankHelper forSide(Supplier<Direction> facingSupplier) {
@@ -36,7 +40,7 @@ public class CanAdjustChemicalTankHelper {
     }
 
     public static CanAdjustChemicalTankHelper forSide(Supplier<Direction> facingSupplier, @Nullable Predicate<RelativeSide> insertPredicate,
-                                                   @Nullable Predicate<RelativeSide> extractPredicate) {
+                                                      @Nullable Predicate<RelativeSide> extractPredicate) {
         return new CanAdjustChemicalTankHelper(new CanAdjustChemicalTankHolder(facingSupplier, insertPredicate, extractPredicate));
     }
 

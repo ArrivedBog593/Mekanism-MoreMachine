@@ -6,6 +6,7 @@ import com.jerry.mekmm.common.attachments.component.ConnectionConfig;
 import com.jerry.mekmm.common.network.to_server.PacketViewConnection;
 import com.jerry.mekmm.common.tile.TileEntityWirelessTransmissionStation;
 import com.jerry.mekmm.common.util.MoreMachineUtils;
+
 import mekanism.api.text.EnumColor;
 import mekanism.client.gui.IGuiWrapper;
 import mekanism.client.gui.element.GuiInnerScreen;
@@ -14,6 +15,7 @@ import mekanism.client.gui.element.slot.GuiSequencedSlotDisplay;
 import mekanism.client.gui.element.window.GuiWindow;
 import mekanism.common.inventory.container.SelectedWindowData;
 import mekanism.common.network.PacketUtils;
+
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -24,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-//TODO:所有有关无线连接的gui都应该优化，就像mek的过滤器gui那样
+// TODO:所有有关无线连接的gui都应该优化，就像mek的过滤器gui那样
 public class GuiViewConnection extends GuiWindow {
 
     static int MINER_FILTER_WIDTH = 173;
@@ -43,45 +45,45 @@ public class GuiViewConnection extends GuiWindow {
         this.level = level;
         this.config = config;
         addChild(new GuiInnerScreen(gui(), relativeX + 29, relativeY + 18, getScreenWidth(), getScreenHeight(), this::getScreenText).clearFormat());
-        //删除连接
+        // 删除连接
         addChild(new TranslationButton(gui(), getLeftButtonX(), relativeY + 20 + getScreenHeight(), 60, 20, MoreMachineLang.BUTTON_DISCONNECT, (element, mouseX, mouseY) -> {
             if (config != null) {
-                //TODO:删除连接但目前有bug
+                // TODO:删除连接但目前有bug
                 PacketUtils.sendToServer(new PacketViewConnection(tile.getBlockPos(), config));
             }
             return close(element, mouseX, mouseY);
         }));
-        //高亮位置
+        // 高亮位置
         addChild(new TranslationButton(gui(), getLeftButtonX() + 62, relativeY + 20 + getScreenHeight(), 60, 20, MoreMachineLang.BUTTON_HIGHLIGHT, (element, mouseX, mouseY) -> {
             if (config != null) {
-                //高亮显示
+                // 高亮显示
                 float r = 0, g = 0, b = 0;
                 switch (config.type()) {
-                    //红
+                    // 红
                     case ENERGY -> {
                         r = 1.0f;
                         g = 0.0f;
                         b = 0.0f;
                     }
-                    //蓝
+                    // 蓝
                     case FLUID -> {
                         r = 0.0f;
                         g = 0.4f;
                         b = 1.0f;
                     }
-                    //黄
+                    // 黄
                     case CHEMICAL -> {
                         r = 1.0f;
                         g = 1.0f;
                         b = 0.0f;
                     }
-                    //灰
+                    // 灰
                     case ITEM -> {
                         r = 0.0f;
                         g = 1.0f;
                         b = 0.0f;
                     }
-                    //橙
+                    // 橙
                     case HEAT -> {
                         r = 1.0f;
                         g = 0.5f;

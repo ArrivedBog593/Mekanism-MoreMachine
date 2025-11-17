@@ -1,6 +1,7 @@
 package com.jerry.mekmm.api.recipes.cache;
 
 import com.jerry.mekmm.api.recipes.PlantingRecipe;
+
 import mekanism.api.chemical.ChemicalStack;
 import mekanism.api.functions.ConstantPredicates;
 import mekanism.api.recipes.MekanismRecipe;
@@ -9,15 +10,19 @@ import mekanism.api.recipes.ingredients.InputIngredient;
 import mekanism.api.recipes.inputs.IInputHandler;
 import mekanism.api.recipes.inputs.ILongInputHandler;
 import mekanism.api.recipes.outputs.IOutputHandler;
+
 import net.minecraft.world.item.ItemStack;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.*;
 
 public class MoreMachineTwoInputCachedRecipe<INPUT_A, INPUT_B, OUTPUT, RECIPE extends MekanismRecipe<?> & BiPredicate<INPUT_A, INPUT_B>> extends TwoInputCachedRecipe<INPUT_A, INPUT_B, OUTPUT, RECIPE> {
+
     /**
      * @param recipe                   Recipe.
-     * @param recheckAllErrors         Returns {@code true} if processing should be continued even if an error is hit in order to gather all the errors. It is recommended
+     * @param recheckAllErrors         Returns {@code true} if processing should be continued even if an error is hit in
+     *                                 order to gather all the errors. It is recommended
      *                                 to not do this every tick or if there is no one viewing recipes.
      * @param inputHandler             Main input handler.
      * @param secondaryInputHandler    Secondary input handler.

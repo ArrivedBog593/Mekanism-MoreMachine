@@ -4,10 +4,11 @@ import com.jerry.mekmm.client.render.RenderLineHelper;
 import com.jerry.mekmm.common.attachments.component.ConnectionConfig;
 import com.jerry.mekmm.common.item.ItemConnector;
 import com.jerry.mekmm.common.tile.TileEntityWirelessTransmissionStation;
-import com.mojang.blaze3d.vertex.PoseStack;
+
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.client.render.tileentity.MekanismTileEntityRenderer;
 import mekanism.common.lib.transmitter.TransmissionType;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider.Context;
@@ -17,6 +18,8 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
+
+import com.mojang.blaze3d.vertex.PoseStack;
 import org.joml.Vector3f;
 
 import java.util.Collection;
@@ -122,6 +125,5 @@ public class RenderWirelessTransmissionStation extends MekanismTileEntityRendere
     /**
      * 简单的 RGB 颜色封装
      */
-    private record ColorRGB(float r, float g, float b) {
-    }
+    private record ColorRGB(float r, float g, float b) {}
 }

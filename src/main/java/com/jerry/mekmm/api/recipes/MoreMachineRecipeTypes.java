@@ -2,6 +2,7 @@ package com.jerry.mekmm.api.recipes;
 
 import mekanism.api.recipes.ItemStackToItemStackRecipe;
 import mekanism.common.Mekanism;
+
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeType;
