@@ -10,11 +10,11 @@ mysticalagriculture = "1.21.1-8.0.9"
 ## modrinth maven ##
 sodium = "mc1.21.1-0.6.13-neoforge"
 iris = "1.8.8+1.21.1-neoforge"
-modernui = "6ksT8CWg" #3.11.1.6
-jade = "15.10.0+neoforge"
-jer = "1.4.0.247"
-ferritecore = "6.0.1"
-modernfix = "4SPHwiDB"
+modernui = "RM220vWV" #3.12.0.2
+jade = "15.10.3+neoforge"
+jer = "1.6.0.17"
+ferritecore = "7.0.2-neoforge"
+modernfix = "5.25.1+mc1.21.1"
 
 ## curseforge maven ##
 mekanismcovers = "6071684"
