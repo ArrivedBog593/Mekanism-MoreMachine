@@ -1,0 +1,69 @@
+dependencies {
+    compileOnly(libs.jetbrains.annotations)
+
+    clientLocalRuntime(forge.jecharacters.get())
+
+    // Recipe Viewers
+    compileOnly(forge.bundles.jei)
+    compileOnly(forge.emi)
+//    modCompileOnly(forge.jer)
+
+    // Mekanism
+    compileOnly(forge.mekanism)
+    compileOnly(variantOf(forge.mekanism) { classifier("additions") })
+    compileOnly(variantOf(forge.mekanism) { classifier("generators") })
+    compileOnly(variantOf(forge.mekanism) { classifier("tools") })
+
+    compileOnly(forge.mekanismcovers)
+    compileOnly(forge.evolvedmekanism)
+
+    // mysticalAgriculture
+    compileOnly(forge.mysticalagriculture)
+
+    // immersiveengineering
+    compileOnly(forge.immersiveengineering)
+
+    // CC: Tweaked
+    compileOnly(forge.cc.tweaked.core.api)
+    compileOnly(forge.cc.tweaked.forge.api)
+
+    // WAILA-likes
+    compileOnly(forge.jade)
+
+    // Standard runtime mods //
+    localRuntime(forge.jade)
+    localRuntime(forge.modernfix)
+    localRuntime(forge.ferritecore)
+
+    // Mekanism
+    localRuntime(forge.mekanism)
+    localRuntime(variantOf(forge.mekanism) { classifier("additions") })
+    localRuntime(variantOf(forge.mekanism) { classifier("generators") })
+    localRuntime(variantOf(forge.mekanism) { classifier("tools") })
+
+    localRuntime(forge.mekanismcovers)
+    localRuntime(forge.igleelibrary)
+    localRuntime(forge.evolvedmekanism)
+
+    // mysticalAgriculture
+    localRuntime(forge.cucumber)
+    localRuntime(forge.mysticalagriculture)
+
+    // immersiveengineering
+    localRuntime(forge.immersiveengineering)
+
+    // Runtime Recipe Viewers - uncomment whichever one you want to use //
+//    modLocalRuntime(forge.jer)
+//    modLocalRuntime(forge.emi)
+    localRuntime(forge.jei.forge.impl)
+
+    localRuntime(forge.modernui)
+
+    // Client-only runtime mods //
+    clientLocalRuntime(forge.sodium)
+    clientLocalRuntime(forge.iris)
+
+    //////////////////////////////////////////////////////
+    // Runtime mods for dev testing with unclean client //
+    //////////////////////////////////////////////////////
+}
