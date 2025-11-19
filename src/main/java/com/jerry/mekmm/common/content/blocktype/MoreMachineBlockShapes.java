@@ -19,15 +19,49 @@ public class MoreMachineBlockShapes {
     }
 
     public static final VoxelShape[] FULL_BLOCK_SHAPE = new VoxelShape[EnumUtils.HORIZONTAL_DIRECTIONS.length];
+    // Machine
+    public static final VoxelShape[] PLANTING_STATION = new VoxelShape[EnumUtils.HORIZONTAL_DIRECTIONS.length];
     // Factories
     public static final VoxelShape[] RECYCLER_FACTORY = new VoxelShape[EnumUtils.HORIZONTAL_DIRECTIONS.length];
     public static final VoxelShape[] WIRELESS_CHARGING_STATION = new VoxelShape[EnumUtils.HORIZONTAL_DIRECTIONS.length];
+    public static final VoxelShape[] WIRELESS_TRANSMISSION_STATION = new VoxelShape[EnumUtils.HORIZONTAL_DIRECTIONS.length];
     // Doll
     public static final VoxelShape[] AUTHOR_DOLL = new VoxelShape[EnumUtils.HORIZONTAL_DIRECTIONS.length];
 
     static {
         VoxelShapeUtils.setShape(VoxelShapeUtils.combine(
                 box(0, 0, 0, 16, 16, 16)), FULL_BLOCK_SHAPE);
+
+        VoxelShapeUtils.setShape(VoxelShapeUtils.combine(
+                box(4, 3, 0, 12, 12, 16),
+                box(3.5, 4.5, 4, 4, 10, 12),
+                box(12.5, 3, 0, 16, 11.5, 16),
+                box(12.5, 11.5, 3, 16, 12, 13),
+                box(12, 4.5, 4, 12.5, 10, 12),
+                box(0, 11.5, 3, 3.5, 12, 13),
+                box(0, 3, 0, 3.5, 11.5, 16),
+                box(0, 12, 0, 16, 14, 16),
+                box(1, 14, 1, 3.5, 28, 3.5),
+                box(12.5, 14, 1, 15, 28, 3.5),
+                box(1, 14, 12.5, 3.5, 28, 15),
+                box(12.5, 14, 12.5, 15, 28, 15),
+                box(2.5, 14, 3.5, 2.5, 28, 12.5),
+                box(13.5, 14, 3.5, 13.5, 28, 12.5),
+                box(3.5, 14, 2.5, 12.5, 28, 2.5),
+                box(3.5, 14, 13.5, 12.5, 28, 13.5),
+                box(1, 28, 1, 15, 31.98, 15),
+                box(3, 14, 8, 13, 25, 8),
+                box(3, 14, 8, 13, 25, 8),
+                box(0, 0, 0, 16, 3, 16),
+                box(-0.01, 4, 4, -0.01, 12, 12),
+                box(-0.02, 5, 5, -0.02, 11, 11),
+                box(16.01, 4, 4, 16.01, 12, 12),
+                box(16.02, 5, 5, 16.02, 11, 11),
+                box(4, 4, 16.01, 12, 12, 16.01),
+                box(5, 5, 16.02, 11, 11, 16.02),
+                box(4, 31.99, 4, 12, 31.99, 12),
+                box(5, 32, 5, 11, 32, 11),
+                box(6, 26, 6, 10, 28, 10)), PLANTING_STATION);
 
         VoxelShapeUtils.setShape(VoxelShapeUtils.combine(
                 box(0, 0, 0, 16, 16, 4), // front_panel
@@ -51,6 +85,39 @@ public class MoreMachineBlockShapes {
                 box(12, -10, 6, 15, -6, 10),
                 box(6, -10, 12, 10, -6, 15),
                 box(6, -10, 1, 10, -6, 4)).move(0, 1, 0), WIRELESS_CHARGING_STATION);
+
+        VoxelShapeUtils.setShape(VoxelShapeUtils.combine(
+                box(1, -16, 1, 15, -14, 15),
+                box(5, -16, 5, 11, -16, 11),
+                box(3, -14, 3, 13, -12, 13),
+                box(4, -12, 4, 12, -4, 12),
+                box(4, -12, 0, 12, -4, 1),
+                box(5, -11, 0, 11, -5, 0),
+                box(5, -11, 1, 11, -5, 4),
+                box(0, -12, 4, 1, -4, 12),
+                box(0, -11, 5, 0, -5, 11),
+                box(1, -11, 5, 4, -5, 11),
+                box(4, -12, 15, 12, -4, 16),
+                box(5, -11, 16, 11, -5, 16),
+                box(5, -11, 12, 11, -5, 15),
+                box(15, -12, 4, 16, -4, 12),
+                box(16, -11, 5, 16, -5, 11),
+                box(12, -11, 5, 15, -5, 11),
+                box(6, -4, 6, 10, 19, 10),
+                box(5, -4, 5, 11, -2, 11),
+                box(5, 19, 5, 11, 23, 11),
+                box(6, 23, 6, 10, 28, 10),
+                box(6.5, 28, 6.5, 9.5, 29, 9.5),
+                box(7, 20, 2, 9, 22, 5),
+                box(4, 19, 1, 12, 23, 2),
+                box(7, 20, 11, 9, 22, 14),
+                box(4, 19, 14, 12, 23, 15),
+                box(0, 19, 1, 4, 23, 2),
+                box(12, 19, 1, 16, 23, 2),
+                box(0, 19, 14, 4, 23, 15),
+                box(12, 19, 14, 16, 23, 15),
+                box(4, 17, 7, 6, 21, 9),
+                box(10, 17, 7, 12, 21, 9)).move(0, 1, 0), WIRELESS_TRANSMISSION_STATION);
 
         VoxelShapeUtils.setShape(VoxelShapeUtils.combine(
                 box(4.35, 6.2, 7.35, 11.65, 13.5, 14.65), // head

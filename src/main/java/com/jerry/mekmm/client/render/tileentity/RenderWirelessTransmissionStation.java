@@ -17,6 +17,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -47,9 +48,7 @@ public class RenderWirelessTransmissionStation extends MekanismTileEntityRendere
      * 渲染单个连接
      */
     private void renderConnection(PoseStack matrix, MultiBufferSource renderer, BlockPos tilePos, ConnectionConfig config) {
-        // 计算起点: TileEntity 中心 (相对坐标)
-        // 在 TileEntityRenderer (0,3,0)
-        Vector3f start = new Vector3f(0.5f, 3.5f, 0.5f);
+        Vector3f start = new Vector3f(0.5f, 2.7f, 0.5f);
         BlockPos targetPos = config.pos();
         Direction targetFace = config.direction();
         // 计算相对坐标
@@ -109,17 +108,27 @@ public class RenderWirelessTransmissionStation extends MekanismTileEntityRendere
 
     @Override
     public boolean shouldRender(TileEntityWirelessTransmissionStation blockEntity, Vec3 cameraPos) {
+        return isHandHeldConnector() && super.shouldRender(blockEntity, cameraPos);
+    }
+
+    @Override
+    public AABB getRenderBoundingBox(TileEntityWirelessTransmissionStation blockEntity) {
+        BlockPos pos = blockEntity.getBlockPos();
+        if (isHandHeldConnector()) {
+            return new AABB(pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY() + 2, pos.getZ());
+        }
+        return super.getRenderBoundingBox(blockEntity);
+    }
+
+    private boolean isHandHeldConnector() {
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
-        boolean holdingConnector = false;
         if (player != null) {
             ItemStack mainHand = player.getMainHandItem();
             ItemStack offHand = player.getOffhandItem();
-            if (mainHand.getItem() instanceof ItemConnector || offHand.getItem() instanceof ItemConnector) {
-                holdingConnector = true;
-            }
+            return mainHand.getItem() instanceof ItemConnector || offHand.getItem() instanceof ItemConnector;
         }
-        return holdingConnector && super.shouldRender(blockEntity, cameraPos);
+        return false;
     }
 
     /**

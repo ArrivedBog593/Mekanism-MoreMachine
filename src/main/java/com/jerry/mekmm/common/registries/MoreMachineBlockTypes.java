@@ -60,6 +60,8 @@ public class MoreMachineBlockTypes {
             .withEnergyConfig(MoreMachineConfig.usage.plantingStation, MoreMachineConfig.storage.plantingStation)
             .with(AttributeUpgradeSupport.DEFAULT_ADVANCED_MACHINE_UPGRADES)
             .with(AttributeSideConfig.ADVANCED_ELECTRIC_MACHINE)
+            .withCustomShape(MoreMachineBlockShapes.PLANTING_STATION)
+            .with(AttributeHasBounding.ABOVE_ONLY)
             .withComputerSupport("plantingStation")
             .build();
 
@@ -174,7 +176,7 @@ public class MoreMachineBlockTypes {
             .withGui(() -> MoreMachineContainerTypes.WIRELESS_TRANSMISSION_STATION)
             .withEnergyConfig(MoreMachineConfig.storage.wirelessTransmitterStation)
             .withSideConfig(TransmissionType.ITEM, TransmissionType.CHEMICAL, TransmissionType.FLUID, TransmissionType.ENERGY, TransmissionType.HEAT)
-            .withCustomShape(MoreMachineBlockShapes.WIRELESS_CHARGING_STATION)
+            .withCustomShape(MoreMachineBlockShapes.WIRELESS_TRANSMISSION_STATION)
             .with(AttributeCustomSelectionBox.JSON)
             .without(AttributeUpgradeSupport.class)
             .withBounding(new HandleBoundingBlock() {
