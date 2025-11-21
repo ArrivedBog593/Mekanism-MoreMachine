@@ -82,6 +82,7 @@ public class MoreMachineBlockTypes {
             .withSound(MekanismSounds.OSMIUM_COMPRESSOR)
             .withEnergyConfig(MoreMachineConfig.usage.cnc_lathe, MoreMachineConfig.storage.cnc_lathe)
             .with(AttributeSideConfig.ELECTRIC_MACHINE)
+            .withCustomShape(MoreMachineBlockShapes.CNC_LATHE)
             .withComputerSupport("cnc_lathe")
             .build();
 

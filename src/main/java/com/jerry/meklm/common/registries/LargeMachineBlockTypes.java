@@ -18,8 +18,6 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class LargeMachineBlockTypes {
 
-    private LargeMachineBlockTypes() {}
-
     // Rotary Condensentrator
     public static final Machine<TileEntityLargeRotaryCondensentrator> LARGE_ROTARY_CONDENSENTRATOR = Machine.MachineBuilder
             .createMachine(() -> LargeMachineTileEntityTypes.LARGE_ROTARY_CONDENSENTRATOR, MekanismLang.DESCRIPTION_ROTARY_CONDENSENTRATOR)
@@ -51,4 +49,7 @@ public class LargeMachineBlockTypes {
             })
             .withComputerSupport("largeRotaryCondensentrator")
             .build();
+
+    private LargeMachineBlockTypes() {
+    }
 }

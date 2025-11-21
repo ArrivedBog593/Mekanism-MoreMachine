@@ -20,7 +20,11 @@ public class MoreMachineBlockShapes {
 
     public static final VoxelShape[] FULL_BLOCK_SHAPE = new VoxelShape[EnumUtils.HORIZONTAL_DIRECTIONS.length];
     // Machine
+    public static final VoxelShape[] RECYCLER = new VoxelShape[EnumUtils.HORIZONTAL_DIRECTIONS.length];
     public static final VoxelShape[] PLANTING_STATION = new VoxelShape[EnumUtils.HORIZONTAL_DIRECTIONS.length];
+    public static final VoxelShape[] CNC_STAMPER = new VoxelShape[EnumUtils.HORIZONTAL_DIRECTIONS.length];
+    public static final VoxelShape[] CNC_LATHE = new VoxelShape[EnumUtils.HORIZONTAL_DIRECTIONS.length];
+    public static final VoxelShape[] CNC_ROLLING_MILL = new VoxelShape[EnumUtils.HORIZONTAL_DIRECTIONS.length];
     // Factories
     public static final VoxelShape[] RECYCLER_FACTORY = new VoxelShape[EnumUtils.HORIZONTAL_DIRECTIONS.length];
     public static final VoxelShape[] WIRELESS_CHARGING_STATION = new VoxelShape[EnumUtils.HORIZONTAL_DIRECTIONS.length];
@@ -63,6 +67,13 @@ public class MoreMachineBlockShapes {
                 box(5, 32, 5, 11, 32, 11),
                 box(6, 26, 6, 10, 28, 10)
         ), PLANTING_STATION);
+
+        VoxelShapeUtils.setShape(VoxelShapeUtils.combine(
+                box(0, 0, 0, 16, 3, 10),
+                box(0, 8, 0, 16, 16, 10),
+                box(0, 0, 10, 16, 16, 16),
+                box(1, 3, 1, 15, 8, 10)
+        ), CNC_LATHE);
 
         VoxelShapeUtils.setShape(VoxelShapeUtils.combine(
                 box(0, 0, 0, 16, 16, 4), // front_panel
