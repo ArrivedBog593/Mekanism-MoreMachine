@@ -2,6 +2,6 @@
   "credit": "Made with Blockbench, made by TedXenon",
   "parent": "block/large_machine/large_rotary_condensentrator/on",
   "textures": {
-    "3": "mekmm:block/large_rotary_condensentrator/screen_afd_text"
+    "3": "mekmm:block/large_machine/large_rotary_condensentrator/screen_afd_text"
   }
 }

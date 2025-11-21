@@ -5,9 +5,9 @@
   "render_type": "cutout",
   "texture_size": [128, 128],
   "textures": {
-    "1": "mekmm:block/large_rotary_condensentrator/base",
-    "2": "mekmm:block/large_rotary_condensentrator/fan_on",
-    "3": "mekmm:block/large_rotary_condensentrator/screen_on",
+    "1": "mekmm:block/large_machine/large_rotary_condensentrator/base",
+    "2": "mekmm:block/large_machine/large_rotary_condensentrator/fan_on",
+    "3": "mekmm:block/large_machine/large_rotary_condensentrator/screen_cmd",
     "particle": "mekanism:block/base/base_bottom"
   },
   "elements": [

@@ -4,12 +4,12 @@ import com.jerry.meklm.common.base.LMProfilerConstants;
 import com.jerry.meklm.common.tile.TileEntityLargeRotaryCondensentrator;
 
 import mekanism.api.annotations.NothingNullByDefault;
-import mekanism.client.render.lib.Outlines;
+import mekanism.client.render.lib.Outlines.Line;
 import mekanism.client.render.tileentity.IWireFrameRenderer;
 import mekanism.client.render.tileentity.MekanismTileEntityRenderer;
 
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider.Context;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
@@ -24,14 +24,14 @@ import java.util.List;
 public class RenderLargeRotaryCondensentrator extends MekanismTileEntityRenderer<TileEntityLargeRotaryCondensentrator> implements IWireFrameRenderer {
 
     @Nullable
-    private static List<Outlines.Line> lines;
+    private static List<Line> lines;
+
+    public RenderLargeRotaryCondensentrator(Context context) {
+        super(context);
+    }
 
     public static void resetCached() {
         lines = null;
-    }
-
-    public RenderLargeRotaryCondensentrator(BlockEntityRendererProvider.Context context) {
-        super(context);
     }
 
     @Override

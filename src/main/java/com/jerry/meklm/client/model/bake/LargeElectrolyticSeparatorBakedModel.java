@@ -1,7 +1,7 @@
 package com.jerry.meklm.client.model.bake;
 
 import mekanism.api.annotations.NothingNullByDefault;
-import mekanism.client.model.baked.ExtensionBakedModel.TransformedBakedModel;
+import mekanism.client.model.baked.ExtensionBakedModel;
 import mekanism.client.render.lib.QuadTransformation;
 import mekanism.common.base.holiday.ClientHolidayInfo;
 
@@ -11,10 +11,10 @@ import net.neoforged.neoforge.client.model.data.ModelData;
 import org.jetbrains.annotations.Nullable;
 
 @NothingNullByDefault
-public class LargeRotaryCondensentratorBakedModel extends TransformedBakedModel<Void> {
+public class LargeElectrolyticSeparatorBakedModel extends ExtensionBakedModel<Void> {
 
-    public LargeRotaryCondensentratorBakedModel(BakedModel original) {
-        super(original, QuadTransformation.translate(0, 1, 0));
+    public LargeElectrolyticSeparatorBakedModel(BakedModel original) {
+        super(original);
     }
 
     @Nullable
@@ -22,13 +22,13 @@ public class LargeRotaryCondensentratorBakedModel extends TransformedBakedModel<
     protected QuadsKey<Void> createKey(QuadsKey<Void> key, ModelData data) {
         QuadTransformation holidayTransform = ClientHolidayInfo.getMinerTransform();
         if (holidayTransform != null) {
-            return key.transform(holidayTransform).transform(QuadTransformation.translate(0, 1, 0));
+            return key.transform(holidayTransform);
         }
-        return super.createKey(key, data);
+        return null;
     }
 
     @Override
-    protected LargeRotaryCondensentratorBakedModel wrapModel(BakedModel model) {
-        return new LargeRotaryCondensentratorBakedModel(model);
+    protected LargeElectrolyticSeparatorBakedModel wrapModel(BakedModel model) {
+        return new LargeElectrolyticSeparatorBakedModel(model);
     }
 }

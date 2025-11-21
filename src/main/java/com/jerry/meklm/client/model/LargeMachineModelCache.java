@@ -14,9 +14,9 @@ public class LargeMachineModelCache extends BaseModelCache {
     public static final LargeMachineModelCache INSTANCE = new LargeMachineModelCache();
     private final Set<Runnable> callbacks = new HashSet<>();
 
-    public final JSONModelData LARGE_ELECTROLYTIC_SEPARATOR = registerJSON("block/large_electrolytic_separator");
-    public final JSONModelData LARGE_HEAT_GENERATOR = registerJSON("block/large_heat_generator");
-    public final JSONModelData LARGE_ROTARY_CONDENSENTRATOR = registerJSON("block/large_rotary_condensentrator/base");
+    public final JSONModelData LARGE_ELECTROLYTIC_SEPARATOR = registerJSON("block/large_machine/large_electrolytic_separator/off");
+    public final JSONModelData LARGE_HEAT_GENERATOR = registerJSON("block/large_machine/large_heat_generator");
+    public final JSONModelData LARGE_ROTARY_CONDENSENTRATOR = registerJSON("block/large_machine/large_rotary_condensentrator/base");
 
     private LargeMachineModelCache() {
         super(Mekmm.MOD_ID);

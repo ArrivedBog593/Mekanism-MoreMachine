@@ -2,6 +2,8 @@ package com.jerry.mekmm.common.registries;
 
 import com.jerry.mekaf.common.registries.AdvancedFactoryBlocks;
 
+import com.jerry.meklm.common.registries.LargeMachineBlocks;
+
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.common.MoreMachineLang;
 
@@ -19,5 +21,6 @@ public class MoreMachineCreativeTabs {
                 CreativeTabDeferredRegister.addToDisplay(MoreMachineItems.MM_ITEMS, output);
                 CreativeTabDeferredRegister.addToDisplay(MoreMachineBlocks.MM_BLOCKS, output);
                 CreativeTabDeferredRegister.addToDisplay(AdvancedFactoryBlocks.AF_BLOCKS, output);
+                CreativeTabDeferredRegister.addToDisplay(LargeMachineBlocks.LM_BLOCKS, output);
             }));
 }

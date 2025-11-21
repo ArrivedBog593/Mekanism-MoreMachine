@@ -159,10 +159,10 @@ public class TileEntityLargeRotaryCondensentrator extends TileEntityRecipeLargeM
     @NotNull
     @Override
     public IChemicalTankHolder getInitialChemicalTanks(IContentsListener listener, IContentsListener recipeCacheListener, IContentsListener recipeCacheUnpauseListener) {
-        CanAdjustChemicalTankHelper builder = CanAdjustChemicalTankHelper.forSide(facingSupplier, side -> side == RelativeSide.BACK, side -> side == RelativeSide.RIGHT);
+        CanAdjustChemicalTankHelper builder = CanAdjustChemicalTankHelper.forSide(facingSupplier, side -> side == RelativeSide.BACK, side -> side == RelativeSide.LEFT);
         builder.addTank(gasTank = BasicChemicalTank.createModern(CAPACITY * 100, (gas, automationType) -> automationType == AutomationType.MANUAL || mode,
                 (gas, automationType) -> automationType == AutomationType.INTERNAL || !mode, this::isValidGas, ChemicalAttributeValidator.ALWAYS_ALLOW,
-                recipeCacheListener), RelativeSide.BACK, RelativeSide.RIGHT);
+                recipeCacheListener), RelativeSide.BACK, RelativeSide.LEFT);
         return builder.build();
     }
 
@@ -173,9 +173,9 @@ public class TileEntityLargeRotaryCondensentrator extends TileEntityRecipeLargeM
     @NotNull
     @Override
     protected IFluidTankHolder getInitialFluidTanks(IContentsListener listener, IContentsListener recipeCacheListener, IContentsListener recipeCacheUnpauseListener) {
-        CanAdjustFluidTankHelper builder = CanAdjustFluidTankHelper.forSide(facingSupplier, side -> side == RelativeSide.BACK, side -> side == RelativeSide.LEFT);
+        CanAdjustFluidTankHelper builder = CanAdjustFluidTankHelper.forSide(facingSupplier, side -> side == RelativeSide.BACK, side -> side == RelativeSide.RIGHT);
         builder.addTank(fluidTank = BasicFluidTank.create(CAPACITY * 100, (fluid, automationType) -> automationType == AutomationType.MANUAL || !mode,
-                (fluid, automationType) -> automationType == AutomationType.INTERNAL || mode, this::isValidFluid, recipeCacheListener), RelativeSide.BACK, RelativeSide.LEFT);
+                (fluid, automationType) -> automationType == AutomationType.INTERNAL || mode, this::isValidFluid, recipeCacheListener), RelativeSide.BACK, RelativeSide.RIGHT);
         return builder.build();
     }
 
@@ -397,33 +397,6 @@ public class TileEntityLargeRotaryCondensentrator extends TileEntityRecipeLargeM
     private boolean notChemicalPort(Direction side, Vec3i offset) {
         Direction direction = getDirection();
         Direction back = getOppositeDirection();
-        Direction right = getRightSide();
-        if (offset.equals(new Vec3i(right.getStepX(), 1, right.getStepZ()))) {
-            return side != right;
-        }
-        if (direction == Direction.EAST) {
-            if (offset.equals(new Vec3i(-1, 0, -1))) {
-                return side != back;
-            }
-        } else if (direction == Direction.SOUTH) {
-            if (offset.equals(new Vec3i(1, 0, -1))) {
-                return side != back;
-            }
-        } else if (direction == Direction.WEST) {
-            if (offset.equals(new Vec3i(1, 0, 1))) {
-                return side != back;
-            }
-        } else if (direction == Direction.NORTH) {
-            if (offset.equals(new Vec3i(-1, 0, 1))) {
-                return side != back;
-            }
-        }
-        return true;
-    }
-
-    private boolean notFluidPort(Direction side, Vec3i offset) {
-        Direction direction = getDirection();
-        Direction back = getOppositeDirection();
         Direction left = getLeftSide();
         if (offset.equals(new Vec3i(left.getStepX(), 1, left.getStepZ()))) {
             return side != left;
@@ -442,6 +415,33 @@ public class TileEntityLargeRotaryCondensentrator extends TileEntityRecipeLargeM
             }
         } else if (direction == Direction.NORTH) {
             if (offset.equals(new Vec3i(1, 0, 1))) {
+                return side != back;
+            }
+        }
+        return true;
+    }
+
+    private boolean notFluidPort(Direction side, Vec3i offset) {
+        Direction direction = getDirection();
+        Direction back = getOppositeDirection();
+        Direction right = getRightSide();
+        if (offset.equals(new Vec3i(right.getStepX(), 1, right.getStepZ()))) {
+            return side != right;
+        }
+        if (direction == Direction.EAST) {
+            if (offset.equals(new Vec3i(-1, 0, -1))) {
+                return side != back;
+            }
+        } else if (direction == Direction.SOUTH) {
+            if (offset.equals(new Vec3i(1, 0, -1))) {
+                return side != back;
+            }
+        } else if (direction == Direction.WEST) {
+            if (offset.equals(new Vec3i(1, 0, 1))) {
+                return side != back;
+            }
+        } else if (direction == Direction.NORTH) {
+            if (offset.equals(new Vec3i(-1, 0, 1))) {
                 return side != back;
             }
         }

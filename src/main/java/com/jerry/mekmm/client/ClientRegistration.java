@@ -3,7 +3,10 @@ package com.jerry.mekmm.client;
 import com.jerry.mekaf.client.gui.machine.GuiAdvancedFactory;
 import com.jerry.mekaf.common.registries.AdvancedFactoryContainerTypes;
 
+import com.jerry.meklm.client.gui.machine.GuiLargeElectrolyticSeparator;
 import com.jerry.meklm.client.gui.machine.GuiLargeRotaryCondensentrator;
+import com.jerry.meklm.client.model.bake.LargeElectrolyticSeparatorBakedModel;
+import com.jerry.meklm.client.model.bake.LargeRotaryCondensentratorBakedModel;
 import com.jerry.meklm.common.registries.LargeMachineBlocks;
 import com.jerry.meklm.common.registries.LargeMachineContainerTypes;
 
@@ -22,7 +25,7 @@ import com.jerry.mekmm.common.registries.MoreMachineItems;
 import com.jerry.mekmm.common.registries.MoreMachineTileEntityTypes;
 
 import mekanism.client.ClientRegistrationUtil;
-import mekanism.client.model.baked.ExtensionBakedModel;
+import mekanism.client.model.baked.ExtensionBakedModel.TransformedBakedModel;
 import mekanism.client.render.lib.QuadTransformation;
 
 import net.neoforged.api.distmarker.Dist;
@@ -31,6 +34,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
 
 import static mekanism.client.ClientRegistration.addCustomModel;
@@ -43,12 +47,13 @@ public class ClientRegistration {
         NeoForge.EVENT_BUS.register(new ClientTickHandler());
         NeoForge.EVENT_BUS.register(new RenderTickHandler());
 
-        addCustomModel(MoreMachineBlocks.WIRELESS_CHARGING_STATION, (orig, evt) -> new ExtensionBakedModel.TransformedBakedModel<Void>(orig,
+        addCustomModel(MoreMachineBlocks.WIRELESS_CHARGING_STATION, (orig, evt) -> new TransformedBakedModel<Void>(orig,
                 QuadTransformation.translate(0, 1, 0)));
-        addCustomModel(MoreMachineBlocks.WIRELESS_TRANSMISSION_STATION, (orig, evt) -> new ExtensionBakedModel.TransformedBakedModel<Void>(orig,
+        addCustomModel(MoreMachineBlocks.WIRELESS_TRANSMISSION_STATION, (orig, evt) -> new TransformedBakedModel<Void>(orig,
                 QuadTransformation.translate(0, 1, 0)));
-        addCustomModel(LargeMachineBlocks.LARGE_ROTARY_CONDENSENTRATOR, (orig, evt) -> new ExtensionBakedModel.TransformedBakedModel<Void>(orig,
-                QuadTransformation.translate(0, 1, 0)));
+        // 偏移在LargeRotaryCondensentratorBakedModel中
+        addCustomModel(LargeMachineBlocks.LARGE_ROTARY_CONDENSENTRATOR, (orig, evt) -> new LargeRotaryCondensentratorBakedModel(orig));
+        addCustomModel(LargeMachineBlocks.LARGE_ELECTROLYTIC_SEPARATOR, (orig, evt) -> new LargeElectrolyticSeparatorBakedModel(orig));
 
         ClientRegistrationUtil.setPropertyOverride(MoreMachineItems.CONNECTOR, Mekmm.rl("mode"), (stack, world, entity, seed) -> {
             ConnectorMode mode = ((ItemConnector) stack.getItem()).getMode(stack);
@@ -89,5 +94,11 @@ public class ClientRegistration {
 
         // Large Machine
         ClientRegistrationUtil.registerScreen(event, LargeMachineContainerTypes.LARGE_ROTARY_CONDENSENTRATOR, GuiLargeRotaryCondensentrator::new);
+        ClientRegistrationUtil.registerScreen(event, LargeMachineContainerTypes.LARGE_ELECTROLYTIC_SEPARATOR, GuiLargeElectrolyticSeparator::new);
+    }
+
+    @SubscribeEvent
+    public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
+        ClientRegistrationUtil.registerBlockExtensions(event, LargeMachineBlocks.LM_BLOCKS);
     }
 }

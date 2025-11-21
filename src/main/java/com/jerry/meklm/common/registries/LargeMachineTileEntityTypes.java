@@ -1,5 +1,6 @@
 package com.jerry.meklm.common.registries;
 
+import com.jerry.meklm.common.tile.TileEntityLargeElectrolyticSeparator;
 import com.jerry.meklm.common.tile.TileEntityLargeRotaryCondensentrator;
 
 import com.jerry.mekmm.Mekmm;
@@ -15,10 +16,19 @@ public class LargeMachineTileEntityTypes {
 
     public static final TileEntityTypeDeferredRegister LM_TILE_ENTITY_TYPES = new TileEntityTypeDeferredRegister(Mekmm.MOD_ID);
 
-    public static final TileEntityTypeRegistryObject<TileEntityLargeRotaryCondensentrator> LARGE_ROTARY_CONDENSENTRATOR = LM_TILE_ENTITY_TYPES.mekBuilder(LargeMachineBlocks.LARGE_ROTARY_CONDENSENTRATOR, TileEntityLargeRotaryCondensentrator::new)
+    public static final TileEntityTypeRegistryObject<TileEntityLargeRotaryCondensentrator> LARGE_ROTARY_CONDENSENTRATOR = LM_TILE_ENTITY_TYPES
+            .mekBuilder(LargeMachineBlocks.LARGE_ROTARY_CONDENSENTRATOR, TileEntityLargeRotaryCondensentrator::new)
             .clientTicker(TileEntityMekanism::tickClient)
             .serverTicker(TileEntityMekanism::tickServer)
             .withSimple(Capabilities.CONFIG_CARD)
             .without(Capabilities.CHEMICAL.block(), Capabilities.FLUID.block(), Capabilities.ITEM.block(), Capabilities.ENERGY.block())
+            .build();
+
+    public static final TileEntityTypeRegistryObject<TileEntityLargeElectrolyticSeparator> LARGE_ELECTROLYTIC_SEPARATOR = LM_TILE_ENTITY_TYPES
+            .mekBuilder(LargeMachineBlocks.LARGE_ELECTROLYTIC_SEPARATOR, TileEntityLargeElectrolyticSeparator::new)
+            .clientTicker(TileEntityMekanism::tickClient)
+            .serverTicker(TileEntityMekanism::tickServer)
+            .without(Capabilities.CHEMICAL.block(), Capabilities.FLUID.block(), Capabilities.ITEM.block(), Capabilities.ENERGY.block())
+            .withSimple(Capabilities.CONFIG_CARD)
             .build();
 }
