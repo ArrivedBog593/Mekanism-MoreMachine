@@ -1,17 +1,17 @@
 {
   "variants": {
-    "facing=north": {
+    "facing=north,active=false": {
       "model": "mekmm:block/large_machine/large_electrolytic_separator/off"
     },
-    "facing=south": {
+    "facing=south,active=false": {
       "model": "mekmm:block/large_machine/large_electrolytic_separator/off",
       "y": 180
     },
-    "facing=west": {
+    "facing=west,active=false": {
       "model": "mekmm:block/large_machine/large_electrolytic_separator/off",
       "y": -90
     },
-    "facing=east": {
+    "facing=east,active=false": {
       "model": "mekmm:block/large_machine/large_electrolytic_separator/off",
       "y": 90
     },

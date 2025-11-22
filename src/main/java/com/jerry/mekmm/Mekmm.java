@@ -4,6 +4,7 @@ import com.jerry.mekaf.common.registries.AdvancedFactoryBlocks;
 import com.jerry.mekaf.common.registries.AdvancedFactoryContainerTypes;
 import com.jerry.mekaf.common.registries.AdvancedFactoryTileEntityTypes;
 
+import com.jerry.meklm.common.base.holiday.HolidayManager;
 import com.jerry.meklm.common.registries.LargeMachineBlocks;
 import com.jerry.meklm.common.registries.LargeMachineContainerTypes;
 import com.jerry.meklm.common.registries.LargeMachineTileEntityTypes;
@@ -103,6 +104,7 @@ public class Mekmm implements IModModule {
     private void commonSetup(FMLCommonSetupEvent event) {
         // Initialization notification
         LOGGER.info("Version {} initializing...", versionNumber);
+        HolidayManager.init();
         // Register player tracker
         NeoForge.EVENT_BUS.register(new MoreMachinePlayerTracker());
     }

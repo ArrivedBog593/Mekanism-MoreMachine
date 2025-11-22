@@ -1,9 +1,10 @@
 package com.jerry.meklm.client.model.bake;
 
+import com.jerry.meklm.common.base.holiday.holiday_info.ElectroSeparatorHolidayInfo;
+
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.client.model.baked.ExtensionBakedModel;
 import mekanism.client.render.lib.QuadTransformation;
-import mekanism.common.base.holiday.ClientHolidayInfo;
 
 import net.minecraft.client.resources.model.BakedModel;
 import net.neoforged.neoforge.client.model.data.ModelData;
@@ -20,7 +21,7 @@ public class LargeElectrolyticSeparatorBakedModel extends ExtensionBakedModel<Vo
     @Nullable
     @Override
     protected QuadsKey<Void> createKey(QuadsKey<Void> key, ModelData data) {
-        QuadTransformation holidayTransform = ClientHolidayInfo.getMinerTransform();
+        QuadTransformation holidayTransform = ElectroSeparatorHolidayInfo.getTransform();
         if (holidayTransform != null) {
             return key.transform(holidayTransform);
         }

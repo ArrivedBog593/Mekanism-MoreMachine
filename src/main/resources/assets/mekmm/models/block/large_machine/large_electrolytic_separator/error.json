@@ -1,9 +1,0 @@
-{
-	"credit": "Made with Blockbench, made by TedXenon",
-	"parent": "electrolytic_separator_on",
-	"textures": {
-		"3": "mekmm:block/large_machine/large_electrolytic_separator/screen_afd_sad",
-		"4": "mekmm:block/large_machine/large_electrolytic_separator/screen_afd_text",
-		"5": "mekmm:block/large_machine/large_electrolytic_separator/screen_afd_sad"
-	}
-}

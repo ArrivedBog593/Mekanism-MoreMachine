@@ -7,9 +7,9 @@
 	"textures": {
 		"1": "mekmm:block/large_machine/large_electrolytic_separator/base",
 		"2": "mekmm:block/large_machine/large_electrolytic_separator/light_on",
-		"3": "mekmm:block/large_machine/large_electrolytic_separator/screen1_on",
-		"4": "mekmm:block/large_machine/large_electrolytic_separator/screen2_on",
-		"5": "mekmm:block/large_machine/large_electrolytic_separator/screen3_on",
+		"3": "mekanism:block/models/digital_miner_screen_hello",
+		"4": "mekmm:block/large_machine/large_electrolytic_separator/screen_icon",
+		"5": "mekmm:block/large_machine/large_electrolytic_separator/screen_cmd",
 		"particle": "mekanism:block/base/base_bottom"
 	},
 	"elements": [
