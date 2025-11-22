@@ -15,6 +15,7 @@ import mekanism.api.datamaps.chemical.attribute.ChemicalFuel;
 import mekanism.api.functions.ConstantPredicates;
 import mekanism.api.math.MathUtils;
 import mekanism.common.attachments.containers.ContainerType;
+import mekanism.common.capabilities.Capabilities;
 import mekanism.common.capabilities.chemical.VariableCapacityChemicalTank;
 import mekanism.common.capabilities.holder.chemical.ChemicalTankHelper;
 import mekanism.common.capabilities.holder.chemical.IChemicalTankHolder;
@@ -23,6 +24,7 @@ import mekanism.common.capabilities.holder.slot.InventorySlotHelper;
 import mekanism.common.integration.computer.SpecialComputerMethodWrapper;
 import mekanism.common.integration.computer.annotation.ComputerMethod;
 import mekanism.common.integration.computer.annotation.WrappingComputerMethod;
+import mekanism.common.integration.energy.EnergyCompatUtils;
 import mekanism.common.inventory.container.MekanismContainer;
 import mekanism.common.inventory.container.slot.SlotOverlay;
 import mekanism.common.inventory.container.sync.SyncableDouble;
@@ -30,30 +32,29 @@ import mekanism.common.inventory.container.sync.SyncableInt;
 import mekanism.common.inventory.container.sync.SyncableLong;
 import mekanism.common.inventory.slot.EnergyInventorySlot;
 import mekanism.common.inventory.slot.chemical.ChemicalInventorySlot;
+import mekanism.common.tile.interfaces.IBoundingBlock;
 import mekanism.common.util.ChemicalUtil;
 import mekanism.common.util.MekanismUtils;
+import mekanism.common.util.WorldUtils;
 import mekanism.generators.common.config.MekanismGeneratorsConfig;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.capabilities.BlockCapability;
 
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
 import java.util.function.Predicate;
 
-public class TileEntityLargeGasGenerator extends TileEntityMoreMachineGenerator {
+public class TileEntityLargeGasGenerator extends TileEntityMoreMachineGenerator implements IBoundingBlock {
 
     @SuppressWarnings("removal")
     public static final Predicate<ChemicalStack> HAS_FUEL = chemical -> chemical.getData(IMekanismDataMapTypes.INSTANCE.chemicalFuel()) != null || chemical.hasLegacy(ChemicalAttributes.Fuel.class);// TODO
-                                                                                                                                                                                                     // -
-                                                                                                                                                                                                     // 1.22
-                                                                                                                                                                                                     // Remove
-                                                                                                                                                                                                     // this
-                                                                                                                                                                                                     // legacy
-                                                                                                                                                                                                     // check
-
     /**
      * The tank this block is storing fuel in.
      */
@@ -72,6 +73,7 @@ public class TileEntityLargeGasGenerator extends TileEntityMoreMachineGenerator 
     @Getter
     private long generationRate = 0;
     private double gasUsedLastTick;
+    private int numPowering;
 
     public TileEntityLargeGasGenerator(BlockPos pos, BlockState state) {
         super(LargeMachineBlocks.LARGE_GAS_BURNING_GENERATOR, pos, state, ChemicalUtil::hydrogenEnergyPerTick);
@@ -81,7 +83,7 @@ public class TileEntityLargeGasGenerator extends TileEntityMoreMachineGenerator 
     @Override
     public IChemicalTankHolder getInitialChemicalTanks(IContentsListener listener) {
         ChemicalTankHelper builder = ChemicalTankHelper.forSide(facingSupplier);
-        builder.addTank(fuelTank = new FuelTank(listener), RelativeSide.LEFT, RelativeSide.RIGHT, RelativeSide.BACK, RelativeSide.TOP, RelativeSide.BOTTOM);
+        builder.addTank(fuelTank = new FuelTank(listener), RelativeSide.LEFT, RelativeSide.RIGHT, RelativeSide.BACK);
         return builder.build();
     }
 
@@ -89,11 +91,15 @@ public class TileEntityLargeGasGenerator extends TileEntityMoreMachineGenerator 
     @Override
     protected IInventorySlotHolder getInitialInventory(IContentsListener listener) {
         InventorySlotHelper builder = InventorySlotHelper.forSide(facingSupplier);
-        builder.addSlot(fuelSlot = ChemicalInventorySlot.fill(fuelTank, listener, 17, 35), RelativeSide.FRONT, RelativeSide.LEFT, RelativeSide.BACK, RelativeSide.TOP,
-                RelativeSide.BOTTOM);
-        builder.addSlot(energySlot = EnergyInventorySlot.drain(getEnergyContainer(), listener, 143, 35), RelativeSide.RIGHT);
+        builder.addSlot(fuelSlot = ChemicalInventorySlot.fill(fuelTank, listener, 17, 35), RelativeSide.LEFT, RelativeSide.BACK, RelativeSide.RIGHT);
+        builder.addSlot(energySlot = EnergyInventorySlot.drain(getEnergyContainer(), listener, 143, 35), RelativeSide.TOP);
         fuelSlot.setSlotOverlay(SlotOverlay.MINUS);
         return builder.build();
+    }
+
+    @Override
+    protected RelativeSide[] getEnergySides() {
+        return new RelativeSide[] { RelativeSide.TOP };
     }
 
     @Override
@@ -175,6 +181,68 @@ public class TileEntityLargeGasGenerator extends TileEntityMoreMachineGenerator 
         container.track(syncableMaxOutput());
         container.track(SyncableDouble.create(this::getUsed, value -> gasUsedLastTick = value));
         container.track(SyncableInt.create(this::getMaxBurnTicks, value -> maxBurnTicks = value));
+    }
+
+    @Override
+    public boolean isPowered() {
+        return redstone || numPowering > 0;
+    }
+
+    @Override
+    public void onBoundingBlockPowerChange(BlockPos boundingPos, int oldLevel, int newLevel) {
+        if (oldLevel > 0) {
+            if (newLevel == 0) {
+                numPowering--;
+            }
+        } else if (newLevel > 0) {
+            numPowering++;
+        }
+    }
+
+    @Override
+    public int getBoundingComparatorSignal(Vec3i offset) {
+        return IBoundingBlock.super.getBoundingComparatorSignal(offset);
+    }
+
+    @Override
+    public <T> @Nullable T getOffsetCapabilityIfEnabled(@NotNull BlockCapability<T, @Nullable Direction> capability, @Nullable Direction side, @NotNull Vec3i offset) {
+        if (capability == Capabilities.CHEMICAL.block()) {
+            return Objects.requireNonNull(chemicalHandlerManager, "Expected to have chemical handler").resolve(capability, side);
+        }
+        return WorldUtils.getCapability(level, capability, worldPosition, null, this, side);
+    }
+
+    @Override
+    public boolean isOffsetCapabilityDisabled(@NotNull BlockCapability<?, @Nullable Direction> capability, Direction side, @NotNull Vec3i offset) {
+        if (capability == Capabilities.CHEMICAL.block()) {
+            return notChemicalPort(side, offset);
+        } else if (EnergyCompatUtils.isEnergyCapability(capability)) {
+            return notEnergyPort(side, offset);
+        }
+        return notChemicalPort(side, offset) && notEnergyPort(side, offset);
+    }
+
+    private boolean notChemicalPort(Direction side, Vec3i offset) {
+        Direction back = getOppositeDirection();
+        if (offset.equals(new Vec3i(back.getStepX(), 0, back.getStepZ())) || offset.equals(new Vec3i(back.getStepX(), 1, back.getStepZ()))) {
+            return side != back;
+        }
+        Direction left = getLeftSide();
+        if (offset.equals(new Vec3i(left.getStepX(), 0, left.getStepZ())) || offset.equals(new Vec3i(left.getStepX(), 1, left.getStepZ()))) {
+            return side != left;
+        }
+        Direction right = left.getOpposite();
+        if (offset.equals(new Vec3i(right.getStepX(), 0, right.getStepZ())) || offset.equals(new Vec3i(right.getStepX(), 1, right.getStepZ()))) {
+            return side != right;
+        }
+        return true;
+    }
+
+    private boolean notEnergyPort(Direction side, Vec3i offset) {
+        if (offset.equals(new Vec3i(0, 2, 0))) {
+            return side != Direction.UP;
+        }
+        return true;
     }
 
     // Methods relating to IComputerTile

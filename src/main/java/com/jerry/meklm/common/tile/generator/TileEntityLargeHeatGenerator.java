@@ -12,6 +12,7 @@ import mekanism.api.heat.HeatAPI;
 import mekanism.api.heat.IHeatHandler;
 import mekanism.api.math.MathUtils;
 import mekanism.common.attachments.containers.ContainerType;
+import mekanism.common.capabilities.Capabilities;
 import mekanism.common.capabilities.fluid.BasicFluidTank;
 import mekanism.common.capabilities.fluid.VariableCapacityFluidTank;
 import mekanism.common.capabilities.heat.BasicHeatCapacitor;
@@ -26,10 +27,12 @@ import mekanism.common.config.listener.ConfigBasedCachedLongSupplier;
 import mekanism.common.integration.computer.SpecialComputerMethodWrapper;
 import mekanism.common.integration.computer.annotation.ComputerMethod;
 import mekanism.common.integration.computer.annotation.WrappingComputerMethod;
+import mekanism.common.integration.energy.EnergyCompatUtils;
 import mekanism.common.inventory.container.MekanismContainer;
 import mekanism.common.inventory.container.sync.SyncableDouble;
 import mekanism.common.inventory.container.sync.SyncableLong;
 import mekanism.common.inventory.slot.EnergyInventorySlot;
+import mekanism.common.tile.interfaces.IBoundingBlock;
 import mekanism.common.util.EnumUtils;
 import mekanism.common.util.MekanismUtils;
 import mekanism.common.util.WorldUtils;
@@ -38,15 +41,19 @@ import mekanism.generators.common.slot.FluidFuelInventorySlot;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class TileEntityLargeHeatGenerator extends TileEntityMoreMachineGenerator {
+import java.util.Objects;
+
+public class TileEntityLargeHeatGenerator extends TileEntityMoreMachineGenerator implements IBoundingBlock {
 
     public static final double HEAT_CAPACITY = 10;
     public static final double INVERSE_CONDUCTION_COEFFICIENT = 5;
@@ -76,6 +83,7 @@ public class TileEntityLargeHeatGenerator extends TileEntityMoreMachineGenerator
     private long producingEnergy = 0;
     private double lastTransferLoss;
     private double lastEnvironmentLoss;
+    private int numPowering;
 
     public TileEntityLargeHeatGenerator(BlockPos pos, BlockState state) {
         super(LargeMachineBlocks.LARGE_HEAT_GENERATOR, pos, state, MAX_PRODUCTION);
@@ -86,8 +94,7 @@ public class TileEntityLargeHeatGenerator extends TileEntityMoreMachineGenerator
     protected IFluidTankHolder getInitialFluidTanks(IContentsListener listener) {
         FluidTankHelper builder = FluidTankHelper.forSide(facingSupplier);
         builder.addTank(lavaTank = VariableCapacityFluidTank.input(MekanismGeneratorsConfig.generators.heatTankCapacity,
-                fluidStack -> fluidStack.is(FluidTags.LAVA), listener), RelativeSide.LEFT, RelativeSide.RIGHT, RelativeSide.BACK,
-                RelativeSide.TOP, RelativeSide.BOTTOM);
+                fluidStack -> fluidStack.is(FluidTags.LAVA), listener), RelativeSide.BACK);
         return builder.build();
     }
 
@@ -110,6 +117,11 @@ public class TileEntityLargeHeatGenerator extends TileEntityMoreMachineGenerator
         HeatCapacitorHelper builder = HeatCapacitorHelper.forSide(facingSupplier);
         builder.addCapacitor(heatCapacitor = BasicHeatCapacitor.create(HEAT_CAPACITY, INVERSE_CONDUCTION_COEFFICIENT, INVERSE_INSULATION_COEFFICIENT, ambientTemperature, listener));
         return builder.build();
+    }
+
+    @Override
+    protected RelativeSide[] getEnergySides() {
+        return new RelativeSide[] { RelativeSide.BACK };
     }
 
     @Override
@@ -233,5 +245,60 @@ public class TileEntityLargeHeatGenerator extends TileEntityMoreMachineGenerator
         container.track(SyncableLong.create(this::getProductionRate, value -> producingEnergy = value));
         container.track(SyncableDouble.create(this::getLastTransferLoss, value -> lastTransferLoss = value));
         container.track(SyncableDouble.create(this::getLastEnvironmentLoss, value -> lastEnvironmentLoss = value));
+    }
+
+    @Override
+    public boolean isPowered() {
+        return redstone || numPowering > 0;
+    }
+
+    @Override
+    public void onBoundingBlockPowerChange(BlockPos boundingPos, int oldLevel, int newLevel) {
+        if (oldLevel > 0) {
+            if (newLevel == 0) {
+                numPowering--;
+            }
+        } else if (newLevel > 0) {
+            numPowering++;
+        }
+    }
+
+    @Override
+    public int getBoundingComparatorSignal(Vec3i offset) {
+        return IBoundingBlock.super.getBoundingComparatorSignal(offset);
+    }
+
+    @Override
+    public <T> @Nullable T getOffsetCapabilityIfEnabled(@NotNull BlockCapability<T, @Nullable Direction> capability, @Nullable Direction side, @NotNull Vec3i offset) {
+        if (capability == Capabilities.FLUID.block()) {
+            return Objects.requireNonNull(fluidHandlerManager, "Expected to have fluid handler").resolve(capability, side);
+        }
+        return WorldUtils.getCapability(level, capability, worldPosition, null, this, side);
+    }
+
+    @Override
+    public boolean isOffsetCapabilityDisabled(@NotNull BlockCapability<?, @Nullable Direction> capability, Direction side, @NotNull Vec3i offset) {
+        if (capability == Capabilities.FLUID.block()) {
+            return notFluidPort(side, offset);
+        } else if (EnergyCompatUtils.isEnergyCapability(capability)) {
+            return notEnergyPort(side, offset);
+        }
+        return notFluidPort(side, offset) && notEnergyPort(side, offset);
+    }
+
+    private boolean notFluidPort(Direction side, Vec3i offset) {
+        Direction back = getOppositeDirection();
+        if (offset.equals(new Vec3i(back.getStepX(), 0, back.getStepZ())) || offset.equals(new Vec3i(back.getStepX(), 2, back.getStepZ()))) {
+            return side != back;
+        }
+        return true;
+    }
+
+    private boolean notEnergyPort(Direction side, Vec3i offset) {
+        Direction back = getOppositeDirection();
+        if (offset.equals(new Vec3i(back.getStepX(), 1, back.getStepZ()))) {
+            return side != back;
+        }
+        return true;
     }
 }

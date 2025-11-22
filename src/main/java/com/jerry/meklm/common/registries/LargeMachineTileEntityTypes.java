@@ -30,8 +30,8 @@ public class LargeMachineTileEntityTypes {
             .mekBuilder(LargeMachineBlocks.LARGE_ELECTROLYTIC_SEPARATOR, TileEntityLargeElectrolyticSeparator::new)
             .clientTicker(TileEntityMekanism::tickClient)
             .serverTicker(TileEntityMekanism::tickServer)
-            .without(Capabilities.CHEMICAL.block(), Capabilities.FLUID.block(), Capabilities.ITEM.block(), Capabilities.ENERGY.block())
             .withSimple(Capabilities.CONFIG_CARD)
+            .without(Capabilities.CHEMICAL.block(), Capabilities.FLUID.block(), Capabilities.ITEM.block(), Capabilities.ENERGY.block())
             .build();
 
     public static final TileEntityTypeRegistryObject<TileEntityLargeHeatGenerator> LARGE_HEAT_GENERATOR = LM_TILE_ENTITY_TYPES

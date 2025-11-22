@@ -71,6 +71,7 @@ import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidType;
 
+import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -120,6 +121,7 @@ public class TileEntityLargeRotaryCondensentrator extends TileEntityRecipeLargeM
     private int baselineMaxOperations = 32;
     private int numPowering;
 
+    @Getter
     private MachineEnergyContainer<TileEntityLargeRotaryCondensentrator> energyContainer;
     @WrappingComputerMethod(wrapper = ComputerIInventorySlotWrapper.class, methodNames = "getGasItemInput", docPlaceholder = "gas item input slot")
     ChemicalInventorySlot gasInputSlot;
@@ -293,10 +295,6 @@ public class TileEntityLargeRotaryCondensentrator extends TileEntityRecipeLargeM
     public RotaryRecipe getRecipe(int cacheIndex) {
         RotaryInputRecipeCache inputCache = getRecipeType().getInputCache();
         return mode ? inputCache.findFirstRecipe(level, fluidInputHandler.getInput()) : inputCache.findFirstRecipe(level, gasInputHandler.getInput());
-    }
-
-    public MachineEnergyContainer<TileEntityLargeRotaryCondensentrator> getEnergyContainer() {
-        return energyContainer;
     }
 
     @NotNull
