@@ -1,7 +1,7 @@
 package com.jerry.meklm.client.render.tile;
 
 import com.jerry.meklm.common.base.LMProfilerConstants;
-import com.jerry.meklm.common.tile.TileEntityLargeRotaryCondensentrator;
+import com.jerry.meklm.common.tile.machine.TileEntityLargeRotaryCondensentrator;
 
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.client.render.lib.Outlines.Line;

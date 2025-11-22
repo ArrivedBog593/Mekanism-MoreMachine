@@ -1,0 +1,52 @@
+package com.jerry.meklm.common.base.holiday.holiday_info;
+
+import com.jerry.meklm.common.base.holiday.AprilFools;
+import com.jerry.meklm.common.base.holiday.Holiday;
+
+import com.jerry.mekmm.Mekmm;
+
+import mekanism.client.render.lib.QuadTransformation;
+import mekanism.common.base.holiday.HolidayManager;
+
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.client.event.TextureAtlasStitchedEvent;
+
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Collections;
+import java.util.Map;
+import java.util.function.Predicate;
+
+public class GasGeneratorHolidayInfo extends BaseHolidayInfo {
+
+    private static final Predicate<ResourceLocation> IS_SECOND = s -> s.getPath().contains("screen_cmd");
+    private static Map<Holiday, QuadTransformation> HOLIDAY_MINER_TRANSFORMS = Collections.emptyMap();
+
+    private GasGeneratorHolidayInfo() {}
+
+    @SubscribeEvent
+    public static void onStitch(TextureAtlasStitchedEvent event) {
+        TextureAtlas atlas = event.getAtlas();
+        if (!atlas.location().equals(TextureAtlas.LOCATION_BLOCKS)) {
+            return;
+        }
+        HOLIDAY_MINER_TRANSFORMS = Map.of(
+                AprilFools.INSTANCE,
+                QuadTransformation.TextureFilteredTransformation.of(
+                        suffixTexture(atlas, Mekmm.rl("block/large_machine/large_gas_burning_generator/screen_"), "afd_text"), IS_SECOND));
+    }
+
+    @Nullable
+    public static QuadTransformation getTransform() {
+        if (HolidayManager.areHolidaysEnabled()) {
+            for (Map.Entry<Holiday, QuadTransformation> entry : HOLIDAY_MINER_TRANSFORMS.entrySet()) {
+                if (entry.getKey().isToday()) {
+                    return entry.getValue();
+                }
+            }
+        }
+        return null;
+    }
+}

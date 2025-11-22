@@ -2,7 +2,7 @@ package com.jerry.meklm.client.render.tile;
 
 import com.jerry.meklm.client.model.LargeMachineModelCache;
 import com.jerry.meklm.common.base.LMProfilerConstants;
-import com.jerry.meklm.common.tile.TileEntityLargeElectrolyticSeparator;
+import com.jerry.meklm.common.tile.machine.TileEntityLargeElectrolyticSeparator;
 
 import mekanism.api.annotations.NothingNullByDefault;
 import mekanism.client.render.RenderTickHandler;

@@ -1,6 +1,6 @@
 package com.jerry.meklm.client.gui.machine;
 
-import com.jerry.meklm.common.tile.TileEntityLargeRotaryCondensentrator;
+import com.jerry.meklm.common.tile.machine.TileEntityLargeRotaryCondensentrator;
 
 import mekanism.api.recipes.cache.CachedRecipe.OperationTracker.RecipeError;
 import mekanism.api.text.ILangEntry;

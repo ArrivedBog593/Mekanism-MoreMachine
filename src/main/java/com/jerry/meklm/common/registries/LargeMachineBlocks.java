@@ -1,7 +1,9 @@
 package com.jerry.meklm.common.registries;
 
-import com.jerry.meklm.common.tile.TileEntityLargeElectrolyticSeparator;
-import com.jerry.meklm.common.tile.TileEntityLargeRotaryCondensentrator;
+import com.jerry.meklm.common.tile.generator.TileEntityLargeGasGenerator;
+import com.jerry.meklm.common.tile.generator.TileEntityLargeHeatGenerator;
+import com.jerry.meklm.common.tile.machine.TileEntityLargeElectrolyticSeparator;
+import com.jerry.meklm.common.tile.machine.TileEntityLargeRotaryCondensentrator;
 
 import com.jerry.mekmm.Mekmm;
 
@@ -10,6 +12,7 @@ import mekanism.common.attachments.component.AttachedSideConfig;
 import mekanism.common.attachments.containers.ContainerType;
 import mekanism.common.attachments.containers.chemical.ChemicalTanksBuilder;
 import mekanism.common.attachments.containers.fluid.FluidTanksBuilder;
+import mekanism.common.attachments.containers.heat.HeatCapacitorsBuilder;
 import mekanism.common.attachments.containers.item.ItemSlotsBuilder;
 import mekanism.common.block.prefab.BlockTile.BlockTileModel;
 import mekanism.common.content.blocktype.Machine;
@@ -22,13 +25,15 @@ import mekanism.common.registration.impl.BlockRegistryObject;
 import mekanism.common.registries.MekanismDataComponents;
 import mekanism.common.resource.BlockResourceInfo;
 import mekanism.common.tile.TileEntityChemicalTank;
+import mekanism.generators.common.config.MekanismGeneratorsConfig;
+import mekanism.generators.common.content.blocktype.Generator;
+
+import net.minecraft.tags.FluidTags;
+import net.minecraft.world.level.material.MapColor;
 
 public class LargeMachineBlocks {
 
-    private LargeMachineBlocks() {}
-
     public static final BlockDeferredRegister LM_BLOCKS = new BlockDeferredRegister(Mekmm.MOD_ID);
-
     public static final BlockRegistryObject<BlockTileModel<TileEntityLargeRotaryCondensentrator, Machine<TileEntityLargeRotaryCondensentrator>>, ItemBlockTooltip<BlockTileModel<TileEntityLargeRotaryCondensentrator, Machine<TileEntityLargeRotaryCondensentrator>>>> LARGE_ROTARY_CONDENSENTRATOR = LM_BLOCKS.register("large_rotary_condensentrator", () -> new BlockTileModel<>(LargeMachineBlockTypes.LARGE_ROTARY_CONDENSENTRATOR,
             properties -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor())),
             (block, properties) -> new ItemBlockTooltip<>(block, true, properties
@@ -47,7 +52,6 @@ public class LargeMachineBlocks {
                             .addOutput()
                             .addEnergy()
                             .build()));
-
     public static final BlockRegistryObject<BlockTileModel<TileEntityLargeElectrolyticSeparator, Machine<TileEntityLargeElectrolyticSeparator>>, ItemBlockTooltip<BlockTileModel<TileEntityLargeElectrolyticSeparator, Machine<TileEntityLargeElectrolyticSeparator>>>> LARGE_ELECTROLYTIC_SEPARATOR = LM_BLOCKS.register("large_electrolytic_separator", () -> new BlockTileModel<>(LargeMachineBlockTypes.LARGE_ELECTROLYTIC_SEPARATOR, properties -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor())),
             (block, properties) -> new ItemBlockTooltip<>(block, true, properties
                     .component(MekanismDataComponents.DUMP_MODE, TileEntityChemicalTank.GasMode.IDLE)
@@ -68,4 +72,30 @@ public class LargeMachineBlocks {
                             .addChemicalDrainSlot(1)
                             .addEnergy()
                             .build()));
+
+    // Generator
+    public static final BlockRegistryObject<BlockTileModel<TileEntityLargeHeatGenerator, Generator<TileEntityLargeHeatGenerator>>, ItemBlockTooltip<BlockTileModel<TileEntityLargeHeatGenerator, Generator<TileEntityLargeHeatGenerator>>>> LARGE_HEAT_GENERATOR = LM_BLOCKS.registerDetails("large_heat_generator", () -> new BlockTileModel<>(LargeMachineBlockTypes.LARGE_HEAT_GENERATOR, properties -> properties.mapColor(MapColor.METAL)))
+            .forItemHolder(holder -> holder
+                    .addAttachmentOnlyContainers(ContainerType.FLUID, () -> FluidTanksBuilder.builder()
+                            .addBasic(MekanismGeneratorsConfig.generators.heatTankCapacity, fluid -> fluid.is(FluidTags.LAVA))
+                            .build())
+                    .addAttachmentOnlyContainers(ContainerType.HEAT, () -> HeatCapacitorsBuilder.builder()
+                            .addBasic(TileEntityLargeHeatGenerator.HEAT_CAPACITY, TileEntityLargeHeatGenerator.INVERSE_CONDUCTION_COEFFICIENT, TileEntityLargeHeatGenerator.INVERSE_INSULATION_COEFFICIENT)
+                            .build())
+                    .addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
+                            .addFluidFuelSlot(0, s -> s.getBurnTime(null) != 0)
+                            .addEnergy()
+                            .build()));
+
+    public static final BlockRegistryObject<BlockTileModel<TileEntityLargeGasGenerator, Generator<TileEntityLargeGasGenerator>>, ItemBlockTooltip<BlockTileModel<TileEntityLargeGasGenerator, Generator<TileEntityLargeGasGenerator>>>> LARGE_GAS_BURNING_GENERATOR = LM_BLOCKS.registerDetails("large_gas_burning_generator", () -> new BlockTileModel<>(LargeMachineBlockTypes.LARGE_GAS_BURNING_GENERATOR, properties -> properties.mapColor(BlockResourceInfo.STEEL.getMapColor())))
+            .forItemHolder(holder -> holder
+                    .addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> ChemicalTanksBuilder.builder()
+                            .addBasic(MekanismGeneratorsConfig.generators.gbgTankCapacity, TileEntityLargeGasGenerator.HAS_FUEL)
+                            .build())
+                    .addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
+                            .addChemicalFillSlot(0)
+                            .addEnergy()
+                            .build()));
+
+    private LargeMachineBlocks() {}
 }

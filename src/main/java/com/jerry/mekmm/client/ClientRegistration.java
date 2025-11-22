@@ -3,9 +3,13 @@ package com.jerry.mekmm.client;
 import com.jerry.mekaf.client.gui.machine.GuiAdvancedFactory;
 import com.jerry.mekaf.common.registries.AdvancedFactoryContainerTypes;
 
+import com.jerry.meklm.client.gui.generator.GuiLargeGasGenerator;
+import com.jerry.meklm.client.gui.generator.GuiLargeHeatGenerator;
 import com.jerry.meklm.client.gui.machine.GuiLargeElectrolyticSeparator;
 import com.jerry.meklm.client.gui.machine.GuiLargeRotaryCondensentrator;
 import com.jerry.meklm.client.model.bake.LargeElectrolyticSeparatorBakedModel;
+import com.jerry.meklm.client.model.bake.LargeGasGeneratorBakedModel;
+import com.jerry.meklm.client.model.bake.LargeHeatGeneratorBakedModel;
 import com.jerry.meklm.client.model.bake.LargeRotaryCondensentratorBakedModel;
 import com.jerry.meklm.common.registries.LargeMachineBlocks;
 import com.jerry.meklm.common.registries.LargeMachineContainerTypes;
@@ -54,6 +58,8 @@ public class ClientRegistration {
         // 偏移在LargeRotaryCondensentratorBakedModel中
         addCustomModel(LargeMachineBlocks.LARGE_ROTARY_CONDENSENTRATOR, (orig, evt) -> new LargeRotaryCondensentratorBakedModel(orig));
         addCustomModel(LargeMachineBlocks.LARGE_ELECTROLYTIC_SEPARATOR, (orig, evt) -> new LargeElectrolyticSeparatorBakedModel(orig));
+        addCustomModel(LargeMachineBlocks.LARGE_HEAT_GENERATOR, (orig, evt) -> new LargeHeatGeneratorBakedModel(orig));
+        addCustomModel(LargeMachineBlocks.LARGE_GAS_BURNING_GENERATOR, (orig, evt) -> new LargeGasGeneratorBakedModel(orig));
 
         ClientRegistrationUtil.setPropertyOverride(MoreMachineItems.CONNECTOR, Mekmm.rl("mode"), (stack, world, entity, seed) -> {
             ConnectorMode mode = ((ItemConnector) stack.getItem()).getMode(stack);
@@ -95,6 +101,8 @@ public class ClientRegistration {
         // Large Machine
         ClientRegistrationUtil.registerScreen(event, LargeMachineContainerTypes.LARGE_ROTARY_CONDENSENTRATOR, GuiLargeRotaryCondensentrator::new);
         ClientRegistrationUtil.registerScreen(event, LargeMachineContainerTypes.LARGE_ELECTROLYTIC_SEPARATOR, GuiLargeElectrolyticSeparator::new);
+        ClientRegistrationUtil.registerScreen(event, LargeMachineContainerTypes.LARGE_HEAT_GENERATOR, GuiLargeHeatGenerator::new);
+        ClientRegistrationUtil.registerScreen(event, LargeMachineContainerTypes.LARGE_GAS_BURNING_GENERATOR, GuiLargeGasGenerator::new);
     }
 
     @SubscribeEvent

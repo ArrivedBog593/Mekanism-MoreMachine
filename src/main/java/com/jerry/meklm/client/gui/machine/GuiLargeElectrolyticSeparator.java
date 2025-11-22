@@ -1,6 +1,6 @@
 package com.jerry.meklm.client.gui.machine;
 
-import com.jerry.meklm.common.tile.TileEntityLargeElectrolyticSeparator;
+import com.jerry.meklm.common.tile.machine.TileEntityLargeElectrolyticSeparator;
 
 import mekanism.api.recipes.cache.CachedRecipe;
 import mekanism.client.gui.GuiConfigurableTile;

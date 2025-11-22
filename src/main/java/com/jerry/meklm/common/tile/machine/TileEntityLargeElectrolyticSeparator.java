@@ -1,4 +1,4 @@
-package com.jerry.meklm.common.tile;
+package com.jerry.meklm.common.tile.machine;
 
 import com.jerry.meklm.common.registries.LargeMachineBlocks;
 import com.jerry.meklm.common.tile.prefab.TileEntityRecipeLargeMachine;
