@@ -2,6 +2,7 @@ package com.jerry.meklm.common.registries;
 
 import com.jerry.meklm.common.tile.generator.TileEntityLargeGasGenerator;
 import com.jerry.meklm.common.tile.generator.TileEntityLargeHeatGenerator;
+import com.jerry.meklm.common.tile.machine.TileEntityLargeChemicalInfuser;
 import com.jerry.meklm.common.tile.machine.TileEntityLargeElectrolyticSeparator;
 import com.jerry.meklm.common.tile.machine.TileEntityLargeRotaryCondensentrator;
 
@@ -26,6 +27,13 @@ public class LargeMachineTileEntityTypes {
             .without(Capabilities.CHEMICAL.block(), Capabilities.FLUID.block(), Capabilities.ITEM.block(), Capabilities.ENERGY.block())
             .build();
 
+    public static final TileEntityTypeRegistryObject<TileEntityLargeChemicalInfuser> LARGE_CHEMICAL_INFUSER = LM_TILE_ENTITY_TYPES
+            .mekBuilder(LargeMachineBlocks.LARGE_CHEMICAL_INFUSER, TileEntityLargeChemicalInfuser::new)
+            .clientTicker(TileEntityMekanism::tickClient)
+            .serverTicker(TileEntityMekanism::tickServer)
+            .withSimple(Capabilities.CONFIG_CARD)
+            .build();
+
     public static final TileEntityTypeRegistryObject<TileEntityLargeElectrolyticSeparator> LARGE_ELECTROLYTIC_SEPARATOR = LM_TILE_ENTITY_TYPES
             .mekBuilder(LargeMachineBlocks.LARGE_ELECTROLYTIC_SEPARATOR, TileEntityLargeElectrolyticSeparator::new)
             .clientTicker(TileEntityMekanism::tickClient)
@@ -39,6 +47,7 @@ public class LargeMachineTileEntityTypes {
             .clientTicker(TileEntityMekanism::tickClient)
             .serverTicker(TileEntityMekanism::tickServer)
             .withSimple(Capabilities.CONFIG_CARD)
+            .without(Capabilities.FLUID.block(), Capabilities.ITEM.block(), Capabilities.ENERGY.block())
             .build();
 
     public static final TileEntityTypeRegistryObject<TileEntityLargeGasGenerator> LARGE_GAS_BURNING_GENERATOR = LM_TILE_ENTITY_TYPES
@@ -46,5 +55,6 @@ public class LargeMachineTileEntityTypes {
             .clientTicker(TileEntityMekanism::tickClient)
             .serverTicker(TileEntityMekanism::tickServer)
             .withSimple(Capabilities.CONFIG_CARD)
+            .without(Capabilities.CHEMICAL.block(), Capabilities.ITEM.block(), Capabilities.ENERGY.block())
             .build();
 }

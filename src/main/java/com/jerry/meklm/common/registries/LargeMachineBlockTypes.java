@@ -3,6 +3,7 @@ package com.jerry.meklm.common.registries;
 import com.jerry.meklm.common.content.blocktype.LargeMachineBlockShapes;
 import com.jerry.meklm.common.tile.generator.TileEntityLargeGasGenerator;
 import com.jerry.meklm.common.tile.generator.TileEntityLargeHeatGenerator;
+import com.jerry.meklm.common.tile.machine.TileEntityLargeChemicalInfuser;
 import com.jerry.meklm.common.tile.machine.TileEntityLargeElectrolyticSeparator;
 import com.jerry.meklm.common.tile.machine.TileEntityLargeRotaryCondensentrator;
 
@@ -47,6 +48,19 @@ public class LargeMachineBlockTypes {
             .with(AttributeCustomSelectionBox.JSON)
             .with(MoreMachineAttributeHasBounding.FULL_JAVA_ENTITY)
             .withComputerSupport("largeRotaryCondensentrator")
+            .build();
+
+    // Chemical Infuser
+    public static final Machine<TileEntityLargeChemicalInfuser> LARGE_CHEMICAL_INFUSER = MachineBuilder
+            .createMachine(() -> LargeMachineTileEntityTypes.LARGE_CHEMICAL_INFUSER, MekanismLang.DESCRIPTION_CHEMICAL_INFUSER)
+            .withGui(() -> LargeMachineContainerTypes.LARGE_CHEMICAL_INFUSER)
+            .withSound(MekanismSounds.CHEMICAL_INFUSER)
+            .withEnergyConfig(MekanismConfig.usage.chemicalInfuser, MekanismConfig.storage.chemicalInfuser)
+            .withSideConfig(TransmissionType.CHEMICAL, TransmissionType.ITEM, TransmissionType.ENERGY)
+            .withCustomShape(LargeMachineBlockShapes.LARGE_CHEMICAL_INFUSER)
+            .with(AttributeCustomSelectionBox.JSON)
+            .with(MoreMachineAttributeHasBounding.FULL_JAVA_ENTITY)
+            .withComputerSupport("largeChemicalInfuser")
             .build();
 
     // Electrolytic Separator

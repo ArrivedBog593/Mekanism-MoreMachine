@@ -5,12 +5,10 @@ import com.jerry.mekaf.common.registries.AdvancedFactoryContainerTypes;
 
 import com.jerry.meklm.client.gui.generator.GuiLargeGasGenerator;
 import com.jerry.meklm.client.gui.generator.GuiLargeHeatGenerator;
+import com.jerry.meklm.client.gui.machine.GuiLargeChemicalInfuser;
 import com.jerry.meklm.client.gui.machine.GuiLargeElectrolyticSeparator;
 import com.jerry.meklm.client.gui.machine.GuiLargeRotaryCondensentrator;
-import com.jerry.meklm.client.model.bake.LargeElectrolyticSeparatorBakedModel;
-import com.jerry.meklm.client.model.bake.LargeGasGeneratorBakedModel;
-import com.jerry.meklm.client.model.bake.LargeHeatGeneratorBakedModel;
-import com.jerry.meklm.client.model.bake.LargeRotaryCondensentratorBakedModel;
+import com.jerry.meklm.client.model.bake.*;
 import com.jerry.meklm.common.registries.LargeMachineBlocks;
 import com.jerry.meklm.common.registries.LargeMachineContainerTypes;
 
@@ -57,6 +55,7 @@ public class ClientRegistration {
                 QuadTransformation.translate(0, 1, 0)));
         // 偏移在LargeRotaryCondensentratorBakedModel中
         addCustomModel(LargeMachineBlocks.LARGE_ROTARY_CONDENSENTRATOR, (orig, evt) -> new LargeRotaryCondensentratorBakedModel(orig));
+        addCustomModel(LargeMachineBlocks.LARGE_CHEMICAL_INFUSER, (orig, evt) -> new LargeChemicalInfuserBakedModel(orig));
         addCustomModel(LargeMachineBlocks.LARGE_ELECTROLYTIC_SEPARATOR, (orig, evt) -> new LargeElectrolyticSeparatorBakedModel(orig));
         addCustomModel(LargeMachineBlocks.LARGE_HEAT_GENERATOR, (orig, evt) -> new LargeHeatGeneratorBakedModel(orig));
         addCustomModel(LargeMachineBlocks.LARGE_GAS_BURNING_GENERATOR, (orig, evt) -> new LargeGasGeneratorBakedModel(orig));
@@ -100,6 +99,7 @@ public class ClientRegistration {
 
         // Large Machine
         ClientRegistrationUtil.registerScreen(event, LargeMachineContainerTypes.LARGE_ROTARY_CONDENSENTRATOR, GuiLargeRotaryCondensentrator::new);
+        ClientRegistrationUtil.registerScreen(event, LargeMachineContainerTypes.LARGE_CHEMICAL_INFUSER, GuiLargeChemicalInfuser::new);
         ClientRegistrationUtil.registerScreen(event, LargeMachineContainerTypes.LARGE_ELECTROLYTIC_SEPARATOR, GuiLargeElectrolyticSeparator::new);
         ClientRegistrationUtil.registerScreen(event, LargeMachineContainerTypes.LARGE_HEAT_GENERATOR, GuiLargeHeatGenerator::new);
         ClientRegistrationUtil.registerScreen(event, LargeMachineContainerTypes.LARGE_GAS_BURNING_GENERATOR, GuiLargeGasGenerator::new);

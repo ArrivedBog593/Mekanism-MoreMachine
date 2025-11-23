@@ -85,6 +85,7 @@ public class TileEntityLargeRotaryCondensentrator extends TileEntityRecipeLargeM
     public static final RecipeError NOT_ENOUGH_GAS_INPUT_ERROR = RecipeError.create();
     public static final RecipeError NOT_ENOUGH_SPACE_GAS_OUTPUT_ERROR = RecipeError.create();
     public static final RecipeError NOT_ENOUGH_SPACE_FLUID_OUTPUT_ERROR = RecipeError.create();
+    public static final int CAPACITY = 10 * FluidType.BUCKET_VOLUME;
     private static final List<RecipeError> TRACKED_ERROR_TYPES = List.of(
             RecipeError.NOT_ENOUGH_ENERGY,
             RecipeError.NOT_ENOUGH_ENERGY_REDUCED_RATE,
@@ -93,8 +94,10 @@ public class TileEntityLargeRotaryCondensentrator extends TileEntityRecipeLargeM
             NOT_ENOUGH_SPACE_GAS_OUTPUT_ERROR,
             NOT_ENOUGH_SPACE_FLUID_OUTPUT_ERROR,
             RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT);
-    public static final int CAPACITY = 10 * FluidType.BUCKET_VOLUME;
-
+    private final IOutputHandler<@NotNull ChemicalStack> gasOutputHandler;
+    private final IOutputHandler<@NotNull FluidStack> fluidOutputHandler;
+    private final IInputHandler<@NotNull FluidStack> fluidInputHandler;
+    private final IInputHandler<@NotNull ChemicalStack> gasInputHandler;
     @WrappingComputerMethod(wrapper = ComputerChemicalTankWrapper.class,
                             methodNames = { "getGas", "getGasCapacity", "getGasNeeded",
                                     "getGasFilledPercentage" },
@@ -105,24 +108,6 @@ public class TileEntityLargeRotaryCondensentrator extends TileEntityRecipeLargeM
                                     "getFluidFilledPercentage" },
                             docPlaceholder = "fluid tank")
     public BasicFluidTank fluidTank;
-    /**
-     * True: fluid -> chemical
-     * <p>
-     * False: chemical -> fluid
-     */
-    private boolean mode;
-
-    private final IOutputHandler<@NotNull ChemicalStack> gasOutputHandler;
-    private final IOutputHandler<@NotNull FluidStack> fluidOutputHandler;
-    private final IInputHandler<@NotNull FluidStack> fluidInputHandler;
-    private final IInputHandler<@NotNull ChemicalStack> gasInputHandler;
-
-    private long clientEnergyUsed = 0;
-    private int baselineMaxOperations = 32;
-    private int numPowering;
-
-    @Getter
-    private MachineEnergyContainer<TileEntityLargeRotaryCondensentrator> energyContainer;
     @WrappingComputerMethod(wrapper = ComputerIInventorySlotWrapper.class, methodNames = "getGasItemInput", docPlaceholder = "gas item input slot")
     ChemicalInventorySlot gasInputSlot;
     @WrappingComputerMethod(wrapper = ComputerIInventorySlotWrapper.class, methodNames = "getGasItemOutput", docPlaceholder = "gas item output slot")
@@ -133,6 +118,17 @@ public class TileEntityLargeRotaryCondensentrator extends TileEntityRecipeLargeM
     OutputInventorySlot fluidOutputSlot;
     @WrappingComputerMethod(wrapper = ComputerIInventorySlotWrapper.class, methodNames = "getEnergyItem", docPlaceholder = "energy slot")
     EnergyInventorySlot energySlot;
+    /**
+     * True: fluid -> chemical
+     * <p>
+     * False: chemical -> fluid
+     */
+    private boolean mode;
+    private long clientEnergyUsed = 0;
+    private int baselineMaxOperations = 32;
+    private int numPowering;
+    @Getter
+    private MachineEnergyContainer<TileEntityLargeRotaryCondensentrator> energyContainer;
 
     public TileEntityLargeRotaryCondensentrator(BlockPos pos, BlockState state) {
         super(LargeMachineBlocks.LARGE_ROTARY_CONDENSENTRATOR, pos, state, TRACKED_ERROR_TYPES);
@@ -198,11 +194,11 @@ public class TileEntityLargeRotaryCondensentrator extends TileEntityRecipeLargeM
     protected IInventorySlotHolder getInitialInventory(IContentsListener listener, IContentsListener recipeCacheListener, IContentsListener recipeCacheUnpauseListener) {
         InventorySlotHelper builder = InventorySlotHelper.forSide(facingSupplier);
         BooleanSupplier modeSupplier = this::getMode;
-        builder.addSlot(gasInputSlot = ChemicalInventorySlot.rotaryDrain(gasTank, modeSupplier, listener, 5, 25));
-        builder.addSlot(gasOutputSlot = ChemicalInventorySlot.rotaryFill(gasTank, modeSupplier, listener, 5, 56));
-        builder.addSlot(fluidInputSlot = FluidInventorySlot.rotary(fluidTank, modeSupplier, listener, 155, 25));
-        builder.addSlot(fluidOutputSlot = OutputInventorySlot.at(listener, 155, 56));
-        builder.addSlot(energySlot = EnergyInventorySlot.fillOrConvert(energyContainer, this::getLevel, listener, 155, 5));
+        builder.addSlot(gasInputSlot = ChemicalInventorySlot.rotaryDrain(gasTank, modeSupplier, listener, 5, 25), RelativeSide.BACK);
+        builder.addSlot(gasOutputSlot = ChemicalInventorySlot.rotaryFill(gasTank, modeSupplier, listener, 5, 56), RelativeSide.LEFT);
+        builder.addSlot(fluidInputSlot = FluidInventorySlot.rotary(fluidTank, modeSupplier, listener, 155, 25), RelativeSide.BACK);
+        builder.addSlot(fluidOutputSlot = OutputInventorySlot.at(listener, 155, 56), RelativeSide.RIGHT);
+        builder.addSlot(energySlot = EnergyInventorySlot.fillOrConvert(energyContainer, this::getLevel, listener, 155, 5), RelativeSide.BACK);
         gasInputSlot.setSlotType(ContainerSlotType.INPUT);
         gasInputSlot.setSlotOverlay(SlotOverlay.PLUS);
         gasOutputSlot.setSlotType(ContainerSlotType.OUTPUT);
@@ -376,6 +372,8 @@ public class TileEntityLargeRotaryCondensentrator extends TileEntityRecipeLargeM
             return Objects.requireNonNull(fluidHandlerManager, "Expected to have fluid handler").resolve(capability, side);
         } else if (capability == Capabilities.ENERGY.block()) {
             return Objects.requireNonNull(energyHandlerManager, "Expected to have energy handler").resolve(capability, side);
+        } else if (capability == Capabilities.ITEM.block()) {
+            return Objects.requireNonNull(itemHandlerManager, "Expected to have item handler").resolve(capability, side);
         }
         return WorldUtils.getCapability(level, capability, worldPosition, null, this, side);
     }
@@ -388,6 +386,8 @@ public class TileEntityLargeRotaryCondensentrator extends TileEntityRecipeLargeM
             return notFluidPort(side, offset);
         } else if (EnergyCompatUtils.isEnergyCapability(capability)) {
             return notEnergyPort(side, offset);
+        } else if (capability == Capabilities.ITEM.block()) {
+            return notItemPort(side, offset);
         }
         return notChemicalPort(side, offset) && notFluidPort(side, offset) && notEnergyPort(side, offset);
     }
@@ -444,6 +444,11 @@ public class TileEntityLargeRotaryCondensentrator extends TileEntityRecipeLargeM
             }
         }
         return true;
+    }
+
+    private boolean notItemPort(Direction side, Vec3i offset) {
+        // 所有端口都可以与物品管道交互
+        return notChemicalPort(side, offset) && notFluidPort(side, offset) && notEnergyPort(side, offset);
     }
 
     private boolean notEnergyPort(Direction side, Vec3i offset) {

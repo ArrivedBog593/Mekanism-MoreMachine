@@ -201,13 +201,29 @@ public class TileEntityLargeGasGenerator extends TileEntityMoreMachineGenerator 
 
     @Override
     public int getBoundingComparatorSignal(Vec3i offset) {
-        return IBoundingBlock.super.getBoundingComparatorSignal(offset);
+        Direction back = getOppositeDirection();
+        if (offset.equals(new Vec3i(back.getStepX(), 0, back.getStepZ())) || offset.equals(new Vec3i(back.getStepX(), 1, back.getStepZ()))) {
+            return getCurrentRedstoneLevel();
+        }
+        Direction left = getLeftSide();
+        if (offset.equals(new Vec3i(left.getStepX(), 0, left.getStepZ())) || offset.equals(new Vec3i(left.getStepX(), 1, left.getStepZ()))) {
+            return getCurrentRedstoneLevel();
+        }
+        Direction right = left.getOpposite();
+        if (offset.equals(new Vec3i(right.getStepX(), 0, right.getStepZ())) || offset.equals(new Vec3i(right.getStepX(), 1, right.getStepZ()))) {
+            return getCurrentRedstoneLevel();
+        }
+        return 0;
     }
 
     @Override
     public <T> @Nullable T getOffsetCapabilityIfEnabled(@NotNull BlockCapability<T, @Nullable Direction> capability, @Nullable Direction side, @NotNull Vec3i offset) {
-        if (capability == Capabilities.CHEMICAL.block()) {
+        if (capability == Capabilities.ENERGY.block()) {
+            return Objects.requireNonNull(energyHandlerManager, "Expected to have energy handler").resolve(capability, side);
+        } else if (capability == Capabilities.CHEMICAL.block()) {
             return Objects.requireNonNull(chemicalHandlerManager, "Expected to have chemical handler").resolve(capability, side);
+        } else if (capability == Capabilities.ITEM.block()) {
+            return Objects.requireNonNull(itemHandlerManager, "Expected to have item handler").resolve(capability, side);
         }
         return WorldUtils.getCapability(level, capability, worldPosition, null, this, side);
     }
@@ -218,6 +234,8 @@ public class TileEntityLargeGasGenerator extends TileEntityMoreMachineGenerator 
             return notChemicalPort(side, offset);
         } else if (EnergyCompatUtils.isEnergyCapability(capability)) {
             return notEnergyPort(side, offset);
+        } else if (capability == Capabilities.ITEM.block()) {
+            return notItemPort(side, offset);
         }
         return notChemicalPort(side, offset) && notEnergyPort(side, offset);
     }
@@ -236,6 +254,11 @@ public class TileEntityLargeGasGenerator extends TileEntityMoreMachineGenerator 
             return side != right;
         }
         return true;
+    }
+
+    private boolean notItemPort(Direction side, Vec3i offset) {
+        // 所有端口都可以与物品管道交互
+        return notChemicalPort(side, offset) && notEnergyPort(side, offset);
     }
 
     private boolean notEnergyPort(Direction side, Vec3i offset) {

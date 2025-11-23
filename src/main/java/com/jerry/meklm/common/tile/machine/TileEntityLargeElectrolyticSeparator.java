@@ -88,6 +88,12 @@ public class TileEntityLargeElectrolyticSeparator extends TileEntityRecipeLargeM
 
     public static final RecipeError NOT_ENOUGH_SPACE_LEFT_OUTPUT_ERROR = RecipeError.create();
     public static final RecipeError NOT_ENOUGH_SPACE_RIGHT_OUTPUT_ERROR = RecipeError.create();
+    /**
+     * The maximum amount of gas this block can store.
+     */
+    public static final long MAX_GAS = 2_400;
+    public static final int MAX_FLUID = 24 * FluidType.BUCKET_VOLUME;
+
     private static final List<RecipeError> TRACKED_ERROR_TYPES = List.of(
             RecipeError.NOT_ENOUGH_ENERGY,
             RecipeError.NOT_ENOUGH_ENERGY_REDUCED_RATE,
@@ -95,16 +101,13 @@ public class TileEntityLargeElectrolyticSeparator extends TileEntityRecipeLargeM
             NOT_ENOUGH_SPACE_LEFT_OUTPUT_ERROR,
             NOT_ENOUGH_SPACE_RIGHT_OUTPUT_ERROR,
             RecipeError.INPUT_DOESNT_PRODUCE_OUTPUT);
-    /**
-     * The maximum amount of gas this block can store.
-     */
-    public static final long MAX_GAS = 2_400;
-    public static final int MAX_FLUID = 24 * FluidType.BUCKET_VOLUME;
+
     private static final int BASE_DUMP_RATE = 8;
 
     private static final LongObjectToLongFunction<TileEntityLargeElectrolyticSeparator> BASE_ENERGY_CALCULATOR = (base, tile) -> base * tile.getRecipeEnergyMultiplier();
     private final IOutputHandler<@NotNull ElectrolysisRecipeOutput> outputHandler;
     private final IInputHandler<@NotNull FluidStack> inputHandler;
+
     /**
      * This separator's water slot.
      */
@@ -141,6 +144,7 @@ public class TileEntityLargeElectrolyticSeparator extends TileEntityRecipeLargeM
     ChemicalInventorySlot rightOutputSlot;
     @WrappingComputerMethod(wrapper = SpecialComputerMethodWrapper.ComputerIInventorySlotWrapper.class, methodNames = "getEnergyItem", docPlaceholder = "energy slot")
     EnergyInventorySlot energySlot;
+
     private int numPowering;
     private long clientEnergyUsed = 1L;
     @Getter
@@ -214,11 +218,11 @@ public class TileEntityLargeElectrolyticSeparator extends TileEntityRecipeLargeM
     @NotNull
     @Override
     protected IInventorySlotHolder getInitialInventory(IContentsListener listener, IContentsListener recipeCacheListener, IContentsListener recipeCacheUnpauseListener) {
-        InventorySlotHelper builder = InventorySlotHelper.forSideWithConfig(this);
-        builder.addSlot(fluidSlot = FluidInventorySlot.fill(fluidTank, listener, 26, 35));
-        builder.addSlot(leftOutputSlot = ChemicalInventorySlot.drain(leftTank, listener, 59, 52));
-        builder.addSlot(rightOutputSlot = ChemicalInventorySlot.drain(rightTank, listener, 101, 52));
-        builder.addSlot(energySlot = EnergyInventorySlot.fillOrConvert(energyContainer, this::getLevel, listener, 143, 35));
+        InventorySlotHelper builder = InventorySlotHelper.forSide(facingSupplier);
+        builder.addSlot(fluidSlot = FluidInventorySlot.fill(fluidTank, listener, 26, 35), RelativeSide.LEFT, RelativeSide.RIGHT, RelativeSide.BACK);
+        builder.addSlot(leftOutputSlot = ChemicalInventorySlot.drain(leftTank, listener, 59, 52), RelativeSide.LEFT);
+        builder.addSlot(rightOutputSlot = ChemicalInventorySlot.drain(rightTank, listener, 101, 52), RelativeSide.RIGHT);
+        builder.addSlot(energySlot = EnergyInventorySlot.fillOrConvert(energyContainer, this::getLevel, listener, 143, 35), RelativeSide.BACK);
         fluidSlot.setSlotType(ContainerSlotType.INPUT);
         leftOutputSlot.setSlotType(ContainerSlotType.OUTPUT);
         rightOutputSlot.setSlotType(ContainerSlotType.OUTPUT);
@@ -439,11 +443,13 @@ public class TileEntityLargeElectrolyticSeparator extends TileEntityRecipeLargeM
     @Override
     public <T> @Nullable T getOffsetCapabilityIfEnabled(@NotNull BlockCapability<T, @Nullable Direction> capability, @Nullable Direction side, @NotNull Vec3i offset) {
         if (capability == Capabilities.ENERGY.block()) {
-            return Objects.requireNonNull(energyHandlerManager, "Expected to have fluid handler").resolve(capability, side);
+            return Objects.requireNonNull(energyHandlerManager, "Expected to have energy handler").resolve(capability, side);
         } else if (capability == Capabilities.FLUID.block()) {
             return Objects.requireNonNull(fluidHandlerManager, "Expected to have fluid handler").resolve(capability, side);
         } else if (capability == Capabilities.CHEMICAL.block()) {
             return Objects.requireNonNull(chemicalHandlerManager, "Expected to have chemical handler").resolve(capability, side);
+        } else if (capability == Capabilities.ITEM.block()) {
+            return Objects.requireNonNull(itemHandlerManager, "Expected to have item handler").resolve(capability, side);
         }
         return WorldUtils.getCapability(level, capability, worldPosition, null, this, side);
     }
@@ -456,6 +462,8 @@ public class TileEntityLargeElectrolyticSeparator extends TileEntityRecipeLargeM
             return notChemicalPort(side, offset);
         } else if (EnergyCompatUtils.isEnergyCapability(capability)) {
             return notEnergyPort(side, offset);
+        } else if (capability == Capabilities.ITEM.block()) {
+            return notItemPort(side, offset);
         }
         return notFluidPort(side, offset) && notChemicalPort(side, offset) && notEnergyPort(side, offset);
     }
@@ -533,10 +541,14 @@ public class TileEntityLargeElectrolyticSeparator extends TileEntityRecipeLargeM
         return true;
     }
 
+    private boolean notItemPort(Direction side, Vec3i offset) {
+        // 所有端口都可以与物品管道交互
+        return notChemicalPort(side, offset) && notFluidPort(side, offset) && notEnergyPort(side, offset);
+    }
+
     private boolean notEnergyPort(Direction side, Vec3i offset) {
         Direction back = getOppositeDirection();
         if (offset.equals(new Vec3i(back.getStepX(), 0, back.getStepZ()))) {
-            // If output then disable if wrong face of output
             return side != back;
         }
         return true;

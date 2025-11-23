@@ -2,6 +2,7 @@ package com.jerry.meklm.common.registries;
 
 import com.jerry.meklm.common.tile.generator.TileEntityLargeGasGenerator;
 import com.jerry.meklm.common.tile.generator.TileEntityLargeHeatGenerator;
+import com.jerry.meklm.common.tile.machine.TileEntityLargeChemicalInfuser;
 import com.jerry.meklm.common.tile.machine.TileEntityLargeElectrolyticSeparator;
 import com.jerry.meklm.common.tile.machine.TileEntityLargeRotaryCondensentrator;
 
@@ -18,6 +19,7 @@ public class LargeMachineContainerTypes {
     public static final ContainerTypeDeferredRegister LM_CONTAINER_TYPES = new ContainerTypeDeferredRegister(Mekmm.MOD_ID);
 
     public static final ContainerTypeRegistryObject<MekanismTileContainer<TileEntityLargeRotaryCondensentrator>> LARGE_ROTARY_CONDENSENTRATOR = LM_CONTAINER_TYPES.register(LargeMachineBlocks.LARGE_ROTARY_CONDENSENTRATOR, TileEntityLargeRotaryCondensentrator.class);
+    public static final ContainerTypeRegistryObject<MekanismTileContainer<TileEntityLargeChemicalInfuser>> LARGE_CHEMICAL_INFUSER = LM_CONTAINER_TYPES.register(LargeMachineBlocks.LARGE_CHEMICAL_INFUSER, TileEntityLargeChemicalInfuser.class);
     public static final ContainerTypeRegistryObject<MekanismTileContainer<TileEntityLargeElectrolyticSeparator>> LARGE_ELECTROLYTIC_SEPARATOR = LM_CONTAINER_TYPES.register(LargeMachineBlocks.LARGE_ELECTROLYTIC_SEPARATOR, TileEntityLargeElectrolyticSeparator.class);
 
     public static final ContainerTypeRegistryObject<MekanismTileContainer<TileEntityLargeHeatGenerator>> LARGE_HEAT_GENERATOR = LM_CONTAINER_TYPES.custom(LargeMachineBlocks.LARGE_HEAT_GENERATOR, TileEntityLargeHeatGenerator.class).armorSideBar(-20, 11, 0).build();
