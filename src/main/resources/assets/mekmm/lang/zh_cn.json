@@ -145,7 +145,8 @@
   "block.mekmm.ambient_gas_collector": "环境气体收集器",
   "block.mekmm.wireless_charging_station": "无线充电站",
   "block.mekmm.wireless_transmission_station": "无线传输站",
-  "block.mekmm.author_doll": "作者玩偶",
+  "block.mekmm.author_doll": "LostMyself",
+  "block.mekmm.modeler_doll": "TedXenon",
 
   "block.mekmm.large_rotary_condensentrator": "大型回旋式气液转换机",
   "block.mekmm.large_chemical_infuser": "大型化学灌注机",
@@ -333,7 +334,8 @@
   "description.mekmm.chemical_replicator": "一台违反物理学定律的机器，它可以利用某种物质复制化学品",
   "description.mekmm.ambient_gas_collector": "一台抽取大气中神秘物质的机器",
   "description.mekmm.wireless_charging_station": "一台为物品栏和盔甲进行无线充电的机器（当然还有饰品栏，如果你有的话）",
-  "description.mekmm.author_doll": "一个有着作者皮肤的玩偶",
+  "description.mekmm.author_doll": "一个有着作者皮肤的玩偶（只是装饰品）",
+  "description.mekmm.modeler_doll": "一个有着模型师皮肤的玩偶（感谢所有为mekmm提供纹理和模型的人）",
 
   "tooltip.mekmm.is_blocking": "机器上方有阻挡物",
   "tooltip.mekmm.no_blocking": "机器上方无阻挡物",

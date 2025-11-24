@@ -8,7 +8,8 @@ import com.jerry.mekmm.common.content.blocktype.MoreMachineFactory.MoreMachineFa
 import com.jerry.mekmm.common.content.blocktype.MoreMachineFactoryType;
 import com.jerry.mekmm.common.content.blocktype.MoreMachineMachine.MMMachineBuilder;
 import com.jerry.mekmm.common.content.blocktype.MoreMachineMachine.MoreMachineFactoryMachine;
-import com.jerry.mekmm.common.tile.TileEntityDoll;
+import com.jerry.mekmm.common.tile.TileEntityAuthorDoll;
+import com.jerry.mekmm.common.tile.TileEntityModelerDoll;
 import com.jerry.mekmm.common.tile.TileEntityWirelessChargingStation;
 import com.jerry.mekmm.common.tile.TileEntityWirelessTransmissionStation;
 import com.jerry.mekmm.common.tile.machine.*;
@@ -199,9 +200,18 @@ public class MoreMachineBlockTypes {
             .build();
 
     // Author Doll
-    public static final BlockTypeTile<TileEntityDoll> AUTHOR_DOLL = BlockTypeTile.BlockTileBuilder
+    public static final BlockTypeTile<TileEntityAuthorDoll> AUTHOR_DOLL = BlockTypeTile.BlockTileBuilder
             .createBlock(() -> MoreMachineTileEntityTypes.AUTHOR_DOLL, MoreMachineLang.AUTHOR_DOLL)
             .with(new AttributeStateFacing(BlockStateProperties.HORIZONTAL_FACING))
+            .withCustomShape(MoreMachineBlockShapes.AUTHOR_DOLL)
+            .with(AttributeCustomSelectionBox.JSON)
+            .build();
+
+    // Modeler Doll
+    public static final BlockTypeTile<TileEntityModelerDoll> MODELER_DOLL = BlockTypeTile.BlockTileBuilder
+            .createBlock(() -> MoreMachineTileEntityTypes.MODELER_DOLL, MoreMachineLang.MODELER_DOLL)
+            .with(new AttributeStateFacing(BlockStateProperties.HORIZONTAL_FACING))
+            // 玩偶的模型都是一样的
             .withCustomShape(MoreMachineBlockShapes.AUTHOR_DOLL)
             .with(AttributeCustomSelectionBox.JSON)
             .build();

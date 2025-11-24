@@ -145,7 +145,8 @@
   "block.mekmm.ambient_gas_collector": "Colector de gas ambiental",
   "block.mekmm.wireless_charging_station": "Estación de carga inalámbrica",
   "block.mekmm.wireless_transmission_station": "Estación de transmisión inalámbrica",
-  "block.mekmm.author_doll": "Muñeca del autor",
+  "block.mekmm.author_doll": "LostMyself",
+  "block.mekmm.modeler_doll": "TedXenon",
 
   "block.mekmm.large_rotary_condensentrator": "Condensador giratorio grande",
   "block.mekmm.large_chemical_infuser": "Large Chemical Infuser",
@@ -333,7 +334,8 @@
   "description.mekmm.chemical_replicator": "Una máquina que viola las leyes de la física y puede replicar productos químicos usando una cierta sustancia.",
   "description.mekmm.ambient_gas_collector": "Una máquina que extrae sustancias misteriosas de la atmósfera.",
   "description.mekmm.wireless_charging_station": "Una máquina para la carga inalámbrica del inventario y la armadura (incluyendo Curios, si tienes uno).",
-  "description.mekmm.author_doll": "Una muñeca con la skin del autor.",
+  "description.mekmm.author_doll": "Una muñeca con la skin del autor.(Just decorations)",
+  "description.mekmm.modeler_doll": "A doll with the modeler's skin.(Thanks to everyone who provided textures and models for mekmm)",
 
   "tooltip.mekmm.is_blocking": "Bloqueado encima de la máquina",
   "tooltip.mekmm.no_blocking": "No bloqueado encima de la máquina",

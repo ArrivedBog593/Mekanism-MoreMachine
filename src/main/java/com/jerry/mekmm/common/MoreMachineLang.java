@@ -55,6 +55,7 @@ public enum MoreMachineLang implements ILangEntry {
     DESCRIPTION_AMBIENT_GAS_COLLECTOR("description", "ambient_gas_collector"),
     DESCRIPTION_WIRELESS_CHARGING_STATION("description", "wireless_charging_station"),
     AUTHOR_DOLL("description", "author_doll"),
+    MODELER_DOLL("description", "modeler_doll"),
     // JEI
     RECIPE_VIEWER_INFO_UNSTABLE_DIMENSIONAL_GAS("info", "jei.unstable_dimensional_gas"),
     // Tooltip stuff

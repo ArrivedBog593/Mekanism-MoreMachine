@@ -4,7 +4,8 @@ import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.common.block.prefab.MMBlockFactoryMachine;
 import com.jerry.mekmm.common.content.blocktype.MoreMachineFactoryType;
 import com.jerry.mekmm.common.item.block.machine.ItemBlockMoreMachineFactory;
-import com.jerry.mekmm.common.tile.TileEntityDoll;
+import com.jerry.mekmm.common.tile.TileEntityAuthorDoll;
+import com.jerry.mekmm.common.tile.TileEntityModelerDoll;
 import com.jerry.mekmm.common.tile.TileEntityWirelessChargingStation;
 import com.jerry.mekmm.common.tile.TileEntityWirelessTransmissionStation;
 import com.jerry.mekmm.common.tile.factory.*;
@@ -130,8 +131,12 @@ public class MoreMachineTileEntityTypes {
             .withSimple(Capabilities.CONFIGURABLE)
             .build();
 
-    public static final TileEntityTypeRegistryObject<TileEntityDoll> AUTHOR_DOLL = MM_TILE_ENTITY_TYPES
-            .builder(MoreMachineBlocks.AUTHOR_DOLL, TileEntityDoll::new)
+    public static final TileEntityTypeRegistryObject<TileEntityAuthorDoll> AUTHOR_DOLL = MM_TILE_ENTITY_TYPES
+            .builder(MoreMachineBlocks.AUTHOR_DOLL, TileEntityAuthorDoll::new)
+            .build();
+
+    public static final TileEntityTypeRegistryObject<TileEntityModelerDoll> MODELER_DOLL = MM_TILE_ENTITY_TYPES
+            .builder(MoreMachineBlocks.MODELER_DOLL, TileEntityModelerDoll::new)
             .build();
 
     public static TileEntityTypeRegistryObject<? extends TileEntityMoreMachineFactory<?>> getMoreMachineFactoryTile(FactoryTier tier, MoreMachineFactoryType type) {

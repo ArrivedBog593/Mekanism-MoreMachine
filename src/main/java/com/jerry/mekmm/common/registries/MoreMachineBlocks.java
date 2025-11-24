@@ -2,15 +2,14 @@ package com.jerry.mekmm.common.registries;
 
 import com.jerry.mekmm.Mekmm;
 import com.jerry.mekmm.common.attachments.component.MoreMachineAttachedSideConfig;
-import com.jerry.mekmm.common.block.BlockDoll;
+import com.jerry.mekmm.common.block.BlockAuthorDoll;
+import com.jerry.mekmm.common.block.BlockModelerDoll;
 import com.jerry.mekmm.common.block.prefab.MMBlockFactoryMachine;
 import com.jerry.mekmm.common.block.prefab.MMBlockFactoryMachine.BlockMoreMachineFactory;
 import com.jerry.mekmm.common.content.blocktype.MoreMachineFactory;
 import com.jerry.mekmm.common.content.blocktype.MoreMachineFactoryType;
 import com.jerry.mekmm.common.content.blocktype.MoreMachineMachine.MoreMachineFactoryMachine;
-import com.jerry.mekmm.common.item.block.ItemBlockDoll;
-import com.jerry.mekmm.common.item.block.ItemBlockWirelessChargingStation;
-import com.jerry.mekmm.common.item.block.ItemBlockWirelessTransmissionStation;
+import com.jerry.mekmm.common.item.block.*;
 import com.jerry.mekmm.common.item.block.machine.ItemBlockMoreMachineFactory;
 import com.jerry.mekmm.common.recipe.MoreMachineRecipeType;
 import com.jerry.mekmm.common.tile.TileEntityWirelessChargingStation;
@@ -263,8 +262,11 @@ public class MoreMachineBlocks {
                             .addBasic(TileEntityWirelessTransmissionStation.HEAT_CAPACITY, TileEntityWirelessTransmissionStation.INVERSE_CONDUCTION_COEFFICIENT, TileEntityWirelessTransmissionStation.INVERSE_INSULATION_COEFFICIENT)
                             .build()));
 
-    public static final BlockRegistryObject<BlockDoll, ItemBlockDoll> AUTHOR_DOLL = MM_BLOCKS.register("author_doll",
-            () -> new BlockDoll(MoreMachineBlockTypes.AUTHOR_DOLL, properties -> properties.sound(SoundType.WOOL).destroyTime(0).strength(0)), ItemBlockDoll::new);
+    public static final BlockRegistryObject<BlockAuthorDoll, ItemBlockAuthorDoll> AUTHOR_DOLL = MM_BLOCKS.register("author_doll",
+            () -> new BlockAuthorDoll(MoreMachineBlockTypes.AUTHOR_DOLL, properties -> properties.sound(SoundType.WOOL).destroyTime(0).strength(0)), ItemBlockAuthorDoll::new);
+
+    public static final BlockRegistryObject<BlockModelerDoll, ItemBlockModelerDoll> MODELER_DOLL = MM_BLOCKS.register("modeler_doll",
+            () -> new BlockModelerDoll(MoreMachineBlockTypes.MODELER_DOLL, properties -> properties.sound(SoundType.WOOL).destroyTime(0).strength(0)), ItemBlockModelerDoll::new);
 
     private static <BLOCK extends Block, ITEM extends BlockItem> BlockRegistryObject<BLOCK, ITEM> registerTieredBlock(ITier tier, String suffix,
                                                                                                                       Supplier<? extends BLOCK> blockSupplier, BiFunction<BLOCK, Item.Properties, ITEM> itemCreator) {
