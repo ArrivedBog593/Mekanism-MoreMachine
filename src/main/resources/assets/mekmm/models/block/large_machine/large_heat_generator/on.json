@@ -8,8 +8,8 @@
 		"0": "mekmm:block/large_machine/large_heat_generator/base",
 		"1": "mekmm:block/large_machine/large_heat_generator/fan_on",
 		"2": "mekmm:block/large_machine/large_heat_generator/coil_on",
-		"3": "mekmm:block/large_machine/large_heat_generator/screen_cmd",
-		"4": "mekanism:block/models/digital_miner_screen_hello",
+		"3": "mekanism:block/models/digital_miner_screen_hello",
+		"4": "mekmm:block/large_machine/large_heat_generator/screen_cmd",
 		"particle": "mekanism:block/base/base_bottom"
 	},
 	"elements": [

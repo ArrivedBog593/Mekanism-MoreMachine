@@ -147,10 +147,12 @@
   "block.mekmm.wireless_transmission_station": "Wireless Transmission Station",
   "block.mekmm.author_doll": "Author Doll",
 
-  "block.mekmm.large_gas_burning_generator": "Large Gas Burning Generator",
-  "block.mekmm.large_electrolytic_separator": "Large Electrolytic Separator",
-  "block.mekmm.large_chemical_washer": "Large Chemical Washer",
   "block.mekmm.large_rotary_condensentrator": "Large Rotary Condensentrator",
+  "block.mekmm.large_chemical_infuser": "Large C. Infuser",
+  "block.mekmm.large_electrolytic_separator": "Large Electrolytic Separator",
+  "block.mekmm.large_solar_neutron_activator": "Large Solar Neutron Activator",
+  "block.mekmm.large_heat_generator": "Large Heat Generator",
+  "block.mekmm.large_gas_burning_generator": "Large Gas-Burning Generator",
 
   "chemical.mekmm.nutritional_paste": "Nutritional Paste",
   "chemical.mekmm.nutrient_solution": "Nutrient Solution",
@@ -295,10 +297,12 @@
   "container.mekmm.wireless_charging_station": "Wireless Charging Station",
   "container.mekmm.wireless_transmission_station": "Wireless Transmission Station",
 
-  "container.mekmm.large_gas_burning_generator": "Large Gas Burning Generator",
-  "container.mekmm.large_electrolytic_separator": "Large Electrolytic Separator",
-  "container.mekmm.large_chemical_washer": "Large Chemical Washer",
   "container.mekmm.large_rotary_condensentrator": "Large Rotary Condensentrator",
+  "container.mekmm.large_chemical_infuser": "Large C. Infuser",
+  "container.mekmm.large_electrolytic_separator": "Large Electrolytic Separator",
+  "container.mekmm.large_solar_neutron_activator": "Large Solar Neutron Activator",
+  "container.mekmm.large_heat_generator": "Large Heat Generator",
+  "container.mekmm.large_gas_burning_generator": "Large Gas-Burning Generator",
 
   "charging.mekmm.equips": "Charging Equips",
   "charging.mekmm.inventory": "Charging Inventory",

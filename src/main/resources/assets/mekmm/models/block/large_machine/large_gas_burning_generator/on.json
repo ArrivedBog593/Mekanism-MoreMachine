@@ -7,7 +7,7 @@
 	"textures": {
 		"0": "mekmm:block/large_machine/large_gas_burning_generator/base",
 		"1": "mekmm:block/large_machine/large_gas_burning_generator/fan_on",
-		"2": "mekmm:block/large_machine/large_gas_burning_generator/screen_on",
+		"2": "mekmm:block/large_machine/large_gas_burning_generator/screen_cmd",
 		"3": "mekmm:block/large_machine/large_gas_burning_generator/meters_on",
 		"particle": "mekanism:block/base/base_bottom"
 	},

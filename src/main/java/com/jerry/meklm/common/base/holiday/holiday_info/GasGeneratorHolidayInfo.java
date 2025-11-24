@@ -10,7 +10,9 @@ import mekanism.common.base.holiday.HolidayManager;
 
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.TextureAtlasStitchedEvent;
 
 import org.jetbrains.annotations.Nullable;
@@ -19,6 +21,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.function.Predicate;
 
+@EventBusSubscriber(modid = Mekmm.MOD_ID, value = Dist.CLIENT)
 public class GasGeneratorHolidayInfo extends BaseHolidayInfo {
 
     private static final Predicate<ResourceLocation> IS_SECOND = s -> s.getPath().contains("screen_cmd");

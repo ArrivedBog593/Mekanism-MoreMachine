@@ -147,10 +147,12 @@
   "block.mekmm.wireless_transmission_station": "无线传输站",
   "block.mekmm.author_doll": "作者玩偶",
 
-  "block.mekmm.large_gas_burning_generator": "大型燃气发电机",
-  "block.mekmm.large_electrolytic_separator": "大型电解分离机",
-  "block.mekmm.large_chemical_washer": "大型化学清洗机",
   "block.mekmm.large_rotary_condensentrator": "大型回旋式气液转换机",
+  "block.mekmm.large_chemical_infuser": "大型化学灌注机",
+  "block.mekmm.large_electrolytic_separator": "大型电解分离机",
+  "block.mekmm.large_solar_neutron_activator": "大型太阳能种子活化器",
+  "block.mekmm.large_heat_generator": "大型热力发电机",
+  "block.mekmm.large_gas_burning_generator": "大型燃气发电机",
 
   "chemical.mekmm.nutritional_paste": "营养糊剂",
   "chemical.mekmm.nutrient_solution": "营养液",
@@ -295,10 +297,12 @@
   "container.mekmm.wireless_charging_station": "无线充电站",
   "container.mekmm.wireless_transmission_station": "无线传输站",
 
-  "container.mekmm.large_gas_burning_generator": "大型燃气发电机",
-  "container.mekmm.large_electrolytic_separator": "大型电解分离机",
-  "container.mekmm.large_chemical_washer": "大型化学清洗机",
   "container.mekmm.large_rotary_condensentrator": "大型回旋式气液转换机",
+  "container.mekmm.large_chemical_infuser": "大型化学灌注机",
+  "container.mekmm.large_electrolytic_separator": "大型电解分离机",
+  "container.mekmm.large_solar_neutron_activator": "大型太阳能种子活化器",
+  "container.mekmm.large_heat_generator": "大型热力发电机",
+  "container.mekmm.large_gas_burning_generator": "大型燃气发电机",
 
   "charging.mekmm.equips": "装备栏充能",
   "charging.mekmm.inventory": "物品栏充能",
