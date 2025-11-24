@@ -5,6 +5,7 @@ import com.jerry.meklm.common.tile.generator.TileEntityLargeHeatGenerator;
 import com.jerry.meklm.common.tile.machine.TileEntityLargeChemicalInfuser;
 import com.jerry.meklm.common.tile.machine.TileEntityLargeElectrolyticSeparator;
 import com.jerry.meklm.common.tile.machine.TileEntityLargeRotaryCondensentrator;
+import com.jerry.meklm.common.tile.machine.TileEntityLargeSolarNeutronActivator;
 
 import com.jerry.mekmm.Mekmm;
 
@@ -90,6 +91,20 @@ public class LargeMachineBlocks {
                             .addChemicalDrainSlot(0)
                             .addChemicalDrainSlot(1)
                             .addEnergy()
+                            .build()));
+
+    public static final BlockRegistryObject<BlockTileModel<TileEntityLargeSolarNeutronActivator, Machine<TileEntityLargeSolarNeutronActivator>>, ItemBlockTooltip<BlockTileModel<TileEntityLargeSolarNeutronActivator, Machine<TileEntityLargeSolarNeutronActivator>>>> LARGE_SOLAR_NEUTRON_ACTIVATOR = LM_BLOCKS.register("large_solar_neutron_activator", () -> new BlockTileModel<>(LargeMachineBlockTypes.LARGE_SOLAR_NEUTRON_ACTIVATOR, properties -> properties.mapColor(MapColor.COLOR_BLUE)),
+            (block, properties) -> new ItemBlockTooltip<>(block, true, properties
+                    .component(MekanismDataComponents.EJECTOR, AttachedEjector.DEFAULT)
+                    .component(MekanismDataComponents.SIDE_CONFIG, AttachedSideConfig.SNA)))
+            .forItemHolder(holder -> holder
+                    .addAttachmentOnlyContainers(ContainerType.CHEMICAL, () -> ChemicalTanksBuilder.builder()
+                            .addBasic(TileEntityLargeSolarNeutronActivator.MAX_GAS, MekanismRecipeType.ACTIVATING, InputRecipeCache.SingleChemical::containsInput)
+                            .addBasic(TileEntityLargeSolarNeutronActivator.MAX_GAS)
+                            .build())
+                    .addAttachmentOnlyContainers(ContainerType.ITEM, () -> ItemSlotsBuilder.builder()
+                            .addChemicalFillSlot(0)
+                            .addChemicalDrainSlot(1)
                             .build()));
 
     // Generator

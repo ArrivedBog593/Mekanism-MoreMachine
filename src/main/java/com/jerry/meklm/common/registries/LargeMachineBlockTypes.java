@@ -6,18 +6,16 @@ import com.jerry.meklm.common.tile.generator.TileEntityLargeHeatGenerator;
 import com.jerry.meklm.common.tile.machine.TileEntityLargeChemicalInfuser;
 import com.jerry.meklm.common.tile.machine.TileEntityLargeElectrolyticSeparator;
 import com.jerry.meklm.common.tile.machine.TileEntityLargeRotaryCondensentrator;
+import com.jerry.meklm.common.tile.machine.TileEntityLargeSolarNeutronActivator;
 
 import com.jerry.mekmm.common.block.attribute.MoreMachineAttributeHasBounding;
 import com.jerry.mekmm.common.config.MoreMachineConfig;
 
 import mekanism.api.math.MathUtils;
 import mekanism.common.MekanismLang;
-import mekanism.common.block.attribute.AttributeCustomSelectionBox;
+import mekanism.common.block.attribute.*;
 import mekanism.common.block.attribute.AttributeHasBounding.HandleBoundingBlock;
 import mekanism.common.block.attribute.AttributeHasBounding.TriBooleanFunction;
-import mekanism.common.block.attribute.AttributeParticleFX;
-import mekanism.common.block.attribute.AttributeUpgradeSupport;
-import mekanism.common.block.attribute.Attributes;
 import mekanism.common.config.MekanismConfig;
 import mekanism.common.content.blocktype.Machine;
 import mekanism.common.content.blocktype.Machine.MachineBuilder;
@@ -93,6 +91,19 @@ public class LargeMachineBlockTypes {
                 }
             })
             .withComputerSupport("largeElectrolyticSeparator")
+            .build();
+
+    // Solar Neutron Activator
+    public static final Machine<TileEntityLargeSolarNeutronActivator> LARGE_SOLAR_NEUTRON_ACTIVATOR = MachineBuilder
+            .createMachine(() -> LargeMachineTileEntityTypes.LARGE_SOLAR_NEUTRON_ACTIVATOR, MekanismLang.DESCRIPTION_SOLAR_NEUTRON_ACTIVATOR)
+            .withGui(() -> LargeMachineContainerTypes.LARGE_SOLAR_NEUTRON_ACTIVATOR)
+            .without(AttributeParticleFX.class, AttributeUpgradeSupport.class)
+            .withCustomShape(LargeMachineBlockShapes.LARGE_SOLAR_NEUTRON_ACTIVATOR)
+            .with(AttributeCustomSelectionBox.JSON)
+            .withSideConfig(TransmissionType.CHEMICAL, TransmissionType.ITEM)
+            .with(MoreMachineAttributeHasBounding.FULL_JAVA_ENTITY)
+            .withComputerSupport("largeSolarNeutronActivator")
+            .replace(Attributes.ACTIVE)
             .build();
 
     // Heat Generator
